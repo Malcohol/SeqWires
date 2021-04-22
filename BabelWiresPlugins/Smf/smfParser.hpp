@@ -1,0 +1,66 @@
+#pragma once
+
+#include "BabelWires/FileFormat/fileFeature.hpp"
+#include "BabelWiresPlugins/Smf/smfModel.hpp"
+#include "Common/IO/dataSource.hpp"
+#include "SeqwiresLib/musicTypes.hpp"
+
+#include <cstdint>
+#include <memory>
+#include <sstream>
+#include <vector>
+
+namespace smf {
+
+    class SmfParser {
+      public:
+        SmfParser(babelwires::DataSource& dataSource);
+
+        static SmfSequence::Format getSequenceType(babelwires::DataSource& dataSource);
+
+        void parse();
+        std::unique_ptr<babelwires::FileFeature> getResult() { return std::move(m_result); }
+
+      protected:
+        babelwires::Byte getNext();
+        babelwires::Byte peekNext();
+
+        /// Read the expected byte sequence.
+        void readByteSequence(const char* seq);
+
+        /// Reads the header chunk and set some metadata.
+        void readHeaderChunk();
+
+        void readFormat0Sequence(Format0Sequence& sequence);
+        void readFormat1Sequence(Format1Sequence& sequence);
+
+        void readTrack(int i, ChannelGroup& tracks, seqwires::TempoFeature& tempo, babelwires::StringFeature* copyright,
+                       babelwires::StringFeature* sequenceOrTrackName);
+
+        seqwires::ModelDuration readModelDuration();
+
+        void readTempoEvent(seqwires::TempoFeature& tempo);
+
+        std::string readTextMetaEvent(int length);
+
+        void skipBytes(int numBytes);
+
+        ///
+        std::uint16_t readU16();
+        std::uint32_t readU24();
+        std::uint32_t readU32();
+        std::uint32_t readVariableLengthQuantity();
+
+      private:
+        babelwires::DataSource& m_dataSource;
+        std::ostringstream m_log;
+        std::unique_ptr<babelwires::FileFeature> m_result;
+
+        SmfSequence::Format m_sequenceType;
+        int m_numTracks;
+        int m_division;
+    };
+
+    std::unique_ptr<babelwires::FileFeature> parseSmfSequence(babelwires::DataSource& dataSource);
+
+} // namespace smf
