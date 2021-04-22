@@ -8,7 +8,7 @@
 #include "BabelWiresPlugins/Smf/smfModel.hpp"
 #include "BabelWires/Features/featureMixins.hpp"
 #include "BabelWiresPlugins/Smf/smfFormat.hpp"
-#include "SeqwiresLib/Features/trackFeature.hpp"
+#include "SeqWiresLib/Features/trackFeature.hpp"
 
 #include "BabelWires/Features/Path/fieldName.hpp"
 

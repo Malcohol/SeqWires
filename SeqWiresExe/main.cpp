@@ -34,8 +34,8 @@
 
 // "plugins"
 #include "BabelWiresPlugins/Smf/libRegistration.hpp"
-#include "SeqwiresLib/libRegistration.hpp"
-#include "SeqwiresLibUi/libRegistration.hpp"
+#include "SeqWiresLib/libRegistration.hpp"
+#include "SeqWiresLibUi/libRegistration.hpp"
 
 #include <cassert>
 #include <chrono>

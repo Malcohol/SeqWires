@@ -7,8 +7,8 @@
  **/
 #include "BabelWiresPlugins/Smf/smfParser.hpp"
 #include "Common/exceptions.hpp"
-#include "SeqwiresLib/Features/trackFeature.hpp"
-#include "SeqwiresLib/Tracks/noteEvents.hpp"
+#include "SeqWiresLib/Features/trackFeature.hpp"
+#include "SeqWiresLib/Tracks/noteEvents.hpp"
 
 #include <cassert>
 

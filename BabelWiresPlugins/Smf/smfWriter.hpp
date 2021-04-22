@@ -8,7 +8,7 @@
 #pragma once
 
 #include "BabelWiresPlugins/Smf/smfModel.hpp"
-#include "SeqwiresLib/musicTypes.hpp"
+#include "SeqWiresLib/musicTypes.hpp"
 
 #include <cstdint>
 #include <ostream>

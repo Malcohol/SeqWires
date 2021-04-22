@@ -10,7 +10,7 @@
 #include "BabelWires/FileFormat/fileFeature.hpp"
 #include "BabelWiresPlugins/Smf/smfModel.hpp"
 #include "Common/IO/dataSource.hpp"
-#include "SeqwiresLib/musicTypes.hpp"
+#include "SeqWiresLib/musicTypes.hpp"
 
 #include <cstdint>
 #include <memory>

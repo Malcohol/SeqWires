@@ -10,7 +10,7 @@
 #include "BabelWires/Features/arrayFeature.hpp"
 #include "BabelWires/Features/stringFeature.hpp"
 #include "BabelWires/FileFormat/fileFeature.hpp"
-#include "SeqwiresLib/Features/tempoFeature.hpp"
+#include "SeqWiresLib/Features/tempoFeature.hpp"
 
 namespace seqwires {
     class TrackFeature;
