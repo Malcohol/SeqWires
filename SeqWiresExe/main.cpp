@@ -25,7 +25,7 @@
 #include "BabelWires/Project/projectData.hpp"
 #include "BabelWires/Serialization/projectSerialization.hpp"
 #include "Common/IO/fileDataSource.hpp"
-#include "SeqwiresExe/seqwiresOptions.hpp"
+#include "SeqWiresExe/seqWiresOptions.hpp"
 
 #include "BabelWiresQtUi/uiMain.hpp"
 #include "Common/Log/ostreamLogListener.hpp"

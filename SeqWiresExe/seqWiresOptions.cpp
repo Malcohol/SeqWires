@@ -5,7 +5,7 @@
  * 
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
-#include "SeqwiresExe/seqwiresOptions.hpp"
+#include "SeqWiresExe/seqWiresOptions.hpp"
 #include <Common/Audio/fileAudioDest.hpp>
 
 namespace {
