@@ -1,3 +1,10 @@
+/**
+ * A FilteredTrackIterator provides a way of iterate over a track, skipping events that are not of interest.
+ * 
+ * (C) 2021 Malcolm Tyrrell
+ * 
+ * Licensed under the GPLv3.0. See LICENSE file.
+ **/
 #pragma once
 
 #include "SeqwiresLib/Tracks/noteEvents.hpp"

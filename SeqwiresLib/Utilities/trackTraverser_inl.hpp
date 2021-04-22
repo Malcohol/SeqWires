@@ -1,3 +1,10 @@
+/**
+ * The TrackTraverser aids in the traversal of a track in time chunks which may lie between events.
+ * 
+ * (C) 2021 Malcolm Tyrrell
+ * 
+ * Licensed under the GPLv3.0. See LICENSE file.
+ **/
 template <typename TRACK_ITERATOR>
 template <typename SPAN>
 seqwires::TrackTraverser<TRACK_ITERATOR>::TrackTraverser(const Track& track, SPAN span)

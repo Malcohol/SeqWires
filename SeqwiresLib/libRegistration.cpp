@@ -1,3 +1,10 @@
+/**
+ * Register factories etc. for SeqWires into BabelWires.
+ * 
+ * (C) 2021 Malcolm Tyrrell
+ * 
+ * Licensed under the GPLv3.0. See LICENSE file.
+ **/
 #include "SeqwiresLib/libRegistration.hpp"
 
 #include "BabelWires/Processors/processorFactory.hpp"

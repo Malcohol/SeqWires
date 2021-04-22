@@ -1,3 +1,10 @@
+/**
+ * NoteEvents describe musical notes.
+ * 
+ * (C) 2021 Malcolm Tyrrell
+ * 
+ * Licensed under the GPLv3.0. See LICENSE file.
+ **/
 #pragma once
 
 #include "SeqwiresLib/Tracks/trackEvent.hpp"
@@ -14,6 +21,7 @@ namespace seqwires {
         Pitch m_pitch;
     };
 
+    /// The start of a musical note.
     struct NoteOnEvent : public NoteEvent {
         STREAM_EVENT(NoteOnEvent);
         virtual bool operator==(const TrackEvent& other) const override;
@@ -23,6 +31,7 @@ namespace seqwires {
         Velocity m_velocity;
     };
 
+    /// The end of a musical note.
     struct NoteOffEvent : public NoteEvent {
         STREAM_EVENT(NoteOffEvent);
         virtual bool operator==(const TrackEvent& other) const override;

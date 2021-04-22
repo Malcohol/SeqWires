@@ -1,3 +1,10 @@
+/**
+ * ChordEvents describe musical chords.
+ * 
+ * (C) 2021 Malcolm Tyrrell
+ * 
+ * Licensed under the GPLv3.0. See LICENSE file.
+ **/
 #include "SeqwiresLib/Tracks/chordEvents.hpp"
 
 #include "Common/Utilities/hash.hpp"

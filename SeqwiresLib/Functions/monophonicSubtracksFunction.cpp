@@ -1,3 +1,10 @@
+/**
+ * A function which extracts a list of monophonic tracks from a track.
+ * 
+ * (C) 2021 Malcolm Tyrrell
+ * 
+ * Licensed under the GPLv3.0. See LICENSE file.
+ **/
 #include "SeqwiresLib/Functions/monophonicSubtracksFunction.hpp"
 
 #include "SeqwiresLib/Tracks/noteEvents.hpp"

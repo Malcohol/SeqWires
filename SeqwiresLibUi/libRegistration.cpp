@@ -1,3 +1,10 @@
+/**
+ * Register factories etc. for the SeqWiresUi into BabelWiresUi.
+ * 
+ * (C) 2021 Malcolm Tyrrell
+ * 
+ * Licensed under the GPLv3.0. See LICENSE file.
+ **/
 #include "SeqwiresLibUi/libRegistration.hpp"
 
 #include "BabelWiresQtUi/ModelBridge/RowModels/rowModelRegistry.hpp"

@@ -1,3 +1,10 @@
+/**
+ * A processor which extracts a section of sequence data from a track. 
+ * 
+ * (C) 2021 Malcolm Tyrrell
+ * 
+ * Licensed under the GPLv3.0. See LICENSE file.
+ **/
 #pragma once
 
 #include "BabelWires/Processors/processor.hpp"

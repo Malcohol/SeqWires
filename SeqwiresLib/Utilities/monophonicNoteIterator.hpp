@@ -1,3 +1,10 @@
+/**
+ * A MonophonicNoteIterator iterates over a track, returning note events which never overlap.
+ * 
+ * (C) 2021 Malcolm Tyrrell
+ * 
+ * Licensed under the GPLv3.0. See LICENSE file.
+ **/
 #pragma once
 
 #include "SeqwiresLib/Tracks/noteEvents.hpp"

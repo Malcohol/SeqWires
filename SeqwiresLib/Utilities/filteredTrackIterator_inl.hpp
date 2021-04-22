@@ -1,3 +1,11 @@
+/**
+ * A FilteredTrackIterator provides a way of iterate over a track, skipping events that are not of interest.
+ * 
+ * (C) 2021 Malcolm Tyrrell
+ * 
+ * Licensed under the GPLv3.0. See LICENSE file.
+ **/
+
 /// The iterator must be initialized after construction by called initBegin or initEnd.
 template <typename EVENT>
 seqwires::FilteredTrackIterator<EVENT>::FilteredTrackIterator(const Track& track)

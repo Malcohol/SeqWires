@@ -1,3 +1,10 @@
+/**
+ * Registration of factories for the Standard MIDI File support.
+ * 
+ * (C) 2021 Malcolm Tyrrell
+ * 
+ * Licensed under the GPLv3.0. See LICENSE file.
+ **/
 #include "BabelWiresPlugins/Smf/libRegistration.hpp"
 
 #include "BabelWires/Project/projectContext.hpp"

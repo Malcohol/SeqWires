@@ -1,3 +1,10 @@
+/**
+ * The TrackRowModel provides the UI for a Track.
+ * 
+ * (C) 2021 Malcolm Tyrrell
+ * 
+ * Licensed under the GPLv3.0. See LICENSE file.
+ **/
 #include "SeqwiresLibUi/RowModels/trackRowModel.hpp"
 
 #include "SeqwiresLib/Features/trackFeature.hpp"

@@ -1,3 +1,10 @@
+/**
+ * Some utility functions useful for manipulating music sequence data.
+ * 
+ * (C) 2021 Malcolm Tyrrell
+ * 
+ * Licensed under the GPLv3.0. See LICENSE file.
+ **/
 #pragma once
 
 namespace seqwires {

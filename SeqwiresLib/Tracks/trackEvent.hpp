@@ -1,3 +1,10 @@
+/**
+ * A TrackEvent is the base class of the events that occur in tracks.
+ * 
+ * (C) 2021 Malcolm Tyrrell
+ * 
+ * Licensed under the GPLv3.0. See LICENSE file.
+ **/
 #pragma once
 
 #include "Common/BlockStream/blockStream.hpp"

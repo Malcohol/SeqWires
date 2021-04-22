@@ -1,3 +1,10 @@
+/**
+ * Formats which support Standard MIDI Files.
+ * 
+ * (C) 2021 Malcolm Tyrrell
+ * 
+ * Licensed under the GPLv3.0. See LICENSE file.
+ **/
 #include "BabelWiresPlugins/Smf/smfFormat.hpp"
 #include "BabelWiresPlugins/Smf/smfParser.hpp"
 #include "BabelWiresPlugins/Smf/smfWriter.hpp"

@@ -1,3 +1,10 @@
+/**
+ * Write a Standard MIDI File based on the contents of a tree of Features.
+ * 
+ * (C) 2021 Malcolm Tyrrell
+ * 
+ * Licensed under the GPLv3.0. See LICENSE file.
+ **/
 #include "BabelWiresPlugins/Smf/smfWriter.hpp"
 #include "SeqwiresLib/Features/trackFeature.hpp"
 #include "SeqwiresLib/Utilities/filteredTrackIterator.hpp"

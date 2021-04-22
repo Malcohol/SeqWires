@@ -1,3 +1,10 @@
+/**
+ * Some common type definitions for musical data.
+ * 
+ * (C) 2021 Malcolm Tyrrell
+ * 
+ * Licensed under the GPLv3.0. See LICENSE file.
+ **/
 #include <SeqwiresLib/musicTypes.hpp>
 #include <sstream>
 

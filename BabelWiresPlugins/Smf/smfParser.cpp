@@ -1,3 +1,10 @@
+/**
+ * Parse a Standard MIDI File into a tree of Features.
+ * 
+ * (C) 2021 Malcolm Tyrrell
+ * 
+ * Licensed under the GPLv3.0. See LICENSE file.
+ **/
 #include "BabelWiresPlugins/Smf/smfParser.hpp"
 #include "Common/exceptions.hpp"
 #include "SeqwiresLib/Features/trackFeature.hpp"
