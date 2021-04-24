@@ -1,0 +1,8 @@
+SET( SEQ2TAPE_SRCS
+	seq2tape.cpp
+	seq2tapeOptions.cpp
+   )
+
+ADD_EXECUTABLE( seq2tape ${SEQ2TAPE_SRCS} )
+TARGET_INCLUDE_DIRECTORIES( seq2tape PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../BabelWires ${CMAKE_CURRENT_SOURCE_DIR}/.. )
+TARGET_LINK_LIBRARIES( seq2tape Seq2tapeLib Common BabelWires_Alsa )
