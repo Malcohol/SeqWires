@@ -10,6 +10,17 @@ Right now, the supported formats are:
 * SMF (standard MIDI file)
 * Many more formats to come :D 
 
+## Seq2tape
+
+Many pre-MIDI or low-end sequencers and drum machines use cassette tapes to store their sequence data.
+This is achieved by converting the device's digital data to an analog audio signal which can be recorded onto or played back from tape.
+Seq2tape is a utility for converting the audio which these devices use to data files which SeqWires can use.
+It depends on per-device plugins which know how the device represents data as audio.
+Currently, no plugins are included in the code base, but please watch this space :)
+
+Ultimately, I do intend to include functionality for interacting with audio storage formats within SeqWires, which is why the Seq2tape code is part of this project.
+However, even when I do so, there will be still be a use-case for the stand-alone seq2tape application.
+
 ## Status
 
 SeqWires is under active development.
