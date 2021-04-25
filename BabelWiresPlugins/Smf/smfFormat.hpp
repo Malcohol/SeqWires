@@ -21,8 +21,6 @@ namespace smf {
         virtual std::string getProductName() const override;
         virtual std::unique_ptr<babelwires::FileFeature>
         loadFromFile(babelwires::DataSource& dataSource, babelwires::UserLogger& userLogger) const override;
-        virtual void writeToFile(const babelwires::FileFeature& sequence, std::ostream& os,
-                                 babelwires::UserLogger& userLogger) const override;
     };
 
     /// Format for creating Format 0 Standard MIDI Files..
@@ -33,6 +31,8 @@ namespace smf {
         virtual std::string getManufacturerName() const override;
         virtual std::string getProductName() const override;
         virtual std::unique_ptr<babelwires::FileFeature> createNewFeature() const override;
+        virtual void writeToFile(const babelwires::FileFeature& sequence, std::ostream& os,
+                                 babelwires::UserLogger& userLogger) const override;
     };
 
     /// Format for creating Format 1 Standard MIDI Files..
@@ -44,6 +44,8 @@ namespace smf {
         virtual std::string getManufacturerName() const override;
         virtual std::string getProductName() const override;
         virtual std::unique_ptr<babelwires::FileFeature> createNewFeature() const override;
+        virtual void writeToFile(const babelwires::FileFeature& sequence, std::ostream& os,
+                                 babelwires::UserLogger& userLogger) const override;
     };
 
 } // namespace smf

@@ -37,13 +37,8 @@ std::unique_ptr<babelwires::FileFeature> smf::SmfFormat::loadFromFile(babelwires
     return parseSmfSequence(dataSource);
 }
 
-void smf::SmfFormat::writeToFile(const babelwires::FileFeature& sequence, std::ostream& os,
-                                 babelwires::UserLogger& userLogger) const {
-    writeToSmf(os, dynamic_cast<const SmfSequence&>(sequence));
-}
-
 smf::Format0FactoryFormat::Format0FactoryFormat()
-    : FileFeatureFactory("Format0SmfFile", "Format 0 SMF file", 1) {}
+    : FileFeatureFactory("Format0SmfFile", "Format 0 SMF file", 1, Extensions{"mid", "smf"}) {}
 
 std::string smf::Format0FactoryFormat::getManufacturerName() const {
     return s_manufacturerName;
@@ -57,8 +52,13 @@ std::unique_ptr<babelwires::FileFeature> smf::Format0FactoryFormat::createNewFea
     return std::make_unique<Format0Sequence>();
 }
 
+void smf::Format0FactoryFormat::writeToFile(const babelwires::FileFeature& sequence, std::ostream& os,
+                                 babelwires::UserLogger& userLogger) const {
+    writeToSmf(os, dynamic_cast<const SmfSequence&>(sequence));
+}
+
 smf::Format1FactoryFormat::Format1FactoryFormat()
-    : FileFeatureFactory("Format1SmfFile", "Format 1 SMF file", 1) {}
+    : FileFeatureFactory("Format1SmfFile", "Format 1 SMF file", 1, Extensions{"mid", "smf"}) {}
 
 std::string smf::Format1FactoryFormat::getManufacturerName() const {
     return s_manufacturerName;
@@ -70,4 +70,9 @@ std::string smf::Format1FactoryFormat::getProductName() const {
 
 std::unique_ptr<babelwires::FileFeature> smf::Format1FactoryFormat::createNewFeature() const {
     return std::make_unique<Format1Sequence>();
+}
+
+void smf::Format1FactoryFormat::writeToFile(const babelwires::FileFeature& sequence, std::ostream& os,
+                                 babelwires::UserLogger& userLogger) const {
+    writeToSmf(os, dynamic_cast<const SmfSequence&>(sequence));
 }
