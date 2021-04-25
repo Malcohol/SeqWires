@@ -1,0 +1,12 @@
+BasedOnStyle: LLVM
+
+AllowShortFunctionsOnASingleLine: Inline
+BreakConstructorInitializers: BeforeComma
+ColumnLimit:     120
+DerivePointerAlignment: false
+IndentCaseLabels: true
+IndentWidth: 4
+IncludeBlocks:   Preserve
+NamespaceIndentation: All
+PointerAlignment: Left
+SortIncludes:    true
