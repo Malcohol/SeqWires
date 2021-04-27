@@ -12,7 +12,7 @@
 
 namespace smf {
     /// Format for loading Standard MIDI Files..
-    class SmfFormat : public babelwires::FileFormat {
+    class SmfFormat : public babelwires::SourceFileFormat {
       public:
         SmfFormat();
         static std::string getThisIdentifier();
@@ -24,7 +24,7 @@ namespace smf {
     };
 
     /// Format for creating Format 0 Standard MIDI Files..
-    class Format0FactoryFormat : public babelwires::FileFeatureFactory {
+    class Format0FactoryFormat : public babelwires::TargetFileFactory {
       public:
         Format0FactoryFormat();
 
@@ -37,7 +37,7 @@ namespace smf {
 
     /// Format for creating Format 1 Standard MIDI Files..
     // TODO Bug: Tracks don't seem to have ports at the moment.
-    class Format1FactoryFormat : public babelwires::FileFeatureFactory {
+    class Format1FactoryFormat : public babelwires::TargetFileFactory {
       public:
         Format1FactoryFormat();
 
