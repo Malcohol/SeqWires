@@ -68,8 +68,8 @@ int main(int argc, char* argv[]) {
         babelwires::DebugLogger::swapGlobalDebugLogger(&log);
         babelwires::OStreamLogListener logToCout(std::cout, log, features);
 
-        TargetFileFormatRegistry factoryFormatReg;
-        SourceFileFormatRegistry fileFormatReg;
+        SourceFileFormatRegistry sourceFileFormatReg;
+        TargetFileFormatRegistry targetFileFormatReg;
         ProcessorFactoryRegistry processorReg;
         babelwires::AutomaticDeserializationRegistry deserializationRegistry;
         babelwires::RowModelRegistry rowModelRegistry;
@@ -78,7 +78,7 @@ int main(int argc, char* argv[]) {
         babelwires::logDebug() << "The random seed was " << seed;
         std::default_random_engine randomEngine(seed);
 
-        babelwires::UiProjectContext context{factoryFormatReg,        fileFormatReg, processorReg,
+        babelwires::UiProjectContext context{sourceFileFormatReg, targetFileFormatReg, processorReg,
                                              deserializationRegistry, randomEngine,  rowModelRegistry};
         
         context.m_applicationIdentity.m_applicationTitle = "Seqwires";
@@ -90,7 +90,7 @@ int main(int argc, char* argv[]) {
         smf::registerLib(context);
 
         if (options.m_mode == ProgramOptions::MODE_DUMP) {
-            if (const SourceFileFormat* format = context.m_fileFormatReg.getEntryByFileName(options.m_inputFileName)) {
+            if (const SourceFileFormat* format = context.m_sourceFileFormatReg.getEntryByFileName(options.m_inputFileName)) {
                 try {
                     babelwires::FileDataSource file(options.m_inputFileName.c_str());
                     std::shared_ptr<babelwires::FileFeature> loadedFile = format->loadFromFile(file, log);
