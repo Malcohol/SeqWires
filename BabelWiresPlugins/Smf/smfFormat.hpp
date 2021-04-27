@@ -24,7 +24,7 @@ namespace smf {
     };
 
     /// Format for creating Format 0 Standard MIDI Files..
-    class Format0FactoryFormat : public babelwires::TargetFileFactory {
+    class Format0FactoryFormat : public babelwires::TargetFileFormat {
       public:
         Format0FactoryFormat();
 
@@ -37,7 +37,7 @@ namespace smf {
 
     /// Format for creating Format 1 Standard MIDI Files..
     // TODO Bug: Tracks don't seem to have ports at the moment.
-    class Format1FactoryFormat : public babelwires::TargetFileFactory {
+    class Format1FactoryFormat : public babelwires::TargetFileFormat {
       public:
         Format1FactoryFormat();
 

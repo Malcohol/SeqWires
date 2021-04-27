@@ -68,7 +68,7 @@ int main(int argc, char* argv[]) {
         babelwires::DebugLogger::swapGlobalDebugLogger(&log);
         babelwires::OStreamLogListener logToCout(std::cout, log, features);
 
-        TargetFileFactoryRegistry factoryFormatReg;
+        TargetFileFormatRegistry factoryFormatReg;
         SourceFileFormatRegistry fileFormatReg;
         ProcessorFactoryRegistry processorReg;
         babelwires::AutomaticDeserializationRegistry deserializationRegistry;

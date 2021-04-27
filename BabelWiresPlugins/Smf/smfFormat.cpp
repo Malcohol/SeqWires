@@ -38,7 +38,7 @@ std::unique_ptr<babelwires::FileFeature> smf::SmfFormat::loadFromFile(babelwires
 }
 
 smf::Format0FactoryFormat::Format0FactoryFormat()
-    : TargetFileFactory("Format0SmfFile", "Format 0 SMF file", 1, Extensions{"mid", "smf"}) {}
+    : TargetFileFormat("Format0SmfFile", "Format 0 SMF file", 1, Extensions{"mid", "smf"}) {}
 
 std::string smf::Format0FactoryFormat::getManufacturerName() const {
     return s_manufacturerName;
@@ -58,7 +58,7 @@ void smf::Format0FactoryFormat::writeToFile(const babelwires::FileFeature& seque
 }
 
 smf::Format1FactoryFormat::Format1FactoryFormat()
-    : TargetFileFactory("Format1SmfFile", "Format 1 SMF file", 1, Extensions{"mid", "smf"}) {}
+    : TargetFileFormat("Format1SmfFile", "Format 1 SMF file", 1, Extensions{"mid", "smf"}) {}
 
 std::string smf::Format1FactoryFormat::getManufacturerName() const {
     return s_manufacturerName;
