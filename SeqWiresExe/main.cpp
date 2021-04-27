@@ -17,7 +17,8 @@
 
 #include "BabelWires/Features/Path/fieldNameRegistry.hpp"
 #include "BabelWires/FileFormat/fileFeature.hpp"
-#include "BabelWires/FileFormat/fileFormat.hpp"
+#include "BabelWires/FileFormat/sourceFileFormat.hpp"
+#include "BabelWires/FileFormat/targetFileFormat.hpp"
 #include "BabelWires/Processors/processorFactory.hpp"
 #include "BabelWires/Processors/processorFactoryRegistry.hpp"
 #include "BabelWires/Project/Modifiers/modifierData.hpp"
