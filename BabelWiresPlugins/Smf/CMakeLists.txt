@@ -1,5 +1,6 @@
 SET( SMFLIB_SRCS
 	libRegistration.cpp
+	smfImportModel.cpp
 	smfModel.cpp
 	smfWriter.cpp
 	smfParser.cpp

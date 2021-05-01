@@ -17,6 +17,7 @@ namespace seqwires {
 }
 
 namespace smf {
+namespace import {
 
     /// A track with its MIDI channel number.
     class ChannelTrackFeature : public babelwires::RecordFeature {
@@ -99,5 +100,5 @@ namespace smf {
       protected:
         TrackArray* m_tracks;
     };
-
+}
 } // namespace smf

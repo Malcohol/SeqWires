@@ -14,7 +14,7 @@
 
 smf::SmfParser::SmfParser(babelwires::DataSource& dataSource)
     : m_dataSource(dataSource)
-    , m_sequenceType(SmfSequence::UNKNOWN_SEQUENCE_TYPE)
+    , m_sequenceType(import::SmfSequence::UNKNOWN_SEQUENCE_TYPE)
     , m_numTracks(-1)
     , m_division(-1) {}
 
@@ -108,7 +108,7 @@ void smf::SmfParser::readHeaderChunk() {
     if (readU32() != 6) {
         throw babelwires::ParseException() << "Header chunk not expected length";
     }
-    m_sequenceType = SmfSequence::Format(readU16());
+    m_sequenceType = import::SmfSequence::Format(readU16());
     if (m_sequenceType > 2) {
         throw babelwires::ParseException() << "Not a known type of Standard MIDI File";
     }
@@ -119,7 +119,7 @@ void smf::SmfParser::readHeaderChunk() {
     }
 }
 
-smf::SmfSequence::Format smf::SmfParser::getSequenceType(babelwires::DataSource& dataSource) {
+smf::import::SmfSequence::Format smf::SmfParser::getSequenceType(babelwires::DataSource& dataSource) {
     try {
         dataSource.setRewindPoint(16);
         SmfParser parser(dataSource);
@@ -127,31 +127,31 @@ smf::SmfSequence::Format smf::SmfParser::getSequenceType(babelwires::DataSource&
         dataSource.rewind();
         return parser.m_sequenceType;
     } catch (const std::exception& e) {
-        return SmfSequence::UNKNOWN_SEQUENCE_TYPE;
+        return import::SmfSequence::UNKNOWN_SEQUENCE_TYPE;
     }
 }
 
 void smf::SmfParser::parse() {
     readHeaderChunk();
     switch (m_sequenceType) {
-        case SmfSequence::FORMAT_0_SEQUENCE: {
-            auto seqPtr = std::make_unique<Format0Sequence>();
-            Format0Sequence& seq = *seqPtr;
+        case import::SmfSequence::FORMAT_0_SEQUENCE: {
+            auto seqPtr = std::make_unique<import::Format0Sequence>();
+            import::Format0Sequence& seq = *seqPtr;
             m_result = std::move(seqPtr);
             readFormat0Sequence(seq);
             break;
         }
-        case SmfSequence::FORMAT_1_SEQUENCE: {
-            auto seqPtr = std::make_unique<Format1Sequence>();
-            Format1Sequence& seq = *seqPtr;
+        case import::SmfSequence::FORMAT_1_SEQUENCE: {
+            auto seqPtr = std::make_unique<import::Format1Sequence>();
+            import::Format1Sequence& seq = *seqPtr;
             m_result = std::move(seqPtr);
             readFormat1Sequence(seq);
             break;
         }
-        case SmfSequence::FORMAT_2_SEQUENCE: {
+        case import::SmfSequence::FORMAT_2_SEQUENCE: {
             // TODO
         }
-        case SmfSequence::UNKNOWN_SEQUENCE_TYPE:
+        case import::SmfSequence::UNKNOWN_SEQUENCE_TYPE:
         default: {
             throw babelwires::ParseException() << "The data is not in one of the understood sequence types";
         }
@@ -191,7 +191,7 @@ namespace {
             }
         }
 
-        void assignChannelsToChannelGroup(smf::ChannelGroup& channels) {
+        void assignChannelsToChannelGroup(smf::import::ChannelGroup& channels) {
             for (int c = 0; c < MAX_CHANNELS; ++c) {
                 if (m_channels[c] != nullptr) {
                     channels.addTrack(c)->set(std::move(m_channels[c]));
@@ -219,7 +219,7 @@ namespace {
     };
 } // namespace
 
-void smf::SmfParser::readTrack(int i, ChannelGroup& channels, seqwires::TempoFeature& tempo,
+void smf::SmfParser::readTrack(int i, import::ChannelGroup& channels, seqwires::TempoFeature& tempo,
                                babelwires::StringFeature* copyright, babelwires::StringFeature* sequenceOrTrackName) {
     readByteSequence("MTrk");
     const std::uint32_t trackLength = readU32();
@@ -343,20 +343,20 @@ void smf::SmfParser::readTrack(int i, ChannelGroup& channels, seqwires::TempoFea
     { throw babelwires::ParseException() << "Read all of track " << i << " without finding an end-of-track event"; }
 }
 
-void smf::SmfParser::readFormat0Sequence(Format0Sequence& sequence) {
+void smf::SmfParser::readFormat0Sequence(import::Format0Sequence& sequence) {
     if (m_numTracks != 1) {
         throw babelwires::ParseException()
             << "A format 0 claims to have " << m_numTracks << " tracks but it should only have 1";
     }
-    ChannelGroup* midiTrack = sequence.getMidiTrack0();
+    import::ChannelGroup* midiTrack = sequence.getMidiTrack0();
     readTrack(0, *midiTrack, *sequence.getTempoFeature(), sequence.getCopyright(), sequence.getSequenceName());
 }
 
-void smf::SmfParser::readFormat1Sequence(Format1Sequence& sequence) {
-    ChannelGroup* midiTrack = sequence.addMidiTrack();
+void smf::SmfParser::readFormat1Sequence(import::Format1Sequence& sequence) {
+    import::ChannelGroup* midiTrack = sequence.addMidiTrack();
     readTrack(0, *midiTrack, *sequence.getTempoFeature(), sequence.getCopyright(), sequence.getSequenceName());
     for (int i = 1; i < m_numTracks; ++i) {
-        ChannelGroup* midiTrack = sequence.addMidiTrack();
+        import::ChannelGroup* midiTrack = sequence.addMidiTrack();
         readTrack(i, *midiTrack, *sequence.getTempoFeature(), nullptr, nullptr);
     }
 }

@@ -8,7 +8,7 @@
 #pragma once
 
 #include "BabelWires/FileFormat/fileFeature.hpp"
-#include "BabelWiresPlugins/Smf/smfModel.hpp"
+#include "BabelWiresPlugins/Smf/smfImportModel.hpp"
 #include "Common/IO/dataSource.hpp"
 #include "SeqWiresLib/musicTypes.hpp"
 
@@ -23,7 +23,7 @@ namespace smf {
       public:
         SmfParser(babelwires::DataSource& dataSource);
 
-        static SmfSequence::Format getSequenceType(babelwires::DataSource& dataSource);
+        static import::SmfSequence::Format getSequenceType(babelwires::DataSource& dataSource);
 
         void parse();
         std::unique_ptr<babelwires::FileFeature> getResult() { return std::move(m_result); }
@@ -38,10 +38,10 @@ namespace smf {
         /// Reads the header chunk and set some metadata.
         void readHeaderChunk();
 
-        void readFormat0Sequence(Format0Sequence& sequence);
-        void readFormat1Sequence(Format1Sequence& sequence);
+        void readFormat0Sequence(import::Format0Sequence& sequence);
+        void readFormat1Sequence(import::Format1Sequence& sequence);
 
-        void readTrack(int i, ChannelGroup& tracks, seqwires::TempoFeature& tempo, babelwires::StringFeature* copyright,
+        void readTrack(int i, import::ChannelGroup& tracks, seqwires::TempoFeature& tempo, babelwires::StringFeature* copyright,
                        babelwires::StringFeature* sequenceOrTrackName);
 
         seqwires::ModelDuration readModelDuration();
@@ -63,7 +63,7 @@ namespace smf {
         std::ostringstream m_log;
         std::unique_ptr<babelwires::FileFeature> m_result;
 
-        SmfSequence::Format m_sequenceType;
+        import::SmfSequence::Format m_sequenceType;
         int m_numTracks;
         int m_division;
     };
