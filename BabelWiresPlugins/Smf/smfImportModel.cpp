@@ -41,37 +41,21 @@ seqwires::TrackFeature* smf::import::RecordChannelGroup::addTrack(int c) {
     return addField(std::make_unique<seqwires::TrackFeature>(), FIELD_NAME_VECTOR(s_trackNames)[c]);
 }
 
-const seqwires::TrackFeature* smf::import::RecordChannelGroup::getTrack(int c) const {
-    return static_cast<const seqwires::TrackFeature*>(tryGetChildFromStep(babelwires::PathStep(std::get<0>(s_trackNames[c]))));
-}
-
-smf::import::ChannelTrackFeature::ChannelTrackFeature() {
-    m_channelNum = addField(std::make_unique<babelwires::HasStaticRange<babelwires::IntFeature, 0, 15>>(),
-                            FIELD_NAME("Chan", "channel", "011e3ef1-4c06-4e40-bba4-b242dc8a3d3a"));
-    m_noteTrackFeature = addField(std::make_unique<seqwires::TrackFeature>(),
-                                  FIELD_NAME("Notes", "Notes", "b48b1dff-6fa4-4c2f-8f77-bc50f44fb09a"));
-}
-
-std::unique_ptr<babelwires::Feature> smf::import::ArrayChannelGroup::createNextEntry() const {
-    return std::make_unique<ChannelTrackFeature>();
-}
-
-seqwires::TrackFeature* smf::import::ArrayChannelGroup::addTrack(int c) {
-    assert((getTrack(c) == nullptr) && "Channel c already in use");
-    ChannelTrackFeature* channelTrack = dynamic_cast<ChannelTrackFeature*>(addEntry());
-    channelTrack->m_channelNum->set(c);
-    return channelTrack->m_noteTrackFeature;
-}
-
-const seqwires::TrackFeature* smf::import::ArrayChannelGroup::getTrack(int c) const {
-    for (int i = 0; i < getNumFeatures(); ++i) {
-        const ChannelTrackFeature* entry = dynamic_cast<const ChannelTrackFeature*>(getFeature(i));
-        assert(entry && "There should be an ith element");
-        if (entry->m_channelNum->get() == c) {
-            return entry->m_noteTrackFeature;
-        }
+seqwires::TrackFeature* smf::import::ExtensibleChannelGroup::addTrack(int c) {
+    if (m_channelNum)
+    {
+        assert((m_channelNum->get() != c) && "Channel c is already in use");
+        return RecordChannelGroup::addTrack(c);
     }
-    return nullptr;
+    else
+    {
+        m_channelNum = addField(std::make_unique<babelwires::HasStaticRange<babelwires::IntFeature, 0, 15>>(),
+                            FIELD_NAME("ChanNo", "channel", "011e3ef1-4c06-4e40-bba4-b242dc8a3d3a"));
+        m_noteTrackFeature = addField(std::make_unique<seqwires::TrackFeature>(),
+                            FIELD_NAME("Cntnts", "contents", "b48b1dff-6fa4-4c2f-8f77-bc50f44fb09a"));
+        m_channelNum->set(c);
+        return m_noteTrackFeature;
+    }
 }
 
 smf::import::SmfSequence::SmfSequence(Format f)
@@ -152,5 +136,5 @@ smf::import::ChannelGroup* smf::import::Format1Sequence::addMidiTrack() {
 }
 
 std::unique_ptr<babelwires::Feature> smf::import::TrackArray::createNextEntry() const {
-    return std::make_unique<ArrayChannelGroup>();
+    return std::make_unique<ExtensibleChannelGroup>();
 }

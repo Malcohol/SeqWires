@@ -25,18 +25,7 @@ namespace import {
     class ChannelGroup {
       public:
         /// c is the MIDI channel, not index.
-        virtual const seqwires::TrackFeature* getTrack(int c) const = 0;
         virtual seqwires::TrackFeature* addTrack(int c) = 0;
-    };
-
-    /// A track with its MIDI channel number.
-    class ChannelTrackFeature : public babelwires::RecordFeature {
-      public:
-        ChannelTrackFeature();
-
-      public:
-        babelwires::IntFeature* m_channelNum;
-        seqwires::TrackFeature* m_noteTrackFeature;
     };
 
     /// Organizes the tracks as a record with field names such as "Ch 3".
@@ -46,19 +35,18 @@ namespace import {
     class RecordChannelGroup : public babelwires::RecordFeature, public ChannelGroup {
       public:
         /// c is the MIDI channel, not index.
-        const seqwires::TrackFeature* getTrack(int c) const override;
         seqwires::TrackFeature* addTrack(int c) override;
     };
 
-    /// Organizes the tracks as an array of ChannelTrackFeatures.
-    class ArrayChannelGroup : public babelwires::ArrayFeature, public ChannelGroup {
+    /// This carries one channel (the first encountered) which is treated specially,
+    /// and if there are others, they fall back to the RecordChannelGroup parent.
+    class ExtensibleChannelGroup : public RecordChannelGroup {
       public:
         /// c is the MIDI channel, not index.
-        const seqwires::TrackFeature* getTrack(int c) const override;
         seqwires::TrackFeature* addTrack(int c) override;
-
       protected:
-        virtual std::unique_ptr<Feature> createNextEntry() const override;
+        babelwires::IntFeature* m_channelNum = nullptr;
+        seqwires::TrackFeature* m_noteTrackFeature = nullptr;
     };
 
     /// Common to all formats of SmfSequence.
