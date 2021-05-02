@@ -235,35 +235,21 @@ void smf::SmfWriter::writeNoteTrack(int channel, const ChannelGroup* track, cons
     m_os->write(tempStream.str().data(), tempStream.tellp());
 }
 
-namespace {
+void smf::writeToSmfFormat0(std::ostream& output, const smf::Format0Sequence& sequence) {
+    const int numTracks = sequence.getNumMidiTracks();
+    smf::SmfWriter writer(output);
+    writer.writeHeaderChunk(sequence);
+    writer.writeNoteTrack(0, &sequence.getMidiTrack(0), sequence.getTempoFeature(), sequence.getCopyright(),
+                            sequence.getSequenceName());
+}
 
-    void writeToSmfFormat0(std::ostream& output, const smf::Format0Sequence& sequence) {
-        const int numTracks = sequence.getNumMidiTracks();
-        smf::SmfWriter writer(output);
-        writer.writeHeaderChunk(sequence);
-        writer.writeNoteTrack(0, &sequence.getMidiTrack(0), sequence.getTempoFeature(), sequence.getCopyright(),
-                              sequence.getSequenceName());
-    }
-
-    void writeToSmfFormat1(std::ostream& output, const smf::Format1Sequence& sequence) {
-        const int numTracks = sequence.getNumMidiTracks();
-        smf::SmfWriter writer(output);
-        writer.writeHeaderChunk(sequence);
-        writer.writeNoteTrack(0, nullptr, sequence.getTempoFeature(), sequence.getCopyright(),
-                              sequence.getSequenceName());
-        for (int i = 0; i < numTracks; ++i) {
-            writer.writeNoteTrack(i, &sequence.getMidiTrack(i), nullptr, nullptr, nullptr);
-        }
-    }
-
-} // namespace
-
-void smf::writeToSmf(std::ostream& output, const SmfSequence& sequence) {
-    if (const auto& format0 = dynamic_cast<const Format0Sequence*>(&sequence)) {
-        writeToSmfFormat0(output, *format0);
-    } else if (const auto& format1 = dynamic_cast<const Format1Sequence*>(&sequence)) {
-        writeToSmfFormat1(output, *format1);
-    } else {
-        assert(false && "This format cannot be written");
+void smf::writeToSmfFormat1(std::ostream& output, const smf::Format1Sequence& sequence) {
+    const int numTracks = sequence.getNumMidiTracks();
+    smf::SmfWriter writer(output);
+    writer.writeHeaderChunk(sequence);
+    writer.writeNoteTrack(0, nullptr, sequence.getTempoFeature(), sequence.getCopyright(),
+                            sequence.getSequenceName());
+    for (int i = 0; i < numTracks; ++i) {
+        writer.writeNoteTrack(i, &sequence.getMidiTrack(i), nullptr, nullptr, nullptr);
     }
 }

@@ -50,6 +50,7 @@ namespace smf {
         int m_division;
     };
 
-    void writeToSmf(std::ostream& output, const SmfSequence& sequence);
+    void writeToSmfFormat0(std::ostream& output, const Format0Sequence& sequence);
+    void writeToSmfFormat1(std::ostream& output, const Format1Sequence& sequence);
 
 } // namespace smf
