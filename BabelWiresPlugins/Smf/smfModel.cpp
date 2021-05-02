@@ -23,24 +23,6 @@ std::unique_ptr<babelwires::Feature> smf::ChannelGroup::createNextEntry() const 
     return std::make_unique<ChannelTrackFeature>();
 }
 
-seqwires::TrackFeature* smf::ChannelGroup::addTrack(int c) {
-    assert((getTrack(c) == nullptr) && "Channel c already in use");
-    ChannelTrackFeature* channelTrack = dynamic_cast<ChannelTrackFeature*>(addEntry());
-    channelTrack->m_channelNum->set(c);
-    return channelTrack->m_noteTrackFeature;
-}
-
-const seqwires::TrackFeature* smf::ChannelGroup::getTrack(int c) const {
-    for (int i = 0; i < getNumFeatures(); ++i) {
-        const ChannelTrackFeature* entry = dynamic_cast<const ChannelTrackFeature*>(getFeature(i));
-        assert(entry && "There should be an ith element");
-        if (entry->m_channelNum->get() == c) {
-            return entry->m_noteTrackFeature;
-        }
-    }
-    return nullptr;
-}
-
 smf::SmfSequence::SmfSequence(Format f)
     : babelwires::FileFeature(SmfSourceFormat::getThisIdentifier())
     , m_format(f) {
@@ -96,10 +78,6 @@ const smf::ChannelGroup& smf::Format0Sequence::getMidiTrack(int i) const {
     return *m_channelGroup;
 }
 
-smf::ChannelGroup* smf::Format0Sequence::getMidiTrack0() {
-    return m_channelGroup;
-}
-
 smf::Format1Sequence::Format1Sequence()
     : SmfSequence(FORMAT_1_SEQUENCE) {
     m_tracks = addField(std::make_unique<TrackArray>(),
@@ -112,10 +90,6 @@ int smf::Format1Sequence::getNumMidiTracks() const {
 
 const smf::ChannelGroup& smf::Format1Sequence::getMidiTrack(int i) const {
     return dynamic_cast<const ChannelGroup&>(*m_tracks->getFeature(i));
-}
-
-smf::ChannelGroup* smf::Format1Sequence::addMidiTrack() {
-    return dynamic_cast<ChannelGroup*>(m_tracks->addEntry());
 }
 
 std::unique_ptr<babelwires::Feature> smf::TrackArray::createNextEntry() const {

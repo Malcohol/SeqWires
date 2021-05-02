@@ -17,7 +17,6 @@ namespace seqwires {
 }
 
 namespace smf {
-
     /// A track with its MIDI channel number.
     class ChannelTrackFeature : public babelwires::RecordFeature {
       public:
@@ -30,11 +29,6 @@ namespace smf {
 
     /// An array tracks for different MIDI channels.
     class ChannelGroup : public babelwires::ArrayFeature {
-      public:
-        /// c is the MIDI channel, not index.
-        const seqwires::TrackFeature* getTrack(int c) const;
-        seqwires::TrackFeature* addTrack(int c);
-
       protected:
         virtual std::unique_ptr<Feature> createNextEntry() const override;
     };
@@ -75,8 +69,6 @@ namespace smf {
         virtual int getNumMidiTracks() const override;
         virtual const ChannelGroup& getMidiTrack(int i) const override;
 
-        ChannelGroup* getMidiTrack0();
-
       protected:
         ChannelGroup* m_channelGroup;
     };
@@ -94,10 +86,7 @@ namespace smf {
         virtual int getNumMidiTracks() const override;
         virtual const ChannelGroup& getMidiTrack(int i) const override;
 
-        ChannelGroup* addMidiTrack();
-
       protected:
         TrackArray* m_tracks;
     };
-
 } // namespace smf
