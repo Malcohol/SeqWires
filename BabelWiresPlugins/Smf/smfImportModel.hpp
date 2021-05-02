@@ -18,6 +18,16 @@ namespace seqwires {
 
 namespace smf {
 namespace import {
+    /// An abstraction for features which organize tracks for different MIDI channels.
+    /// Much of structure of imported and exported data is similar.
+    /// However, one difference is that a track of events for different channels is exposed
+    /// as a record for importer, but an array for export.
+    class ChannelGroup {
+      public:
+        /// c is the MIDI channel, not index.
+        virtual const seqwires::TrackFeature* getTrack(int c) const = 0;
+        virtual seqwires::TrackFeature* addTrack(int c) = 0;
+    };
 
     /// A track with its MIDI channel number.
     class ChannelTrackFeature : public babelwires::RecordFeature {
@@ -29,12 +39,23 @@ namespace import {
         seqwires::TrackFeature* m_noteTrackFeature;
     };
 
-    /// An array tracks for different MIDI channels.
-    class ChannelGroup : public babelwires::ArrayFeature {
+    /// Organizes the tracks as a record with field names such as "Ch 3".
+    /// This is good for import, where channel number better identifies a track than its
+    /// position in an array.
+    /// This is not suitable for export since there's no UI for adding fields to a record.
+    class RecordChannelGroup : public babelwires::RecordFeature, public ChannelGroup {
       public:
         /// c is the MIDI channel, not index.
-        const seqwires::TrackFeature* getTrack(int c) const;
-        seqwires::TrackFeature* addTrack(int c);
+        const seqwires::TrackFeature* getTrack(int c) const override;
+        seqwires::TrackFeature* addTrack(int c) override;
+    };
+
+    /// Organizes the tracks as an array of ChannelTrackFeatures.
+    class ArrayChannelGroup : public babelwires::ArrayFeature, public ChannelGroup {
+      public:
+        /// c is the MIDI channel, not index.
+        const seqwires::TrackFeature* getTrack(int c) const override;
+        seqwires::TrackFeature* addTrack(int c) override;
 
       protected:
         virtual std::unique_ptr<Feature> createNextEntry() const override;
