@@ -13,9 +13,9 @@
 
 namespace smf {
     /// Format for loading Standard MIDI Files..
-    class SmfFormat : public babelwires::SourceFileFormat {
+    class SmfSourceFormat : public babelwires::SourceFileFormat {
       public:
-        SmfFormat();
+        SmfSourceFormat();
         static std::string getThisIdentifier();
 
         virtual std::string getManufacturerName() const override;
@@ -25,9 +25,9 @@ namespace smf {
     };
 
     /// Format for creating Format 0 Standard MIDI Files..
-    class Format0FactoryFormat : public babelwires::TargetFileFormat {
+    class SmfFormat0TargetFormat : public babelwires::TargetFileFormat {
       public:
-        Format0FactoryFormat();
+        SmfFormat0TargetFormat();
 
         virtual std::string getManufacturerName() const override;
         virtual std::string getProductName() const override;
@@ -37,10 +37,9 @@ namespace smf {
     };
 
     /// Format for creating Format 1 Standard MIDI Files..
-    // TODO Bug: Tracks don't seem to have ports at the moment.
-    class Format1FactoryFormat : public babelwires::TargetFileFormat {
+    class SmfFormat1TargetFormat : public babelwires::TargetFileFormat {
       public:
-        Format1FactoryFormat();
+        SmfFormat1TargetFormat();
 
         virtual std::string getManufacturerName() const override;
         virtual std::string getProductName() const override;

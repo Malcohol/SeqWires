@@ -12,7 +12,7 @@
 #include "BabelWiresPlugins/Smf/smfFormat.hpp"
 
 void smf::registerLib(babelwires::ProjectContext& context) {
-    context.m_sourceFileFormatReg.addEntry(std::make_unique<smf::SmfFormat>());
-    context.m_targetFileFormatReg.addEntry(std::make_unique<smf::Format0FactoryFormat>());
-    context.m_targetFileFormatReg.addEntry(std::make_unique<smf::Format1FactoryFormat>());
+    context.m_sourceFileFormatReg.addEntry(std::make_unique<smf::SmfSourceFormat>());
+    context.m_targetFileFormatReg.addEntry(std::make_unique<smf::SmfFormat0TargetFormat>());
+    context.m_targetFileFormatReg.addEntry(std::make_unique<smf::SmfFormat1TargetFormat>());
 }

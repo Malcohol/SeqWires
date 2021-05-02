@@ -42,7 +42,7 @@ const seqwires::TrackFeature* smf::ChannelGroup::getTrack(int c) const {
 }
 
 smf::SmfSequence::SmfSequence(Format f)
-    : babelwires::FileFeature(SmfFormat::getThisIdentifier())
+    : babelwires::FileFeature(SmfSourceFormat::getThisIdentifier())
     , m_format(f) {
     assert((f != UNKNOWN_SEQUENCE_TYPE) && "You can only construct a format 0, 1 or 2 MIDI file");
     m_sequenceName = addField(std::make_unique<babelwires::StringFeature>(),
