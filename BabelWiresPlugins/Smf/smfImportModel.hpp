@@ -24,6 +24,8 @@ namespace import {
     /// as a record for importer, but an array for export.
     class ChannelGroup {
       public:
+        /// If necessary, special-case the first channel encountered.
+        virtual void setFirstChannelEncountered(int c) {}
         /// c is the MIDI channel, not index.
         virtual seqwires::TrackFeature* addTrack(int c) = 0;
     };
@@ -40,8 +42,11 @@ namespace import {
 
     /// This carries one channel (the first encountered) which is treated specially,
     /// and if there are others, they fall back to the RecordChannelGroup parent.
-    class ExtensibleChannelGroup : public RecordChannelGroup {
+    /// This handles the rare situation in Format 1 files, where a track can have data
+    /// for more than one channel.
+    class ExtensibleChannelGroup : public babelwires::RecordFeature, public ChannelGroup {
       public:
+        void setFirstChannelEncountered(int c) override;
         /// c is the MIDI channel, not index.
         seqwires::TrackFeature* addTrack(int c) override;
       protected:

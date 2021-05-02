@@ -1,8 +1,8 @@
 /**
  * Parse a Standard MIDI File into a tree of Features.
- * 
+ *
  * (C) 2021 Malcolm Tyrrell
- * 
+ *
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
 #include "BabelWiresPlugins/Smf/smfParser.hpp"
@@ -172,6 +172,9 @@ namespace {
 
         template <typename EVENT_TYPE>
         void addToChannel(int c, seqwires::ModelDuration timeSinceLastTrackEvent, EVENT_TYPE& event) {
+            if (m_firstChannelEncountered == -1) {
+                m_firstChannelEncountered = c;
+            }
             seqwires::Track* channel = getChannel(c);
 
             m_timeSinceStart += timeSinceLastTrackEvent;
@@ -192,9 +195,12 @@ namespace {
         }
 
         void assignChannelsToChannelGroup(smf::import::ChannelGroup& channels) {
-            for (int c = 0; c < MAX_CHANNELS; ++c) {
-                if (m_channels[c] != nullptr) {
-                    channels.addTrack(c)->set(std::move(m_channels[c]));
+            if (m_firstChannelEncountered != -1) {
+                channels.setFirstChannelEncountered(m_firstChannelEncountered);
+                for (int c = 0; c < MAX_CHANNELS; ++c) {
+                    if (m_channels[c] != nullptr) {
+                        channels.addTrack(c)->set(std::move(m_channels[c]));
+                    }
                 }
             }
         }
@@ -216,6 +222,8 @@ namespace {
         seqwires::ModelDuration m_timeSinceStart;
         seqwires::ModelDuration m_timeOfLastEvent[MAX_CHANNELS];
         std::unique_ptr<seqwires::Track> m_channels[MAX_CHANNELS];
+        /// In some uncommon Format 1 files, a track can have data for more than one channel.
+        int m_firstChannelEncountered = -1;
     };
 } // namespace
 

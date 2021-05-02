@@ -1,8 +1,8 @@
 /**
  * Representation of a Standard MIDI File as a tree of Features.
- * 
+ *
  * (C) 2021 Malcolm Tyrrell
- * 
+ *
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
 #include "BabelWiresPlugins/Smf/smfImportModel.hpp"
@@ -11,7 +11,6 @@
 #include "SeqWiresLib/Features/trackFeature.hpp"
 
 #include "BabelWires/Features/Path/fieldName.hpp"
-
 
 namespace {
     static const babelwires::FieldIdentifiersSource s_trackNames = {
@@ -31,30 +30,57 @@ namespace {
         {"ch13", "Ch. 13", "3b9e4821-d6eb-45da-9118-419e190dc763"},
         {"ch14", "Ch. 14", "2742e897-3182-48bf-9558-21e6184cddec"},
         {"ch15", "Ch. 15", "46fb6f3a-15bf-4c3a-972a-78e7ba2ca5b9"}};
-}
+
+    static const babelwires::FieldIdentifiersSource s_extraTrackNames = {
+        {"ex0", "Extra Ch. 0", "1ae79cf3-41c3-4311-ae93-4cd78f7e1273"},
+        {"ex1", "Extra Ch. 1", "3d02ebfa-cf59-4885-8522-d37ce08c6afb"},
+        {"ex2", "Extra Ch. 2", "2afadcc4-8b05-425c-b0ff-60c2d126c02f"},
+        {"ex3", "Extra Ch. 3", "bcfede88-37c9-4e29-bc4e-7b6a79d8035c"},
+        {"ex4", "Extra Ch. 4", "9ba284d2-d954-409c-9f56-d39640737bed"},
+        {"ex5", "Extra Ch. 5", "e345aab8-f2da-41bc-a905-8d4bf13ffbb8"},
+        {"ex6", "Extra Ch. 6", "da699351-dffe-4bb0-9835-c2719b1d66e4"},
+        {"ex7", "Extra Ch. 7", "c0af7db3-072b-4941-80f2-de65b55434a2"},
+        {"ex8", "Extra Ch. 8", "a05f1117-b958-4711-aa6f-4491885ef8c9"},
+        {"ex9", "Extra Ch. 9", "cbd0cf0e-226f-4897-83e8-8a3381d1b8a2"},
+        {"ex10", "Extra Ch. 10", "f897fa6e-c835-4be4-9f91-b1052416260d"},
+        {"ex11", "Extra Ch. 11", "53296f21-7197-4b54-b1b7-a09765e8ae9a"},
+        {"ex12", "Extra Ch. 12", "73cb5d58-3cdb-49b1-bf55-500196633e11"},
+        {"ex13", "Extra Ch. 13", "3f969eea-461f-4af2-9fa4-fe24df5ebd16"},
+        {"ex14", "Extra Ch. 14", "4582d210-f0cf-4100-b554-a1f948341494"},
+        {"ex15", "Extra Ch. 15", "6a3d1cde-dee0-451e-b23a-8f23d4a50c33"}};
+} // namespace
 
 seqwires::TrackFeature* smf::import::RecordChannelGroup::addTrack(int c) {
     assert((0 <= c) && "Negative channel number");
     assert((c <= 15) && "Channel number out of range");
-    assert((tryGetChildFromStep(babelwires::PathStep(std::get<0>(s_trackNames[c]))) == nullptr) && "A track with that channel number is already present");
+    assert((tryGetChildFromStep(babelwires::PathStep(std::get<0>(s_trackNames[c]))) == nullptr) &&
+           "A track with that channel number is already present");
     // TODO Assert that the fields are in channel order.
     return addField(std::make_unique<seqwires::TrackFeature>(), FIELD_NAME_VECTOR(s_trackNames)[c]);
 }
 
-seqwires::TrackFeature* smf::import::ExtensibleChannelGroup::addTrack(int c) {
-    if (m_channelNum)
-    {
-        assert((m_channelNum->get() != c) && "Channel c is already in use");
-        return RecordChannelGroup::addTrack(c);
-    }
-    else
-    {
-        m_channelNum = addField(std::make_unique<babelwires::HasStaticRange<babelwires::IntFeature, 0, 15>>(),
+void smf::import::ExtensibleChannelGroup::setFirstChannelEncountered(int c) {
+    assert((0 <= c) && "Negative channel number");
+    assert((c <= 15) && "Channel number out of range");
+    assert((m_channelNum == nullptr) && "The first channel was already set");
+    m_channelNum = addField(std::make_unique<babelwires::HasStaticRange<babelwires::IntFeature, 0, 15>>(),
                             FIELD_NAME("ChanNo", "channel", "011e3ef1-4c06-4e40-bba4-b242dc8a3d3a"));
-        m_noteTrackFeature = addField(std::make_unique<seqwires::TrackFeature>(),
-                            FIELD_NAME("Cntnts", "contents", "b48b1dff-6fa4-4c2f-8f77-bc50f44fb09a"));
-        m_channelNum->set(c);
+    m_noteTrackFeature = addField(std::make_unique<seqwires::TrackFeature>(),
+                                  FIELD_NAME("Cntnts", "contents", "b48b1dff-6fa4-4c2f-8f77-bc50f44fb09a"));
+    m_channelNum->set(c);
+}
+
+seqwires::TrackFeature* smf::import::ExtensibleChannelGroup::addTrack(int c) {
+    assert((0 <= c) && "Negative channel number");
+    assert((c <= 15) && "Channel number out of range");
+    assert(m_channelNum && "setFirstChannelEncountered should have been called already");
+    if (m_channelNum->get() == c) {
         return m_noteTrackFeature;
+    } else {
+        assert((tryGetChildFromStep(babelwires::PathStep(std::get<0>(s_extraTrackNames[c]))) == nullptr) &&
+               "A track with that channel number is already present");
+        // TODO Assert that the fields are in channel order.
+        return addField(std::make_unique<seqwires::TrackFeature>(), FIELD_NAME_VECTOR(s_extraTrackNames)[c]);
     }
 }
 
