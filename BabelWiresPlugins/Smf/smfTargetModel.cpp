@@ -15,9 +15,9 @@
 
 smf::target::ChannelTrackFeature::ChannelTrackFeature() {
     m_channelNum = addField(std::make_unique<babelwires::HasStaticRange<babelwires::IntFeature, 0, 15>>(),
-                            FIELD_NAME("Chan", "channel", "011e3ef1-4c06-4e40-bba4-b242dc8a3d3a"));
+                            FIELD_NAME("Chan", "channel", "cad592ef-2355-4837-a265-38b49eae7599"));
     m_noteTrackFeature = addField(std::make_unique<seqwires::TrackFeature>(),
-                                  FIELD_NAME("Notes", "Notes", "b48b1dff-6fa4-4c2f-8f77-bc50f44fb09a"));
+                                  FIELD_NAME("Notes", "Notes", "a6db15c9-9f29-4fb3-92c4-771746b2b97f"));
 }
 
 int smf::target::ChannelTrackFeature::getNumTracks() const {
@@ -45,11 +45,11 @@ smf::target::SmfSequence::SmfSequence(Format f)
     , m_format(f) {
     assert((f != UNKNOWN_SEQUENCE_TYPE) && "You can only construct a format 0, 1 or 2 MIDI file");
     m_sequenceName = addField(std::make_unique<babelwires::StringFeature>(),
-                              FIELD_NAME("Name", "Name", "c2e4910f-d006-4a93-97a7-ae5973157ec8"));
+                              FIELD_NAME("Name", "Name", "160acc82-b374-433f-9a5d-b971e5871396"));
     m_copyright = addField(std::make_unique<babelwires::StringFeature>(),
-                           FIELD_NAME("CopyR", "Copyright", "a59dc914-d060-4f03-be83-5804fc4d6b6a"));
+                           FIELD_NAME("CopyR", "Copyright", "008830f3-087d-4af5-83c1-3530520b2d29"));
     m_tempo = addField(std::make_unique<seqwires::TempoFeature>(),
-                       FIELD_NAME("Tempo", "Tempo", "3ef804e9-e34a-4a25-b6bf-ce7597d9d90b"));
+                       FIELD_NAME("Tempo", "Tempo", "f5721a7d-f1b7-468e-875c-36036982a571"));
 }
 
 smf::target::SmfSequence::Format smf::target::SmfSequence::getFormat() const {
@@ -83,7 +83,7 @@ const babelwires::StringFeature* smf::target::SmfSequence::getSequenceName() con
 smf::target::Format0Sequence::Format0Sequence()
     : SmfSequence(FORMAT_0_SEQUENCE) {
     m_channelGroup = addField(std::make_unique<ArrayChannelGroup>(),
-                              FIELD_NAME("tracks", "tracks", "3fb0f062-4e8e-4b37-a598-edcd63f82971"));
+                              FIELD_NAME("tracks", "tracks", "1aa014da-2fb3-46e2-96df-98c7798b4a87"));
 }
 
 int smf::target::Format0Sequence::getNumMidiTracks() const {
@@ -98,7 +98,7 @@ const smf::target::ChannelGroup& smf::target::Format0Sequence::getMidiTrack(int 
 smf::target::Format1Sequence::Format1Sequence()
     : SmfSequence(FORMAT_1_SEQUENCE) {
     m_channelGroup = addField(std::make_unique<ArrayChannelGroup>(),
-                        FIELD_NAME("tracks", "tracks", "3042e0e6-62a6-4a75-b886-77b873005da8"));
+                        FIELD_NAME("tracks", "tracks", "9b3642d2-b50e-487e-96c9-bc39e418c687"));
 }
 
 int smf::target::Format1Sequence::getNumMidiTracks() const {
