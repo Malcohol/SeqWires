@@ -5,7 +5,8 @@
  * 
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
-#include "BabelWiresPlugins/Smf/smfModel.hpp"
+#include "BabelWiresPlugins/Smf/smfTargetModel.hpp"
+
 #include "BabelWires/Features/featureMixins.hpp"
 #include "BabelWiresPlugins/Smf/smfFormat.hpp"
 #include "SeqWiresLib/Features/trackFeature.hpp"
