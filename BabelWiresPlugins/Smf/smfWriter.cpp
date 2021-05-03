@@ -101,11 +101,10 @@ void smf::SmfWriter::writeHeaderChunk(const SmfSequence& sequence) {
     {
         int division = 1;
         for (int i = 0; i < sequence.getNumMidiTracks(); ++i) {
-            const ChannelGroup& track = sequence.getMidiTrack(i);
-            for (int j = 0; j < track.getNumFeatures(); ++j) {
-                const ChannelTrackFeature* entry = dynamic_cast<const ChannelTrackFeature*>(track.getFeature(j));
-                assert(entry);
-                division = babelwires::lcm(division, seqwires::getMinimumDenominator(entry->m_noteTrackFeature->get()));
+            const ChannelGroup& channelGroup = sequence.getMidiTrack(i);
+            for (int j = 0; j < channelGroup.getNumTracks(); ++j) {
+                const ChannelTrackFeature& entry = channelGroup.getTrack(j);
+                division = babelwires::lcm(division, seqwires::getMinimumDenominator(entry.m_noteTrackFeature->get()));
             }
         }
         m_division = division;
@@ -150,17 +149,15 @@ namespace {
 
 } // namespace
 
-void smf::SmfWriter::writeNotes(int channel, const ChannelGroup& track) {
-    const int numChannels = track.getNumFeatures();
+void smf::SmfWriter::writeNotes(int channel, const ChannelGroup& channelGroup) {
+    const int numChannels = channelGroup.getNumTracks();
 
     seqwires::ModelDuration trackDuration = 0;
     std::vector<seqwires::TrackTraverser<seqwires::FilteredTrackIterator<seqwires::NoteEvent>>> traversers;
 
-    for (int i = 0; i < track.getNumFeatures(); ++i) {
-        const smf::ChannelTrackFeature* channelTrack =
-            dynamic_cast<const smf::ChannelTrackFeature*>(track.getFeature(i));
-        assert(channelTrack);
-        const seqwires::Track& track = channelTrack->m_noteTrackFeature->get();
+    for (int i = 0; i < channelGroup.getNumTracks(); ++i) {
+        const smf::ChannelTrackFeature& channelTrack = channelGroup.getTrack(i);
+        const seqwires::Track& track = channelTrack.m_noteTrackFeature->get();
         traversers.emplace_back(track, seqwires::iterateOver<seqwires::NoteEvent>(track));
         traversers.back().leastUpperBoundDuration(trackDuration);
     }
@@ -169,14 +166,13 @@ void smf::SmfWriter::writeNotes(int channel, const ChannelGroup& track) {
     seqwires::ModelDuration timeOfLastEvent = 0;
     while (timeSinceStart < trackDuration) {
         seqwires::ModelDuration timeToNextEvent = trackDuration - timeSinceStart;
-        for (int i = 0; i < track.getNumFeatures(); ++i) {
+        for (int i = 0; i < channelGroup.getNumTracks(); ++i) {
             traversers[i].greatestLowerBoundNextEvent(timeToNextEvent);
         }
 
         bool isFirstEvent = true;
-        for (int i = 0; i < track.getNumFeatures(); ++i) {
-            const smf::ChannelTrackFeature* channelTrack =
-                dynamic_cast<const smf::ChannelTrackFeature*>(track.getFeature(i));
+        for (int i = 0; i < channelGroup.getNumTracks(); ++i) {
+            const smf::ChannelTrackFeature& channelTrack = channelGroup.getTrack(i);
             traversers[i].advance(timeToNextEvent, [this, &isFirstEvent, &timeToNextEvent, &timeOfLastEvent,
                                                     &timeSinceStart, &channelTrack](const seqwires::NoteEvent& event) {
                 seqwires::ModelDuration timeToThisEvent = 0;
@@ -185,7 +181,7 @@ void smf::SmfWriter::writeNotes(int channel, const ChannelGroup& track) {
                     timeOfLastEvent = timeSinceStart + timeToNextEvent;
                     isFirstEvent = false;
                 }
-                writeNoteEvent(channelTrack->m_channelNum->get(), timeToThisEvent, event);
+                writeNoteEvent(channelTrack.m_channelNum->get(), timeToThisEvent, event);
             });
         }
 
@@ -196,7 +192,7 @@ void smf::SmfWriter::writeNotes(int channel, const ChannelGroup& track) {
     writeModelDuration(trackDuration - timeOfLastEvent);
 }
 
-void smf::SmfWriter::writeTrack(int channel, const ChannelGroup* track, const seqwires::TempoFeature* tempo,
+void smf::SmfWriter::writeTrack(int channel, const ChannelGroup* channelGroup, const seqwires::TempoFeature* tempo,
                                     const babelwires::StringFeature* copyright,
                                     const babelwires::StringFeature* sequenceOrTrackName) {
     std::ostream* oldStream = m_os;
@@ -218,8 +214,8 @@ void smf::SmfWriter::writeTrack(int channel, const ChannelGroup* track, const se
     if (tempo) {
         writeTempoEvent(tempo->get());
     }
-    if (track) {
-        writeNotes(channel, *track);
+    if (channelGroup) {
+        writeNotes(channel, *channelGroup);
     } else {
         writeModelDuration(0);
     }

@@ -19,7 +19,23 @@ smf::ChannelTrackFeature::ChannelTrackFeature() {
                                   FIELD_NAME("Notes", "Notes", "b48b1dff-6fa4-4c2f-8f77-bc50f44fb09a"));
 }
 
-std::unique_ptr<babelwires::Feature> smf::ChannelGroup::createNextEntry() const {
+int smf::ChannelTrackFeature::getNumTracks() const {
+    return 1;
+}
+
+const smf::ChannelTrackFeature& smf::ChannelTrackFeature::getTrack(int i) const {
+    return *this;
+}
+
+int smf::ArrayChannelGroup::getNumTracks() const {
+    return getNumFeatures();
+}
+
+const smf::ChannelTrackFeature& smf::ArrayChannelGroup::getTrack(int i) const {
+    return static_cast<const ChannelTrackFeature&>(*getFeature(i));
+}
+
+std::unique_ptr<babelwires::Feature> smf::ArrayChannelGroup::createNextEntry() const {
     return std::make_unique<ChannelTrackFeature>();
 }
 
@@ -65,7 +81,7 @@ const babelwires::StringFeature* smf::SmfSequence::getSequenceName() const {
 
 smf::Format0Sequence::Format0Sequence()
     : SmfSequence(FORMAT_0_SEQUENCE) {
-    m_channelGroup = addField(std::make_unique<ChannelGroup>(),
+    m_channelGroup = addField(std::make_unique<ArrayChannelGroup>(),
                               FIELD_NAME("tracks", "tracks", "3fb0f062-4e8e-4b37-a598-edcd63f82971"));
 }
 
@@ -80,18 +96,15 @@ const smf::ChannelGroup& smf::Format0Sequence::getMidiTrack(int i) const {
 
 smf::Format1Sequence::Format1Sequence()
     : SmfSequence(FORMAT_1_SEQUENCE) {
-    m_tracks = addField(std::make_unique<TrackArray>(),
-                        FIELD_NAME("Tracks", "tracks", "3042e0e6-62a6-4a75-b886-77b873005da8"));
+    m_channelGroup = addField(std::make_unique<ArrayChannelGroup>(),
+                        FIELD_NAME("tracks", "tracks", "3042e0e6-62a6-4a75-b886-77b873005da8"));
 }
 
 int smf::Format1Sequence::getNumMidiTracks() const {
-    return m_tracks->getNumFeatures();
+    return m_channelGroup->getNumFeatures();
 }
 
 const smf::ChannelGroup& smf::Format1Sequence::getMidiTrack(int i) const {
-    return dynamic_cast<const ChannelGroup&>(*m_tracks->getFeature(i));
+    return static_cast<const ChannelTrackFeature&>(*m_channelGroup->getFeature(i));
 }
 
-std::unique_ptr<babelwires::Feature> smf::TrackArray::createNextEntry() const {
-    return std::make_unique<ChannelGroup>();
-}
