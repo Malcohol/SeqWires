@@ -19,34 +19,39 @@ namespace seqwires {
 namespace smf {
 namespace import {
     /// An abstraction for features which organize tracks for different MIDI channels.
-    /// Much of structure of imported and exported data is similar.
-    /// However, one difference is that a track of events for different channels is exposed
-    /// as a record for importer, but an array for export.
+    /// This is used since we target a different structure when parsing Format 0 and Format 1 files.
     class ChannelGroup {
       public:
-        /// If necessary, special-case the first channel encountered.
-        virtual void setFirstChannelEncountered(int c) {}
+        /// If necessary, special-case this track. This must be called before tracks are added.
+        virtual void setPrivilegedTrack(int c) {}
         /// c is the MIDI channel, not index.
         virtual seqwires::TrackFeature* addTrack(int c) = 0;
     };
 
-    /// Organizes the tracks as a record with field names such as "Ch 3".
-    /// This is good for import, where channel number better identifies a track than its
-    /// position in an array.
-    /// This is not suitable for export since there's no UI for adding fields to a record.
+    /// Organizes the tracks corresponding to channels as a record with field names such as "Ch 3".
+    /// For Format 0 files, channel number gives identity to the TrackFeatures.
     class RecordChannelGroup : public babelwires::RecordFeature, public ChannelGroup {
       public:
         /// c is the MIDI channel, not index.
         seqwires::TrackFeature* addTrack(int c) override;
     };
 
-    /// This carries one channel (the first encountered) which is treated specially,
-    /// and if there are others, they fall back to the RecordChannelGroup parent.
-    /// This handles the rare situation in Format 1 files, where a track can have data
-    /// for more than one channel.
+    /// The tracks of format 1 files usually carry events for one channel. However:
+    /// (a) more than one track can have data for the same channel.
+    /// (b) a track can carry events for multiple channels.
+    /// See discussion here: https://www.midi.org/forum/8793-smf-format-1-tracks-and-channels
+    /// Because of (a), I chose track number rather than channel number to give identity to the
+    /// TrackFeatures. That isn't a complete solution because of (b). However, since (b) is
+    /// very rare, I believe the following to be an acceptable compromise:
+    /// We pick the channel in each track which has the most events, and give it an identity
+    /// which just depends on the track number. This should be pretty stable.
+    /// All other channels in the track are given an identity which depends on the track number
+    /// and channel. This is less stable, but OK. Problems will arise in the very rare situation
+    /// where a track had a similar number of events for two channels, and on reload, the
+    /// the smaller became the larger.
     class ExtensibleChannelGroup : public babelwires::RecordFeature, public ChannelGroup {
       public:
-        void setFirstChannelEncountered(int c) override;
+        void setPrivilegedTrack(int c) override;
         /// c is the MIDI channel, not index.
         seqwires::TrackFeature* addTrack(int c) override;
       protected:

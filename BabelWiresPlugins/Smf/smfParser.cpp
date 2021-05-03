@@ -172,9 +172,6 @@ namespace {
 
         template <typename EVENT_TYPE>
         void addToChannel(int c, seqwires::ModelDuration timeSinceLastTrackEvent, EVENT_TYPE& event) {
-            if (m_firstChannelEncountered == -1) {
-                m_firstChannelEncountered = c;
-            }
             seqwires::Track* channel = getChannel(c);
 
             m_timeSinceStart += timeSinceLastTrackEvent;
@@ -195,8 +192,18 @@ namespace {
         }
 
         void assignChannelsToChannelGroup(smf::import::ChannelGroup& channels) {
-            if (m_firstChannelEncountered != -1) {
-                channels.setFirstChannelEncountered(m_firstChannelEncountered);
+            // If this is a format 1 track with multiple channels, then privilege the
+            // channel with the most events.
+            int privilegedTrack = -1;
+            int maxNumEvents = 0;
+            for (int c = 0; c < MAX_CHANNELS; ++c) {
+                if ((m_channels[c] != nullptr) && (m_channels[c]->getNumEvents() > maxNumEvents)) {
+                    privilegedTrack = c;
+                    maxNumEvents = m_channels[c]->getNumEvents();
+                }
+            }
+            if (privilegedTrack != -1) {
+                channels.setPrivilegedTrack(privilegedTrack);
                 for (int c = 0; c < MAX_CHANNELS; ++c) {
                     if (m_channels[c] != nullptr) {
                         channels.addTrack(c)->set(std::move(m_channels[c]));
@@ -222,8 +229,6 @@ namespace {
         seqwires::ModelDuration m_timeSinceStart;
         seqwires::ModelDuration m_timeOfLastEvent[MAX_CHANNELS];
         std::unique_ptr<seqwires::Track> m_channels[MAX_CHANNELS];
-        /// In some uncommon Format 1 files, a track can have data for more than one channel.
-        int m_firstChannelEncountered = -1;
     };
 } // namespace
 
