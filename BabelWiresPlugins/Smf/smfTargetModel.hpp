@@ -58,7 +58,7 @@ namespace smf {
         /// Common to all formats of SmfFeature.
         class SmfFeature : public babelwires::FileFeature {
           public:
-            enum Format { FORMAT_0_SEQUENCE, FORMAT_1_SEQUENCE, FORMAT_2_SEQUENCE, UNKNOWN_SEQUENCE_TYPE };
+            enum Format { SMF_FORMAT_0, SMF_FORMAT_1, SMF_FORMAT_2, SMF_UNKNOWN_FORMAT };
             Format getFormat() const;
 
             seqwires::TempoFeature* getTempoFeature();

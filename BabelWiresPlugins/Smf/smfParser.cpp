@@ -14,7 +14,7 @@
 
 smf::SmfParser::SmfParser(babelwires::DataSource& dataSource)
     : m_dataSource(dataSource)
-    , m_sequenceType(source::SmfFeature::UNKNOWN_SEQUENCE_TYPE)
+    , m_sequenceType(source::SmfFeature::SMF_UNKNOWN_FORMAT)
     , m_numTracks(-1)
     , m_division(-1) {}
 
@@ -127,31 +127,31 @@ smf::source::SmfFeature::Format smf::SmfParser::getSequenceType(babelwires::Data
         dataSource.rewind();
         return parser.m_sequenceType;
     } catch (const std::exception& e) {
-        return source::SmfFeature::UNKNOWN_SEQUENCE_TYPE;
+        return source::SmfFeature::SMF_UNKNOWN_FORMAT;
     }
 }
 
 void smf::SmfParser::parse() {
     readHeaderChunk();
     switch (m_sequenceType) {
-        case source::SmfFeature::FORMAT_0_SEQUENCE: {
+        case source::SmfFeature::SMF_FORMAT_0: {
             auto seqPtr = std::make_unique<source::Format0SmfFeature>();
             source::Format0SmfFeature& seq = *seqPtr;
             m_result = std::move(seqPtr);
             readFormat0Sequence(seq);
             break;
         }
-        case source::SmfFeature::FORMAT_1_SEQUENCE: {
+        case source::SmfFeature::SMF_FORMAT_1: {
             auto seqPtr = std::make_unique<source::Format1SmfFeature>();
             source::Format1SmfFeature& seq = *seqPtr;
             m_result = std::move(seqPtr);
             readFormat1Sequence(seq);
             break;
         }
-        case source::SmfFeature::FORMAT_2_SEQUENCE: {
+        case source::SmfFeature::SMF_FORMAT_2: {
             // TODO
         }
-        case source::SmfFeature::UNKNOWN_SEQUENCE_TYPE:
+        case source::SmfFeature::SMF_UNKNOWN_FORMAT:
         default: {
             throw babelwires::ParseException() << "The data is not in one of the understood sequence types";
         }

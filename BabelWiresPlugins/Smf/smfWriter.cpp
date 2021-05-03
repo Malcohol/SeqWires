@@ -86,7 +86,7 @@ void smf::SmfWriter::writeTextMetaEvent(int type, std::string text) {
 
 void smf::SmfWriter::writeHeaderChunk(const target::SmfFeature& sequence) {
     int numTracks = sequence.getNumMidiTracks();
-    if (sequence.getFormat() == smf::target::SmfFeature::FORMAT_0_SEQUENCE) {
+    if (sequence.getFormat() == smf::target::SmfFeature::SMF_FORMAT_0) {
         // Track 0 holds meta-data.
         ++numTracks;
     }
