@@ -41,7 +41,7 @@ namespace smf {
 
           public:
             babelwires::IntFeature* m_channelNum;
-            seqwires::TrackFeature* m_noteTrackFeature;
+            seqwires::TrackFeature* m_trackFeature;
         };
 
         /// An array of tracks and their MIDI channels.

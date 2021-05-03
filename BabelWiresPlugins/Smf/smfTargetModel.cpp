@@ -16,7 +16,7 @@
 smf::target::ChannelTrackFeature::ChannelTrackFeature() {
     m_channelNum = addField(std::make_unique<babelwires::HasStaticRange<babelwires::IntFeature, 0, 15>>(),
                             FIELD_NAME("Chan", "channel", "cad592ef-2355-4837-a265-38b49eae7599"));
-    m_noteTrackFeature = addField(std::make_unique<seqwires::TrackFeature>(),
+    m_trackFeature = addField(std::make_unique<seqwires::TrackFeature>(),
                                   FIELD_NAME("Track", "track", "a6db15c9-9f29-4fb3-92c4-771746b2b97f"));
 }
 

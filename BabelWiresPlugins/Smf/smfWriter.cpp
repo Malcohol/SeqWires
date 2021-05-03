@@ -105,7 +105,7 @@ void smf::SmfWriter::writeHeaderChunk(const target::SmfFeature& sequence) {
             const target::ChannelGroup& channelGroup = sequence.getMidiTrack(i);
             for (int j = 0; j < channelGroup.getNumTracks(); ++j) {
                 const target::ChannelTrackFeature& entry = channelGroup.getTrack(j);
-                division = babelwires::lcm(division, seqwires::getMinimumDenominator(entry.m_noteTrackFeature->get()));
+                division = babelwires::lcm(division, seqwires::getMinimumDenominator(entry.m_trackFeature->get()));
             }
         }
         m_division = division;
@@ -158,7 +158,7 @@ void smf::SmfWriter::writeNotes(const target::ChannelGroup& channelGroup) {
 
     for (int i = 0; i < channelGroup.getNumTracks(); ++i) {
         const smf::target::ChannelTrackFeature& channelTrack = channelGroup.getTrack(i);
-        const seqwires::Track& track = channelTrack.m_noteTrackFeature->get();
+        const seqwires::Track& track = channelTrack.m_trackFeature->get();
         traversers.emplace_back(track, seqwires::iterateOver<seqwires::NoteEvent>(track));
         traversers.back().leastUpperBoundDuration(trackDuration);
     }

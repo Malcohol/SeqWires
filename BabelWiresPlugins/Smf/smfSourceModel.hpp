@@ -57,7 +57,7 @@ namespace source {
         seqwires::TrackFeature* addTrack(int c) override;
       protected:
         babelwires::IntFeature* m_channelNum = nullptr;
-        seqwires::TrackFeature* m_noteTrackFeature = nullptr;
+        seqwires::TrackFeature* m_trackFeature = nullptr;
     };
 
     /// Common to all formats of SmfFeature.

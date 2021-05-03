@@ -66,7 +66,7 @@ void smf::source::ExtensibleChannelGroup::setPrivilegedTrack(int c) {
     assert((m_channelNum == nullptr) && "The first channel was already set");
     m_channelNum = addField(std::make_unique<babelwires::HasStaticRange<babelwires::IntFeature, 0, 15>>(),
                             FIELD_NAME("ChanNo", "channel", "011e3ef1-4c06-4e40-bba4-b242dc8a3d3a"));
-    m_noteTrackFeature = addField(std::make_unique<seqwires::TrackFeature>(),
+    m_trackFeature = addField(std::make_unique<seqwires::TrackFeature>(),
                                   FIELD_NAME("Track", "track", "b48b1dff-6fa4-4c2f-8f77-bc50f44fb09a"));
     m_channelNum->set(c);
 }
@@ -76,7 +76,7 @@ seqwires::TrackFeature* smf::source::ExtensibleChannelGroup::addTrack(int c) {
     assert((c <= 15) && "Channel number out of range");
     assert(m_channelNum && "setPrivilegedTrack should have been called already");
     if (m_channelNum->get() == c) {
-        return m_noteTrackFeature;
+        return m_trackFeature;
     } else {
         assert((tryGetChildFromStep(babelwires::PathStep(std::get<0>(s_extraTrackNames[c]))) == nullptr) &&
                "A track with that channel number is already present");

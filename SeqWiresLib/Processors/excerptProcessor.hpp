@@ -33,8 +33,8 @@ namespace seqwires {
         babelwires::RationalFeature* m_start;
         babelwires::RationalFeature* m_duration;
 
-        babelwires::ArrayFeature* m_noteTracksIn;
-        babelwires::ArrayFeature* m_noteTracksOut;
+        babelwires::ArrayFeature* m_tracksIn;
+        babelwires::ArrayFeature* m_tracksOut;
         std::unordered_map<babelwires::ArrayIndex, babelwires::ArrayIndex> m_inToOutMap;
     };
 

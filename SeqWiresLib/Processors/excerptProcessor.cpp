@@ -30,9 +30,9 @@ seqwires::ExcerptProcessor::ExcerptProcessor()
                                        FIELD_NAME("Start", "Start", "4b95f5db-a542-4660-a8db-97d3a5f831ca"));
     m_duration = m_inputFeature->addField(std::make_unique<NonNegativeRationalFeature>(),
                                           FIELD_NAME("Duratn", "Duration", "d83ebbc2-1492-4578-a3b8-4969eb6a2042"));
-    m_noteTracksIn = m_inputFeature->addField(std::make_unique<ExcerptArrayFeature>(),
+    m_tracksIn = m_inputFeature->addField(std::make_unique<ExcerptArrayFeature>(),
                                               FIELD_NAME("Notes", "Notes", "983b3bcb-7086-4791-8e18-d8c7550d45d3"));
-    m_noteTracksOut = m_outputFeature->addField(std::make_unique<ExcerptArrayFeature>(),
+    m_tracksOut = m_outputFeature->addField(std::make_unique<ExcerptArrayFeature>(),
                                                 FIELD_NAME("Notes", "Notes", "9feb0f11-fafb-4744-92f1-87eb34b30747"));
 }
 
@@ -52,11 +52,11 @@ babelwires::RecordFeature* seqwires::ExcerptProcessor::getOutputFeature() {
 }
 
 void seqwires::ExcerptProcessor::process(babelwires::UserLogger& userLogger) {
-    if (m_noteTracksIn->isChanged(babelwires::Feature::Changes::StructureChanged)) {
+    if (m_tracksIn->isChanged(babelwires::Feature::Changes::StructureChanged)) {
         // Keep the out structure in sync with the in structure, and
         // try to ensure that tracks which corresponding before still
         // correspond afterwards.
-        m_noteTracksOut->copyStructureFrom(*m_noteTracksIn);
+        m_tracksOut->copyStructureFrom(*m_tracksIn);
     }
 
     const bool durationChanged = m_start->isChanged(babelwires::Feature::Changes::SomethingChanged) ||
@@ -64,11 +64,11 @@ void seqwires::ExcerptProcessor::process(babelwires::UserLogger& userLogger) {
 
     const ModelDuration start = m_start->get();
     const ModelDuration duration = m_duration->get();
-    for (int i = 0; i < m_noteTracksIn->getNumFeatures(); ++i) {
-        auto trackFeatureIn = static_cast<const TrackFeature*>(m_noteTracksIn->getFeature(i));
+    for (int i = 0; i < m_tracksIn->getNumFeatures(); ++i) {
+        auto trackFeatureIn = static_cast<const TrackFeature*>(m_tracksIn->getFeature(i));
         if (durationChanged || trackFeatureIn->isChanged(babelwires::Feature::Changes::SomethingChanged)) {
             auto trackOut = getTrackExcerpt(trackFeatureIn->get(), start, duration);
-            static_cast<TrackFeature*>(m_noteTracksOut->getFeature(i))->set(std::move(trackOut));
+            static_cast<TrackFeature*>(m_tracksOut->getFeature(i))->set(std::move(trackOut));
         }
     }
 }
