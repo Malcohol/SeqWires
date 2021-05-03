@@ -8,7 +8,7 @@
 #pragma once
 
 #include "BabelWires/FileFormat/fileFeature.hpp"
-#include "BabelWiresPlugins/Smf/smfImportModel.hpp"
+#include "BabelWiresPlugins/Smf/smfSourceModel.hpp"
 #include "Common/IO/dataSource.hpp"
 #include "SeqWiresLib/musicTypes.hpp"
 
