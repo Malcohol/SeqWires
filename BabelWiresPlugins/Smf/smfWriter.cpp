@@ -150,7 +150,7 @@ namespace {
 
 } // namespace
 
-void smf::SmfWriter::writeNotes(int channel, const target::ChannelGroup& channelGroup) {
+void smf::SmfWriter::writeNotes(const target::ChannelGroup& channelGroup) {
     const int numChannels = channelGroup.getNumTracks();
 
     seqwires::ModelDuration trackDuration = 0;
@@ -193,7 +193,7 @@ void smf::SmfWriter::writeNotes(int channel, const target::ChannelGroup& channel
     writeModelDuration(trackDuration - timeOfLastEvent);
 }
 
-void smf::SmfWriter::writeTrack(int channel, const target::ChannelGroup* channelGroup, const seqwires::TempoFeature* tempo,
+void smf::SmfWriter::writeTrack(const target::ChannelGroup* channelGroup, const seqwires::TempoFeature* tempo,
                                     const babelwires::StringFeature* copyright,
                                     const babelwires::StringFeature* sequenceOrTrackName) {
     std::ostream* oldStream = m_os;
@@ -216,7 +216,7 @@ void smf::SmfWriter::writeTrack(int channel, const target::ChannelGroup* channel
         writeTempoEvent(tempo->get());
     }
     if (channelGroup) {
-        writeNotes(channel, *channelGroup);
+        writeNotes(*channelGroup);
     } else {
         writeModelDuration(0);
     }
@@ -236,7 +236,7 @@ void smf::writeToSmfFormat0(std::ostream& output, const smf::target::Format0Sequ
     const int numTracks = sequence.getNumMidiTracks();
     smf::SmfWriter writer(output);
     writer.writeHeaderChunk(sequence);
-    writer.writeTrack(0, &sequence.getMidiTrack(0), sequence.getTempoFeature(), sequence.getCopyright(),
+    writer.writeTrack(&sequence.getMidiTrack(0), sequence.getTempoFeature(), sequence.getCopyright(),
                             sequence.getSequenceName());
 }
 
@@ -244,9 +244,9 @@ void smf::writeToSmfFormat1(std::ostream& output, const smf::target::Format1Sequ
     const int numTracks = sequence.getNumMidiTracks();
     smf::SmfWriter writer(output);
     writer.writeHeaderChunk(sequence);
-    writer.writeTrack(0, nullptr, sequence.getTempoFeature(), sequence.getCopyright(),
+    writer.writeTrack(nullptr, sequence.getTempoFeature(), sequence.getCopyright(),
                             sequence.getSequenceName());
     for (int i = 0; i < numTracks; ++i) {
-        writer.writeTrack(i, &sequence.getMidiTrack(i), nullptr, nullptr, nullptr);
+        writer.writeTrack(&sequence.getMidiTrack(i), nullptr, nullptr, nullptr);
     }
 }
