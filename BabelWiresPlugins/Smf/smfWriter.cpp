@@ -84,9 +84,9 @@ void smf::SmfWriter::writeTextMetaEvent(int type, std::string text) {
     *m_os << text;
 }
 
-void smf::SmfWriter::writeHeaderChunk(const target::SmfSequence& sequence) {
+void smf::SmfWriter::writeHeaderChunk(const target::SmfFeature& sequence) {
     int numTracks = sequence.getNumMidiTracks();
-    if (sequence.getFormat() == smf::target::SmfSequence::FORMAT_0_SEQUENCE) {
+    if (sequence.getFormat() == smf::target::SmfFeature::FORMAT_0_SEQUENCE) {
         // Track 0 holds meta-data.
         ++numTracks;
     }
@@ -232,7 +232,7 @@ void smf::SmfWriter::writeTrack(const target::ChannelGroup* channelGroup, const 
     m_os->write(tempStream.str().data(), tempStream.tellp());
 }
 
-void smf::writeToSmfFormat0(std::ostream& output, const smf::target::Format0Sequence& sequence) {
+void smf::writeToSmfFormat0(std::ostream& output, const smf::target::Format0SmfFeature& sequence) {
     const int numTracks = sequence.getNumMidiTracks();
     smf::SmfWriter writer(output);
     writer.writeHeaderChunk(sequence);
@@ -240,7 +240,7 @@ void smf::writeToSmfFormat0(std::ostream& output, const smf::target::Format0Sequ
                             sequence.getSequenceName());
 }
 
-void smf::writeToSmfFormat1(std::ostream& output, const smf::target::Format1Sequence& sequence) {
+void smf::writeToSmfFormat1(std::ostream& output, const smf::target::Format1SmfFeature& sequence) {
     const int numTracks = sequence.getNumMidiTracks();
     smf::SmfWriter writer(output);
     writer.writeHeaderChunk(sequence);

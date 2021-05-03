@@ -46,7 +46,7 @@ babelwires::Range<unsigned int> smf::target::ArrayChannelGroup::doGetSizeRange()
     return defaultRange;
 }
 
-smf::target::SmfSequence::SmfSequence(Format f)
+smf::target::SmfFeature::SmfFeature(Format f)
     : babelwires::FileFeature(SmfSourceFormat::getThisIdentifier())
     , m_format(f) {
     assert((f != UNKNOWN_SEQUENCE_TYPE) && "You can only construct a format 0, 1 or 2 MIDI file");
@@ -58,60 +58,60 @@ smf::target::SmfSequence::SmfSequence(Format f)
                        FIELD_NAME("Tempo", "Tempo", "f5721a7d-f1b7-468e-875c-36036982a571"));
 }
 
-smf::target::SmfSequence::Format smf::target::SmfSequence::getFormat() const {
+smf::target::SmfFeature::Format smf::target::SmfFeature::getFormat() const {
     return m_format;
 }
 
-seqwires::TempoFeature* smf::target::SmfSequence::getTempoFeature() {
+seqwires::TempoFeature* smf::target::SmfFeature::getTempoFeature() {
     return m_tempo;
 }
 
-const seqwires::TempoFeature* smf::target::SmfSequence::getTempoFeature() const {
+const seqwires::TempoFeature* smf::target::SmfFeature::getTempoFeature() const {
     return m_tempo;
 }
 
-babelwires::StringFeature* smf::target::SmfSequence::getCopyright() {
+babelwires::StringFeature* smf::target::SmfFeature::getCopyright() {
     return m_copyright;
 }
 
-const babelwires::StringFeature* smf::target::SmfSequence::getCopyright() const {
+const babelwires::StringFeature* smf::target::SmfFeature::getCopyright() const {
     return m_copyright;
 }
 
-babelwires::StringFeature* smf::target::SmfSequence::getSequenceName() {
+babelwires::StringFeature* smf::target::SmfFeature::getSequenceName() {
     return m_sequenceName;
 }
 
-const babelwires::StringFeature* smf::target::SmfSequence::getSequenceName() const {
+const babelwires::StringFeature* smf::target::SmfFeature::getSequenceName() const {
     return m_sequenceName;
 }
 
-smf::target::Format0Sequence::Format0Sequence()
-    : SmfSequence(FORMAT_0_SEQUENCE) {
+smf::target::Format0SmfFeature::Format0SmfFeature()
+    : SmfFeature(FORMAT_0_SEQUENCE) {
     m_channelGroup = addField(std::make_unique<ArrayChannelGroup>(),
                               FIELD_NAME("tracks", "tracks", "1aa014da-2fb3-46e2-96df-98c7798b4a87"));
 }
 
-int smf::target::Format0Sequence::getNumMidiTracks() const {
+int smf::target::Format0SmfFeature::getNumMidiTracks() const {
     return 1;
 }
 
-const smf::target::ChannelGroup& smf::target::Format0Sequence::getMidiTrack(int i) const {
+const smf::target::ChannelGroup& smf::target::Format0SmfFeature::getMidiTrack(int i) const {
     assert((i == 0) && "There is only 1 in format 0 smf files.");
     return *m_channelGroup;
 }
 
-smf::target::Format1Sequence::Format1Sequence()
-    : SmfSequence(FORMAT_1_SEQUENCE) {
+smf::target::Format1SmfFeature::Format1SmfFeature()
+    : SmfFeature(FORMAT_1_SEQUENCE) {
     m_channelGroup = addField(std::make_unique<ArrayChannelGroup>(),
                         FIELD_NAME("tracks", "tracks", "9b3642d2-b50e-487e-96c9-bc39e418c687"));
 }
 
-int smf::target::Format1Sequence::getNumMidiTracks() const {
+int smf::target::Format1SmfFeature::getNumMidiTracks() const {
     return m_channelGroup->getNumFeatures();
 }
 
-const smf::target::ChannelGroup& smf::target::Format1Sequence::getMidiTrack(int i) const {
+const smf::target::ChannelGroup& smf::target::Format1SmfFeature::getMidiTrack(int i) const {
     return static_cast<const ChannelTrackFeature&>(*m_channelGroup->getFeature(i));
 }
 

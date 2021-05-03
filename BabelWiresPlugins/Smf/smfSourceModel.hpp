@@ -60,8 +60,8 @@ namespace source {
         seqwires::TrackFeature* m_noteTrackFeature = nullptr;
     };
 
-    /// Common to all formats of SmfSequence.
-    class SmfSequence : public babelwires::FileFeature {
+    /// Common to all formats of SmfFeature.
+    class SmfFeature : public babelwires::FileFeature {
       public:
         enum Format { FORMAT_0_SEQUENCE, FORMAT_1_SEQUENCE, FORMAT_2_SEQUENCE, UNKNOWN_SEQUENCE_TYPE };
         Format getFormat() const;
@@ -79,7 +79,7 @@ namespace source {
         const babelwires::StringFeature* getSequenceName() const;
 
       protected:
-        SmfSequence(Format f);
+        SmfFeature(Format f);
 
       protected:
         Format m_format;
@@ -89,9 +89,9 @@ namespace source {
     };
 
     /// All note data for each channel is mixed into one midi track.
-    class Format0Sequence : public SmfSequence {
+    class Format0SmfFeature : public SmfFeature {
       public:
-        Format0Sequence();
+        Format0SmfFeature();
 
         virtual int getNumMidiTracks() const override;
         virtual const ChannelGroup& getMidiTrack(int i) const override;
@@ -108,9 +108,9 @@ namespace source {
     };
 
     /// Note data is organized into tracks, but the events may belong to different channels.
-    class Format1Sequence : public SmfSequence {
+    class Format1SmfFeature : public SmfFeature {
       public:
-        Format1Sequence();
+        Format1SmfFeature();
 
         virtual int getNumMidiTracks() const override;
         virtual const ChannelGroup& getMidiTrack(int i) const override;
