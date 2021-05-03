@@ -17,7 +17,8 @@ namespace seqwires {
 }
 
 namespace smf {
-namespace import {
+
+namespace source {
     /// An abstraction for features which organize tracks for different MIDI channels.
     /// This is used since we target a different structure when parsing Format 0 and Format 1 files.
     class ChannelGroup {

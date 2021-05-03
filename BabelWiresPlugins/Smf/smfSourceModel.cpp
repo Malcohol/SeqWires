@@ -51,7 +51,7 @@ namespace {
         {"ex15", "Extra Ch. 15", "6a3d1cde-dee0-451e-b23a-8f23d4a50c33"}};
 } // namespace
 
-seqwires::TrackFeature* smf::import::RecordChannelGroup::addTrack(int c) {
+seqwires::TrackFeature* smf::source::RecordChannelGroup::addTrack(int c) {
     assert((0 <= c) && "Negative channel number");
     assert((c <= 15) && "Channel number out of range");
     assert((tryGetChildFromStep(babelwires::PathStep(std::get<0>(s_trackNames[c]))) == nullptr) &&
@@ -60,7 +60,7 @@ seqwires::TrackFeature* smf::import::RecordChannelGroup::addTrack(int c) {
     return addField(std::make_unique<seqwires::TrackFeature>(), FIELD_NAME_VECTOR(s_trackNames)[c]);
 }
 
-void smf::import::ExtensibleChannelGroup::setPrivilegedTrack(int c) {
+void smf::source::ExtensibleChannelGroup::setPrivilegedTrack(int c) {
     assert((0 <= c) && "Negative channel number");
     assert((c <= 15) && "Channel number out of range");
     assert((m_channelNum == nullptr) && "The first channel was already set");
@@ -71,7 +71,7 @@ void smf::import::ExtensibleChannelGroup::setPrivilegedTrack(int c) {
     m_channelNum->set(c);
 }
 
-seqwires::TrackFeature* smf::import::ExtensibleChannelGroup::addTrack(int c) {
+seqwires::TrackFeature* smf::source::ExtensibleChannelGroup::addTrack(int c) {
     assert((0 <= c) && "Negative channel number");
     assert((c <= 15) && "Channel number out of range");
     assert(m_channelNum && "setPrivilegedTrack should have been called already");
@@ -85,7 +85,7 @@ seqwires::TrackFeature* smf::import::ExtensibleChannelGroup::addTrack(int c) {
     }
 }
 
-smf::import::SmfSequence::SmfSequence(Format f)
+smf::source::SmfSequence::SmfSequence(Format f)
     : babelwires::FileFeature(SmfSourceFormat::getThisIdentifier())
     , m_format(f) {
     assert((f != UNKNOWN_SEQUENCE_TYPE) && "You can only construct a format 0, 1 or 2 MIDI file");
@@ -97,71 +97,71 @@ smf::import::SmfSequence::SmfSequence(Format f)
                        FIELD_NAME("Tempo", "Tempo", "3ef804e9-e34a-4a25-b6bf-ce7597d9d90b"));
 }
 
-smf::import::SmfSequence::Format smf::import::SmfSequence::getFormat() const {
+smf::source::SmfSequence::Format smf::source::SmfSequence::getFormat() const {
     return m_format;
 }
 
-seqwires::TempoFeature* smf::import::SmfSequence::getTempoFeature() {
+seqwires::TempoFeature* smf::source::SmfSequence::getTempoFeature() {
     return m_tempo;
 }
 
-const seqwires::TempoFeature* smf::import::SmfSequence::getTempoFeature() const {
+const seqwires::TempoFeature* smf::source::SmfSequence::getTempoFeature() const {
     return m_tempo;
 }
 
-babelwires::StringFeature* smf::import::SmfSequence::getCopyright() {
+babelwires::StringFeature* smf::source::SmfSequence::getCopyright() {
     return m_copyright;
 }
 
-const babelwires::StringFeature* smf::import::SmfSequence::getCopyright() const {
+const babelwires::StringFeature* smf::source::SmfSequence::getCopyright() const {
     return m_copyright;
 }
 
-babelwires::StringFeature* smf::import::SmfSequence::getSequenceName() {
+babelwires::StringFeature* smf::source::SmfSequence::getSequenceName() {
     return m_sequenceName;
 }
 
-const babelwires::StringFeature* smf::import::SmfSequence::getSequenceName() const {
+const babelwires::StringFeature* smf::source::SmfSequence::getSequenceName() const {
     return m_sequenceName;
 }
 
-smf::import::Format0Sequence::Format0Sequence()
+smf::source::Format0Sequence::Format0Sequence()
     : SmfSequence(FORMAT_0_SEQUENCE) {
     m_channelGroup = addField(std::make_unique<RecordChannelGroup>(),
                               FIELD_NAME("tracks", "tracks", "3fb0f062-4e8e-4b37-a598-edcd63f82971"));
 }
 
-int smf::import::Format0Sequence::getNumMidiTracks() const {
+int smf::source::Format0Sequence::getNumMidiTracks() const {
     return 1;
 }
 
-const smf::import::ChannelGroup& smf::import::Format0Sequence::getMidiTrack(int i) const {
+const smf::source::ChannelGroup& smf::source::Format0Sequence::getMidiTrack(int i) const {
     assert((i == 0) && "There is only 1 in format 0 smf files.");
     return *m_channelGroup;
 }
 
-smf::import::ChannelGroup* smf::import::Format0Sequence::getMidiTrack0() {
+smf::source::ChannelGroup* smf::source::Format0Sequence::getMidiTrack0() {
     return m_channelGroup;
 }
 
-smf::import::Format1Sequence::Format1Sequence()
+smf::source::Format1Sequence::Format1Sequence()
     : SmfSequence(FORMAT_1_SEQUENCE) {
     m_tracks = addField(std::make_unique<TrackArray>(),
                         FIELD_NAME("Tracks", "tracks", "3042e0e6-62a6-4a75-b886-77b873005da8"));
 }
 
-int smf::import::Format1Sequence::getNumMidiTracks() const {
+int smf::source::Format1Sequence::getNumMidiTracks() const {
     return m_tracks->getNumFeatures();
 }
 
-const smf::import::ChannelGroup& smf::import::Format1Sequence::getMidiTrack(int i) const {
+const smf::source::ChannelGroup& smf::source::Format1Sequence::getMidiTrack(int i) const {
     return dynamic_cast<const ChannelGroup&>(*m_tracks->getFeature(i));
 }
 
-smf::import::ChannelGroup* smf::import::Format1Sequence::addMidiTrack() {
+smf::source::ChannelGroup* smf::source::Format1Sequence::addMidiTrack() {
     return dynamic_cast<ChannelGroup*>(m_tracks->addEntry());
 }
 
-std::unique_ptr<babelwires::Feature> smf::import::TrackArray::createNextEntry() const {
+std::unique_ptr<babelwires::Feature> smf::source::TrackArray::createNextEntry() const {
     return std::make_unique<ExtensibleChannelGroup>();
 }
