@@ -17,7 +17,7 @@ smf::target::ChannelTrackFeature::ChannelTrackFeature() {
     m_channelNum = addField(std::make_unique<babelwires::HasStaticRange<babelwires::IntFeature, 0, 15>>(),
                             FIELD_NAME("Chan", "channel", "cad592ef-2355-4837-a265-38b49eae7599"));
     m_noteTrackFeature = addField(std::make_unique<seqwires::TrackFeature>(),
-                                  FIELD_NAME("Notes", "Notes", "a6db15c9-9f29-4fb3-92c4-771746b2b97f"));
+                                  FIELD_NAME("Track", "track", "a6db15c9-9f29-4fb3-92c4-771746b2b97f"));
 }
 
 int smf::target::ChannelTrackFeature::getNumTracks() const {
@@ -38,6 +38,12 @@ const smf::target::ChannelTrackFeature& smf::target::ArrayChannelGroup::getTrack
 
 std::unique_ptr<babelwires::Feature> smf::target::ArrayChannelGroup::createNextEntry() const {
     return std::make_unique<ChannelTrackFeature>();
+}
+
+babelwires::Range<unsigned int> smf::target::ArrayChannelGroup::doGetSizeRange() const {
+    auto defaultRange = babelwires::ArrayFeature::doGetSizeRange();
+    defaultRange.m_min = 1;
+    return defaultRange;
 }
 
 smf::target::SmfSequence::SmfSequence(Format f)

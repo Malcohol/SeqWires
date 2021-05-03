@@ -51,7 +51,8 @@ namespace smf {
             virtual const ChannelTrackFeature& getTrack(int i) const override;
 
           protected:
-            virtual std::unique_ptr<Feature> createNextEntry() const override;
+            std::unique_ptr<Feature> createNextEntry() const override;
+            babelwires::Range<unsigned int> doGetSizeRange() const override;
         };
 
         /// Common to all formats of SmfSequence.

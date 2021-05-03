@@ -11,19 +11,19 @@ Seq2tape:
 * Consider implementing basic WAV support myself, so project works without libsnd.
 
 SMF
+* Handle track 0 for Format 1 files specially. Don't allow event data to be added.
 * Time signature (Needs support for optional features)
 * Instruments (Needs support for optional features)
 * Support Standard MIDI event types
 * Yamaha XF chords
-* Restructure data
-* If BabelWires splits up import/export then SMF could have:
-  - record-based import with channel-number fields which is robust to changes
-  - array-based export which is flexible
-* Add unit tests for SMF handling.
+* Add unit tests for SMF handling. Put UnitTests beside plugin.
 
 Processors:
+* Concatenate
+* Transpose
 * PolyToChord
 * ChordToPoly
 * Harmonize
 * PolySplitter
 * TrackMerger
+* etc.
