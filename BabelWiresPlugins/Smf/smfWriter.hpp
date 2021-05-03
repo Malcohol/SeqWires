@@ -23,10 +23,10 @@ namespace smf {
       public:
         SmfWriter(std::ostream& output);
 
-        void writeHeaderChunk(const SmfSequence& sequence);
+        void writeHeaderChunk(const target::SmfSequence& sequence);
 
         /// Tempo feature can be null.
-        void writeTrack(int channel, const ChannelGroup* track, const seqwires::TempoFeature* tempo,
+        void writeTrack(int channel, const target::ChannelGroup* track, const seqwires::TempoFeature* tempo,
                             const babelwires::StringFeature* copyright,
                             const babelwires::StringFeature* sequenceOrTrackName);
 
@@ -41,7 +41,7 @@ namespace smf {
         void writeTempoEvent(int bpm);
         /// type is the integer 0..15 which defines which type of text meta-event should be issued.
         void writeTextMetaEvent(int type, std::string text);
-        void writeNotes(int channel, const ChannelGroup& track);
+        void writeNotes(int channel, const target::ChannelGroup& track);
 
       private:
         std::ostream& m_ostream;
@@ -50,7 +50,7 @@ namespace smf {
         int m_division;
     };
 
-    void writeToSmfFormat0(std::ostream& output, const Format0Sequence& sequence);
-    void writeToSmfFormat1(std::ostream& output, const Format1Sequence& sequence);
+    void writeToSmfFormat0(std::ostream& output, const target::Format0Sequence& sequence);
+    void writeToSmfFormat1(std::ostream& output, const target::Format1Sequence& sequence);
 
 } // namespace smf

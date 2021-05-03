@@ -49,12 +49,12 @@ std::string smf::SmfFormat0TargetFormat::getProductName() const {
 }
 
 std::unique_ptr<babelwires::FileFeature> smf::SmfFormat0TargetFormat::createNewFeature() const {
-    return std::make_unique<Format0Sequence>();
+    return std::make_unique<target::Format0Sequence>();
 }
 
 void smf::SmfFormat0TargetFormat::writeToFile(const babelwires::FileFeature& sequence, std::ostream& os,
                                  babelwires::UserLogger& userLogger) const {
-    writeToSmfFormat0(os, dynamic_cast<const Format0Sequence&>(sequence));
+    writeToSmfFormat0(os, dynamic_cast<const target::Format0Sequence&>(sequence));
 }
 
 smf::SmfFormat1TargetFormat::SmfFormat1TargetFormat()
@@ -69,10 +69,10 @@ std::string smf::SmfFormat1TargetFormat::getProductName() const {
 }
 
 std::unique_ptr<babelwires::FileFeature> smf::SmfFormat1TargetFormat::createNewFeature() const {
-    return std::make_unique<Format1Sequence>();
+    return std::make_unique<target::Format1Sequence>();
 }
 
 void smf::SmfFormat1TargetFormat::writeToFile(const babelwires::FileFeature& sequence, std::ostream& os,
                                  babelwires::UserLogger& userLogger) const {
-    writeToSmfFormat1(os, dynamic_cast<const Format1Sequence&>(sequence));
+    writeToSmfFormat1(os, dynamic_cast<const target::Format1Sequence&>(sequence));
 }

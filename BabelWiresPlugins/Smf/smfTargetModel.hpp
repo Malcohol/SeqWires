@@ -1,8 +1,8 @@
 /**
  * Representation of a Standard MIDI File as a tree of Features.
- * 
+ *
  * (C) 2021 Malcolm Tyrrell
- * 
+ *
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
 #pragma once
@@ -17,91 +17,94 @@ namespace seqwires {
 }
 
 namespace smf {
-    class ChannelTrackFeature;
+    namespace target {
+        class ChannelTrackFeature;
 
-    /// An abstraction for track data for multiple midi channels.
-    /// This abstraction is useful in the writer, since the data is structured differently
-    /// in Format 0 and Format 1 files.
-    class ChannelGroup {
-      public:
-        virtual int getNumTracks() const = 0;
-        virtual const ChannelTrackFeature& getTrack(int i) const = 0;
-    };
+        /// An abstraction for track data for multiple midi channels.
+        /// This abstraction is useful in the writer, since the data is structured differently
+        /// in Format 0 and Format 1 files.
+        class ChannelGroup {
+          public:
+            virtual int getNumTracks() const = 0;
+            virtual const ChannelTrackFeature& getTrack(int i) const = 0;
+        };
 
-    /// A track and its MIDI channel number.
-    /// This can also act as a ChannelGroup containing one ChannelTrackFeature (itself).
-    class ChannelTrackFeature : public babelwires::RecordFeature, public ChannelGroup {
-      public:
-        ChannelTrackFeature();
+        /// A track and its MIDI channel number.
+        /// This can also act as a ChannelGroup containing one ChannelTrackFeature (itself).
+        class ChannelTrackFeature : public babelwires::RecordFeature, public ChannelGroup {
+          public:
+            ChannelTrackFeature();
 
-      public:
-        virtual int getNumTracks() const override;
-        virtual const ChannelTrackFeature& getTrack(int i) const override;
+          public:
+            virtual int getNumTracks() const override;
+            virtual const ChannelTrackFeature& getTrack(int i) const override;
 
-      public:
-        babelwires::IntFeature* m_channelNum;
-        seqwires::TrackFeature* m_noteTrackFeature;
-    };
+          public:
+            babelwires::IntFeature* m_channelNum;
+            seqwires::TrackFeature* m_noteTrackFeature;
+        };
 
-    /// An array of tracks and their MIDI channels.
-    class ArrayChannelGroup : public babelwires::ArrayFeature, public ChannelGroup {
-      public:
-        virtual int getNumTracks() const override;
-        virtual const ChannelTrackFeature& getTrack(int i) const override;
-      protected:
-        virtual std::unique_ptr<Feature> createNextEntry() const override;
-    };
+        /// An array of tracks and their MIDI channels.
+        class ArrayChannelGroup : public babelwires::ArrayFeature, public ChannelGroup {
+          public:
+            virtual int getNumTracks() const override;
+            virtual const ChannelTrackFeature& getTrack(int i) const override;
 
-    /// Common to all formats of SmfSequence.
-    class SmfSequence : public babelwires::FileFeature {
-      public:
-        enum Format { FORMAT_0_SEQUENCE, FORMAT_1_SEQUENCE, FORMAT_2_SEQUENCE, UNKNOWN_SEQUENCE_TYPE };
-        Format getFormat() const;
+          protected:
+            virtual std::unique_ptr<Feature> createNextEntry() const override;
+        };
 
-        seqwires::TempoFeature* getTempoFeature();
-        const seqwires::TempoFeature* getTempoFeature() const;
+        /// Common to all formats of SmfSequence.
+        class SmfSequence : public babelwires::FileFeature {
+          public:
+            enum Format { FORMAT_0_SEQUENCE, FORMAT_1_SEQUENCE, FORMAT_2_SEQUENCE, UNKNOWN_SEQUENCE_TYPE };
+            Format getFormat() const;
 
-        virtual int getNumMidiTracks() const = 0;
-        virtual const ChannelGroup& getMidiTrack(int i) const = 0;
+            seqwires::TempoFeature* getTempoFeature();
+            const seqwires::TempoFeature* getTempoFeature() const;
 
-        babelwires::StringFeature* getCopyright();
-        const babelwires::StringFeature* getCopyright() const;
+            virtual int getNumMidiTracks() const = 0;
+            virtual const ChannelGroup& getMidiTrack(int i) const = 0;
 
-        babelwires::StringFeature* getSequenceName();
-        const babelwires::StringFeature* getSequenceName() const;
+            babelwires::StringFeature* getCopyright();
+            const babelwires::StringFeature* getCopyright() const;
 
-      protected:
-        SmfSequence(Format f);
+            babelwires::StringFeature* getSequenceName();
+            const babelwires::StringFeature* getSequenceName() const;
 
-      protected:
-        Format m_format;
-        babelwires::StringFeature* m_sequenceName;
-        babelwires::StringFeature* m_copyright;
-        seqwires::TempoFeature* m_tempo;
-    };
+          protected:
+            SmfSequence(Format f);
 
-    /// All note data for each channel is mixed into one midi track.
-    class Format0Sequence : public SmfSequence {
-      public:
-        Format0Sequence();
+          protected:
+            Format m_format;
+            babelwires::StringFeature* m_sequenceName;
+            babelwires::StringFeature* m_copyright;
+            seqwires::TempoFeature* m_tempo;
+        };
 
-        virtual int getNumMidiTracks() const override;
-        virtual const ChannelGroup& getMidiTrack(int i) const override;
+        /// All note data for each channel is mixed into one midi track.
+        class Format0Sequence : public SmfSequence {
+          public:
+            Format0Sequence();
 
-      protected:
-        ArrayChannelGroup* m_channelGroup;
-    };
+            virtual int getNumMidiTracks() const override;
+            virtual const ChannelGroup& getMidiTrack(int i) const override;
 
-    /// Note data is organized into tracks, but the events may belong to different channels.
-    /// For creating Format 1 files, we do not support MIDI tracks with events for multiple channels.
-    class Format1Sequence : public SmfSequence {
-      public:
-        Format1Sequence();
+          protected:
+            ArrayChannelGroup* m_channelGroup;
+        };
 
-        virtual int getNumMidiTracks() const override;
-        virtual const ChannelGroup& getMidiTrack(int i) const override;
+        /// Note data is organized into tracks, but the events may belong to different channels.
+        /// For creating Format 1 files, we do not support MIDI tracks with events for multiple channels.
+        class Format1Sequence : public SmfSequence {
+          public:
+            Format1Sequence();
 
-      protected:
-        ArrayChannelGroup* m_channelGroup;
-    };
+            virtual int getNumMidiTracks() const override;
+            virtual const ChannelGroup& getMidiTrack(int i) const override;
+
+          protected:
+            ArrayChannelGroup* m_channelGroup;
+        };
+    } // namespace target
 } // namespace smf

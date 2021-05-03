@@ -84,9 +84,9 @@ void smf::SmfWriter::writeTextMetaEvent(int type, std::string text) {
     *m_os << text;
 }
 
-void smf::SmfWriter::writeHeaderChunk(const SmfSequence& sequence) {
+void smf::SmfWriter::writeHeaderChunk(const target::SmfSequence& sequence) {
     int numTracks = sequence.getNumMidiTracks();
-    if (sequence.getFormat() == smf::SmfSequence::FORMAT_0_SEQUENCE) {
+    if (sequence.getFormat() == smf::target::SmfSequence::FORMAT_0_SEQUENCE) {
         // Track 0 holds meta-data.
         ++numTracks;
     }
@@ -102,9 +102,9 @@ void smf::SmfWriter::writeHeaderChunk(const SmfSequence& sequence) {
     {
         int division = 1;
         for (int i = 0; i < sequence.getNumMidiTracks(); ++i) {
-            const ChannelGroup& channelGroup = sequence.getMidiTrack(i);
+            const target::ChannelGroup& channelGroup = sequence.getMidiTrack(i);
             for (int j = 0; j < channelGroup.getNumTracks(); ++j) {
-                const ChannelTrackFeature& entry = channelGroup.getTrack(j);
+                const target::ChannelTrackFeature& entry = channelGroup.getTrack(j);
                 division = babelwires::lcm(division, seqwires::getMinimumDenominator(entry.m_noteTrackFeature->get()));
             }
         }
@@ -150,14 +150,14 @@ namespace {
 
 } // namespace
 
-void smf::SmfWriter::writeNotes(int channel, const ChannelGroup& channelGroup) {
+void smf::SmfWriter::writeNotes(int channel, const target::ChannelGroup& channelGroup) {
     const int numChannels = channelGroup.getNumTracks();
 
     seqwires::ModelDuration trackDuration = 0;
     std::vector<seqwires::TrackTraverser<seqwires::FilteredTrackIterator<seqwires::NoteEvent>>> traversers;
 
     for (int i = 0; i < channelGroup.getNumTracks(); ++i) {
-        const smf::ChannelTrackFeature& channelTrack = channelGroup.getTrack(i);
+        const smf::target::ChannelTrackFeature& channelTrack = channelGroup.getTrack(i);
         const seqwires::Track& track = channelTrack.m_noteTrackFeature->get();
         traversers.emplace_back(track, seqwires::iterateOver<seqwires::NoteEvent>(track));
         traversers.back().leastUpperBoundDuration(trackDuration);
@@ -173,7 +173,7 @@ void smf::SmfWriter::writeNotes(int channel, const ChannelGroup& channelGroup) {
 
         bool isFirstEvent = true;
         for (int i = 0; i < channelGroup.getNumTracks(); ++i) {
-            const smf::ChannelTrackFeature& channelTrack = channelGroup.getTrack(i);
+            const smf::target::ChannelTrackFeature& channelTrack = channelGroup.getTrack(i);
             traversers[i].advance(timeToNextEvent, [this, &isFirstEvent, &timeToNextEvent, &timeOfLastEvent,
                                                     &timeSinceStart, &channelTrack](const seqwires::NoteEvent& event) {
                 seqwires::ModelDuration timeToThisEvent = 0;
@@ -193,7 +193,7 @@ void smf::SmfWriter::writeNotes(int channel, const ChannelGroup& channelGroup) {
     writeModelDuration(trackDuration - timeOfLastEvent);
 }
 
-void smf::SmfWriter::writeTrack(int channel, const ChannelGroup* channelGroup, const seqwires::TempoFeature* tempo,
+void smf::SmfWriter::writeTrack(int channel, const target::ChannelGroup* channelGroup, const seqwires::TempoFeature* tempo,
                                     const babelwires::StringFeature* copyright,
                                     const babelwires::StringFeature* sequenceOrTrackName) {
     std::ostream* oldStream = m_os;
@@ -232,7 +232,7 @@ void smf::SmfWriter::writeTrack(int channel, const ChannelGroup* channelGroup, c
     m_os->write(tempStream.str().data(), tempStream.tellp());
 }
 
-void smf::writeToSmfFormat0(std::ostream& output, const smf::Format0Sequence& sequence) {
+void smf::writeToSmfFormat0(std::ostream& output, const smf::target::Format0Sequence& sequence) {
     const int numTracks = sequence.getNumMidiTracks();
     smf::SmfWriter writer(output);
     writer.writeHeaderChunk(sequence);
@@ -240,7 +240,7 @@ void smf::writeToSmfFormat0(std::ostream& output, const smf::Format0Sequence& se
                             sequence.getSequenceName());
 }
 
-void smf::writeToSmfFormat1(std::ostream& output, const smf::Format1Sequence& sequence) {
+void smf::writeToSmfFormat1(std::ostream& output, const smf::target::Format1Sequence& sequence) {
     const int numTracks = sequence.getNumMidiTracks();
     smf::SmfWriter writer(output);
     writer.writeHeaderChunk(sequence);
