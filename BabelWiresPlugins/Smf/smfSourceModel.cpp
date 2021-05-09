@@ -85,44 +85,56 @@ seqwires::TrackFeature* smf::source::ExtensibleChannelGroup::addTrack(int c) {
     }
 }
 
+namespace {
+    const char tempoMetadataId[] = "Tempo";
+    const char nameMetadataId[] = "Name";
+    const char copyrightMetadataId[] = "CopyR";
+}
+
+smf::source::MidiMetadata::MidiMetadata() {
+    m_tempo = addOptionalField(std::make_unique<seqwires::TempoFeature>(),
+                       FIELD_NAME(tempoMetadataId, "Tempo", "3ef804e9-e34a-4a25-b6bf-ce7597d9d90b"));
+    m_sequenceName = addOptionalField(std::make_unique<babelwires::StringFeature>(),
+                              FIELD_NAME(nameMetadataId, "Name", "c2e4910f-d006-4a93-97a7-ae5973157ec8"));
+    m_copyright = addOptionalField(std::make_unique<babelwires::StringFeature>(),
+                           FIELD_NAME(copyrightMetadataId, "Copyright", "a59dc914-d060-4f03-be83-5804fc4d6b6a"));
+}
+
+seqwires::TempoFeature& smf::source::MidiMetadata::getActivatedTempoFeature() {
+    if (!isActivated(tempoMetadataId)) {
+        activateField(tempoMetadataId);
+    }
+    return *m_tempo;
+}
+
+babelwires::StringFeature& smf::source::MidiMetadata::getActivatedCopyright() {
+    if (!isActivated(copyrightMetadataId)) {
+        activateField(copyrightMetadataId);
+    }
+    return *m_copyright;
+}
+
+babelwires::StringFeature& smf::source::MidiMetadata::getActivatedSequenceName() {
+    if (!isActivated(nameMetadataId)) {
+        activateField(nameMetadataId);
+    }
+    return *m_sequenceName;
+}
+
 smf::source::SmfFeature::SmfFeature(Format f)
     : babelwires::FileFeature(SmfSourceFormat::getThisIdentifier())
     , m_format(f) {
     assert((f != SMF_UNKNOWN_FORMAT) && "You can only construct a format 0, 1 or 2 MIDI file");
-    m_sequenceName = addField(std::make_unique<babelwires::StringFeature>(),
-                              FIELD_NAME("Name", "Name", "c2e4910f-d006-4a93-97a7-ae5973157ec8"));
-    m_copyright = addField(std::make_unique<babelwires::StringFeature>(),
-                           FIELD_NAME("CopyR", "Copyright", "a59dc914-d060-4f03-be83-5804fc4d6b6a"));
-    m_tempo = addField(std::make_unique<seqwires::TempoFeature>(),
-                       FIELD_NAME("Tempo", "Tempo", "3ef804e9-e34a-4a25-b6bf-ce7597d9d90b"));
+    m_metadata = addField(std::make_unique<MidiMetadata>(),
+        FIELD_NAME("Meta", "Metadata", "72bbbcee-2b53-4fb2-bfb8-4f5e495f9166"));
 }
 
 smf::source::SmfFeature::Format smf::source::SmfFeature::getFormat() const {
     return m_format;
 }
 
-seqwires::TempoFeature* smf::source::SmfFeature::getTempoFeature() {
-    return m_tempo;
-}
-
-const seqwires::TempoFeature* smf::source::SmfFeature::getTempoFeature() const {
-    return m_tempo;
-}
-
-babelwires::StringFeature* smf::source::SmfFeature::getCopyright() {
-    return m_copyright;
-}
-
-const babelwires::StringFeature* smf::source::SmfFeature::getCopyright() const {
-    return m_copyright;
-}
-
-babelwires::StringFeature* smf::source::SmfFeature::getSequenceName() {
-    return m_sequenceName;
-}
-
-const babelwires::StringFeature* smf::source::SmfFeature::getSequenceName() const {
-    return m_sequenceName;
+smf::source::MidiMetadata& smf::source::SmfFeature::getMidiMetadata() {
+    return *m_metadata;
 }
 
 smf::source::Format0SmfFeature::Format0SmfFeature()

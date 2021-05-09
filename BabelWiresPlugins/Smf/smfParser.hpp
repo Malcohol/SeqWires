@@ -41,8 +41,7 @@ namespace smf {
         void readFormat0Sequence(source::Format0SmfFeature& sequence);
         void readFormat1Sequence(source::Format1SmfFeature& sequence);
 
-        void readTrack(int i, source::ChannelGroup& tracks, seqwires::TempoFeature& tempo, babelwires::StringFeature* copyright,
-                       babelwires::StringFeature* sequenceOrTrackName);
+        void readTrack(int i, source::ChannelGroup& tracks, source::MidiMetadata& metadata);
 
         seqwires::ModelDuration readModelDuration();
 

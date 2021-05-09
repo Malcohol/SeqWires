@@ -232,8 +232,7 @@ namespace {
     };
 } // namespace
 
-void smf::SmfParser::readTrack(int i, source::ChannelGroup& channels, seqwires::TempoFeature& tempo,
-                               babelwires::StringFeature* copyright, babelwires::StringFeature* sequenceOrTrackName) {
+void smf::SmfParser::readTrack(int i, source::ChannelGroup& channels, source::MidiMetadata& metadata) {
     readByteSequence("MTrk");
     const std::uint32_t trackLength = readU32();
     const int currentIndex = m_dataSource.getAbsolutePosition();
@@ -272,7 +271,7 @@ void smf::SmfParser::readTrack(int i, source::ChannelGroup& channels, seqwires::
                     switch (type) {
                         case 0x51: // Set tempo
                         {
-                            readTempoEvent(tempo);
+                            readTempoEvent(metadata.getActivatedTempoFeature());
                             break;
                         }
                         case 0x2F: // End of track.
@@ -288,20 +287,12 @@ void smf::SmfParser::readTrack(int i, source::ChannelGroup& channels, seqwires::
                         }
                         case 0x02: // Copyright
                         {
-                            if (copyright) {
-                                copyright->set(readTextMetaEvent(length));
-                            } else {
-                                skipBytes(length);
-                            }
+                            metadata.getActivatedCopyright().set(readTextMetaEvent(length));
                             break;
                         }
                         case 0x03: // Sequence or track name.
                         {
-                            if (sequenceOrTrackName) {
-                                sequenceOrTrackName->set(readTextMetaEvent(length));
-                            } else {
-                                skipBytes(length);
-                            }
+                            metadata.getActivatedSequenceName().set(readTextMetaEvent(length));
                             break;
                         }
                         default: // Ignored.
@@ -362,15 +353,16 @@ void smf::SmfParser::readFormat0Sequence(source::Format0SmfFeature& sequence) {
             << "A format 0 claims to have " << m_numTracks << " tracks but it should only have 1";
     }
     source::ChannelGroup* midiTrack = sequence.getMidiTrack0();
-    readTrack(0, *midiTrack, *sequence.getTempoFeature(), sequence.getCopyright(), sequence.getSequenceName());
+    readTrack(0, *midiTrack, sequence.getMidiMetadata());
 }
 
 void smf::SmfParser::readFormat1Sequence(source::Format1SmfFeature& sequence) {
     source::ChannelGroup* midiTrack = sequence.addMidiTrack();
-    readTrack(0, *midiTrack, *sequence.getTempoFeature(), sequence.getCopyright(), sequence.getSequenceName());
+    readTrack(0, *midiTrack, sequence.getMidiMetadata());
     for (int i = 1; i < m_numTracks; ++i) {
         source::ChannelGroup* midiTrack = sequence.addMidiTrack();
-        readTrack(i, *midiTrack, *sequence.getTempoFeature(), nullptr, nullptr);
+        source::MidiMetadata dummyMetadata;
+        readTrack(i, *midiTrack, dummyMetadata);
     }
 }
 
