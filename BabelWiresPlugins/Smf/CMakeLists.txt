@@ -2,6 +2,7 @@ SET( SMFLIB_SRCS
 	libRegistration.cpp
 	smfSourceModel.cpp
 	smfTargetModel.cpp
+	smfModelCommon.cpp
 	smfWriter.cpp
 	smfParser.cpp
 	smfFormat.cpp

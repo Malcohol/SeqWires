@@ -8,9 +8,8 @@
 #pragma once
 
 #include "BabelWires/Features/arrayFeature.hpp"
-#include "BabelWires/Features/stringFeature.hpp"
 #include "BabelWires/FileFormat/fileFeature.hpp"
-#include "SeqWiresLib/Features/tempoFeature.hpp"
+#include "BabelWiresPlugins/Smf/smfModelCommon.hpp"
 
 namespace seqwires {
     class TrackFeature;
@@ -61,23 +60,16 @@ namespace smf {
             enum Format { SMF_FORMAT_0, SMF_FORMAT_1, SMF_FORMAT_2, SMF_UNKNOWN_FORMAT };
             Format getFormat() const;
 
-            seqwires::TempoFeature* getTempoFeature();
-            const seqwires::TempoFeature* getTempoFeature() const;
-
             virtual int getNumMidiTracks() const = 0;
             virtual const ChannelGroup& getMidiTrack(int i) const = 0;
 
-            babelwires::StringFeature* getCopyright();
-            const babelwires::StringFeature* getCopyright() const;
-
-            babelwires::StringFeature* getSequenceName();
-            const babelwires::StringFeature* getSequenceName() const;
-
+            const MidiMetadata& getMidiMetadata() const;
           protected:
             SmfFeature(Format f);
 
           protected:
             Format m_format;
+            MidiMetadata* m_metadata;
             babelwires::StringFeature* m_sequenceName;
             babelwires::StringFeature* m_copyright;
             seqwires::TempoFeature* m_tempo;

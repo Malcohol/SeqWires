@@ -85,42 +85,6 @@ seqwires::TrackFeature* smf::source::ExtensibleChannelGroup::addTrack(int c) {
     }
 }
 
-namespace {
-    const char tempoMetadataId[] = "Tempo";
-    const char nameMetadataId[] = "Name";
-    const char copyrightMetadataId[] = "CopyR";
-}
-
-smf::source::MidiMetadata::MidiMetadata() {
-    m_tempo = addOptionalField(std::make_unique<seqwires::TempoFeature>(),
-                       FIELD_NAME(tempoMetadataId, "Tempo", "3ef804e9-e34a-4a25-b6bf-ce7597d9d90b"));
-    m_sequenceName = addOptionalField(std::make_unique<babelwires::StringFeature>(),
-                              FIELD_NAME(nameMetadataId, "Name", "c2e4910f-d006-4a93-97a7-ae5973157ec8"));
-    m_copyright = addOptionalField(std::make_unique<babelwires::StringFeature>(),
-                           FIELD_NAME(copyrightMetadataId, "Copyright", "a59dc914-d060-4f03-be83-5804fc4d6b6a"));
-}
-
-seqwires::TempoFeature& smf::source::MidiMetadata::getActivatedTempoFeature() {
-    if (!isActivated(tempoMetadataId)) {
-        activateField(tempoMetadataId);
-    }
-    return *m_tempo;
-}
-
-babelwires::StringFeature& smf::source::MidiMetadata::getActivatedCopyright() {
-    if (!isActivated(copyrightMetadataId)) {
-        activateField(copyrightMetadataId);
-    }
-    return *m_copyright;
-}
-
-babelwires::StringFeature& smf::source::MidiMetadata::getActivatedSequenceName() {
-    if (!isActivated(nameMetadataId)) {
-        activateField(nameMetadataId);
-    }
-    return *m_sequenceName;
-}
-
 smf::source::SmfFeature::SmfFeature(Format f)
     : babelwires::FileFeature(SmfSourceFormat::getThisIdentifier())
     , m_format(f) {
@@ -133,7 +97,7 @@ smf::source::SmfFeature::Format smf::source::SmfFeature::getFormat() const {
     return m_format;
 }
 
-smf::source::MidiMetadata& smf::source::SmfFeature::getMidiMetadata() {
+smf::MidiMetadata& smf::source::SmfFeature::getMidiMetadata() {
     return *m_metadata;
 }
 

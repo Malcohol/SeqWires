@@ -50,40 +50,16 @@ smf::target::SmfFeature::SmfFeature(Format f)
     : babelwires::FileFeature(SmfSourceFormat::getThisIdentifier())
     , m_format(f) {
     assert((f != SMF_UNKNOWN_FORMAT) && "You can only construct a format 0, 1 or 2 MIDI file");
-    m_sequenceName = addField(std::make_unique<babelwires::StringFeature>(),
-                              FIELD_NAME("Name", "Name", "160acc82-b374-433f-9a5d-b971e5871396"));
-    m_copyright = addField(std::make_unique<babelwires::StringFeature>(),
-                           FIELD_NAME("CopyR", "Copyright", "008830f3-087d-4af5-83c1-3530520b2d29"));
-    m_tempo = addField(std::make_unique<seqwires::TempoFeature>(),
-                       FIELD_NAME("Tempo", "Tempo", "f5721a7d-f1b7-468e-875c-36036982a571"));
+    m_metadata = addField(std::make_unique<MidiMetadata>(),
+        FIELD_NAME("Meta", "Metadata", "72bbbcee-2b53-4fb2-bfb8-4f5e495f9166"));
 }
 
 smf::target::SmfFeature::Format smf::target::SmfFeature::getFormat() const {
     return m_format;
 }
 
-seqwires::TempoFeature* smf::target::SmfFeature::getTempoFeature() {
-    return m_tempo;
-}
-
-const seqwires::TempoFeature* smf::target::SmfFeature::getTempoFeature() const {
-    return m_tempo;
-}
-
-babelwires::StringFeature* smf::target::SmfFeature::getCopyright() {
-    return m_copyright;
-}
-
-const babelwires::StringFeature* smf::target::SmfFeature::getCopyright() const {
-    return m_copyright;
-}
-
-babelwires::StringFeature* smf::target::SmfFeature::getSequenceName() {
-    return m_sequenceName;
-}
-
-const babelwires::StringFeature* smf::target::SmfFeature::getSequenceName() const {
-    return m_sequenceName;
+const smf::MidiMetadata& smf::target::SmfFeature::getMidiMetadata() const {
+    return *m_metadata;
 }
 
 smf::target::Format0SmfFeature::Format0SmfFeature()

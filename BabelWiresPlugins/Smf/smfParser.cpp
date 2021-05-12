@@ -232,7 +232,7 @@ namespace {
     };
 } // namespace
 
-void smf::SmfParser::readTrack(int i, source::ChannelGroup& channels, source::MidiMetadata& metadata) {
+void smf::SmfParser::readTrack(int i, source::ChannelGroup& channels, MidiMetadata& metadata) {
     readByteSequence("MTrk");
     const std::uint32_t trackLength = readU32();
     const int currentIndex = m_dataSource.getAbsolutePosition();
@@ -361,7 +361,7 @@ void smf::SmfParser::readFormat1Sequence(source::Format1SmfFeature& sequence) {
     readTrack(0, *midiTrack, sequence.getMidiMetadata());
     for (int i = 1; i < m_numTracks; ++i) {
         source::ChannelGroup* midiTrack = sequence.addMidiTrack();
-        source::MidiMetadata dummyMetadata;
+        MidiMetadata dummyMetadata;
         readTrack(i, *midiTrack, dummyMetadata);
     }
 }

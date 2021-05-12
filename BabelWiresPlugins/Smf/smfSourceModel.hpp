@@ -12,6 +12,7 @@
 #include "BabelWires/FileFormat/fileFeature.hpp"
 #include "SeqWiresLib/Features/tempoFeature.hpp"
 #include "BabelWires/Features/recordWithOptionalsFeature.hpp"
+#include "BabelWiresPlugins/Smf/smfModelCommon.hpp"
 
 namespace seqwires {
     class TrackFeature;
@@ -59,20 +60,6 @@ namespace source {
       protected:
         babelwires::IntFeature* m_channelNum = nullptr;
         seqwires::TrackFeature* m_trackFeature = nullptr;
-    };
-
-    class MidiMetadata : public babelwires::RecordWithOptionalsFeature {
-      public:
-        MidiMetadata();
-
-        seqwires::TempoFeature& getActivatedTempoFeature();
-        babelwires::StringFeature& getActivatedCopyright();
-        babelwires::StringFeature& getActivatedSequenceName();
-
-      protected:
-        babelwires::StringFeature* m_sequenceName;
-        babelwires::StringFeature* m_copyright;
-        seqwires::TempoFeature* m_tempo;
     };
 
     /// Common to all formats of SmfFeature.

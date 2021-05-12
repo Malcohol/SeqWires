@@ -26,9 +26,7 @@ namespace smf {
         void writeHeaderChunk(const target::SmfFeature& sequence);
 
         /// Tempo feature can be null.
-        void writeTrack(const target::ChannelGroup* track, const seqwires::TempoFeature* tempo,
-                            const babelwires::StringFeature* copyright,
-                            const babelwires::StringFeature* sequenceOrTrackName);
+        void writeTrack(const target::ChannelGroup* track, const MidiMetadata& metadata);
 
       protected:
         void writeUint16(std::uint16_t i);
