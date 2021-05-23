@@ -1,8 +1,8 @@
 /**
  * Options for the seq2Tape program.
- * 
+ *
  * (C) 2021 Malcolm Tyrrell
- * 
+ *
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
 #include <Common/Audio/fileAudioDest.hpp>
@@ -107,22 +107,34 @@ ProgramOptions::ProgramOptions(int argc, char* argv[])
     }
 }
 
-void writeUsage(const std::string& programName, std::ostream& stream) {
+void writeUsage(const std::string& programName, bool playbackAvailable, bool captureAvailable, std::ostream& stream) {
     stream << "Usage:" << std::endl;
-    stream << programName << " " << s_playString << " [-d <audio destination>] <input file>" << std::endl;
-    stream << programName << " " << s_captureString
-           << " [-s <audio source>] [-f <num data files>] [-n name] [-c copyright] <output file>" << std::endl;
     stream << programName << " " << s_convertString << " [-n name] [-c copyright] <input file> <output file>"
            << std::endl;
+    if (playbackAvailable) {
+        stream << programName << " " << s_playString << " [-d <audio destination>] <input file>" << std::endl;
+    }
+    if (captureAvailable) {
+        stream << programName << " " << s_captureString
+               << " [-s <audio source>] [-f <num data files>] [-n name] [-c copyright] <output file>" << std::endl;
+    }
     stream << programName << " " << s_formatsString << " " << std::endl;
-    stream << programName << " " << s_audioString << " " << std::endl;
+    if (playbackAvailable || captureAvailable) {
+        stream << programName << " " << s_audioString << " " << std::endl;
+    }
     stream << programName << " " << s_helpString << " " << std::endl;
 }
 
-void writeHelp(const std::string& programName, std::ostream& stream) {
+void writeHelp(const std::string& programName, bool playbackAvailable, bool captureAvailable, std::ostream& stream) {
     stream << programName
            << " - Converts music sequencer data between file formats suitable for computer storage and audio data "
               "format suitable for cassette tapes."
            << std::endl;
-    writeUsage(programName, stream);
+    if (!captureAvailable) {
+        stream << "Warning: No source audio interfaces were registered, so audio capture is unavailable.";
+    }
+    if (!playbackAvailable) {
+        stream << "Warning: No destination audio interface were registered, so audio playback is unavailable.";
+    }
+    writeUsage(programName, playbackAvailable, captureAvailable, stream);
 }

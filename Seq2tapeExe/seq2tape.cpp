@@ -133,7 +133,7 @@ void playbackMode(const Context& context, const ProgramOptions::PlaybackOptions&
 void captureMode(const Context& context, const ProgramOptions::CaptureOptions& captureOptions) {
     auto outFormat = context.m_tapeFileRegistry.getEntryByFileName(captureOptions.m_outputFileName);
     if (!outFormat) {
-        throw babelwires::OptionError() << "The input file is not a recognized seq2tape format";
+        throw babelwires::OptionError() << "The output file is not a recognized seq2tape format";
     }
     babelwires::OutFileStream outFile(captureOptions.m_outputFileName.c_str(), std::ios_base::binary);
     std::unique_ptr<babelwires::AudioSource> audioSource =
@@ -154,23 +154,32 @@ void captureMode(const Context& context, const ProgramOptions::CaptureOptions& c
 }
 
 int main(int argc, char* argv[]) {
+    Context context;
+    babelwires::init_audio(context.m_audioInterfaceRegistry);
+    const bool playbackAvailable = !context.m_audioInterfaceRegistry.getDestinationNames().empty();
+    const bool captureAvailable = !context.m_audioInterfaceRegistry.getSourceNames().empty();
+
     try {
         ProgramOptions options(argc, argv);
-        Context context;
 
-        babelwires::init_audio(context.m_audioInterfaceRegistry);
-        // TODO Register plugins formats here.
+        // TODO Register seq2tape plugins formats here.
 
         switch (options.m_mode) {
             case ProgramOptions::MODE_PRINT_HELP: {
-                writeHelp(argv[0], std::cout);
+                writeHelp(argv[0], playbackAvailable, captureAvailable, std::cout);
                 break;
             }
             case ProgramOptions::MODE_CAPTURE: {
+                if (!captureAvailable) {
+                    throw babelwires::OptionError() << "No source audio interfaces were registered, so audio capture is unavailable.";
+                }
                 captureMode(context, *options.m_captureOptions);
                 break;
             }
             case ProgramOptions::MODE_PLAYBACK: {
+                if (!playbackAvailable) {
+                    throw babelwires::OptionError() << "No destination audio interface were registered, so audio playback is unavailable.";
+                }
                 playbackMode(context, *options.m_playbackOptions);
                 break;
             }
@@ -210,7 +219,7 @@ int main(int argc, char* argv[]) {
         babelwires::shutdown_audio(context.m_audioInterfaceRegistry);
     } catch (const babelwires::OptionError& e) {
         std::cerr << e.what() << std::endl;
-        writeUsage(argv[0], std::cerr);
+        writeUsage(argv[0], playbackAvailable, captureAvailable, std::cerr);
         return EXIT_FAILURE;
     } catch (const babelwires::BaseException& e) {
         std::cerr << e.what() << std::endl;

@@ -50,5 +50,5 @@ struct ProgramOptions {
     std::unique_ptr<ConvertOptions> m_convertOptions;
 };
 
-void writeUsage(const std::string& programName, std::ostream& stream);
-void writeHelp(const std::string& programName, std::ostream& stream);
+void writeUsage(const std::string& programName, bool playbackAvailable, bool captureAvailable, std::ostream& stream);
+void writeHelp(const std::string& programName, bool playbackAvailable, bool captureAvailable, std::ostream& stream);
