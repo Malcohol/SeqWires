@@ -81,7 +81,7 @@ int main(int argc, char* argv[]) {
                                              deserializationRegistry, randomEngine,  rowModelRegistry};
         
         context.m_applicationIdentity.m_applicationTitle = "Seqwires";
-        context.m_applicationIdentity.m_projectExtension = "seqwires";
+        context.m_applicationIdentity.m_projectExtension = ".seqwires";
 
         // register factories, etc.
         seqwires::registerLib(context);
