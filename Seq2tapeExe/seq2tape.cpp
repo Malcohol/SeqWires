@@ -14,7 +14,7 @@
 #include "Seq2tapeLib/tapeFile.hpp"
 #include "Seq2tapeLib/tapeFileFormat.hpp"
 
-#include "BabelWiresAudio/Alsa/Source/alsaInit.hpp"
+#include "BabelWiresAudio/Common/audioInit.hpp"
 
 #include <cassert>
 #include <fstream>
@@ -158,7 +158,7 @@ int main(int argc, char* argv[]) {
         ProgramOptions options(argc, argv);
         Context context;
 
-        babelwires_alsa::init_audio(context.m_audioInterfaceRegistry);
+        babelwires::init_audio(context.m_audioInterfaceRegistry);
         // TODO Register plugins formats here.
 
         switch (options.m_mode) {
@@ -207,7 +207,7 @@ int main(int argc, char* argv[]) {
             default:
                 assert(false);
         }
-        babelwires_alsa::shutdown_audio(context.m_audioInterfaceRegistry);
+        babelwires::shutdown_audio(context.m_audioInterfaceRegistry);
     } catch (const babelwires::OptionError& e) {
         std::cerr << e.what() << std::endl;
         writeUsage(argv[0], std::cerr);
