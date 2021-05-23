@@ -41,8 +41,8 @@ git clone --recurse-submodules https://github.com/Malcohol/SeqWires.git
 ```
 
 SeqWires is implemented using the [BabelWires](https://github.com/Malcohol/BabelWires) framework. 
-SeqWires is intended to be cross-platform, but in its current state it is unlikely to build out-of-the-box.
-See notes in the BabelWires readme.
+SeqWires is intended to be cross platform, but to date I have been working in a GNU/Linux environment. 
+Building in other environments is untested.
 
 # License
 
