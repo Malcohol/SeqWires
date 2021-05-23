@@ -14,7 +14,7 @@
 #include "Seq2tapeLib/tapeFile.hpp"
 #include "Seq2tapeLib/tapeFileFormat.hpp"
 
-#include "Audio/Alsa/alsaInit.hpp"
+#include "BabelWiresAudio/Alsa/Source/alsaInit.hpp"
 
 #include <cassert>
 #include <fstream>

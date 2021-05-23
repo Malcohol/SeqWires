@@ -1,3 +1,6 @@
 [submodule "BabelWires"]
 	path = BabelWires
 	url = https://github.com/Malcohol/BabelWires.git
+[submodule "BabelWiresAudio"]
+	path = BabelWiresAudio
+	url = https://github.com/Malcohol/BabelWiresAudio
