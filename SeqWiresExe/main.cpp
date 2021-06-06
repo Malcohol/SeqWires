@@ -91,7 +91,7 @@ int main(int argc, char* argv[]) {
         if (options.m_mode == ProgramOptions::MODE_DUMP) {
             if (const SourceFileFormat* format = context.m_sourceFileFormatReg.getEntryByFileName(options.m_inputFileName)) {
                 try {
-                    babelwires::FileDataSource file(options.m_inputFileName.c_str());
+                    babelwires::FileDataSource file(options.m_inputFileName);
                     std::shared_ptr<babelwires::FileFeature> loadedFile = format->loadFromFile(file, log);
                     babelwires::featureToXml(*loadedFile, std::cout, options.m_dumpIsFullDump);
                 } catch (const babelwires::BaseException& e) {

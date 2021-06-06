@@ -25,6 +25,9 @@ However, even when I do so, there will be still be a use-case for the stand-alon
 
 SeqWires is under active development.
 Interested developers can take a look around but please note that some refactoring is planned.
+Here's a screenshot of the current state:
+
+![Screenshot showing three nodes wired together](BabelWires/Docs/screenshot.png "The current state of SeqWires")
 
 Please do not expect development to be rapid.
 I have very limited time to devote to this.
