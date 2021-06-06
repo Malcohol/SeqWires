@@ -6,6 +6,10 @@ As well as getting track data out of an input format and putting it in an output
 SeqWires attempts to support many common processing use-cases with a convenient and intuitive user interface.
 However, it does not attempt to support every possible transformation of music data and nor does it try to be a visual programming language.
 
+Here's a screenshot of the current state:
+
+![Screenshot showing three nodes wired together](https://raw.githubusercontent.com/Malcohol/BabelWires/main/Docs/screenshot.png "The current state of SeqWires")
+
 Right now, the supported formats are:
 * SMF (standard MIDI file)
 * Many more formats to come :D 
@@ -25,9 +29,6 @@ However, even when I do so, there will be still be a use-case for the stand-alon
 
 SeqWires is under active development.
 Interested developers can take a look around but please note that some refactoring is planned.
-Here's a screenshot of the current state:
-
-![Screenshot showing three nodes wired together](https://raw.githubusercontent.com/Malcohol/BabelWires/main/Docs/screenshot.png "The current state of SeqWires")
 
 Please do not expect development to be rapid.
 I have very limited time to devote to this.
