@@ -5,6 +5,7 @@
  * 
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
+#define _USE_MATH_DEFINES
 #include "Seq2tapeLib/waveReader.hpp"
 
 #include "Common/Audio/audioSource.hpp"
@@ -14,13 +15,15 @@
 #include <iostream>
 #include <memory>
 
-#define _USE_MATH_DEFINES
 #include <cmath>
+
 
 // TODO
 // Remember time at last zero crossing.
 
 namespace {
+    constexpr babelwires::Duration c_pi = 3.14159265358979323846;
+
     /// When a wave of an expected type is read, we allow the referenceDuration to be adjusted.
     /// This allows some compensation for the recording speeding up or slowing down.
     /// This weight determines the influence of the new wave's duration against the existing one.
@@ -52,7 +55,7 @@ seq2tape::WaveReader::WaveReader(babelwires::AudioSource& audioSource, Polarity 
     : m_sampleReader(audioSource)
     , m_samplePeriod(1.0 / audioSource.getFrequency())
     , m_negativeDurationFromPreviousStep(0.0)
-    , m_polarityMultiplier((polarity == Polarity::negativeThenPositive) ? 1.0f : -1.0) {
+    , m_polarityMultiplier((polarity == Polarity::negativeThenPositive) ? 1.0f : -1.0f) {
     assert((waveLengths.size() > 1) && "It doesn't make sense to have a waveReader with only one kind of wave");
 
     m_perWaveInfo.reserve(waveLengths.size());
@@ -137,7 +140,7 @@ void seq2tape::WaveReader::updateBiasEstimate(babelwires::Duration negativeDurat
                                               babelwires::Duration positiveDuration) {
     /// The code is written assume an inverted sin wave (because that was the shape of the first source data I examined)
     const babelwires::Duration ratio = (negativeDuration - positiveDuration) / (negativeDuration + positiveDuration);
-    const babelwires::Duration theta = 0.5 * M_PI * ratio;
+    const babelwires::Duration theta = 0.5 * c_pi * ratio;
     const babelwires::AudioSample estimatedBiasNow = -sin(theta);
     m_biasEstimate = ((1.0 - c_newBiasWeight) * m_biasEstimate) + (c_newBiasWeight * estimatedBiasNow);
 }

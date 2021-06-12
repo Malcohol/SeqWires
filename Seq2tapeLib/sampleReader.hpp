@@ -10,7 +10,7 @@
 #include "Common/types.hpp"
 
 namespace babelwires {
-    class AudioSource;
+    struct AudioSource;
 }
 
 namespace seq2tape {

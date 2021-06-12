@@ -16,8 +16,8 @@
 
 namespace babelwires {
     class FileFeature;
-    class AudioSource;
-    class AudioDest;
+    struct AudioSource;
+    struct AudioDest;
 } // namespace babelwires
 
 namespace seq2tape {

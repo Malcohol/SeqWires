@@ -13,8 +13,8 @@
 #include <string>
 
 namespace babelwires {
-    class AudioSource;
-    class AudioDest;
+    struct AudioSource;
+    struct AudioDest;
     class DataSource;
 } // namespace babelwires
 
