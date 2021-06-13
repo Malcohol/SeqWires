@@ -21,7 +21,7 @@ smf::SmfParser::SmfParser(babelwires::DataSource& dataSource)
 babelwires::Byte smf::SmfParser::getNext() {
     try {
         return m_dataSource.getNextByte();
-    } catch (std::exception& e) {
+    } catch (std::exception&) {
         throw babelwires::ParseException() << "Stream is truncated";
     }
 }
@@ -29,7 +29,7 @@ babelwires::Byte smf::SmfParser::getNext() {
 babelwires::Byte smf::SmfParser::peekNext() {
     try {
         return m_dataSource.peekNextByte();
-    } catch (std::exception& e) {
+    } catch (std::exception&) {
         throw babelwires::ParseException() << "Stream is truncated";
     }
 }
@@ -126,7 +126,7 @@ smf::source::SmfFeature::Format smf::SmfParser::getSequenceType(babelwires::Data
         parser.readHeaderChunk();
         dataSource.rewind();
         return parser.m_sequenceType;
-    } catch (const std::exception& e) {
+    } catch (const std::exception&) {
         return source::SmfFeature::SMF_UNKNOWN_FORMAT;
     }
 }

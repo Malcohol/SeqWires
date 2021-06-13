@@ -62,10 +62,10 @@ void smf::SmfWriter::writeModelDuration(const seqwires::ModelDuration& d) {
 }
 
 void smf::SmfWriter::writeTempoEvent(int bpm) {
-    m_os->put(0x00);
-    m_os->put(0xff);
-    m_os->put(0x51);
-    m_os->put(0x03);
+    m_os->put(0x00u);
+    m_os->put(0xffu);
+    m_os->put(0x51u);
+    m_os->put(0x03u);
 
     const int d = 60'000'000 / bpm;
 
@@ -75,8 +75,8 @@ void smf::SmfWriter::writeTempoEvent(int bpm) {
 void smf::SmfWriter::writeTextMetaEvent(int type, std::string text) {
     assert((0 >= type) && (type <= 15) && "Type is out-of-range.");
     babelwires::Byte t = type;
-    m_os->put(0x00);
-    m_os->put(0xff);
+    m_os->put(0x00u);
+    m_os->put(0xffu);
     m_os->put(t);
     writeVariableLengthQuantity(text.length());
 
@@ -220,13 +220,13 @@ void smf::SmfWriter::writeTrack(const target::ChannelGroup* channelGroup, const 
     }
 
     // End of track.
-    m_os->put(0xff);
-    m_os->put(0x2F);
-    m_os->put(0x00);
+    m_os->put(0xffu);
+    m_os->put(0x2Fu);
+    m_os->put(0x00u);
 
     m_os = oldStream;
     m_os->write("MTrk", 4);
-    writeUint32(tempStream.tellp());
+    writeUint32(static_cast<std::uint32_t>(tempStream.tellp()));
     m_os->write(tempStream.str().data(), tempStream.tellp());
 }
 
