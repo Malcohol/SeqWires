@@ -16,4 +16,5 @@ SET( SEQWIRESLIB_SRCS
 
 ADD_LIBRARY( SeqWiresLib ${SEQWIRESLIB_SRCS} )
 TARGET_INCLUDE_DIRECTORIES( SeqWiresLib PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../BabelWires )
-TARGET_LINK_LIBRARIES(SeqWiresLib PUBLIC BabelWiresLib tinyxml2 pthread)
+# Add pthread for Linux and/or GCC?
+TARGET_LINK_LIBRARIES(SeqWiresLib PUBLIC BabelWiresLib tinyxml2)

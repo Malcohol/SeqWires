@@ -22,6 +22,8 @@
 #endif
 
 namespace {
+    constexpr babelwires::Duration c_pi = 3.14159265358979323846;
+
     constexpr babelwires::Duration c_defaultFreq = 22050.0;
     // constexpr babelwires::Duration c_defaultFreq = 44100.0;
 
@@ -52,7 +54,7 @@ namespace {
         ClockFunc m_clockFunc = [](int) { return 1 / c_defaultFreq; };
 
         WaveShapeFunc m_waveShapeFunc = [](babelwires::Duration p) {
-            return static_cast<babelwires::AudioSample>(sin(p * 2.0 * M_PI));
+            return static_cast<babelwires::AudioSample>(sin(p * 2.0 * c_pi));
         };
 
         BiasFunc m_biasFunc = [](babelwires::Duration) { return 0.0f; };
@@ -252,7 +254,7 @@ namespace {
         std::filesystem::path outputFileName;
         outputFileName = std::filesystem::temp_directory_path() / (testName + ".wav");
         std::cerr << "Test wavefile written to " << outputFileName << std::endl;
-        std::unique_ptr<babelwires::AudioDest> audioDest = reg.createFileAudioDest(outputFileName.c_str(), 1);
+        std::unique_ptr<babelwires::AudioDest> audioDest = reg.createFileAudioDest(outputFileName.u8string().c_str(), 1);
         assert(audioDest);
         constexpr std::size_t bufferSize = 2048;
         babelwires::AudioSample buffer[bufferSize];
@@ -361,7 +363,7 @@ TEST(WaveReader, varyingSpeed) {
     TestScenario scenario;
     scenario.m_clockFunc = [&scenario](int t) {
         // A cycle of 0.15 seconds.
-        const double theta = M_PI * (static_cast<double>(t) / scenario.m_frequency) * (1 / 0.15);
+        const double theta = c_pi * (static_cast<double>(t) / scenario.m_frequency) * (1 / 0.15);
         // Vary speed by +/- 25%.
         const babelwires::Duration s = 1.0 + (0.25 * sin(theta));
         return s / c_defaultFreq;
@@ -381,7 +383,7 @@ TEST(WaveReader, varyingBias) {
     TestScenario scenario;
     scenario.m_biasFunc = [](babelwires::Duration d) {
         // A cycle of 0.05 seconds.
-        const float theta = M_PI * (d / 0.1f);
+        const float theta = c_pi * (d / 0.1f);
         // Vary bias by +/- 0.25.
         const babelwires::AudioSample b = 0.25f * sinf(theta);
         return b;
@@ -410,7 +412,7 @@ TEST(WaveReader, varyingBiasAndLowVolume) {
     scenario.m_volumeFunc = [](babelwires::Duration d) { return 0.25f; };
     scenario.m_biasFunc = [](babelwires::Duration d) {
         // A cycle of 0.05 seconds.
-        const float theta = M_PI * (d / 0.1f);
+        const float theta = c_pi * (d / 0.1f);
         // Vary bias by +/- 0.3.
         const babelwires::AudioSample b = 0.3f * sinf(theta);
         return b;
@@ -444,7 +446,7 @@ TEST(WaveReader, combination) {
     // Varying speed.
     scenario.m_clockFunc = [&scenario](int t) {
         // A cycle of 0.15 seconds.
-        const double theta = M_PI * (static_cast<double>(t) / scenario.m_frequency) * (1 / 0.15);
+        const double theta = c_pi * (static_cast<double>(t) / scenario.m_frequency) * (1 / 0.15);
         // Vary speed by +/- 15%.
         const babelwires::Duration s = 1.0 + (0.15 * sin(theta));
         return s / c_defaultFreq;
@@ -452,7 +454,7 @@ TEST(WaveReader, combination) {
     // Varying bias.
     scenario.m_biasFunc = [](babelwires::Duration d) {
         // A cycle of 0.05 seconds.
-        const float theta = M_PI * (d / 0.05f);
+        const float theta = c_pi * (d / 0.05f);
         // Vary bias by +/- 0.15.
         const babelwires::AudioSample b = 0.15f * sinf(theta);
         return b;

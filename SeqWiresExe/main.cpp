@@ -58,7 +58,7 @@ int main(int argc, char* argv[]) {
 
         babelwires::FieldNameRegistryScope fieldNameRegistry;
 
-        babelwires::OStreamLogListener::Features features;
+        babelwires::OStreamLogListener::Features features = babelwires::OStreamLogListener::Features::none;
 #ifndef NDEBUG
         features = features | babelwires::OStreamLogListener::Features::logDebugMessages |
                    babelwires::OStreamLogListener::Features::timestamp;

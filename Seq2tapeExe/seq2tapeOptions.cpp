@@ -7,7 +7,6 @@
  **/
 #include <Common/Audio/fileAudioDest.hpp>
 #include <Seq2tapeExe/seq2tapeOptions.hpp>
-#include <getopt.h>
 
 namespace {
     const char s_helpString[] = "help";
