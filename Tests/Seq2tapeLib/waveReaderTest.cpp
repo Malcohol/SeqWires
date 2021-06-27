@@ -24,8 +24,11 @@
 namespace {
     constexpr babelwires::Duration c_pi = 3.14159265358979323846;
 
+#if DEBUG_WRITE_WAVES_TO_FILES
+    constexpr babelwires::Duration c_defaultFreq = 44100.0;
+#else
     constexpr babelwires::Duration c_defaultFreq = 22050.0;
-    // constexpr babelwires::Duration c_defaultFreq = 44100.0;
+#endif
 
     /// Return the time period since the last "tick" at the given tick count.
     using ClockFunc = std::function<babelwires::Duration(int)>;
@@ -63,8 +66,6 @@ namespace {
 
         NoiseFunc m_noiseFunc = [](babelwires::Duration) { return 0.0f; };
 
-        // TODO noise & amplitude
-
         int m_numBlocks = 3;
 
         unsigned int m_randomSeed = 0x24eb87ae;
@@ -73,7 +74,7 @@ namespace {
     struct TestWaveSequence {
         TestWaveSequence(const TestScenario& scenario)
             : m_generator(scenario.m_randomSeed)
-            , m_waveTypesDist(0, scenario.m_waveLengths.size() - 1) {
+            , m_waveTypesDist(0, static_cast<unsigned int>(scenario.m_waveLengths.size() - 1)) {
             std::uniform_int_distribution<unsigned int> blockLengthDist(10, 1000);
             for (int i = 0; i < scenario.m_numBlocks; ++i) {
                 m_blockLengths.emplace_back(blockLengthDist(m_generator));
@@ -96,10 +97,13 @@ namespace {
             } else if (m_indexInBlock == 1) {
                 return SILENCE;
             }
-            if (m_indexInBlock == 2) {
+            else if (m_blockIndex == m_blockLengths.size()) {
+                return WAVE_TYPE_EOF;
+            }
+            else if (m_indexInBlock == 2) {
                 return PILOT_SEQUENCE;
             }
-            if (m_indexInBlock == 3) {
+            else if (m_indexInBlock == 3) {
                 // Since pilot signals are expect to use wave type 0, the wave which follows cannot be
                 // type 0.
                 int nonZeroType = 0;
@@ -111,9 +115,6 @@ namespace {
             if (m_indexInBlock == m_blockLengths[m_blockIndex]) {
                 m_indexInBlock = -1;
                 ++m_blockIndex;
-                if (m_blockIndex == m_blockLengths.size()) {
-                    return WAVE_TYPE_EOF;
-                }
             }
             return m_waveTypesDist(m_generator);
         }
@@ -256,6 +257,9 @@ namespace {
         std::cerr << "Test wavefile written to " << outputFileName << std::endl;
         std::unique_ptr<babelwires::AudioDest> audioDest = reg.createFileAudioDest(outputFileName.u8string().c_str(), 1);
         assert(audioDest);
+        const babelwires::Duration targetFrequency = audioDest->getFrequency();
+        // If the frequencies did not agree, we'd have to resample, which would mean the output files did not accurately reflect the data being tested.
+        assert((targetFrequency == c_defaultFreq) && "Can only write test files with available frequency");
         constexpr std::size_t bufferSize = 2048;
         babelwires::AudioSample buffer[bufferSize];
         TestAudioSource audioSource(scenario);
@@ -298,8 +302,7 @@ namespace {
             }
         } while (expectedWaveType != TestWaveSequence::WAVE_TYPE_EOF);
 
-        const int expectEof = waveReader.getNextWave();
-        ASSERT_EQ(expectEof, seq2tape::WaveReader::WAVE_TYPE_EOF);
+        // Once we've read all the expected waves, we don't care what else the sequence does.
     }
 } // namespace
 
@@ -334,11 +337,11 @@ TEST(WaveReader, triangleWave) {
     TestScenario scenario;
     scenario.m_waveShapeFunc = [](babelwires::Duration p) -> babelwires::AudioSample {
         if (p < 0.25) {
-            return 4.0f * p;
+            return static_cast<babelwires::AudioSample>(4.0f * p);
         } else if (p < 0.75) {
-            return 1.0f - 4.0f * (p - 0.25);
+            return static_cast<babelwires::AudioSample>(1.0f - 4.0f * (p - 0.25));
         } else {
-            return -1.0f + 4.0f * (p - 0.75);
+            return static_cast<babelwires::AudioSample>(-1.0f + 4.0f * (p - 0.75));
         }
     };
     DEBUG_WRITE_TO_FILE(scenario);
@@ -383,9 +386,9 @@ TEST(WaveReader, varyingBias) {
     TestScenario scenario;
     scenario.m_biasFunc = [](babelwires::Duration d) {
         // A cycle of 0.05 seconds.
-        const float theta = c_pi * (d / 0.1f);
+        const double theta = c_pi * (d / 0.1f);
         // Vary bias by +/- 0.25.
-        const babelwires::AudioSample b = 0.25f * sinf(theta);
+        const babelwires::AudioSample b = static_cast<babelwires::AudioSample>(0.25f * sin(theta));
         return b;
     };
     DEBUG_WRITE_TO_FILE(scenario);
@@ -412,9 +415,9 @@ TEST(WaveReader, varyingBiasAndLowVolume) {
     scenario.m_volumeFunc = [](babelwires::Duration d) { return 0.25f; };
     scenario.m_biasFunc = [](babelwires::Duration d) {
         // A cycle of 0.05 seconds.
-        const float theta = c_pi * (d / 0.1f);
+        const double theta = c_pi * (d / 0.1f);
         // Vary bias by +/- 0.3.
-        const babelwires::AudioSample b = 0.3f * sinf(theta);
+        const babelwires::AudioSample b = static_cast<babelwires::AudioSample>(0.25f * sin(theta));
         return b;
     };
     DEBUG_WRITE_TO_FILE(scenario);
@@ -423,7 +426,7 @@ TEST(WaveReader, varyingBiasAndLowVolume) {
 
 TEST(WaveReader, noise) {
     TestScenario scenario;
-    std::default_random_engine generator;
+    std::default_random_engine generator(12345);
     std::uniform_real_distribution<float> dist(-0.1f, 0.1f);
     scenario.m_noiseFunc = [&generator, &dist](babelwires::Duration d) { return dist(generator); };
     DEBUG_WRITE_TO_FILE(scenario);
@@ -436,11 +439,11 @@ TEST(WaveReader, combination) {
     // Triangle
     scenario.m_waveShapeFunc = [](babelwires::Duration p) -> babelwires::AudioSample {
         if (p < 0.25) {
-            return 4.0f * p;
+            return static_cast<babelwires::AudioSample>(4.0f * p);
         } else if (p < 0.75) {
-            return 1.0f - 4.0f * (p - 0.25);
+            return static_cast<babelwires::AudioSample>(1.0f - 4.0f * (p - 0.25));
         } else {
-            return -1.0f + 4.0f * (p - 0.75);
+            return static_cast<babelwires::AudioSample>(-1.0f + 4.0f * (p - 0.75));
         }
     };
     // Varying speed.
@@ -454,15 +457,15 @@ TEST(WaveReader, combination) {
     // Varying bias.
     scenario.m_biasFunc = [](babelwires::Duration d) {
         // A cycle of 0.05 seconds.
-        const float theta = c_pi * (d / 0.05f);
+        const double theta = c_pi * (d / 0.05f);
         // Vary bias by +/- 0.15.
-        const babelwires::AudioSample b = 0.15f * sinf(theta);
+        const babelwires::AudioSample b = static_cast<babelwires::AudioSample>(0.15f * sin(theta));
         return b;
     };
     // Non-max volume
     scenario.m_volumeFunc = [](babelwires::Duration d) { return 0.8f; };
     // Noise
-    std::default_random_engine generator;
+    std::default_random_engine generator(56789);
     std::uniform_real_distribution<float> dist(-0.025f, 0.025f);
     scenario.m_noiseFunc = [&generator, &dist](babelwires::Duration d) { return dist(generator); };
     DEBUG_WRITE_TO_FILE(scenario);

@@ -35,7 +35,7 @@ namespace {
 
     /// The absolute value of a sample has to pass this threshold to trigger a switch from the negative
     /// to positive pulses or vice-versa.
-    constexpr babelwires::AudioSample c_switchThreshold = 0.03f;
+    constexpr babelwires::AudioSample c_switchThreshold = 0.05f;
 
     /// When the absolute value of a sample in a pulse falls below this value, we consider that it is
     /// at the end of the pulse.
