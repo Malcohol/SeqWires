@@ -52,3 +52,8 @@ jobs:
     - name: Seq2tapeLibTests
       working-directory: ${{github.workspace}}/build
       run: Tests/Seq2tapeLib/seq2tapeLibTests
+
+    - name: AlsaTests
+      if: startsWith(matrix.config.name, 'Ubuntu')    
+      working-directory: ${{github.workspace}}/build
+      run: BabelWiresAudio/Alsa/Tests/alsaTests
