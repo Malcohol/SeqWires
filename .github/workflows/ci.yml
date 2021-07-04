@@ -31,7 +31,7 @@ jobs:
       if: startsWith(matrix.config.name, 'Ubuntu_Latest_GCC')
       run: |
         sudo apt-get update
-        sudo apt-get install cmake ${{ matrix.config.cc }} ${{ matrix.config.cxx }} qt5-default
+        sudo apt-get install cmake ${{ matrix.config.cc }} ${{ matrix.config.cxx }} qt5-default libasound2
         cmake --version
         gcc --version
         g++ --version
