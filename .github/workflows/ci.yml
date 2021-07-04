@@ -1,0 +1,54 @@
+name: Build and Test
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    name: ${{ matrix.config.name }}
+    runs-on: ${{ matrix.config.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        config: 
+        - {
+            name: "Ubuntu_Latest_GCC",
+            os: ubuntu-latest,
+            build_type: "Debug",
+            cc: "gcc-9",
+            cxx: "g++-9"
+          }
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install dependencies on ubuntu
+      if: startsWith(matrix.config.name, 'Ubuntu_Latest_GCC')
+      run: |
+        sudo apt-get update
+        sudo apt-get install cmake ${{ matrix.config.cc }} ${{ matrix.config.cxx }} qt5-default
+        cmake --version
+        gcc --version
+        g++ --version
+        qtchooser -print-env
+
+    - name: Configure CMake
+      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{ matrix.config.build_type }}
+      shell: bash
+      env:
+        CC:   ${{ matrix.config.cc }}
+        CXX:  ${{ matrix.config.cxx }}
+
+    - name: Build
+      run: cmake --build ${{github.workspace}}/build --config ${{ matrix.config.build_type }}
+
+    - name: SequenceLibTests
+      working-directory: ${{github.workspace}}/build
+      run: Tests/SeqWiresLib/sequenceLibTests
+
+    - name: Seq2tapeLibTests
+      working-directory: ${{github.workspace}}/build
+      run: Tests/Seq2tapeLib/seq2tapeLibTests
