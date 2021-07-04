@@ -27,10 +27,10 @@ However, even when I do so, there will be still be a use-case for the stand-alon
 
 ## Status
 
-SeqWires is under active development.
-Interested developers can take a look around but please note that some refactoring is planned.
+* SeqWires: ![SeqWires build and test pipeline](https://github.com/Malcohol/SeqWires/actions/workflows/ci.yml/badge.svg)
+* BabelWires: ![Build and test pipeline](https://github.com/Malcohol/BabelWires/actions/workflows/ci.yml/badge.svg)
 
-Please do not expect development to be rapid.
+SeqWires is under active development, but please do not expect development to be rapid.
 I have very limited time to devote to this.
 
 Right now the SMF plugin only supports note on/off events.
