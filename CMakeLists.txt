@@ -9,9 +9,11 @@ PROJECT( Seqwires )
 SET( CMAKE_EDIT_COMMAND /usr/bin/cmake -i )
 SET( CMAKE_ECLIPSE_GENERATE_SOURCE_PROJECT TRUE )
 SET(CMAKE_CXX_STANDARD 17)
+
 # Lots of work will be required to support shared libs. Waiting to see whether C++ Modules will help.
 set(BUILD_SHARED_LIBS OFF)
 SET(gtest_force_shared_crt ON)
+SET(CMAKE_MSVC_RUNTIME_LIBRARY MultiThreadedDebug)
 
 INCLUDE_DIRECTORIES( ${CMAKE_SOURCE_DIR} )
 
