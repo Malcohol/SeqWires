@@ -36,6 +36,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+      with:
+        submodules: recursive
 
     - name: Install dependencies on ubuntu
       if: startsWith(matrix.config.name, 'Ubuntu_Latest_GCC')
