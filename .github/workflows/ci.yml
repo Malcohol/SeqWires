@@ -18,14 +18,24 @@ jobs:
             name: "Ubuntu_Latest_GCC",
             os: ubuntu-latest,
             build_type: "Debug",
+            targetFolder: "",
+            exeExtension: "",
             cc: "gcc-9",
             cxx: "g++-9"
+          }
+        - {
+            name: "Windows Latest MSVC",
+            os: windows-latest,
+            build_type: "Debug",
+            targetFolder: "Debug/", # Must match build_type.
+            exeExtension: ".exe",
+            cc: "cl",
+            cxx: "cl",
+            generators: "Visual Studio 16 2019"
           }
 
     steps:
     - uses: actions/checkout@v2
-      with:
-        submodules: recursive
 
     - name: Install dependencies on ubuntu
       if: startsWith(matrix.config.name, 'Ubuntu_Latest_GCC')
@@ -37,25 +47,41 @@ jobs:
         g++ --version
         qtchooser -print-env
 
+    - name: Install CMake on Windows
+      if: startsWith(matrix.config.os, 'windows')
+      run: |
+        choco install cmake
+
+    - name: Install Qt on Windows
+      if: startsWith(matrix.config.os, 'windows')
+      uses: jurplel/install-qt-action@v2
+      with:
+        version: '5.15.2'
+        host: 'windows'
+        setup-python: 'false'
+
     - name: Configure CMake
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{ matrix.config.build_type }}
-      shell: bash
+      run: |
+        cmake -B build -DCMAKE_BUILD_TYPE=${{ matrix.config.build_type }}
       env:
         CC:   ${{ matrix.config.cc }}
         CXX:  ${{ matrix.config.cxx }}
 
     - name: Build
-      run: cmake --build ${{github.workspace}}/build --config ${{ matrix.config.build_type }}
+      run: cmake --build build --config ${{ matrix.config.build_type }}
 
     - name: SequenceLibTests
-      working-directory: ${{github.workspace}}/build
-      run: Tests/SeqWiresLib/sequenceLibTests
+      working-directory: build
+      shell: bash
+      run: Tests/SeqWiresLib/${{ matrix.config.targetFolder }}sequenceLibTests${{ matrix.config.exeExtension }}
 
     - name: Seq2tapeLibTests
-      working-directory: ${{github.workspace}}/build
-      run: Tests/Seq2tapeLib/seq2tapeLibTests
+      working-directory: build
+      shell: bash
+      run: Tests/Seq2tapeLib/${{ matrix.config.targetFolder }}seq2tapeLibTests${{ matrix.config.exeExtension }}
 
     - name: AlsaTests
-      if: startsWith(matrix.config.name, 'Ubuntu')    
-      working-directory: ${{github.workspace}}/build
-      run: BabelWiresAudio/Alsa/Tests/alsaTests
+      if: startsWith(matrix.config.name, 'Ubuntu')
+      working-directory: build
+      shell: bash
+      run: BabelWiresAudio/Alsa/Tests/${{ matrix.config.targetFolder }}alsaTests${{ matrix.config.exeExtension }}
