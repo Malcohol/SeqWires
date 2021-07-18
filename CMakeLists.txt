@@ -24,7 +24,7 @@ ADD_SUBDIRECTORY( SeqWiresLib )
 ADD_SUBDIRECTORY( Seq2tapeLib )
 ADD_SUBDIRECTORY( SeqWiresLibUi )
 
-ADD_SUBDIRECTORY( BabelWiresPlugins/Smf )
+ADD_SUBDIRECTORY( BabelWiresPlugins/Smf/Plugin )
 
 ADD_SUBDIRECTORY( BabelWiresAudio )
 
