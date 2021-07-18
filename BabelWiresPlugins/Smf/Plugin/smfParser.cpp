@@ -5,7 +5,7 @@
  *
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
-#include "BabelWiresPlugins/Smf/smfParser.hpp"
+#include "BabelWiresPlugins/Smf/Plugin/smfParser.hpp"
 #include "Common/exceptions.hpp"
 #include "SeqWiresLib/Features/trackFeature.hpp"
 #include "SeqWiresLib/Tracks/noteEvents.hpp"

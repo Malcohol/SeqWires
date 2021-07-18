@@ -9,7 +9,7 @@
 
 #include "BabelWires/Features/arrayFeature.hpp"
 #include "BabelWires/FileFormat/fileFeature.hpp"
-#include "BabelWiresPlugins/Smf/smfModelCommon.hpp"
+#include "BabelWiresPlugins/Smf/Plugin/smfModelCommon.hpp"
 
 namespace seqwires {
     class TrackFeature;

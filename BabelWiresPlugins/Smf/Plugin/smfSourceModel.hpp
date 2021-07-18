@@ -10,9 +10,11 @@
 #include "BabelWires/Features/arrayFeature.hpp"
 #include "BabelWires/Features/stringFeature.hpp"
 #include "BabelWires/FileFormat/fileFeature.hpp"
-#include "SeqWiresLib/Features/tempoFeature.hpp"
 #include "BabelWires/Features/recordWithOptionalsFeature.hpp"
-#include "BabelWiresPlugins/Smf/smfModelCommon.hpp"
+
+#include "SeqWiresLib/Features/tempoFeature.hpp"
+
+#include "BabelWiresPlugins/Smf/Plugin/smfModelCommon.hpp"
 
 namespace seqwires {
     class TrackFeature;

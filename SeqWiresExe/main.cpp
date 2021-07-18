@@ -32,7 +32,7 @@
 #include "Common/Serialization/deserializationRegistry.hpp"
 
 // "plugins"
-#include "BabelWiresPlugins/Smf/libRegistration.hpp"
+#include "BabelWiresPlugins/Smf/Plugin/libRegistration.hpp"
 #include "SeqWiresLib/libRegistration.hpp"
 #include "SeqWiresLibUi/libRegistration.hpp"
 

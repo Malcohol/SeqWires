@@ -5,7 +5,7 @@
  * 
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
-#include "BabelWiresPlugins/Smf/smfWriter.hpp"
+#include "BabelWiresPlugins/Smf/Plugin/smfWriter.hpp"
 
 #include "SeqWiresLib/Features/trackFeature.hpp"
 #include "SeqWiresLib/Utilities/filteredTrackIterator.hpp"
