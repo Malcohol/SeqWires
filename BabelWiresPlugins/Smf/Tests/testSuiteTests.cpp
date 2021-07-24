@@ -50,7 +50,7 @@ TEST(SmfTest, cMajorScale) {
     for (auto pitch : std::vector<seqwires::Pitch>{60, 62, 64, 65, 67, 69, 71, 72})
     {
         EXPECT_NE(noteIterator, endIterator);
-        auto noteOn = dynamic_cast<const seqwires::NoteOnEvent*>(&*noteIterator);
+        auto noteOn = noteIterator->asA<const seqwires::NoteOnEvent>();
         ASSERT_NE(noteOn, nullptr);
         EXPECT_EQ(noteOn->getTimeSinceLastEvent(), 0);
         EXPECT_EQ(noteOn->m_pitch, pitch);
@@ -58,7 +58,7 @@ TEST(SmfTest, cMajorScale) {
         ++noteIterator;
 
         EXPECT_NE(noteIterator, endIterator);
-        auto noteOff = dynamic_cast<const seqwires::NoteOffEvent*>(&*noteIterator);
+        auto noteOff = noteIterator->asA<seqwires::NoteOffEvent>();
         ASSERT_NE(noteOff, nullptr);
         EXPECT_EQ(noteOff->getTimeSinceLastEvent(), babelwires::Rational(1, 4));
         EXPECT_EQ(noteOff->m_pitch, pitch);
@@ -67,3 +67,4 @@ TEST(SmfTest, cMajorScale) {
     }
     EXPECT_EQ(noteIterator, endIterator);
 }
+
