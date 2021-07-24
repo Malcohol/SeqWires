@@ -11,6 +11,24 @@
 
 #include <Tests/TestUtils/testLog.hpp>
 
+TEST(SmfTest, loadAllTestFilesWithoutCrashing) {
+    babelwires::FieldNameRegistryScope fieldNameRegistry;
+    testUtils::TestLog log;
+
+    for (auto& p: std::filesystem::directory_iterator(std::filesystem::current_path())) {
+        if (p.path().extension() == ".mid") {
+            try {
+                babelwires::FileDataSource midiFile(p.path());
+                smf::parseSmfSequence(midiFile);
+            } catch(const babelwires::ParseException&) {
+                // Allowed.
+            } catch(...) {
+                EXPECT_TRUE(false);
+            }
+        }
+    }
+}
+
 TEST(SmfTest, cMajorScale) {
     babelwires::FieldNameRegistryScope fieldNameRegistry;
     testUtils::TestLog log;
