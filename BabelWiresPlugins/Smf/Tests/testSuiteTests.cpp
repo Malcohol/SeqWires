@@ -34,7 +34,10 @@ TEST(SmfTest, loadAllTestFilesWithoutCrashing) {
 namespace {
     const char* channelNames[] = { "ch0", "ch1", "ch2" };
 
-    void testSimpleNotes(const std::vector<seqwires::Pitch>& expectedPitches, seqwires::Track::const_iterator noteIterator, const seqwires::Track::const_iterator& endIterator) {
+    void testSimpleNotes(const std::vector<seqwires::Pitch>& expectedPitches, const seqwires::Track& track) {
+        auto noteIterator = track.begin();
+        const auto endIterator = track.end();
+
         for (auto pitch : expectedPitches)
         {
             EXPECT_NE(noteIterator, endIterator);
@@ -91,7 +94,7 @@ TEST(SmfTest, cMajorScale) {
     auto noteIterator = track.begin();
     const auto endIterator = track.end();
 
-    testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65, 67, 69, 71, 72}, track.begin(), track.end());
+    testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65, 67, 69, 71, 72}, track);
 }
 
 TEST(SmfTest, multichannelChords0) {
@@ -121,9 +124,9 @@ TEST(SmfTest, multichannelChords0) {
         tracks[i] = &trackFeature->get();
     }
 
-    testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65, 67, 69, 71, 72}, tracks[0]->begin(), tracks[0]->end());
-    testSimpleNotes(std::vector<seqwires::Pitch>{64, 65, 67, 69, 71, 72, 74, 76}, tracks[1]->begin(), tracks[1]->end());
-    testSimpleNotes(std::vector<seqwires::Pitch>{67, 69, 71, 72, 74, 76, 77, 79}, tracks[2]->begin(), tracks[2]->end());
+    testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65, 67, 69, 71, 72}, *tracks[0]);
+    testSimpleNotes(std::vector<seqwires::Pitch>{64, 65, 67, 69, 71, 72, 74, 76}, *tracks[1]);
+    testSimpleNotes(std::vector<seqwires::Pitch>{67, 69, 71, 72, 74, 76, 77, 79}, *tracks[2]);
 }
 
 TEST(SmfTest, multichannelChords1) {
@@ -159,9 +162,9 @@ TEST(SmfTest, multichannelChords1) {
         tracks[i] = &trackFeature->get();
     }
 
-    testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65, 67, 69, 71, 72}, tracks[0]->begin(), tracks[0]->end());
-    testSimpleNotes(std::vector<seqwires::Pitch>{64, 65, 67, 69, 71, 72, 74, 76}, tracks[1]->begin(), tracks[1]->end());
-    testSimpleNotes(std::vector<seqwires::Pitch>{67, 69, 71, 72, 74, 76, 77, 79}, tracks[2]->begin(), tracks[2]->end());
+    testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65, 67, 69, 71, 72}, *tracks[0]);
+    testSimpleNotes(std::vector<seqwires::Pitch>{64, 65, 67, 69, 71, 72, 74, 76}, *tracks[1]);
+    testSimpleNotes(std::vector<seqwires::Pitch>{67, 69, 71, 72, 74, 76, 77, 79}, *tracks[2]);
 }
 
 TEST(SmfTest, multichannelChords2) {
@@ -213,9 +216,9 @@ TEST(SmfTest, multichannelChords2) {
     ASSERT_EQ(channelGroup1.getStepToChild(trackFeature2), babelwires::PathStep(babelwires::FieldIdentifier("Track")));
     tracks[2] = &trackFeature2->get();
 
-    testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65, 67, 69, 71, 72}, tracks[0]->begin(), tracks[0]->end());
-    testSimpleNotes(std::vector<seqwires::Pitch>{64, 65, 67, 69, 71, 72, 74, 76}, tracks[1]->begin(), tracks[1]->end());
-    testSimpleNotes(std::vector<seqwires::Pitch>{67, 69, 71, 72, 74, 76, 77, 79}, tracks[2]->begin(), tracks[2]->end());
+    testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65, 67, 69, 71, 72}, *tracks[0]);
+    testSimpleNotes(std::vector<seqwires::Pitch>{64, 65, 67, 69, 71, 72, 74, 76}, *tracks[1]);
+    testSimpleNotes(std::vector<seqwires::Pitch>{67, 69, 71, 72, 74, 76, 77, 79}, *tracks[2]);
 }
 
 TEST(SmfTest, multichannelChords3) {
@@ -253,9 +256,9 @@ TEST(SmfTest, multichannelChords3) {
         tracks[i] = &trackFeature->get();
     }
 
-    testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65, 67, 69, 71, 72}, tracks[0]->begin(), tracks[0]->end());
-    testSimpleNotes(std::vector<seqwires::Pitch>{64, 65, 67, 69, 71, 72, 74, 76}, tracks[1]->begin(), tracks[1]->end());
-    testSimpleNotes(std::vector<seqwires::Pitch>{67, 69, 71, 72, 74, 76, 77, 79}, tracks[2]->begin(), tracks[2]->end());
+    testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65, 67, 69, 71, 72}, *tracks[0]);
+    testSimpleNotes(std::vector<seqwires::Pitch>{64, 65, 67, 69, 71, 72, 74, 76}, *tracks[1]);
+    testSimpleNotes(std::vector<seqwires::Pitch>{67, 69, 71, 72, 74, 76, 77, 79}, *tracks[2]);
 }
 
 TEST(SmfTest, trackLength) {
