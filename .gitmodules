@@ -5,5 +5,5 @@
 	path = BabelWiresAudio
 	url = https://github.com/Malcohol/BabelWiresAudio
 [submodule "BabelWiresPlugins/Smf/Tests/Data/test-midi-files"]
-	path = BabelWiresPlugins/Smf/Tests/Data/test-midi-files
+	path = BabelWiresPlugins/Smf/Tests/test-midi-files
 	url = https://github.com/jazz-soft/test-midi-files.git

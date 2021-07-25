@@ -3,7 +3,7 @@ SET( SMF_TESTS_SRCS
       testSuiteTests.cpp
    )
 
-FILE(GLOB MidiTestSuiteFiles "${CMAKE_CURRENT_SOURCE_DIR}/Data/test-midi-files/midi/*.mid")
+FILE(GLOB MidiTestSuiteFiles "${CMAKE_CURRENT_SOURCE_DIR}/test-midi-files/midi/*.mid")
 
 MESSAGE("Copying test suite files to build folder")
 FOREACH(file ${MidiTestSuiteFiles})
