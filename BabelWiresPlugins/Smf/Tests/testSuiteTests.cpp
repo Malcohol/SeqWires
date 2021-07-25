@@ -7,12 +7,10 @@
 #include <SeqWiresLib/Tracks/noteEvents.hpp>
 
 #include <BabelWires/Common/IO/fileDataSource.hpp>
-#include <BabelWires/Features/Path/fieldNameRegistry.hpp>
 
 #include <Tests/TestUtils/testLog.hpp>
 
 TEST(SmfTest, loadAllTestFilesWithoutCrashing) {
-    babelwires::FieldNameRegistryScope fieldNameRegistry;
     testUtils::TestLog log;
 
     for (auto& p: std::filesystem::directory_iterator(std::filesystem::current_path())) {
@@ -56,7 +54,6 @@ namespace {
 }
 
 TEST(SmfTest, cMajorScale) {
-    babelwires::FieldNameRegistryScope fieldNameRegistry;
     testUtils::TestLog log;
 
     babelwires::FileDataSource midiFile("test-c-major-scale.mid");
@@ -94,7 +91,6 @@ TEST(SmfTest, cMajorScale) {
 }
 
 TEST(SmfTest, multichannelChords0) {
-    babelwires::FieldNameRegistryScope fieldNameRegistry;
     testUtils::TestLog log;
 
     babelwires::FileDataSource midiFile("test-multichannel-chords-0.mid");
@@ -127,7 +123,6 @@ TEST(SmfTest, multichannelChords0) {
 }
 
 TEST(SmfTest, multichannelChords1) {
-    babelwires::FieldNameRegistryScope fieldNameRegistry;
     testUtils::TestLog log;
 
     babelwires::FileDataSource midiFile("test-multichannel-chords-1.mid");
@@ -166,7 +161,6 @@ TEST(SmfTest, multichannelChords1) {
 }
 
 TEST(SmfTest, multichannelChords2) {
-    babelwires::FieldNameRegistryScope fieldNameRegistry;
     testUtils::TestLog log;
 
     babelwires::FileDataSource midiFile("test-multichannel-chords-2.mid");
@@ -221,7 +215,6 @@ TEST(SmfTest, multichannelChords2) {
 }
 
 TEST(SmfTest, multichannelChords3) {
-    babelwires::FieldNameRegistryScope fieldNameRegistry;
     testUtils::TestLog log;
 
     babelwires::FileDataSource midiFile("test-multichannel-chords-3.mid");
