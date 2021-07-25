@@ -12,9 +12,11 @@
 
 TEST(SmfTest, loadAllTestFilesWithoutCrashing) {
     testUtils::TestLog log;
+    int numFilesTested = 0;
 
     for (auto& p: std::filesystem::directory_iterator(std::filesystem::current_path())) {
         if (p.path().extension() == ".mid") {
+            ++numFilesTested;
             try {
                 babelwires::FileDataSource midiFile(p.path());
                 smf::parseSmfSequence(midiFile);
@@ -25,6 +27,8 @@ TEST(SmfTest, loadAllTestFilesWithoutCrashing) {
             }
         }
     }
+
+    EXPECT_GT(numFilesTested, 0);
 }
 
 namespace {
