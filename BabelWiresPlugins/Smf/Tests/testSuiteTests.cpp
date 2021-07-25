@@ -35,6 +35,8 @@ namespace {
     const char* channelNames[] = { "ch0", "ch1", "ch2" };
 
     void testSimpleNotes(const std::vector<seqwires::Pitch>& expectedPitches, const seqwires::Track& track) {
+        // Note: right now, we only parse notes. As we add parsing of other event types, this test will fail.
+        // (A temporarily fix would be to use a FilteredTrackIterator.)
         auto noteIterator = track.begin();
         const auto endIterator = track.end();
 
@@ -88,11 +90,6 @@ TEST(SmfTest, cMajorScale) {
     EXPECT_NE(categoryMap.find(seqwires::NoteEvent::s_noteEventCategory), categoryMap.end());
     EXPECT_EQ(categoryMap.find(seqwires::NoteEvent::s_noteEventCategory)->second, 8);
     EXPECT_EQ(track.getDuration(), babelwires::Rational(1, 4) * 8);
-
-    // Note: right now, we only parse notes. As we add parsing of other event types, this test will fail.
-    // (A temporarily fix would be to use a FilteredTrackIterator.)
-    auto noteIterator = track.begin();
-    const auto endIterator = track.end();
 
     testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65, 67, 69, 71, 72}, track);
 }
