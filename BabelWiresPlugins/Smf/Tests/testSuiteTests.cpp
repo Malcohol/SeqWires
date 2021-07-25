@@ -257,3 +257,23 @@ TEST(SmfTest, multichannelChords3) {
     testSimpleNotes(std::vector<seqwires::Pitch>{64, 65, 67, 69, 71, 72, 74, 76}, tracks[1]->begin(), tracks[1]->end());
     testSimpleNotes(std::vector<seqwires::Pitch>{67, 69, 71, 72, 74, 76, 77, 79}, tracks[2]->begin(), tracks[2]->end());
 }
+
+TEST(SmfTest, trackLength) {
+    testUtils::TestLog log;
+
+    babelwires::FileDataSource midiFile("test-track-length.mid");
+
+    const auto feature = smf::parseSmfSequence(midiFile);
+    ASSERT_NE(feature, nullptr);
+    auto smfFeature = dynamic_cast<const smf::source::Format0SmfFeature*>(feature.get());
+    ASSERT_NE(smfFeature, nullptr);
+
+    EXPECT_EQ(smfFeature->getNumMidiTracks(), 1);
+    const auto& channelGroup = dynamic_cast<const smf::source::RecordChannelGroup&>(smfFeature->getMidiTrack(0));
+    EXPECT_EQ(channelGroup.getNumFeatures(), 1);
+    const auto* trackFeature = dynamic_cast<const seqwires::TrackFeature*>(channelGroup.getFeature(0));
+    ASSERT_NE(trackFeature, nullptr);
+
+    const seqwires::Track& track = trackFeature->get();
+    EXPECT_EQ(track.getDuration(), babelwires::Rational(3, 4));
+}
