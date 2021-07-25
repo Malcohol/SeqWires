@@ -101,6 +101,10 @@ smf::MidiMetadata& smf::source::SmfFeature::getMidiMetadata() {
     return *m_metadata;
 }
 
+const smf::MidiMetadata& smf::source::SmfFeature::getMidiMetadata() const {
+    return *m_metadata;
+}
+
 smf::source::Format0SmfFeature::Format0SmfFeature()
     : SmfFeature(SMF_FORMAT_0) {
     m_channelGroup = addField(std::make_unique<RecordChannelGroup>(),

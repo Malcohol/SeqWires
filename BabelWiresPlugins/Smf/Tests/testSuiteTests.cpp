@@ -40,6 +40,12 @@ TEST(SmfTest, cMajorScale) {
     ASSERT_NE(feature, nullptr);
     auto smfFeature = dynamic_cast<const smf::source::Format0SmfFeature*>(feature.get());
 
+    const auto& metadata = smfFeature->getMidiMetadata();
+    ASSERT_NE(metadata.getSequenceName(), nullptr);
+    ASSERT_NE(metadata.getCopyright(), nullptr);
+    EXPECT_EQ(metadata.getSequenceName()->get(), "C Major Scale Test");
+    EXPECT_EQ(metadata.getCopyright()->get(), "https://jazz-soft.net");
+
     EXPECT_EQ(smfFeature->getNumMidiTracks(), 1);
 
     const auto& channelGroup = dynamic_cast<const smf::source::RecordChannelGroup&>(smfFeature->getMidiTrack(0));

@@ -74,6 +74,7 @@ namespace source {
         virtual const ChannelGroup& getMidiTrack(int i) const = 0;
 
         MidiMetadata& getMidiMetadata();
+        const MidiMetadata& getMidiMetadata() const;
       protected:
         SmfFeature(Format f);
 
