@@ -277,3 +277,21 @@ TEST(SmfTest, trackLength) {
     const seqwires::Track& track = trackFeature->get();
     EXPECT_EQ(track.getDuration(), babelwires::Rational(3, 4));
 }
+
+TEST(SmfTest, tempoTest) {
+    testUtils::TestLog log;
+
+    babelwires::FileDataSource midiFile("test-karaoke-kar.mid");
+
+    const auto feature = smf::parseSmfSequence(midiFile);
+    ASSERT_NE(feature, nullptr);
+    auto smfFeature = dynamic_cast<const smf::source::Format1SmfFeature*>(feature.get());
+    ASSERT_NE(smfFeature, nullptr);
+
+    const auto& metadata = smfFeature->getMidiMetadata();
+    ASSERT_NE(metadata.getSequenceName(), nullptr);
+    EXPECT_EQ(metadata.getSequenceName()->get(), "Karaoke .KAR Test");
+
+    ASSERT_NE(metadata.getTempoFeature(), nullptr);
+    ASSERT_EQ(metadata.getTempoFeature()->get(), 90);
+}

@@ -11,6 +11,7 @@
 #include "SeqWiresLib/Tracks/noteEvents.hpp"
 
 #include <cassert>
+#include <cmath>
 
 smf::SmfParser::SmfParser(babelwires::DataSource& dataSource)
     : m_dataSource(dataSource)
@@ -159,9 +160,9 @@ void smf::SmfParser::parse() {
 }
 
 void smf::SmfParser::readTempoEvent(seqwires::TempoFeature& tempo) {
-    const int d = readU24();
-    const int bpm = 60'000'000 / d;
-    tempo.set(bpm);
+    const double d = readU24();
+    const double bpm = 60'000'000 / d;
+    tempo.set(std::round(bpm));
 }
 
 namespace {
