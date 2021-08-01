@@ -92,3 +92,13 @@ jobs:
       working-directory: build
       shell: bash
       run: BabelWiresPlugins/Smf/Tests/${{ matrix.config.targetFolder }}SmfTests${{ matrix.config.exeExtension }}
+
+    - name: CommonTest
+      working-directory: build
+      shell: bash
+      run: BabelWires/Tests/Common/${{ matrix.config.targetFolder }}commonTests${{ matrix.config.exeExtension }}
+
+    - name: BabelWiresTest
+      working-directory: build
+      shell: bash
+      run: BabelWires/Tests/BabelWires/${{ matrix.config.targetFolder }}babelWiresTests${{ matrix.config.exeExtension }}
