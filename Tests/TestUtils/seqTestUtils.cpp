@@ -5,6 +5,22 @@
 
 #include <gtest/gtest.h>
 
+void testUtils::addSimpleNotes(const std::vector<seqwires::Pitch>& expectedPitches, seqwires::Track& track) {
+    for (auto pitch : expectedPitches) {
+        seqwires::NoteOnEvent noteOn;
+        noteOn.setTimeSinceLastEvent(0);
+        noteOn.m_pitch = pitch;
+        noteOn.m_velocity = 127;
+        track.addEvent(noteOn);
+
+        seqwires::NoteOffEvent noteOff;
+        noteOff.setTimeSinceLastEvent(babelwires::Rational(1, 4));
+        noteOff.m_pitch = pitch;
+        noteOff.m_velocity = 64;
+        track.addEvent(noteOff);
+    }
+}
+
 void testUtils::testSimpleNotes(const std::vector<seqwires::Pitch>& expectedPitches, const seqwires::Track& track) {
     // Note: right now, we only parse notes. As we add parsing of other event types, this test will fail.
     // (A temporarily fix would be to use a FilteredTrackIterator.)
