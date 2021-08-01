@@ -8,9 +8,11 @@
 
 #include <BabelWires/Common/IO/fileDataSource.hpp>
 
+#include <Tests/TestUtils/seqTestUtils.hpp>
+
 #include <Tests/TestUtils/testLog.hpp>
 
-TEST(SmfTest, loadAllTestFilesWithoutCrashing) {
+TEST(SmfTestSuiteTest, loadAllTestFilesWithoutCrashing) {
     testUtils::TestLog log;
     int numFilesTested = 0;
 
@@ -33,35 +35,9 @@ TEST(SmfTest, loadAllTestFilesWithoutCrashing) {
 
 namespace {
     const char* channelNames[] = {"ch0", "ch1", "ch2"};
-
-    void testSimpleNotes(const std::vector<seqwires::Pitch>& expectedPitches, const seqwires::Track& track) {
-        // Note: right now, we only parse notes. As we add parsing of other event types, this test will fail.
-        // (A temporarily fix would be to use a FilteredTrackIterator.)
-        auto noteIterator = track.begin();
-        const auto endIterator = track.end();
-
-        for (auto pitch : expectedPitches) {
-            EXPECT_NE(noteIterator, endIterator);
-            auto noteOn = noteIterator->asA<const seqwires::NoteOnEvent>();
-            ASSERT_NE(noteOn, nullptr);
-            EXPECT_EQ(noteOn->getTimeSinceLastEvent(), 0);
-            EXPECT_EQ(noteOn->m_pitch, pitch);
-            EXPECT_EQ(noteOn->m_velocity, 127);
-            ++noteIterator;
-
-            EXPECT_NE(noteIterator, endIterator);
-            auto noteOff = noteIterator->asA<seqwires::NoteOffEvent>();
-            ASSERT_NE(noteOff, nullptr);
-            EXPECT_EQ(noteOff->getTimeSinceLastEvent(), babelwires::Rational(1, 4));
-            EXPECT_EQ(noteOff->m_pitch, pitch);
-            EXPECT_EQ(noteOff->m_velocity, 64);
-            ++noteIterator;
-        }
-        EXPECT_EQ(noteIterator, endIterator);
-    }
 } // namespace
 
-TEST(SmfTest, cMajorScale) {
+TEST(SmfTestSuiteTest, cMajorScale) {
     testUtils::TestLog log;
 
     babelwires::FileDataSource midiFile("test-c-major-scale.mid");
@@ -90,10 +66,10 @@ TEST(SmfTest, cMajorScale) {
     EXPECT_EQ(categoryMap.find(seqwires::NoteEvent::s_noteEventCategory)->second, 8);
     EXPECT_EQ(track.getDuration(), babelwires::Rational(1, 4) * 8);
 
-    testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65, 67, 69, 71, 72}, track);
+    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65, 67, 69, 71, 72}, track);
 }
 
-TEST(SmfTest, multichannelChords0) {
+TEST(SmfTestSuiteTest, multichannelChords0) {
     testUtils::TestLog log;
 
     babelwires::FileDataSource midiFile("test-multichannel-chords-0.mid");
@@ -121,12 +97,12 @@ TEST(SmfTest, multichannelChords0) {
         tracks[i] = &trackFeature->get();
     }
 
-    testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65, 67, 69, 71, 72}, *tracks[0]);
-    testSimpleNotes(std::vector<seqwires::Pitch>{64, 65, 67, 69, 71, 72, 74, 76}, *tracks[1]);
-    testSimpleNotes(std::vector<seqwires::Pitch>{67, 69, 71, 72, 74, 76, 77, 79}, *tracks[2]);
+    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65, 67, 69, 71, 72}, *tracks[0]);
+    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{64, 65, 67, 69, 71, 72, 74, 76}, *tracks[1]);
+    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{67, 69, 71, 72, 74, 76, 77, 79}, *tracks[2]);
 }
 
-TEST(SmfTest, multichannelChords1) {
+TEST(SmfTestSuiteTest, multichannelChords1) {
     testUtils::TestLog log;
 
     babelwires::FileDataSource midiFile("test-multichannel-chords-1.mid");
@@ -162,12 +138,12 @@ TEST(SmfTest, multichannelChords1) {
         tracks[i] = &trackFeature->get();
     }
 
-    testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65, 67, 69, 71, 72}, *tracks[0]);
-    testSimpleNotes(std::vector<seqwires::Pitch>{64, 65, 67, 69, 71, 72, 74, 76}, *tracks[1]);
-    testSimpleNotes(std::vector<seqwires::Pitch>{67, 69, 71, 72, 74, 76, 77, 79}, *tracks[2]);
+    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65, 67, 69, 71, 72}, *tracks[0]);
+    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{64, 65, 67, 69, 71, 72, 74, 76}, *tracks[1]);
+    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{67, 69, 71, 72, 74, 76, 77, 79}, *tracks[2]);
 }
 
-TEST(SmfTest, multichannelChords2) {
+TEST(SmfTestSuiteTest, multichannelChords2) {
     testUtils::TestLog log;
 
     babelwires::FileDataSource midiFile("test-multichannel-chords-2.mid");
@@ -218,12 +194,12 @@ TEST(SmfTest, multichannelChords2) {
     ASSERT_EQ(channelGroup1.getStepToChild(trackFeature2), babelwires::PathStep(babelwires::FieldIdentifier("Track")));
     tracks[2] = &trackFeature2->get();
 
-    testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65, 67, 69, 71, 72}, *tracks[0]);
-    testSimpleNotes(std::vector<seqwires::Pitch>{64, 65, 67, 69, 71, 72, 74, 76}, *tracks[1]);
-    testSimpleNotes(std::vector<seqwires::Pitch>{67, 69, 71, 72, 74, 76, 77, 79}, *tracks[2]);
+    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65, 67, 69, 71, 72}, *tracks[0]);
+    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{64, 65, 67, 69, 71, 72, 74, 76}, *tracks[1]);
+    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{67, 69, 71, 72, 74, 76, 77, 79}, *tracks[2]);
 }
 
-TEST(SmfTest, multichannelChords3) {
+TEST(SmfTestSuiteTest, multichannelChords3) {
     testUtils::TestLog log;
 
     babelwires::FileDataSource midiFile("test-multichannel-chords-3.mid");
@@ -261,12 +237,12 @@ TEST(SmfTest, multichannelChords3) {
         tracks[i] = &trackFeature->get();
     }
 
-    testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65, 67, 69, 71, 72}, *tracks[0]);
-    testSimpleNotes(std::vector<seqwires::Pitch>{64, 65, 67, 69, 71, 72, 74, 76}, *tracks[1]);
-    testSimpleNotes(std::vector<seqwires::Pitch>{67, 69, 71, 72, 74, 76, 77, 79}, *tracks[2]);
+    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65, 67, 69, 71, 72}, *tracks[0]);
+    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{64, 65, 67, 69, 71, 72, 74, 76}, *tracks[1]);
+    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{67, 69, 71, 72, 74, 76, 77, 79}, *tracks[2]);
 }
 
-TEST(SmfTest, trackLength) {
+TEST(SmfTestSuiteTest, trackLength) {
     testUtils::TestLog log;
 
     babelwires::FileDataSource midiFile("test-track-length.mid");
@@ -286,7 +262,7 @@ TEST(SmfTest, trackLength) {
     EXPECT_EQ(track.getDuration(), babelwires::Rational(3, 4));
 }
 
-TEST(SmfTest, tempoTest) {
+TEST(SmfTestSuiteTest, tempoTest) {
     testUtils::TestLog log;
 
     babelwires::FileDataSource midiFile("test-karaoke-kar.mid");
@@ -304,7 +280,7 @@ TEST(SmfTest, tempoTest) {
     ASSERT_EQ(metadata.getTempoFeature()->get(), 90);
 }
 
-TEST(SmfTest, corruptFiles) {
+TEST(SmfTestSuiteTest, corruptFiles) {
     testUtils::TestLog log;
 
     {

@@ -1,5 +1,6 @@
 SET( SMF_TESTS_SRCS
       smfTests.cpp
+      saveLoadTests.cpp
       testSuiteTests.cpp
    )
 
@@ -13,4 +14,4 @@ ENDFOREACH()
 
 ADD_EXECUTABLE( SmfTests ${SMF_TESTS_SRCS} )
 TARGET_INCLUDE_DIRECTORIES( SmfTests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../../../BabelWires ${CMAKE_CURRENT_SOURCE_DIR}/../../.. )
-TARGET_LINK_LIBRARIES(SmfTests Common SmfLib testUtils gtest)
+TARGET_LINK_LIBRARIES(SmfTests Common seqTestUtils SmfLib testUtils gtest)

@@ -32,5 +32,6 @@ ADD_SUBDIRECTORY( BabelWiresAudio )
 ADD_SUBDIRECTORY( SeqWiresExe )
 ADD_SUBDIRECTORY( Seq2tapeExe )
 
+ADD_SUBDIRECTORY( Tests/TestUtils )
 ADD_SUBDIRECTORY( Tests/SeqWiresLib )
 ADD_SUBDIRECTORY( Tests/Seq2tapeLib )
