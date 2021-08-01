@@ -73,7 +73,7 @@ void smf::SmfWriter::writeTempoEvent(int bpm) {
 }
 
 void smf::SmfWriter::writeTextMetaEvent(int type, std::string text) {
-    assert((0 >= type) && (type <= 15) && "Type is out-of-range.");
+    assert((0 <= type) && (type <= 15) && "Type is out-of-range.");
     babelwires::Byte t = type;
     m_os->put(0x00u);
     m_os->put(0xffu);
