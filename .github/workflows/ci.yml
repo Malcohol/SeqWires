@@ -18,7 +18,7 @@ jobs:
             name: "Ubuntu_Latest_GCC",
             os: ubuntu-latest,
             build_type: "Debug",
-            targetFolder: "",
+            targetFolder: "./",
             exeExtension: "",
             cc: "gcc-9",
             cxx: "g++-9"
@@ -99,6 +99,6 @@ jobs:
       run: BabelWiresAudio/Alsa/Tests/${{ matrix.config.targetFolder }}alsaTests${{ matrix.config.exeExtension }}
 
     - name: SmfTests
-      working-directory: build/BabelWiresPlugins/Smf/Tests/${{ matrix.config.targetFolder }}
+      working-directory: build/BabelWiresPlugins/Smf/Tests
       shell: bash
-      run: ./SmfTests${{ matrix.config.exeExtension }}
+      run: {{ matrix.config.targetFolder }}SmfTests${{ matrix.config.exeExtension }}
