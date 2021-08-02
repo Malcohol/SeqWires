@@ -12,7 +12,9 @@
 #include "BabelWires/Project/projectContext.hpp"
 
 #include "SeqWiresLib/Processors/excerptProcessor.hpp"
+#include "SeqWiresLib/Processors/repeatProcessor.hpp"
 
 void seqwires::registerLib(babelwires::ProjectContext& context) {
-    context.m_processorReg.addEntry(std::make_unique<seqwires::ExcerptProcessorFactory>());
+    context.m_processorReg.addEntry(std::make_unique<ExcerptProcessorFactory>());
+    context.m_processorReg.addEntry(std::make_unique<RepeatProcessorFactory>());
 }

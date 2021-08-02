@@ -3,7 +3,9 @@ SET( SEQWIRESLIB_SRCS
 	Features/tempoFeature.cpp
 	Features/trackFeature.cpp
 	Processors/excerptProcessor.cpp
+	Processors/repeatProcessor.cpp
 	Functions/excerptFunction.cpp
+	Functions/repeatFunction.cpp
 	Functions/monophonicSubtracksFunction.cpp
 	Tracks/trackEvent.cpp
 	Tracks/noteEvents.cpp

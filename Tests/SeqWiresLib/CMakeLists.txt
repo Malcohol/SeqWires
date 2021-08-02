@@ -1,12 +1,13 @@
 SET( SEQUENCELIB_TESTS_SRCS
       sequenceLibTests.cpp
-      musicTypesTest.cpp
-      trackTest.cpp
+      excerptProcessorTest.cpp
       filteredTrackIteratorTest.cpp
       monophonicNoteIteratorTest.cpp
+      musicTypesTest.cpp
+      trackTest.cpp
       trackTraverserTest.cpp
    )
 
 ADD_EXECUTABLE( sequenceLibTests ${SEQUENCELIB_TESTS_SRCS} )
 TARGET_INCLUDE_DIRECTORIES( sequenceLibTests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../../BabelWires ${CMAKE_CURRENT_SOURCE_DIR}/../.. )
-TARGET_LINK_LIBRARIES(sequenceLibTests Common SeqWiresLib testUtils gtest)
+TARGET_LINK_LIBRARIES(sequenceLibTests Common SeqWiresLib testUtils seqTestUtils gtest)
