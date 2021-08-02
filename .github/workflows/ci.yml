@@ -101,4 +101,4 @@ jobs:
     - name: SmfTests
       working-directory: build/BabelWiresPlugins/Smf/Tests
       shell: bash
-      run: {{ matrix.config.targetFolder }}SmfTests${{ matrix.config.exeExtension }}
+      run: ${{ matrix.config.targetFolder }}SmfTests${{ matrix.config.exeExtension }}
