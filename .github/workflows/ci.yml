@@ -72,6 +72,16 @@ jobs:
     - name: Build
       run: cmake --build build --config ${{ matrix.config.build_type }}
 
+    - name: CommonTest
+      working-directory: build
+      shell: bash
+      run: BabelWires/Tests/Common/${{ matrix.config.targetFolder }}commonTests${{ matrix.config.exeExtension }}
+
+    - name: BabelWiresTest
+      working-directory: build
+      shell: bash
+      run: BabelWires/Tests/BabelWires/${{ matrix.config.targetFolder }}babelWiresTests${{ matrix.config.exeExtension }}
+
     - name: SequenceLibTests
       working-directory: build
       shell: bash
@@ -89,16 +99,6 @@ jobs:
       run: BabelWiresAudio/Alsa/Tests/${{ matrix.config.targetFolder }}alsaTests${{ matrix.config.exeExtension }}
 
     - name: SmfTests
-      working-directory: build
+      working-directory: build/BabelWiresPlugins/Smf/Tests/${{ matrix.config.targetFolder }}
       shell: bash
       run: BabelWiresPlugins/Smf/Tests/${{ matrix.config.targetFolder }}SmfTests${{ matrix.config.exeExtension }}
-
-    - name: CommonTest
-      working-directory: build
-      shell: bash
-      run: BabelWires/Tests/Common/${{ matrix.config.targetFolder }}commonTests${{ matrix.config.exeExtension }}
-
-    - name: BabelWiresTest
-      working-directory: build
-      shell: bash
-      run: BabelWires/Tests/BabelWires/${{ matrix.config.targetFolder }}babelWiresTests${{ matrix.config.exeExtension }}
