@@ -5,7 +5,7 @@
  * 
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
-#include "BabelWiresPlugins/Smf/smfWriter.hpp"
+#include "BabelWiresPlugins/Smf/Plugin/smfWriter.hpp"
 
 #include "SeqWiresLib/Features/trackFeature.hpp"
 #include "SeqWiresLib/Utilities/filteredTrackIterator.hpp"
@@ -73,7 +73,7 @@ void smf::SmfWriter::writeTempoEvent(int bpm) {
 }
 
 void smf::SmfWriter::writeTextMetaEvent(int type, std::string text) {
-    assert((0 >= type) && (type <= 15) && "Type is out-of-range.");
+    assert((0 <= type) && (type <= 15) && "Type is out-of-range.");
     babelwires::Byte t = type;
     m_os->put(0x00u);
     m_os->put(0xffu);
@@ -85,23 +85,23 @@ void smf::SmfWriter::writeTextMetaEvent(int type, std::string text) {
 }
 
 void smf::SmfWriter::writeHeaderChunk(const target::SmfFeature& sequence) {
-    int numTracks = sequence.getNumMidiTracks();
-    if (sequence.getFormat() == smf::target::SmfFeature::SMF_FORMAT_0) {
-        // Track 0 holds meta-data.
-        ++numTracks;
-    }
+    const int numTracks = sequence.getNumMidiTracks();
 
-    assert((numTracks < 16) && "Midi spec allows only 16 channels");
     assert((m_division < (2 << 15)) && "division is too large");
 
     m_os->write("MThd", 4);
     writeUint32(6);
     writeUint16(int(sequence.getFormat()));
-    writeUint16(numTracks);
-
+    if (sequence.getFormat() == smf::target::SmfFeature::SMF_FORMAT_0) {
+        writeUint16(numTracks);
+    } else {
+        // Track 0 holds meta-data.
+        writeUint16(numTracks + 1);
+    }
+    
     {
         int division = 1;
-        for (int i = 0; i < sequence.getNumMidiTracks(); ++i) {
+        for (int i = 0; i < numTracks; ++i) {
             const target::ChannelGroup& channelGroup = sequence.getMidiTrack(i);
             for (int j = 0; j < channelGroup.getNumTracks(); ++j) {
                 const target::ChannelTrackFeature& entry = channelGroup.getTrack(j);

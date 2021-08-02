@@ -18,7 +18,7 @@ jobs:
             name: "Ubuntu_Latest_GCC",
             os: ubuntu-latest,
             build_type: "Debug",
-            targetFolder: "",
+            targetFolder: "./",
             exeExtension: "",
             cc: "gcc-9",
             cxx: "g++-9"
@@ -72,6 +72,16 @@ jobs:
     - name: Build
       run: cmake --build build --config ${{ matrix.config.build_type }}
 
+    - name: CommonTest
+      working-directory: build
+      shell: bash
+      run: BabelWires/Tests/Common/${{ matrix.config.targetFolder }}commonTests${{ matrix.config.exeExtension }}
+
+    - name: BabelWiresTest
+      working-directory: build
+      shell: bash
+      run: BabelWires/Tests/BabelWires/${{ matrix.config.targetFolder }}babelWiresTests${{ matrix.config.exeExtension }}
+
     - name: SequenceLibTests
       working-directory: build
       shell: bash
@@ -87,3 +97,8 @@ jobs:
       working-directory: build
       shell: bash
       run: BabelWiresAudio/Alsa/Tests/${{ matrix.config.targetFolder }}alsaTests${{ matrix.config.exeExtension }}
+
+    - name: SmfTests
+      working-directory: build/BabelWiresPlugins/Smf/Tests
+      shell: bash
+      run: ${{ matrix.config.targetFolder }}SmfTests${{ matrix.config.exeExtension }}

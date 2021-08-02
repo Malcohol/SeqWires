@@ -5,9 +5,9 @@
  * 
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
-#include "BabelWiresPlugins/Smf/smfFormat.hpp"
-#include "BabelWiresPlugins/Smf/smfParser.hpp"
-#include "BabelWiresPlugins/Smf/smfWriter.hpp"
+#include "BabelWiresPlugins/Smf/Plugin/smfFormat.hpp"
+#include "BabelWiresPlugins/Smf/Plugin/smfParser.hpp"
+#include "BabelWiresPlugins/Smf/Plugin/smfWriter.hpp"
 
 namespace {
 

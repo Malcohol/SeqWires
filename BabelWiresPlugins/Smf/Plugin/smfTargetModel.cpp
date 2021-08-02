@@ -5,10 +5,10 @@
  * 
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
-#include "BabelWiresPlugins/Smf/smfTargetModel.hpp"
+#include "BabelWiresPlugins/Smf/Plugin/smfTargetModel.hpp"
 
 #include "BabelWires/Features/featureMixins.hpp"
-#include "BabelWiresPlugins/Smf/smfFormat.hpp"
+#include "BabelWiresPlugins/Smf/Plugin/smfFormat.hpp"
 #include "SeqWiresLib/Features/trackFeature.hpp"
 
 #include "BabelWires/Features/Path/fieldName.hpp"

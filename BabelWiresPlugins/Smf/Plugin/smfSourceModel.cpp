@@ -5,10 +5,10 @@
  *
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
-#include "BabelWiresPlugins/Smf/smfSourceModel.hpp"
+#include "BabelWiresPlugins/Smf/Plugin/smfSourceModel.hpp"
 
 #include "BabelWires/Features/featureMixins.hpp"
-#include "BabelWiresPlugins/Smf/smfFormat.hpp"
+#include "BabelWiresPlugins/Smf/Plugin/smfFormat.hpp"
 #include "SeqWiresLib/Features/trackFeature.hpp"
 
 #include "BabelWires/Features/Path/fieldName.hpp"
@@ -98,6 +98,10 @@ smf::source::SmfFeature::Format smf::source::SmfFeature::getFormat() const {
 }
 
 smf::MidiMetadata& smf::source::SmfFeature::getMidiMetadata() {
+    return *m_metadata;
+}
+
+const smf::MidiMetadata& smf::source::SmfFeature::getMidiMetadata() const {
     return *m_metadata;
 }
 
