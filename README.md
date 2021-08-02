@@ -27,8 +27,7 @@ However, even when I do so, there will be still be a use-case for the stand-alon
 
 ## Status
 
-* SeqWires: [![SeqWires build and test pipeline](https://github.com/Malcohol/SeqWires/actions/workflows/ci.yml/badge.svg)](https://github.com/Malcohol/SeqWires/actions/workflows/ci.yml)
-* BabelWires: [![Build and test pipeline](https://github.com/Malcohol/BabelWires/actions/workflows/ci.yml/badge.svg)](https://github.com/Malcohol/BabelWires/actions/workflows/ci.yml)
+[![SeqWires build and test pipeline](https://github.com/Malcohol/SeqWires/actions/workflows/ci.yml/badge.svg)](https://github.com/Malcohol/SeqWires/actions/workflows/ci.yml)
 
 SeqWires is under active development, but please do not expect development to be rapid.
 I have very limited time to devote to this.
