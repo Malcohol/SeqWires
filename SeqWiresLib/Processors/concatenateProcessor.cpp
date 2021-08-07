@@ -19,9 +19,9 @@ seqwires::ConcatenateProcessor::ConcatenateProcessor()
     : m_inputFeature(std::make_unique<babelwires::RecordFeature>())
     , m_outputFeature(std::make_unique<babelwires::RecordFeature>()) {
     m_tracksIn = m_inputFeature->addField(std::make_unique<babelwires::HasStaticSizeRange<babelwires::StandardArrayFeature<seqwires::TrackFeature>, 2, 16>>(),
-                                              FIELD_NAME("TrksIn", "Input Tracks", "3b8d8cd7-21d9-44a1-877e-134915fe5aca"));
+                                              FIELD_NAME("Srce", "Source tracks", "3b8d8cd7-21d9-44a1-877e-134915fe5aca"));
     m_trackOut = m_outputFeature->addField(std::make_unique<TrackFeature>(),
-                                              FIELD_NAME("TrkOut", "Output Track", "873d5d66-c5ec-46a4-9aba-f5f4223bdfd4"));
+                                              FIELD_NAME("Result", "Result Track", "873d5d66-c5ec-46a4-9aba-f5f4223bdfd4"));
 }
 
 seqwires::ConcatenateProcessorFactory::ConcatenateProcessorFactory()
