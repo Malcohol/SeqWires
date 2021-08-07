@@ -7,6 +7,7 @@
  **/
 #include "SeqWiresLib/Functions/repeatFunction.hpp"
 
+#include "SeqWiresLib/Functions/appendTrackFunction.hpp"
 #include "SeqWiresLib/Tracks/trackEventHolder.hpp"
 
 #include "BabelWires/Features/modelExceptions.hpp"
@@ -20,25 +21,9 @@ std::unique_ptr<seqwires::Track> seqwires::repeatTrack(const Track& trackIn, int
 
     auto trackOut = std::make_unique<Track>();
 
-    ModelDuration gapAtEnd = 0;
-
     for (int i = 0; i < count; ++i) {
-        auto it = trackIn.begin();
-        if (it != trackIn.end()) {
-            TrackEventHolder firstEventInSequence = *it;
-            firstEventInSequence->setTimeSinceLastEvent(firstEventInSequence->getTimeSinceLastEvent() + gapAtEnd);
-            trackOut->addEvent(firstEventInSequence.release());
-
-            for (; it != trackIn.end(); ++it) {
-                // TODO Shouldn't need this.
-                TrackEventHolder event = *it;
-                trackOut->addEvent(event.release());
-            }
-            gapAtEnd = trackIn.getDuration() - trackIn.getTotalEventDuration();
-        }
+        appendTrack(*trackOut, trackIn);
     }
-
-    trackOut->setDuration(trackIn.getDuration() * count);
 
     return trackOut;
 }

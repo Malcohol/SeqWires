@@ -1,9 +1,11 @@
 SET( SEQUENCELIB_TESTS_SRCS
       sequenceLibTests.cpp
+      concatenateProcessorTest.cpp
       excerptProcessorTest.cpp
       filteredTrackIteratorTest.cpp
       monophonicNoteIteratorTest.cpp
       musicTypesTest.cpp
+      repeatProcessorTest.cpp
       trackTest.cpp
       trackTraverserTest.cpp
    )

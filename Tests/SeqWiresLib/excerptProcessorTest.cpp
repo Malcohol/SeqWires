@@ -106,49 +106,13 @@ TEST(ExcerptProcessorTest, funcGaps) {
 
     auto trackOut = seqwires::getTrackExcerpt(trackIn, babelwires::Rational(3, 8), 1);
 
-    auto noteIterator = trackOut->begin();
-    const auto endIterator = trackOut->end();
+    const std::vector<testUtils::NoteInfo> expectedNoteInfos{
+        {64, babelwires::Rational(1, 8), babelwires::Rational(1, 4)},
+        {65, 0, babelwires::Rational(1, 4)},
+        {67, 0, babelwires::Rational(1, 4)},
+        {69, 0, babelwires::Rational(1, 8)}
+    };
 
-    {
-        EXPECT_NE(noteIterator, endIterator);
-        auto noteOn = noteIterator->asA<const seqwires::NoteOnEvent>();
-        ASSERT_NE(noteOn, nullptr);
-        EXPECT_EQ(noteOn->getTimeSinceLastEvent(), babelwires::Rational(1, 8));
-        EXPECT_EQ(noteOn->m_pitch, 64);
-        EXPECT_EQ(noteOn->m_velocity, 127);
-        ++noteIterator;
-    }
-
-    // Pitches
-    std::vector<seqwires::Pitch> middlePitches{64, 65, 67, 69};
-
-    for (int i = 0; i < middlePitches.size() - 1; ++i)
-    {
-        EXPECT_NE(noteIterator, endIterator);
-        auto noteOff = noteIterator->asA<seqwires::NoteOffEvent>();
-        ASSERT_NE(noteOff, nullptr);
-        EXPECT_EQ(noteOff->getTimeSinceLastEvent(), babelwires::Rational(1, 4));
-        EXPECT_EQ(noteOff->m_pitch, middlePitches[i]);
-        EXPECT_EQ(noteOff->m_velocity, 64);
-        ++noteIterator;
-
-        EXPECT_NE(noteIterator, endIterator);
-        auto noteOn = noteIterator->asA<const seqwires::NoteOnEvent>();
-        ASSERT_NE(noteOn, nullptr);
-        EXPECT_EQ(noteOn->getTimeSinceLastEvent(), 0);
-        EXPECT_EQ(noteOn->m_pitch, middlePitches[i + 1]);
-        EXPECT_EQ(noteOn->m_velocity, 127);
-        ++noteIterator;
-    }
-    {
-        EXPECT_NE(noteIterator, endIterator);
-        auto noteOff = noteIterator->asA<seqwires::NoteOffEvent>();
-        ASSERT_NE(noteOff, nullptr);
-        EXPECT_EQ(noteOff->getTimeSinceLastEvent(), babelwires::Rational(1, 8));
-        EXPECT_EQ(noteOff->m_pitch, 69);
-        EXPECT_EQ(noteOff->m_velocity, 64);
-        ++noteIterator;
-    }
-    EXPECT_EQ(noteIterator, endIterator);
+    testUtils::testNotes(expectedNoteInfos, *trackOut);
 }
 

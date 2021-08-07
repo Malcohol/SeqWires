@@ -10,7 +10,7 @@
 #include "BabelWires/Features/featureMixins.hpp"
 #include "BabelWires/Features/numericFeature.hpp"
 #include "SeqWiresLib/Features/trackFeature.hpp"
-#include "SeqWiresLib/Functions/repeatFunction.hpp"
+#include "SeqWiresLib/Functions/appendTrackFunction.hpp"
 
 #include "BabelWires/Features/Path/fieldName.hpp"
 
@@ -63,7 +63,12 @@ void seqwires::RepeatProcessor::process(babelwires::UserLogger& userLogger) {
     for (int i = 0; i < m_tracksIn->getNumFeatures(); ++i) {
         auto trackFeatureIn = static_cast<const TrackFeature*>(m_tracksIn->getFeature(i));
         if (countChanged || trackFeatureIn->isChanged(babelwires::Feature::Changes::SomethingChanged)) {
-            auto trackOut = repeatTrack(trackFeatureIn->get(), count);
+            auto trackOut = std::make_unique<Track>();
+
+            const Track& trackIn = trackFeatureIn->get();
+            for (int i = 0; i < count; ++i) {
+                appendTrack(*trackOut, trackIn);
+            }
             static_cast<TrackFeature*>(m_tracksOut->getFeature(i))->set(std::move(trackOut));
         }
     }

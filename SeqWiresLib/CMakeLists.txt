@@ -2,8 +2,10 @@ SET( SEQWIRESLIB_SRCS
 	Utilities/musicUtilities.cpp
 	Features/tempoFeature.cpp
 	Features/trackFeature.cpp
+	Processors/concatenateProcessor.cpp
 	Processors/excerptProcessor.cpp
 	Processors/repeatProcessor.cpp
+	Functions/appendTrackFunction.cpp
 	Functions/excerptFunction.cpp
 	Functions/repeatFunction.cpp
 	Functions/monophonicSubtracksFunction.cpp

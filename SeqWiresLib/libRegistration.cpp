@@ -13,8 +13,10 @@
 
 #include "SeqWiresLib/Processors/excerptProcessor.hpp"
 #include "SeqWiresLib/Processors/repeatProcessor.hpp"
+#include "SeqWiresLib/Processors/concatenateProcessor.hpp"
 
 void seqwires::registerLib(babelwires::ProjectContext& context) {
+    context.m_processorReg.addEntry(std::make_unique<ConcatenateProcessorFactory>());
     context.m_processorReg.addEntry(std::make_unique<ExcerptProcessorFactory>());
     context.m_processorReg.addEntry(std::make_unique<RepeatProcessorFactory>());
 }
