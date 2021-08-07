@@ -35,7 +35,6 @@ namespace seqwires {
 
         babelwires::ArrayFeature* m_tracksIn;
         babelwires::ArrayFeature* m_tracksOut;
-        std::unordered_map<babelwires::ArrayIndex, babelwires::ArrayIndex> m_inToOutMap;
     };
 
     /// Create an excerpt processor.

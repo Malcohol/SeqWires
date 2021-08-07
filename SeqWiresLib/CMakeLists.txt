@@ -5,6 +5,7 @@ SET( SEQWIRESLIB_SRCS
 	Processors/concatenateProcessor.cpp
 	Processors/excerptProcessor.cpp
 	Processors/repeatProcessor.cpp
+	Processors/silenceProcessor.cpp
 	Functions/appendTrackFunction.cpp
 	Functions/excerptFunction.cpp
 	Functions/repeatFunction.cpp

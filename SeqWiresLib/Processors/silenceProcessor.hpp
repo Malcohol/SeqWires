@@ -1,5 +1,5 @@
 /**
- * A processor which repeats sequence data a number of times.
+ * A processor which creates a silent track of a certain duration.
  *
  * (C) 2021 Malcolm Tyrrell
  *
@@ -11,16 +11,18 @@
 #include "BabelWires/Processors/processorFactory.hpp"
 
 namespace babelwires {
-    class IntFeature;
+    class RationalFeature;
     class ArrayFeature;
 } // namespace babelwires
 
 namespace seqwires {
+    class TrackFeature;
 
-    /// A processor which limits a track to events between certain points.
-    class RepeatProcessor : public babelwires::Processor {
+    /// A processor which creates a silent track of a certain duration.
+    // Note: The excerpt processor can do this too, but someone might not think of that.
+    class SilenceProcessor : public babelwires::Processor {
       public:
-        RepeatProcessor();
+        SilenceProcessor();
 
         virtual void process(babelwires::UserLogger& userLogger) override;
         virtual babelwires::RecordFeature* getInputFeature() override;
@@ -30,15 +32,14 @@ namespace seqwires {
         std::unique_ptr<babelwires::RecordFeature> m_inputFeature;
         std::unique_ptr<babelwires::RecordFeature> m_outputFeature;
 
-        babelwires::IntFeature* m_count;
-        babelwires::ArrayFeature* m_tracksIn;
-        babelwires::ArrayFeature* m_tracksOut;
+        babelwires::RationalFeature* m_duration;
+        seqwires::TrackFeature* m_trackOut;
     };
 
     /// Create an excerpt processor.
-    class RepeatProcessorFactory : public babelwires::ProcessorFactory {
+    class SilenceProcessorFactory : public babelwires::ProcessorFactory {
       public:
-        RepeatProcessorFactory();
+        SilenceProcessorFactory();
         virtual std::unique_ptr<babelwires::Processor> createNewProcessor() const override;
     };
 

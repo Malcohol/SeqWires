@@ -42,11 +42,17 @@ babelwires::RecordFeature* seqwires::ConcatenateProcessor::getOutputFeature() {
 void seqwires::ConcatenateProcessor::process(babelwires::UserLogger& userLogger) {
     auto trackOut = std::make_unique<Track>();
 
+    bool hasChanges = false;
+
     for (int i = 0; i < m_tracksIn->getNumFeatures(); ++i) {
         auto trackFeatureIn = static_cast<const TrackFeature*>(m_tracksIn->getFeature(i));
-        if (!trackFeatureIn->isChanged(babelwires::Feature::Changes::SomethingChanged)) {
-            return;
+        if (trackFeatureIn->isChanged(babelwires::Feature::Changes::SomethingChanged)) {
+            hasChanges = true;
         }
+    }
+
+    if (!hasChanges) {
+        return;
     }
 
     for (int i = 0; i < m_tracksIn->getNumFeatures(); ++i) {
