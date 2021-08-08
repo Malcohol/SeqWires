@@ -24,10 +24,7 @@ void seqwires::appendTrack(Track& targetTrack, const Track& sourceTrack) {
         targetTrack.addEvent(firstEventInSequence.release());
 
         for (++it; it != sourceTrack.end(); ++it) {
-            // TODO Review template! Should be able to write this:
-            // targetTrack.addEvent(*it);
-            TrackEventHolder event = *it;
-            targetTrack.addEvent(event.release());
+            targetTrack.addEvent(*it);
         }
     }
     

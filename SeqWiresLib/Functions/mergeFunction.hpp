@@ -1,5 +1,5 @@
 /**
- * Function which join tracks together sequencially.
+ * Function which merges tracks together.
  *
  * (C) 2021 Malcolm Tyrrell
  *
@@ -10,6 +10,6 @@
 #include "SeqWiresLib/Tracks/track.hpp"
 
 namespace seqwires {
-    /// Add the events of sourceTrack to the end of targetTrack.
-    void appendTrack(Track& targetTrack, const Track& sourceTrack);
+    /// Merge the events of the sourceTracks into targetTrack.
+    Track mergeTracks(const std::vector<const Track*>& sourceTracks);
 } // namespace seqwires

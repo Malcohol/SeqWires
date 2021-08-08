@@ -5,27 +5,27 @@
  * 
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
-#include "SeqWiresLib/Processors/concatenateProcessor.hpp"
+#include "SeqWiresLib/Processors/mergeProcessor.hpp"
 #include "BabelWires/Features/arrayFeature.hpp"
 #include "BabelWires/Features/featureMixins.hpp"
 #include "SeqWiresLib/Features/trackFeature.hpp"
-#include "SeqWiresLib/Functions/appendTrackFunction.hpp"
+#include "SeqWiresLib/Functions/mergeFunction.hpp"
 
 #include "BabelWires/Features/Path/fieldName.hpp"
 
 #include <set>
 
-seqwires::ConcatenateProcessor::ConcatenateProcessor() {
+seqwires::MergeProcessor::MergeProcessor() {
     m_tracksIn = m_inputFeature->addField(std::make_unique<babelwires::HasStaticSizeRange<babelwires::StandardArrayFeature<seqwires::TrackFeature>, 2, 16>>(),
-                                              FIELD_NAME("Srcs", "Source tracks", "3b8d8cd7-21d9-44a1-877e-134915fe5aca"));
+                                              FIELD_NAME("Srcs", "Source tracks", "80b175ae-c954-4943-96d8-eaffcd7ed6e1"));
     m_trackOut = m_outputFeature->addField(std::make_unique<TrackFeature>(),
-                                              FIELD_NAME("Result", "Result Track", "873d5d66-c5ec-46a4-9aba-f5f4223bdfd4"));
+                                              FIELD_NAME("Result", "Result Track", "ab56e996-d361-42ed-a0df-44a90a73dc20"));
 }
 
-seqwires::ConcatenateProcessor::Factory::Factory()
-    : CommonProcessorFactory("ConcatenateProcessor", "Concatenate Processor", 1) {}
+seqwires::MergeProcessor::Factory::Factory()
+    : CommonProcessorFactory("MergeProcessor", "Merge Processor", 1) {}
 
-void seqwires::ConcatenateProcessor::process(babelwires::UserLogger& userLogger) {
+void seqwires::MergeProcessor::process(babelwires::UserLogger& userLogger) {
     bool hasChanges = false;
 
     for (int i = 0; i < m_tracksIn->getNumFeatures(); ++i) {
@@ -39,12 +39,11 @@ void seqwires::ConcatenateProcessor::process(babelwires::UserLogger& userLogger)
         return;
     }
 
-    auto trackOut = std::make_unique<Track>();
+    std::vector<const Track*> tracksIn;
 
     for (int i = 0; i < m_tracksIn->getNumFeatures(); ++i) {
-        auto trackFeatureIn = static_cast<const TrackFeature*>(m_tracksIn->getFeature(i));
-        appendTrack(*trackOut, trackFeatureIn->get());   
+        tracksIn.emplace_back(&static_cast<const TrackFeature*>(m_tracksIn->getFeature(i))->get());
     }
-    
-    m_trackOut->set(std::move(trackOut));
+
+    m_trackOut->set(std::make_unique<Track>(mergeTracks(tracksIn)));
 }

@@ -20,7 +20,7 @@ namespace seqwires {
     class Track {
       public:
         /// Add a TrackEvent by moving or copying it into the track.
-        template <typename EVENT, typename = std::enable_if_t<std::is_convertible_v<EVENT&, TrackEvent&>>>
+        template <typename EVENT, typename = std::enable_if_t<std::is_convertible_v<EVENT&, const TrackEvent&>>>
         void addEvent(EVENT&& srcEvent) {
             onNewEvent(m_blockStream.addEvent(std::forward<EVENT>(srcEvent)));
         };

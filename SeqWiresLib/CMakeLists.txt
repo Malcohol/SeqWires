@@ -4,12 +4,14 @@ SET( SEQWIRESLIB_SRCS
 	Features/trackFeature.cpp
 	Processors/concatenateProcessor.cpp
 	Processors/excerptProcessor.cpp
+	Processors/mergeProcessor.cpp
 	Processors/repeatProcessor.cpp
 	Processors/silenceProcessor.cpp
 	Processors/transposeProcessor.cpp
 	Functions/appendTrackFunction.cpp
 	Functions/excerptFunction.cpp
 	Functions/repeatFunction.cpp
+	Functions/mergeFunction.cpp
 	Functions/monophonicSubtracksFunction.cpp
 	Functions/transposeFunction.cpp
 	Tracks/trackEvent.cpp
