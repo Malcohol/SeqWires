@@ -15,9 +15,7 @@
 
 #include <set>
 
-seqwires::ConcatenateProcessor::ConcatenateProcessor()
-    : m_inputFeature(std::make_unique<babelwires::RecordFeature>())
-    , m_outputFeature(std::make_unique<babelwires::RecordFeature>()) {
+seqwires::ConcatenateProcessor::ConcatenateProcessor() {
     m_tracksIn = m_inputFeature->addField(std::make_unique<babelwires::HasStaticSizeRange<babelwires::StandardArrayFeature<seqwires::TrackFeature>, 2, 16>>(),
                                               FIELD_NAME("Srcs", "Source tracks", "3b8d8cd7-21d9-44a1-877e-134915fe5aca"));
     m_trackOut = m_outputFeature->addField(std::make_unique<TrackFeature>(),
@@ -29,14 +27,6 @@ seqwires::ConcatenateProcessorFactory::ConcatenateProcessorFactory()
 
 std::unique_ptr<babelwires::Processor> seqwires::ConcatenateProcessorFactory::createNewProcessor() const {
     return std::make_unique<ConcatenateProcessor>();
-}
-
-babelwires::RecordFeature* seqwires::ConcatenateProcessor::getInputFeature() {
-    return m_inputFeature.get();
-}
-
-babelwires::RecordFeature* seqwires::ConcatenateProcessor::getOutputFeature() {
-    return m_outputFeature.get();
 }
 
 void seqwires::ConcatenateProcessor::process(babelwires::UserLogger& userLogger) {

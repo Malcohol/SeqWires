@@ -18,18 +18,13 @@ namespace seqwires {
     class TrackFeature;
 
     /// A processor which limits a track to events between certain points.
-    class ConcatenateProcessor : public babelwires::Processor {
+    class ConcatenateProcessor : public babelwires::CommonProcessor {
       public:
         ConcatenateProcessor();
 
         virtual void process(babelwires::UserLogger& userLogger) override;
-        virtual babelwires::RecordFeature* getInputFeature() override;
-        virtual babelwires::RecordFeature* getOutputFeature() override;
 
       private:
-        std::unique_ptr<babelwires::RecordFeature> m_inputFeature;
-        std::unique_ptr<babelwires::RecordFeature> m_outputFeature;
-
         babelwires::ArrayFeature* m_tracksIn;
         seqwires::TrackFeature* m_trackOut;
         std::unordered_map<babelwires::ArrayIndex, babelwires::ArrayIndex> m_inToOutMap;

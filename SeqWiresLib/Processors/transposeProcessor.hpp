@@ -18,18 +18,13 @@ namespace babelwires {
 namespace seqwires {
 
     /// A processor which limits a track to events between certain points.
-    class TransposeProcessor : public babelwires::Processor {
+    class TransposeProcessor : public babelwires::CommonProcessor {
       public:
         TransposeProcessor();
 
         virtual void process(babelwires::UserLogger& userLogger) override;
-        virtual babelwires::RecordFeature* getInputFeature() override;
-        virtual babelwires::RecordFeature* getOutputFeature() override;
 
       private:
-        std::unique_ptr<babelwires::RecordFeature> m_inputFeature;
-        std::unique_ptr<babelwires::RecordFeature> m_outputFeature;
-
         babelwires::IntFeature* m_pitchOffset;
         babelwires::ArrayFeature* m_tracksIn;
         babelwires::ArrayFeature* m_tracksOut;

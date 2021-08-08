@@ -20,18 +20,13 @@ namespace seqwires {
 
     /// A processor which creates a silent track of a certain duration.
     // Note: The excerpt processor can do this too, but someone might not think of that.
-    class SilenceProcessor : public babelwires::Processor {
+    class SilenceProcessor : public babelwires::CommonProcessor {
       public:
         SilenceProcessor();
 
         virtual void process(babelwires::UserLogger& userLogger) override;
-        virtual babelwires::RecordFeature* getInputFeature() override;
-        virtual babelwires::RecordFeature* getOutputFeature() override;
 
       private:
-        std::unique_ptr<babelwires::RecordFeature> m_inputFeature;
-        std::unique_ptr<babelwires::RecordFeature> m_outputFeature;
-
         babelwires::RationalFeature* m_duration;
         seqwires::TrackFeature* m_trackOut;
     };

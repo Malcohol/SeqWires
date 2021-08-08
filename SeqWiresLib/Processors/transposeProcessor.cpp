@@ -21,9 +21,7 @@ namespace {
         babelwires::HasStaticSizeRange<babelwires::StandardArrayFeature<seqwires::TrackFeature>, 1, 16>;
 } // namespace
 
-seqwires::TransposeProcessor::TransposeProcessor()
-    : m_inputFeature(std::make_unique<babelwires::RecordFeature>())
-    , m_outputFeature(std::make_unique<babelwires::RecordFeature>()) {
+seqwires::TransposeProcessor::TransposeProcessor() {
     m_pitchOffset = m_inputFeature->addField(std::make_unique<babelwires::IntFeature>(),
                                        FIELD_NAME("Offset", "Pitch Offset", "5cfa1541-f25e-4671-ac11-2ff71c883418"));
     m_tracksIn = m_inputFeature->addField(std::make_unique<RepeatArrayFeature>(),
@@ -37,14 +35,6 @@ seqwires::TransposeProcessorFactory::TransposeProcessorFactory()
 
 std::unique_ptr<babelwires::Processor> seqwires::TransposeProcessorFactory::createNewProcessor() const {
     return std::make_unique<TransposeProcessor>();
-}
-
-babelwires::RecordFeature* seqwires::TransposeProcessor::getInputFeature() {
-    return m_inputFeature.get();
-}
-
-babelwires::RecordFeature* seqwires::TransposeProcessor::getOutputFeature() {
-    return m_outputFeature.get();
 }
 
 void seqwires::TransposeProcessor::process(babelwires::UserLogger& userLogger) {

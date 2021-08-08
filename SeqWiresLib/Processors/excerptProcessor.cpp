@@ -23,9 +23,7 @@ namespace {
         babelwires::HasStaticSizeRange<babelwires::StandardArrayFeature<seqwires::TrackFeature>, 1, 16>;
 } // namespace
 
-seqwires::ExcerptProcessor::ExcerptProcessor()
-    : m_inputFeature(std::make_unique<babelwires::RecordFeature>())
-    , m_outputFeature(std::make_unique<babelwires::RecordFeature>()) {
+seqwires::ExcerptProcessor::ExcerptProcessor() {
     m_start = m_inputFeature->addField(std::make_unique<NonNegativeRationalFeature>(),
                                        FIELD_NAME("Start", "Start", "4b95f5db-a542-4660-a8db-97d3a5f831ca"));
     m_duration = m_inputFeature->addField(std::make_unique<NonNegativeRationalFeature>(),
@@ -41,14 +39,6 @@ seqwires::ExcerptProcessorFactory::ExcerptProcessorFactory()
 
 std::unique_ptr<babelwires::Processor> seqwires::ExcerptProcessorFactory::createNewProcessor() const {
     return std::make_unique<ExcerptProcessor>();
-}
-
-babelwires::RecordFeature* seqwires::ExcerptProcessor::getInputFeature() {
-    return m_inputFeature.get();
-}
-
-babelwires::RecordFeature* seqwires::ExcerptProcessor::getOutputFeature() {
-    return m_outputFeature.get();
 }
 
 void seqwires::ExcerptProcessor::process(babelwires::UserLogger& userLogger) {

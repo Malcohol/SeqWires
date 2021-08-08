@@ -23,9 +23,7 @@ namespace {
         babelwires::HasStaticSizeRange<babelwires::StandardArrayFeature<seqwires::TrackFeature>, 1, 16>;
 } // namespace
 
-seqwires::RepeatProcessor::RepeatProcessor()
-    : m_inputFeature(std::make_unique<babelwires::RecordFeature>())
-    , m_outputFeature(std::make_unique<babelwires::RecordFeature>()) {
+seqwires::RepeatProcessor::RepeatProcessor() {
     m_count = m_inputFeature->addField(std::make_unique<NonNegativeIntFeature>(),
                                        FIELD_NAME("Count", "Count", "f5d2ab08-4430-47fa-b26c-0ff2154826e3"));
     m_tracksIn = m_inputFeature->addField(std::make_unique<RepeatArrayFeature>(),
@@ -39,14 +37,6 @@ seqwires::RepeatProcessorFactory::RepeatProcessorFactory()
 
 std::unique_ptr<babelwires::Processor> seqwires::RepeatProcessorFactory::createNewProcessor() const {
     return std::make_unique<RepeatProcessor>();
-}
-
-babelwires::RecordFeature* seqwires::RepeatProcessor::getInputFeature() {
-    return m_inputFeature.get();
-}
-
-babelwires::RecordFeature* seqwires::RepeatProcessor::getOutputFeature() {
-    return m_outputFeature.get();
 }
 
 void seqwires::RepeatProcessor::process(babelwires::UserLogger& userLogger) {

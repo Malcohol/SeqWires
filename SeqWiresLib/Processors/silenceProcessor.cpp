@@ -21,9 +21,7 @@ namespace {
         babelwires::HasStaticRange<babelwires::RationalFeature, 0, std::numeric_limits<int>::max()>;
 } // namespace
 
-seqwires::SilenceProcessor::SilenceProcessor()
-    : m_inputFeature(std::make_unique<babelwires::RecordFeature>())
-    , m_outputFeature(std::make_unique<babelwires::RecordFeature>()) {
+seqwires::SilenceProcessor::SilenceProcessor() {
     m_duration = m_inputFeature->addField(std::make_unique<NonNegativeRationalFeature>(),
                                        FIELD_NAME("Durn", "Duration", "05d3ea91-cb90-42f5-9988-2fb2e02e231c"));
     m_trackOut = m_outputFeature->addField(std::make_unique<TrackFeature>(),
@@ -35,14 +33,6 @@ seqwires::SilenceProcessorFactory::SilenceProcessorFactory()
 
 std::unique_ptr<babelwires::Processor> seqwires::SilenceProcessorFactory::createNewProcessor() const {
     return std::make_unique<SilenceProcessor>();
-}
-
-babelwires::RecordFeature* seqwires::SilenceProcessor::getInputFeature() {
-    return m_inputFeature.get();
-}
-
-babelwires::RecordFeature* seqwires::SilenceProcessor::getOutputFeature() {
-    return m_outputFeature.get();
 }
 
 void seqwires::SilenceProcessor::process(babelwires::UserLogger& userLogger) {
