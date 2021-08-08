@@ -15,10 +15,12 @@
 #include "SeqWiresLib/Processors/repeatProcessor.hpp"
 #include "SeqWiresLib/Processors/concatenateProcessor.hpp"
 #include "SeqWiresLib/Processors/silenceProcessor.hpp"
+#include "SeqWiresLib/Processors/transposeProcessor.hpp"
 
 void seqwires::registerLib(babelwires::ProjectContext& context) {
     context.m_processorReg.addEntry(std::make_unique<ConcatenateProcessorFactory>());
     context.m_processorReg.addEntry(std::make_unique<ExcerptProcessorFactory>());
     context.m_processorReg.addEntry(std::make_unique<RepeatProcessorFactory>());
     context.m_processorReg.addEntry(std::make_unique<SilenceProcessorFactory>());
+    context.m_processorReg.addEntry(std::make_unique<TransposeProcessorFactory>());
 }

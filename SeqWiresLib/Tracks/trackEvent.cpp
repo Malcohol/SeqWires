@@ -18,3 +18,6 @@ bool seqwires::TrackEvent::operator!=(const TrackEvent& other) const {
 seqwires::TrackEvent::GroupingInfo seqwires::TrackEvent::getGroupingInfo() const {
     return GroupingInfo();
 }
+
+void seqwires::TrackEvent::transpose(int pitchOffset) {
+}

@@ -6,10 +6,12 @@ SET( SEQWIRESLIB_SRCS
 	Processors/excerptProcessor.cpp
 	Processors/repeatProcessor.cpp
 	Processors/silenceProcessor.cpp
+	Processors/transposeProcessor.cpp
 	Functions/appendTrackFunction.cpp
 	Functions/excerptFunction.cpp
 	Functions/repeatFunction.cpp
 	Functions/monophonicSubtracksFunction.cpp
+	Functions/transposeFunction.cpp
 	Tracks/trackEvent.cpp
 	Tracks/noteEvents.cpp
 	Tracks/chordEvents.cpp

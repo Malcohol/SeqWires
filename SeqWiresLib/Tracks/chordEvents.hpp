@@ -24,6 +24,7 @@ namespace seqwires {
         virtual bool operator==(const TrackEvent& other) const override;
         virtual std::size_t getHash() const override;
         virtual GroupingInfo getGroupingInfo() const override;
+        virtual void transpose(int pitchOffset) override;
         PitchClass m_root;
         ChordType m_chordType;
     };

@@ -77,6 +77,10 @@ namespace seqwires {
         /// The default implementation returns values suitable for generic, ungrouped events.
         virtual GroupingInfo getGroupingInfo() const;
 
+        /// If it makes sense, transpose the pitch or pitches described by this event by the given number of semitones.
+        /// The default implementation does nothing.
+        virtual void transpose(int pitchOffset);
+
       protected:
         /// Subclasses should override this. They can assume that other is of their type.
         virtual bool doIsEqualTo(const TrackEvent& other) const {

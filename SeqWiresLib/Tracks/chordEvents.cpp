@@ -31,6 +31,11 @@ seqwires::TrackEvent::GroupingInfo seqwires::ChordOnEvent::getGroupingInfo() con
     return {s_chordEventCategory, 0, GroupingInfo::Grouping::StartOfGroup};
 }
 
+void seqwires::ChordOnEvent::transpose(int pitchOffset) {
+    static_assert(NUM_PITCH_CLASSES == 12);
+    m_root = static_cast<PitchClass>((m_root + pitchOffset) % 12);
+}
+
 bool seqwires::ChordOffEvent::operator==(const TrackEvent& other) const {
     if (typeid(other) != typeid(this)) {
         return false;
