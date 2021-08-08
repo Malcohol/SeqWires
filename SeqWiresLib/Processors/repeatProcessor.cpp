@@ -32,12 +32,8 @@ seqwires::RepeatProcessor::RepeatProcessor() {
                                                 FIELD_NAME("Tracks", "Tracks", "f7e8dc03-4e1b-4dce-ba9a-6b54e9cba6f4"));
 }
 
-seqwires::RepeatProcessorFactory::RepeatProcessorFactory()
-    : ProcessorFactory("RepeatProcessor", "Repeat Processor", 1) {}
-
-std::unique_ptr<babelwires::Processor> seqwires::RepeatProcessorFactory::createNewProcessor() const {
-    return std::make_unique<RepeatProcessor>();
-}
+seqwires::RepeatProcessor::Factory::Factory()
+    : CommonProcessorFactory("RepeatProcessor", "Repeat Processor", 1) {}
 
 void seqwires::RepeatProcessor::process(babelwires::UserLogger& userLogger) {
     if (m_tracksIn->isChanged(babelwires::Feature::Changes::StructureChanged)) {

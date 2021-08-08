@@ -30,12 +30,8 @@ seqwires::TransposeProcessor::TransposeProcessor() {
                                                 FIELD_NAME("Tracks", "Tracks", "5b86d6db-97f5-409c-96b9-b56b70902799"));
 }
 
-seqwires::TransposeProcessorFactory::TransposeProcessorFactory()
-    : ProcessorFactory("TransposeProcessor", "Transpose Processor", 1) {}
-
-std::unique_ptr<babelwires::Processor> seqwires::TransposeProcessorFactory::createNewProcessor() const {
-    return std::make_unique<TransposeProcessor>();
-}
+seqwires::TransposeProcessor::Factory::Factory()
+    : CommonProcessorFactory("TransposeProcessor", "Transpose Processor", 1) {}
 
 void seqwires::TransposeProcessor::process(babelwires::UserLogger& userLogger) {
     if (m_tracksIn->isChanged(babelwires::Feature::Changes::StructureChanged)) {

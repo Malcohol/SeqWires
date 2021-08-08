@@ -28,12 +28,8 @@ seqwires::SilenceProcessor::SilenceProcessor() {
                                                 FIELD_NAME("Track", "Track", "86f3d028-a616-4a95-a566-a010ffcabb19"));
 }
 
-seqwires::SilenceProcessorFactory::SilenceProcessorFactory()
-    : ProcessorFactory("SilenceProcessor", "Silence Processor", 1) {}
-
-std::unique_ptr<babelwires::Processor> seqwires::SilenceProcessorFactory::createNewProcessor() const {
-    return std::make_unique<SilenceProcessor>();
-}
+seqwires::SilenceProcessor::Factory::Factory()
+    : CommonProcessorFactory("SilenceProcessor", "Silence Processor", 1) {}
 
 void seqwires::SilenceProcessor::process(babelwires::UserLogger& userLogger) {
     if (m_duration->isChanged(babelwires::Feature::Changes::SomethingChanged)) {

@@ -34,12 +34,8 @@ seqwires::ExcerptProcessor::ExcerptProcessor() {
                                                 FIELD_NAME("Notes", "Notes", "9feb0f11-fafb-4744-92f1-87eb34b30747"));
 }
 
-seqwires::ExcerptProcessorFactory::ExcerptProcessorFactory()
-    : ProcessorFactory("ExcerptProcessor", "Excerpt Processor", 1) {}
-
-std::unique_ptr<babelwires::Processor> seqwires::ExcerptProcessorFactory::createNewProcessor() const {
-    return std::make_unique<ExcerptProcessor>();
-}
+seqwires::ExcerptProcessor::Factory::Factory()
+    : CommonProcessorFactory("ExcerptProcessor", "Excerpt Processor", 1) {}
 
 void seqwires::ExcerptProcessor::process(babelwires::UserLogger& userLogger) {
     if (m_tracksIn->isChanged(babelwires::Feature::Changes::StructureChanged)) {

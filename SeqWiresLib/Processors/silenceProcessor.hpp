@@ -7,8 +7,7 @@
  **/
 #pragma once
 
-#include "BabelWires/Processors/processor.hpp"
-#include "BabelWires/Processors/processorFactory.hpp"
+#include "BabelWires/Processors/commonProcessor.hpp"
 
 namespace babelwires {
     class RationalFeature;
@@ -26,16 +25,12 @@ namespace seqwires {
 
         virtual void process(babelwires::UserLogger& userLogger) override;
 
+        struct Factory : public babelwires::CommonProcessorFactory<SilenceProcessor> {
+            Factory();
+        };
       private:
         babelwires::RationalFeature* m_duration;
         seqwires::TrackFeature* m_trackOut;
-    };
-
-    /// Create an excerpt processor.
-    class SilenceProcessorFactory : public babelwires::ProcessorFactory {
-      public:
-        SilenceProcessorFactory();
-        virtual std::unique_ptr<babelwires::Processor> createNewProcessor() const override;
     };
 
 } // namespace seqwires

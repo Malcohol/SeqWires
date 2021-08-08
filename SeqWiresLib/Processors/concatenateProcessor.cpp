@@ -22,12 +22,8 @@ seqwires::ConcatenateProcessor::ConcatenateProcessor() {
                                               FIELD_NAME("Result", "Result Track", "873d5d66-c5ec-46a4-9aba-f5f4223bdfd4"));
 }
 
-seqwires::ConcatenateProcessorFactory::ConcatenateProcessorFactory()
-    : ProcessorFactory("ConcatenateProcessor", "Concatenate Processor", 1) {}
-
-std::unique_ptr<babelwires::Processor> seqwires::ConcatenateProcessorFactory::createNewProcessor() const {
-    return std::make_unique<ConcatenateProcessor>();
-}
+seqwires::ConcatenateProcessor::Factory::Factory()
+    : CommonProcessorFactory("ConcatenateProcessor", "Concatenate Processor", 1) {}
 
 void seqwires::ConcatenateProcessor::process(babelwires::UserLogger& userLogger) {
     auto trackOut = std::make_unique<Track>();

@@ -1,14 +1,13 @@
 /**
- * A processor which extracts a section of sequence data from a track. 
- * 
+ * A processor which extracts a section of sequence data from a track.
+ *
  * (C) 2021 Malcolm Tyrrell
- * 
+ *
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
 #pragma once
 
-#include "BabelWires/Processors/processor.hpp"
-#include "BabelWires/Processors/processorFactory.hpp"
+#include "BabelWires/Processors/commonProcessor.hpp"
 
 namespace babelwires {
     class ArrayFeature;
@@ -24,16 +23,13 @@ namespace seqwires {
 
         virtual void process(babelwires::UserLogger& userLogger) override;
 
+        struct Factory : public babelwires::CommonProcessorFactory<ConcatenateProcessor> {
+            Factory();
+        };
+
       private:
         babelwires::ArrayFeature* m_tracksIn;
         seqwires::TrackFeature* m_trackOut;
-    };
-
-    /// Create an excerpt processor.
-    class ConcatenateProcessorFactory : public babelwires::ProcessorFactory {
-      public:
-        ConcatenateProcessorFactory();
-        virtual std::unique_ptr<babelwires::Processor> createNewProcessor() const override;
     };
 
 } // namespace seqwires

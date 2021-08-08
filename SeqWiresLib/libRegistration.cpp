@@ -18,9 +18,9 @@
 #include "SeqWiresLib/Processors/transposeProcessor.hpp"
 
 void seqwires::registerLib(babelwires::ProjectContext& context) {
-    context.m_processorReg.addEntry(std::make_unique<ConcatenateProcessorFactory>());
-    context.m_processorReg.addEntry(std::make_unique<ExcerptProcessorFactory>());
-    context.m_processorReg.addEntry(std::make_unique<RepeatProcessorFactory>());
-    context.m_processorReg.addEntry(std::make_unique<SilenceProcessorFactory>());
-    context.m_processorReg.addEntry(std::make_unique<TransposeProcessorFactory>());
+    context.m_processorReg.addEntry(std::make_unique<ConcatenateProcessor::Factory>());
+    context.m_processorReg.addEntry(std::make_unique<ExcerptProcessor::Factory>());
+    context.m_processorReg.addEntry(std::make_unique<RepeatProcessor::Factory>());
+    context.m_processorReg.addEntry(std::make_unique<SilenceProcessor::Factory>());
+    context.m_processorReg.addEntry(std::make_unique<TransposeProcessor::Factory>());
 }
