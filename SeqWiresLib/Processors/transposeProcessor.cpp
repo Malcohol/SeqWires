@@ -17,21 +17,21 @@
 #include <set>
 
 namespace {
-    using RepeatArrayFeature =
+    using TransposeArrayFeature =
         babelwires::HasStaticSizeRange<babelwires::StandardArrayFeature<seqwires::TrackFeature>, 1, 16>;
 } // namespace
 
 seqwires::TransposeProcessor::TransposeProcessor() {
     m_pitchOffset = m_inputFeature->addField(std::make_unique<babelwires::IntFeature>(),
                                        FIELD_NAME("Offset", "Pitch Offset", "5cfa1541-f25e-4671-ac11-2ff71c883418"));
-    m_tracksIn = m_inputFeature->addField(std::make_unique<RepeatArrayFeature>(),
+    m_tracksIn = m_inputFeature->addField(std::make_unique<TransposeArrayFeature>(),
                                               FIELD_NAME("Tracks", "Tracks", "83f05b66-7890-4542-8344-1409e50539b5"));
-    m_tracksOut = m_outputFeature->addField(std::make_unique<RepeatArrayFeature>(),
+    m_tracksOut = m_outputFeature->addField(std::make_unique<TransposeArrayFeature>(),
                                                 FIELD_NAME("Tracks", "Tracks", "5b86d6db-97f5-409c-96b9-b56b70902799"));
 }
 
 seqwires::TransposeProcessor::Factory::Factory()
-    : CommonProcessorFactory("TransposeProcessor", "Transpose Processor", 1) {}
+    : CommonProcessorFactory("TransposeTracks", "Transpose", 1) {}
 
 void seqwires::TransposeProcessor::process(babelwires::UserLogger& userLogger) {
     if (m_tracksIn->isChanged(babelwires::Feature::Changes::StructureChanged)) {

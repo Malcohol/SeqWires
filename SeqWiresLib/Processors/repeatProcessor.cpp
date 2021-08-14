@@ -33,7 +33,7 @@ seqwires::RepeatProcessor::RepeatProcessor() {
 }
 
 seqwires::RepeatProcessor::Factory::Factory()
-    : CommonProcessorFactory("RepeatProcessor", "Repeat Processor", 1) {}
+    : CommonProcessorFactory("RepeatTracks", "Repeat", 1) {}
 
 void seqwires::RepeatProcessor::process(babelwires::UserLogger& userLogger) {
     if (m_tracksIn->isChanged(babelwires::Feature::Changes::StructureChanged)) {

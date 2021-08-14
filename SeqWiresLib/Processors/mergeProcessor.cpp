@@ -23,7 +23,7 @@ seqwires::MergeProcessor::MergeProcessor() {
 }
 
 seqwires::MergeProcessor::Factory::Factory()
-    : CommonProcessorFactory("MergeProcessor", "Merge Processor", 1) {}
+    : CommonProcessorFactory("MergeTracks", "Merge", 1) {}
 
 void seqwires::MergeProcessor::process(babelwires::UserLogger& userLogger) {
     bool hasChanges = false;

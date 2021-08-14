@@ -32,7 +32,7 @@ seqwires::ExcerptProcessor::ExcerptProcessor() {
 }
 
 seqwires::ExcerptProcessor::Factory::Factory()
-    : CommonProcessorFactory("ExcerptProcessor", "Excerpt Processor", 1) {}
+    : CommonProcessorFactory("TrackExcerpt", "Excerpt", 1) {}
 
 void seqwires::ExcerptProcessor::process(babelwires::UserLogger& userLogger) {
     if (m_tracksIn->isChanged(babelwires::Feature::Changes::StructureChanged)) {

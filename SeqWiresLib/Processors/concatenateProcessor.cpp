@@ -23,7 +23,7 @@ seqwires::ConcatenateProcessor::ConcatenateProcessor() {
 }
 
 seqwires::ConcatenateProcessor::Factory::Factory()
-    : CommonProcessorFactory("ConcatenateProcessor", "Concatenate Processor", 1) {}
+    : CommonProcessorFactory("ConcatenateTracks", "Concatenate", 1) {}
 
 void seqwires::ConcatenateProcessor::process(babelwires::UserLogger& userLogger) {
     bool hasChanges = false;
