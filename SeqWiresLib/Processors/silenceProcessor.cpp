@@ -10,19 +10,13 @@
 #include "BabelWires/Features/featureMixins.hpp"
 #include "BabelWires/Features/numericFeature.hpp"
 #include "SeqWiresLib/Features/trackFeature.hpp"
+#include "SeqWiresLib/Features/durationFeature.hpp"
 #include "SeqWiresLib/Functions/appendTrackFunction.hpp"
 
 #include "BabelWires/Features/Path/fieldName.hpp"
 
-#include <set>
-
-namespace {
-    using NonNegativeRationalFeature =
-        babelwires::HasStaticRange<babelwires::RationalFeature, 0, std::numeric_limits<int>::max()>;
-} // namespace
-
 seqwires::SilenceProcessor::SilenceProcessor() {
-    m_duration = m_inputFeature->addField(std::make_unique<NonNegativeRationalFeature>(),
+    m_duration = m_inputFeature->addField(std::make_unique<DurationFeature>(),
                                        FIELD_NAME("Durn", "Duration", "05d3ea91-cb90-42f5-9988-2fb2e02e231c"));
     m_trackOut = m_outputFeature->addField(std::make_unique<TrackFeature>(),
                                                 FIELD_NAME("Track", "Track", "86f3d028-a616-4a95-a566-a010ffcabb19"));

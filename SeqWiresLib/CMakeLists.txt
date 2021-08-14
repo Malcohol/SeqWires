@@ -1,6 +1,5 @@
 SET( SEQWIRESLIB_SRCS
 	Utilities/musicUtilities.cpp
-	Features/tempoFeature.cpp
 	Features/trackFeature.cpp
 	Features/pitchFeature.cpp
 	Processors/concatenateProcessor.cpp

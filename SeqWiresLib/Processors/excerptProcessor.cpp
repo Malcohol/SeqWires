@@ -11,22 +11,19 @@
 #include "BabelWires/Features/numericFeature.hpp"
 #include "SeqWiresLib/Features/trackFeature.hpp"
 #include "SeqWiresLib/Functions/excerptFunction.hpp"
+#include "SeqWiresLib/Features/durationFeature.hpp"
 
 #include "BabelWires/Features/Path/fieldName.hpp"
 
-#include <set>
-
 namespace {
-    using NonNegativeRationalFeature =
-        babelwires::HasStaticRange<babelwires::RationalFeature, 0, std::numeric_limits<int>::max()>;
     using ExcerptArrayFeature =
         babelwires::HasStaticSizeRange<babelwires::StandardArrayFeature<seqwires::TrackFeature>, 1, 16>;
 } // namespace
 
 seqwires::ExcerptProcessor::ExcerptProcessor() {
-    m_start = m_inputFeature->addField(std::make_unique<NonNegativeRationalFeature>(),
+    m_start = m_inputFeature->addField(std::make_unique<DurationFeature>(),
                                        FIELD_NAME("Start", "Start", "4b95f5db-a542-4660-a8db-97d3a5f831ca"));
-    m_duration = m_inputFeature->addField(std::make_unique<NonNegativeRationalFeature>(),
+    m_duration = m_inputFeature->addField(std::make_unique<DurationFeature>(),
                                           FIELD_NAME("Duratn", "Duration", "d83ebbc2-1492-4578-a3b8-4969eb6a2042"));
     m_tracksIn = m_inputFeature->addField(std::make_unique<ExcerptArrayFeature>(),
                                               FIELD_NAME("Notes", "Notes", "983b3bcb-7086-4791-8e18-d8c7550d45d3"));
