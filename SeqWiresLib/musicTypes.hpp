@@ -54,6 +54,7 @@ namespace seqwires {
     };
 
     std::string pitchToString(Pitch p);
+    Pitch stringToPitch(std::string_view s);
     std::string durationToString(ModelDuration d);
     std::string chordTypeToString(ChordType t);
     std::string pitchClassToString(PitchClass p);
@@ -68,5 +69,4 @@ namespace seqwires {
     };
 
     static constexpr ModelDuration s_maxDuration = std::numeric_limits<seqwires::ModelDuration>::max();
-
 } // namespace seqwires

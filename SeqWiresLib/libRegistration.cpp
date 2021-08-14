@@ -16,6 +16,7 @@
 #include "SeqWiresLib/Processors/mergeProcessor.hpp"
 #include "SeqWiresLib/Processors/repeatProcessor.hpp"
 #include "SeqWiresLib/Processors/silenceProcessor.hpp"
+#include "SeqWiresLib/Processors/splitAtPitchProcessor.hpp"
 #include "SeqWiresLib/Processors/transposeProcessor.hpp"
 
 void seqwires::registerLib(babelwires::ProjectContext& context) {
@@ -24,5 +25,6 @@ void seqwires::registerLib(babelwires::ProjectContext& context) {
     context.m_processorReg.addEntry(std::make_unique<MergeProcessor::Factory>());
     context.m_processorReg.addEntry(std::make_unique<RepeatProcessor::Factory>());
     context.m_processorReg.addEntry(std::make_unique<SilenceProcessor::Factory>());
+    context.m_processorReg.addEntry(std::make_unique<SplitAtPitchProcessor::Factory>());
     context.m_processorReg.addEntry(std::make_unique<TransposeProcessor::Factory>());
 }

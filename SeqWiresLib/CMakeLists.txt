@@ -2,17 +2,20 @@ SET( SEQWIRESLIB_SRCS
 	Utilities/musicUtilities.cpp
 	Features/tempoFeature.cpp
 	Features/trackFeature.cpp
+	Features/pitchFeature.cpp
 	Processors/concatenateProcessor.cpp
 	Processors/excerptProcessor.cpp
 	Processors/mergeProcessor.cpp
 	Processors/repeatProcessor.cpp
 	Processors/silenceProcessor.cpp
+	Processors/splitAtPitchProcessor.cpp
 	Processors/transposeProcessor.cpp
 	Functions/appendTrackFunction.cpp
 	Functions/excerptFunction.cpp
 	Functions/repeatFunction.cpp
 	Functions/mergeFunction.cpp
 	Functions/monophonicSubtracksFunction.cpp
+	Functions/splitAtPitchFunction.cpp
 	Functions/transposeFunction.cpp
 	Tracks/trackEvent.cpp
 	Tracks/noteEvents.cpp
