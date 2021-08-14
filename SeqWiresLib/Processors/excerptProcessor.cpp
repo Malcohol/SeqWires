@@ -26,9 +26,9 @@ seqwires::ExcerptProcessor::ExcerptProcessor() {
     m_duration = m_inputFeature->addField(std::make_unique<DurationFeature>(),
                                           FIELD_NAME("Duratn", "Duration", "d83ebbc2-1492-4578-a3b8-4969eb6a2042"));
     m_tracksIn = m_inputFeature->addField(std::make_unique<ExcerptArrayFeature>(),
-                                              FIELD_NAME("Notes", "Notes", "983b3bcb-7086-4791-8e18-d8c7550d45d3"));
+                                              FIELD_NAME("Tracks", "Tracks", "983b3bcb-7086-4791-8e18-d8c7550d45d3"));
     m_tracksOut = m_outputFeature->addField(std::make_unique<ExcerptArrayFeature>(),
-                                                FIELD_NAME("Notes", "Notes", "9feb0f11-fafb-4744-92f1-87eb34b30747"));
+                                                FIELD_NAME("Tracks", "Tracks", "9feb0f11-fafb-4744-92f1-87eb34b30747"));
 }
 
 seqwires::ExcerptProcessor::Factory::Factory()
