@@ -101,7 +101,10 @@ seqwires::Pitch seqwires::stringToPitch(std::string_view s) {
     }
     p += (octave + 1) * 12;
     assert(p >= 0);
-    assert(p <= 127);
+    if (p > 127) {
+        // G#9, A9, A#9 and B9 are unrepresentable
+        throw babelwires::ParseException() << "Note out of range when parsing pitch value";
+    }
     return static_cast<Pitch>(p);
 }
 

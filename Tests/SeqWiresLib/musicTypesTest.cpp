@@ -43,6 +43,10 @@ TEST(SeqWiresLib, enumNames) {
 
     EXPECT_EQ(seqwires::stringToPitch("  C-1  "), 0);
 
+    EXPECT_THROW(seqwires::stringToPitch("G#9"), babelwires::ParseException);
+    EXPECT_THROW(seqwires::stringToPitch("A9"), babelwires::ParseException);
+    EXPECT_THROW(seqwires::stringToPitch("A#9"), babelwires::ParseException);
+    EXPECT_THROW(seqwires::stringToPitch("B9"), babelwires::ParseException);
     EXPECT_THROW(seqwires::stringToPitch(""), babelwires::ParseException);
     EXPECT_THROW(seqwires::stringToPitch("  "), babelwires::ParseException);
     EXPECT_THROW(seqwires::stringToPitch("C 4"), babelwires::ParseException);
