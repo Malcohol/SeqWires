@@ -38,7 +38,7 @@ std::unique_ptr<babelwires::FileFeature> smf::SmfSourceFormat::loadFromFile(babe
 }
 
 smf::SmfFormat0TargetFormat::SmfFormat0TargetFormat()
-    : TargetFileFormat("Format0SmfFile", "Format 0 SMF file", 1, Extensions{"mid", "smf"}) {}
+    : TargetFileFormat("Format0SmfFile", "Standard MIDI file (Format 0)", 1, Extensions{"mid", "smf"}) {}
 
 std::string smf::SmfFormat0TargetFormat::getManufacturerName() const {
     return s_manufacturerName;
@@ -58,7 +58,7 @@ void smf::SmfFormat0TargetFormat::writeToFile(const babelwires::FileFeature& seq
 }
 
 smf::SmfFormat1TargetFormat::SmfFormat1TargetFormat()
-    : TargetFileFormat("Format1SmfFile", "Format 1 SMF file", 1, Extensions{"mid", "smf"}) {}
+    : TargetFileFormat("Format1SmfFile", "Standard MIDI file (Format 1)", 1, Extensions{"mid", "smf"}) {}
 
 std::string smf::SmfFormat1TargetFormat::getManufacturerName() const {
     return s_manufacturerName;
