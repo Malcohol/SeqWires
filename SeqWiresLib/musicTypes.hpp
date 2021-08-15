@@ -11,6 +11,8 @@
 #include "Common/types.hpp"
 #include <string>
 
+#include <cstdint>
+
 namespace seqwires {
 
     typedef babelwires::Rational ModelDuration;
@@ -18,7 +20,7 @@ namespace seqwires {
     typedef babelwires::Byte Velocity;
 
     /// Defines the assignment of chord types to int values.
-    enum ChordType {
+    enum ChordType : std::uint8_t {
         CHORD_TYPE_MAJOR,
         CHORD_TYPE_MINOR,
         CHORD_TYPE_DOMINANT_7TH,
@@ -36,7 +38,7 @@ namespace seqwires {
         NUM_CHORD_TYPES
     };
 
-    enum PitchClass {
+    enum PitchClass : std::uint8_t {
         PITCH_CLASS_C,
         PITCH_CLASS_C_SHARP,
         PITCH_CLASS_D,

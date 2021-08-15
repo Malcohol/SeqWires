@@ -2,6 +2,7 @@
 
 #include <SeqWiresLib/Features/trackFeature.hpp>
 #include <SeqWiresLib/Tracks/noteEvents.hpp>
+#include <SeqWiresLib/Tracks/chordEvents.hpp>
 
 #include <gtest/gtest.h>
 
@@ -89,4 +90,42 @@ void testUtils::testNotes(const std::vector<NoteInfo>& expectedNotes, const seqw
         ++noteIterator;
     }
     EXPECT_EQ(noteIterator, endIterator);
+}
+
+void testUtils::addChords(const std::vector<ChordInfo>& chords, seqwires::Track& track) {
+    for (auto chord : chords) {
+        seqwires::ChordOnEvent chordOn;
+        chordOn.setTimeSinceLastEvent(chord.m_chordOnTime);
+        chordOn.m_root = chord.m_root;
+        chordOn.m_chordType = chord.m_chordType;
+        track.addEvent(chordOn);
+
+        seqwires::ChordOffEvent chordOff;
+        chordOff.setTimeSinceLastEvent(chord.m_chordOffTime);
+        track.addEvent(chordOff);
+    }
+}
+
+void testUtils::testChords(const std::vector<ChordInfo>& expectedChords, const seqwires::Track& track) {
+    // Note: right now, we only parse notes. As we add parsing of other event types, this test will fail.
+    // (A temporarily fix would be to use a FilteredTrackIterator.)
+    auto chordIterator = track.begin();
+    const auto endIterator = track.end();
+
+    for (auto chord : expectedChords) {
+        EXPECT_NE(chordIterator, endIterator);
+        auto chordOn = chordIterator->asA<const seqwires::ChordOnEvent>();
+        ASSERT_NE(chordOn, nullptr);
+        EXPECT_EQ(chordOn->getTimeSinceLastEvent(), chord.m_chordOnTime);
+        EXPECT_EQ(chordOn->m_chordType, chord.m_chordType);
+        EXPECT_EQ(chordOn->m_root, chord.m_root);
+        ++chordIterator;
+
+        EXPECT_NE(chordIterator, endIterator);
+        auto chordOff = chordIterator->asA<seqwires::ChordOffEvent>();
+        ASSERT_NE(chordOff, nullptr);
+        EXPECT_EQ(chordOff->getTimeSinceLastEvent(), chord.m_chordOffTime);
+        ++chordIterator;
+    }
+    EXPECT_EQ(chordIterator, endIterator);
 }

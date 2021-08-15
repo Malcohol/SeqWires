@@ -26,4 +26,16 @@ namespace testUtils {
 
     /// Check that there is a sequence of the given notes in the track.
     void testNotes(const std::vector<NoteInfo>& expectedNotes, const seqwires::Track& track);
+
+    struct ChordInfo {
+        seqwires::PitchClass m_root;
+        seqwires::ChordType m_chordType;
+        seqwires::ModelDuration m_chordOffTime = babelwires::Rational(1 / 2);
+        seqwires::ModelDuration m_chordOnTime = 0;
+    };
+
+    /// Add the given chords. Each has halfnote duration.
+    void addChords(const std::vector<ChordInfo>& chords, seqwires::Track& track);
+
+    void testChords(const std::vector<ChordInfo>& expectedChords, const seqwires::Track& track);
 }
