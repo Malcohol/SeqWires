@@ -17,6 +17,7 @@ namespace seqwires {
     class TrackFeature;
 
     /// A processor which limits a track to events between certain points.
+    // TODO UNTESTED
     class SplitAtPitchProcessor : public babelwires::CommonProcessor {
       public:
         SplitAtPitchProcessor();

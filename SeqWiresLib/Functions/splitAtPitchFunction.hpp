@@ -22,5 +22,6 @@ namespace seqwires {
     };
 
     /// Split the events in the track by pitch.
+    // TODO UNTESTED
     SplitAtPitchResult splitAtPitch(Pitch pitch, const Track& sourceTrack);
 } // namespace seqwires
