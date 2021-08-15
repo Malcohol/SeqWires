@@ -8,6 +8,7 @@ SET( SEQUENCELIB_TESTS_SRCS
       repeatProcessorTest.cpp
       trackTest.cpp
       trackTraverserTest.cpp
+      transposeProcessorTest.cpp
    )
 
 ADD_EXECUTABLE( sequenceLibTests ${SEQUENCELIB_TESTS_SRCS} )

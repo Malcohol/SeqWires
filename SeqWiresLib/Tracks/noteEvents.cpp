@@ -15,7 +15,7 @@
 seqwires::TrackEvent::GroupingInfo::Category seqwires::NoteEvent::s_noteEventCategory = "Notes";
 
 void seqwires::NoteEvent::transpose(int pitchOffset) {
-    m_pitch = std::clamp(m_pitch + pitchOffset, 0, 255);
+    m_pitch = std::clamp(m_pitch + pitchOffset, 0, 127);
 }
 
 bool seqwires::NoteOnEvent::operator==(const TrackEvent& other) const {
