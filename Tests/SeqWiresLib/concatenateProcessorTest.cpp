@@ -77,5 +77,43 @@ TEST(ConcatenateProcessorTest, processor) {
     EXPECT_EQ(inputArray->getNumFeatures(), 2);
     EXPECT_EQ(outputTrack->get().getDuration(), 0);
 
-    
+    auto getInputTrack = [&inputArray](int i) { return dynamic_cast<seqwires::TrackFeature*>(&inputArray->getChildFromStep(i)); };
+
+    ASSERT_NE(getInputTrack(0), nullptr);
+    ASSERT_NE(getInputTrack(1), nullptr);
+
+    EXPECT_EQ(getInputTrack(0)->get().getDuration(), 0);
+    EXPECT_EQ(getInputTrack(1)->get().getDuration(), 0);
+
+    {
+        seqwires::Track track;
+        testUtils::addSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65}, track);
+        getInputTrack(0)->set(std::move(track));
+    }
+
+    processor.process(log);
+
+    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65}, outputTrack->get());
+
+    {
+        seqwires::Track track;
+        testUtils::addSimpleNotes(std::vector<seqwires::Pitch>{67, 69, 71, 72}, track);
+        getInputTrack(1)->set(std::move(track));
+    }
+
+    processor.process(log);
+
+    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65, 67, 69, 71, 72}, outputTrack->get());
+
+    inputArray->addEntry(1);
+
+    {
+        seqwires::Track track;
+        testUtils::addSimpleNotes(std::vector<seqwires::Pitch>{67, 65}, track);
+        getInputTrack(1)->set(std::move(track));
+    }
+
+    processor.process(log);
+
+    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65, 67, 65, 67, 69, 71, 72}, outputTrack->get());
 }
