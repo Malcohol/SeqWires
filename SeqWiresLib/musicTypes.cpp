@@ -85,7 +85,7 @@ seqwires::Pitch seqwires::stringToPitch(std::string_view s) {
         throw babelwires::ParseException() << "No octave value when parsing pitch value";
     }
     int octave = 0;
-    const auto result = std::from_chars(&*it, s.end(), octave);
+    const auto result = std::from_chars(&*it, &*s.end(), octave);
     if (result.ec != std::errc()) {
         throw babelwires::ParseException() << "Could not parse octave when parsing pitch value";
     }
