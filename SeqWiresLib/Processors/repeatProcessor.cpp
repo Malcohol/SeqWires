@@ -18,7 +18,7 @@
 
 namespace {
     using NonNegativeIntFeature =
-        babelwires::HasStaticRange<babelwires::IntFeature, 0, std::numeric_limits<int>::max()>;
+        babelwires::HasStaticDefault<babelwires::HasStaticRange<babelwires::IntFeature, 0, std::numeric_limits<int>::max()>, 2>;
     using RepeatArrayFeature =
         babelwires::HasStaticSizeRange<babelwires::StandardArrayFeature<seqwires::TrackFeature>, 1, 16>;
 } // namespace
