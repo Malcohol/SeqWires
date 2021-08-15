@@ -11,6 +11,7 @@
 
 #include <sstream>
 #include <typeinfo>
+#include <algorithm>
 
 seqwires::TrackEvent::GroupingInfo::Category seqwires::NoteEvent::s_noteEventCategory = "Notes";
 
