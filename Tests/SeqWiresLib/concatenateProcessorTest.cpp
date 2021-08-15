@@ -1,8 +1,13 @@
 #include <gtest/gtest.h>
 
 #include <SeqWiresLib/Functions/appendTrackFunction.hpp>
+#include <SeqWiresLib/Processors/concatenateProcessor.hpp>
 #include <SeqWiresLib/Tracks/noteEvents.hpp>
+#include <SeqWiresLib/Features/trackFeature.hpp>
 
+#include <BabelWires/Features/arrayFeature.hpp>
+
+#include <Tests/TestUtils/testLog.hpp>
 #include <Tests/TestUtils/seqTestUtils.hpp>
 
 TEST(ConcatenateProcessorTest, appendFuncSimple) {
@@ -54,4 +59,23 @@ TEST(ConcatenateProcessorTest, appendFuncGaps) {
     };
 
     testUtils::testNotes(expectedNoteInfos, trackA);
+}
+
+TEST(ConcatenateProcessorTest, processor) {
+    testUtils::TestLog log;
+
+    seqwires::ConcatenateProcessor processor;
+
+    processor.getInputFeature()->setToDefault();
+    processor.getOutputFeature()->setToDefault();
+
+    auto* inputArray = dynamic_cast<babelwires::ArrayFeature*>(&processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Input")));
+    auto* outputTrack = dynamic_cast<seqwires::TrackFeature*>(&processor.getOutputFeature()->getChildFromStep(babelwires::PathStep("Output")));
+    ASSERT_NE(inputArray, nullptr);
+    ASSERT_NE(outputTrack, nullptr);
+
+    EXPECT_EQ(inputArray->getNumFeatures(), 2);
+    EXPECT_EQ(outputTrack->get().getDuration(), 0);
+
+    
 }
