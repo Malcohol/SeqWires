@@ -11,9 +11,9 @@
 
 #include <set>
 
-std::unique_ptr<seqwires::Track> seqwires::getTrackExcerpt(const Track& trackIn, ModelDuration start,
+seqwires::Track seqwires::getTrackExcerpt(const Track& trackIn, ModelDuration start,
                                                            ModelDuration duration) {
-    auto trackOut = std::make_unique<Track>();
+    Track trackOut;
 
     ModelDuration end = start + duration;
     ModelDuration timeProcessed;
@@ -70,7 +70,7 @@ std::unique_ptr<seqwires::Track> seqwires::getTrackExcerpt(const Track& trackIn,
                 newEvent->setTimeSinceLastEvent(newEvent->getTimeSinceLastEvent() + timeProcessed - start);
                 isFirstEvent = false;
             }
-            trackOut->addEvent(newEvent.release());
+            trackOut.addEvent(newEvent.release());
         }
         timeProcessed += it->getTimeSinceLastEvent();
         ++it;
@@ -92,11 +92,11 @@ std::unique_ptr<seqwires::Track> seqwires::getTrackExcerpt(const Track& trackIn,
                 } else {
                     newEvent->setTimeSinceLastEvent(0);
                 }
-                trackOut->addEvent(newEvent.release());
+                trackOut.addEvent(newEvent.release());
             }
         }
         ++it;
     }
-    trackOut->setDuration(duration);
+    trackOut.setDuration(duration);
     return trackOut;
 }

@@ -12,7 +12,7 @@ TEST(ExcerptProcessorTest, funcSimple) {
 
     auto trackOut = seqwires::getTrackExcerpt(trackIn, babelwires::Rational(1, 2), 1);
 
-    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{64, 65, 67, 69}, *trackOut);
+    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{64, 65, 67, 69}, trackOut);
 }
 
 TEST(ExcerptProcessorTest, funcEmptyBefore) {
@@ -25,8 +25,8 @@ TEST(ExcerptProcessorTest, funcEmptyBefore) {
 
     auto trackOut = seqwires::getTrackExcerpt(trackIn, 3, 4);
 
-    EXPECT_EQ(trackOut->getDuration(), 4);
-    EXPECT_EQ(trackOut->getNumEvents(), 0);
+    EXPECT_EQ(trackOut.getDuration(), 4);
+    EXPECT_EQ(trackOut.getNumEvents(), 0);
 }
 
 TEST(ExcerptProcessorTest, funcEmptyAfter) {
@@ -34,8 +34,8 @@ TEST(ExcerptProcessorTest, funcEmptyAfter) {
 
     auto trackOut = seqwires::getTrackExcerpt(trackIn, 2, 2);
 
-    EXPECT_EQ(trackOut->getDuration(), 2);
-    EXPECT_EQ(trackOut->getNumEvents(), 0);
+    EXPECT_EQ(trackOut.getDuration(), 2);
+    EXPECT_EQ(trackOut.getNumEvents(), 0);
 }
 
 TEST(ExcerptProcessorTest, funcEmptyBetween) {
@@ -53,8 +53,8 @@ TEST(ExcerptProcessorTest, funcEmptyBetween) {
 
     auto trackOut = seqwires::getTrackExcerpt(trackIn, 2, 2);
 
-    EXPECT_EQ(trackOut->getDuration(), 2);
-    EXPECT_EQ(trackOut->getNumEvents(), 0);
+    EXPECT_EQ(trackOut.getDuration(), 2);
+    EXPECT_EQ(trackOut.getNumEvents(), 0);
 }
 
 TEST(ExcerptProcessorTest, funcDropSpanningGroup) {
@@ -73,7 +73,7 @@ TEST(ExcerptProcessorTest, funcDropSpanningGroup) {
 
     auto trackOut = seqwires::getTrackExcerpt(trackIn, babelwires::Rational(3, 2), 1);
 
-    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{64, 65, 67, 69}, *trackOut);
+    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{64, 65, 67, 69}, trackOut);
 }
 
 TEST(ExcerptProcessorTest, funcDropInitialGroup) {
@@ -96,7 +96,7 @@ TEST(ExcerptProcessorTest, funcDropInitialGroup) {
 
     auto trackOut = seqwires::getTrackExcerpt(trackIn, babelwires::Rational(3, 2), 1);
 
-    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{64, 65, 67, 69}, *trackOut);
+    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{64, 65, 67, 69}, trackOut);
 }
 
 TEST(ExcerptProcessorTest, funcGaps) {
@@ -113,6 +113,6 @@ TEST(ExcerptProcessorTest, funcGaps) {
         {69, 0, babelwires::Rational(1, 8)}
     };
 
-    testUtils::testNotes(expectedNoteInfos, *trackOut);
+    testUtils::testNotes(expectedNoteInfos, trackOut);
 }
 

@@ -11,16 +11,15 @@
 
 #include "BabelWires/Features/modelExceptions.hpp"
 
-std::unique_ptr<seqwires::Track> seqwires::transposeTrack(const Track& trackIn, int pitchOffset) {
-    auto trackOut = std::make_unique<seqwires::Track>();
-
+seqwires::Track seqwires::transposeTrack(const Track& trackIn, int pitchOffset) {
+    Track trackOut;
     
     for (auto it = trackIn.begin(); it != trackIn.end(); ++it) {
         TrackEventHolder holder(*it);
         holder->transpose(pitchOffset);
-        trackOut->addEvent(holder.release());
+        trackOut.addEvent(holder.release());
     }
-    trackOut->setDuration(trackIn.getDuration());
+    trackOut.setDuration(trackIn.getDuration());
 
     return trackOut;
 }

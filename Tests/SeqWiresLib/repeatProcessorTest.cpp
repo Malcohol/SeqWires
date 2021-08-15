@@ -12,8 +12,8 @@ TEST(RepeatProcessorTest, funcSimpleZero) {
 
     auto trackOut = seqwires::repeatTrack(trackIn, 0);
 
-    EXPECT_EQ(trackOut->getNumEvents(), 0);
-    EXPECT_EQ(trackOut->getDuration(), 0);
+    EXPECT_EQ(trackOut.getNumEvents(), 0);
+    EXPECT_EQ(trackOut.getDuration(), 0);
 }
 
 TEST(RepeatProcessorTest, funcSimpleOnce) {
@@ -23,7 +23,7 @@ TEST(RepeatProcessorTest, funcSimpleOnce) {
 
     auto trackOut = seqwires::repeatTrack(trackIn, 1);
 
-    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65}, *trackOut);
+    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65}, trackOut);
 }
 
 TEST(RepeatProcessorTest, funcSimpleTwice) {
@@ -33,6 +33,6 @@ TEST(RepeatProcessorTest, funcSimpleTwice) {
 
     auto trackOut = seqwires::repeatTrack(trackIn, 2);
 
-    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65, 60, 62, 64, 65}, *trackOut);
+    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65, 60, 62, 64, 65}, trackOut);
 }
 

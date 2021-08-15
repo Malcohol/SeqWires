@@ -13,5 +13,5 @@
 
 namespace seqwires {
     /// A function which repeats a section of sequence data a number of times.
-    std::unique_ptr<Track> repeatTrack(const Track& trackIn, int count);
+    Track repeatTrack(const Track& trackIn, int count);
 } // namespace seqwires

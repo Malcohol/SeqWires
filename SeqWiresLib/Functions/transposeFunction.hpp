@@ -13,5 +13,5 @@
 
 namespace seqwires {
     /// Return a track with the same events as trackIn, except the pitches have been adjusted.
-    std::unique_ptr<Track> transposeTrack(const Track& trackIn, int pitchOffset);
+    Track transposeTrack(const Track& trackIn, int pitchOffset);
 } // namespace seqwires

@@ -15,5 +15,5 @@ namespace seqwires {
     /// A function which extracts a section of sequence data from a track.
     /// Groups which start before the excerpt are dropped.
     /// Groups which finish after the excerpt are truncated.
-    std::unique_ptr<Track> getTrackExcerpt(const Track& trackIn, ModelDuration start, ModelDuration duration);
+    Track getTrackExcerpt(const Track& trackIn, ModelDuration start, ModelDuration duration);
 } // namespace seqwires

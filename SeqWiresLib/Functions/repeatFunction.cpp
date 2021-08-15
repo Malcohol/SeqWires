@@ -12,17 +12,15 @@
 
 #include "BabelWires/Features/modelExceptions.hpp"
 
-#include <set>
-
-std::unique_ptr<seqwires::Track> seqwires::repeatTrack(const Track& trackIn, int count) {
+seqwires::Track seqwires::repeatTrack(const Track& trackIn, int count) {
     if (count < 0) {
         throw babelwires::ModelException() << "You cannot have repeat a negative number of times";
     }
 
-    auto trackOut = std::make_unique<Track>();
+    Track trackOut;
 
     for (int i = 0; i < count; ++i) {
-        appendTrack(*trackOut, trackIn);
+        appendTrack(trackOut, trackIn);
     }
 
     return trackOut;
