@@ -33,12 +33,13 @@ std::string seqwires::pitchToString(Pitch p) {
 }
 
 seqwires::Pitch seqwires::stringToPitch(std::string_view s) {
-    auto it = s.begin();
-    while (it != s.end() && std::isspace(*it)) {
+    const char* it = s.data();
+    const char *const end = s.data() + s.length();
+    while ((it != end) && std::isspace(*it)) {
         ++it;
     }
 
-    if (it == s.end()) {
+    if (it == end) {
         throw babelwires::ParseException() << "No contents when parsing pitch value";
     }
 
@@ -77,15 +78,15 @@ seqwires::Pitch seqwires::stringToPitch(std::string_view s) {
             throw babelwires::ParseException() << "Unexpected character when parsing pitch value";
     }
     ++it;
-    if (it != s.end() && (*it == '#')) {
+    if ((it != end) && (*it == '#')) {
         ++p;
         ++it;
     }
-    if ((it == s.end()) || std::isspace(*it)) {
+    if ((it == end) || std::isspace(*it)) {
         throw babelwires::ParseException() << "No octave value when parsing pitch value";
     }
     int octave = 0;
-    const auto result = std::from_chars(&*it, &*s.end(), octave);
+    const auto result = std::from_chars(it, end, octave);
     if (result.ec != std::errc()) {
         throw babelwires::ParseException() << "Could not parse octave when parsing pitch value";
     }
@@ -93,7 +94,7 @@ seqwires::Pitch seqwires::stringToPitch(std::string_view s) {
         throw babelwires::ParseException() << "Octave out of range when parsing pitch value";
     }
     it = result.ptr;
-    while (it != s.end()) {
+    while (it != end) {
         if (!std::isspace(*it)) {
             throw babelwires::ParseException() << "Trailing characters when parsing pitch value";
         }
