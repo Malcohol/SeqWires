@@ -7,7 +7,7 @@
  **/
 template <typename TRACK_ITERATOR>
 template <typename SPAN>
-seqwires::TrackTraverser<TRACK_ITERATOR>::TrackTraverser(const Track& track, SPAN span)
+seqwires::TrackTraverser<TRACK_ITERATOR>::TrackTraverser(const Track& track, const SPAN& span)
     : m_track(track)
     , m_iterator(span.begin())
     , m_endIterator(span.end())
@@ -38,7 +38,6 @@ void seqwires::TrackTraverser<TRACK_ITERATOR>::greatestLowerBoundNextEvent(Model
 template <typename TRACK_ITERATOR>
 void seqwires::TrackTraverser<TRACK_ITERATOR>::advance(
     ModelDuration time, const std::function<void(const typename TRACK_ITERATOR::value_type&)>& eventVisitor) {
-    std::vector<babelwires::StreamEventHolder<typename TRACK_ITERATOR::value_type>> eventsNow;
     if (m_iterator != m_endIterator) {
         assert((time <= m_timeToNextEvent) && "You cannot advance beyond the next event");
         m_timeToNextEvent -= time;

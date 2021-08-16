@@ -1,8 +1,8 @@
 /**
- * A processor which extracts a section of sequence data from a track. 
- * 
+ * A processor which creates a silent track of a certain duration.
+ *
  * (C) 2021 Malcolm Tyrrell
- * 
+ *
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
 #pragma once
@@ -15,24 +15,22 @@ namespace babelwires {
 } // namespace babelwires
 
 namespace seqwires {
+    class TrackFeature;
 
-    /// A processor which limits a track to events between certain points.
-    class ExcerptProcessor : public babelwires::CommonProcessor {
+    /// A processor which creates a silent track of a certain duration.
+    // Note: The excerpt processor can do this too, but someone might not think of that.
+    class SilenceProcessor : public babelwires::CommonProcessor {
       public:
-        ExcerptProcessor();
+        SilenceProcessor();
 
         virtual void process(babelwires::UserLogger& userLogger) override;
 
-        struct Factory : public babelwires::CommonProcessorFactory<ExcerptProcessor> {
+        struct Factory : public babelwires::CommonProcessorFactory<SilenceProcessor> {
             Factory();
         };
-
       private:
-        babelwires::RationalFeature* m_start;
         babelwires::RationalFeature* m_duration;
-
-        babelwires::ArrayFeature* m_tracksIn;
-        babelwires::ArrayFeature* m_tracksOut;
+        seqwires::TrackFeature* m_trackOut;
     };
 
 } // namespace seqwires

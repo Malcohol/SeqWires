@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<contents>
+    <project>
+        <projectData id="50232">
+            <elements>
+                <targetFile id="4" factory="Format0SmfFile" filePath="DucksInARow_Round.mid">
+                    <modifiers>
+                        <activatedOptionals path="Meta`1">
+                            <optionals>
+                                <activate value="Tempo`1"/>
+                                <activate value="CopyR`1"/>
+                                <activate value="Name`1"/>
+                            </optionals>
+                        </activatedOptionals>
+                        <assignFrom path="Meta`1/CopyR`1" sourceId="15" sourcePath="Meta`1/CopyR`1"/>
+                        <assignString path="Meta`1/Name`1" value="Ducks in a Row (Round)"/>
+                        <assignFrom path="Meta`1/Tempo`1" sourceId="15" sourcePath="Meta`1/Tempo`1"/>
+                        <arraySize path="tracks`1" size="3"/>
+                        <assignFrom path="tracks`1/0/Track`1" sourceId="12" sourcePath="Output`1"/>
+                        <assignInt path="tracks`1/1/Chan`1" value="1"/>
+                        <assignFrom path="tracks`1/1/Track`1" sourceId="13" sourcePath="Output`1"/>
+                        <assignInt path="tracks`1/2/Chan`1" value="2"/>
+                        <assignFrom path="tracks`1/2/Track`1" sourceId="10" sourcePath="Tracks`1/0"/>
+                    </modifiers>
+                    <uiData x="1205" y="80" width="309"/>
+                    <expandedPaths>
+                        <path value="tracks`1"/>
+                        <path value="tracks`1/0"/>
+                        <path value="tracks`1/1"/>
+                        <path value="tracks`1/2"/>
+                    </expandedPaths>
+                </targetFile>
+                <processor id="5" factory="SilentTrack">
+                    <modifiers>
+                        <assignRational path="Durn`1" value="3 1/2"/>
+                    </modifiers>
+                    <uiData x="-98" y="577" width="250"/>
+                </processor>
+                <processor id="6" factory="ConcatenateTracks">
+                    <modifiers>
+                        <arraySize path="Input`1" size="3"/>
+                        <assignFrom path="Input`1/0" sourceId="5" sourcePath="Track`2"/>
+                        <assignFrom path="Input`1/1" sourceId="8" sourcePath="Tracks`2/0"/>
+                        <assignFrom path="Input`1/2" sourceId="11" sourcePath="Tracks`2/0"/>
+                    </modifiers>
+                    <uiData x="340" y="459" width="250"/>
+                    <expandedPaths>
+                        <path value="Input`1"/>
+                    </expandedPaths>
+                </processor>
+                <processor id="8" factory="TrackExcerpt">
+                    <modifiers>
+                        <assignRational path="Duratn`1" value="7"/>
+                        <arraySize path="Tracks`2" size="2"/>
+                        <assignFrom path="Tracks`2/0" sourceId="15" sourcePath="tracks`2/ch0`1"/>
+                        <assignFrom path="Tracks`2/1" sourceId="15" sourcePath="tracks`2/ch1`1"/>
+                    </modifiers>
+                    <uiData x="-100" y="7" width="250"/>
+                    <expandedPaths>
+                        <path value="Tracks`2"/>
+                    </expandedPaths>
+                </processor>
+                <processor id="10" factory="TransposeTracks">
+                    <modifiers>
+                        <assignInt path="Offset`1" value="12"/>
+                        <assignFrom path="Tracks`1/0" sourceId="6" sourcePath="Output`1"/>
+                    </modifiers>
+                    <uiData x="791" y="480" width="265"/>
+                    <expandedPaths>
+                        <path value="Tracks`1"/>
+                    </expandedPaths>
+                </processor>
+                <processor id="11" factory="TrackExcerpt">
+                    <modifiers>
+                        <assignRational path="Duratn`1" value="1/2"/>
+                        <assignRational path="Start`1" value="7"/>
+                        <arraySize path="Tracks`2" size="2"/>
+                        <assignFrom path="Tracks`2/0" sourceId="15" sourcePath="tracks`2/ch0`1"/>
+                        <assignFrom path="Tracks`2/1" sourceId="15" sourcePath="tracks`2/ch1`1"/>
+                    </modifiers>
+                    <uiData x="-103" y="302" width="250"/>
+                    <expandedPaths>
+                        <path value="Tracks`2"/>
+                    </expandedPaths>
+                </processor>
+                <processor id="12" factory="ConcatenateTracks">
+                    <modifiers>
+                        <assignFrom path="Input`1/0" sourceId="14" sourcePath="Tracks`3/0"/>
+                        <assignFrom path="Input`1/1" sourceId="11" sourcePath="Tracks`2/0"/>
+                    </modifiers>
+                    <uiData x="796" y="33" width="250"/>
+                    <expandedPaths>
+                        <path value="Input`1"/>
+                    </expandedPaths>
+                </processor>
+                <processor id="13" factory="ConcatenateTracks">
+                    <modifiers>
+                        <assignFrom path="Input`1/0" sourceId="14" sourcePath="Tracks`3/1"/>
+                        <assignFrom path="Input`1/1" sourceId="11" sourcePath="Tracks`2/1"/>
+                    </modifiers>
+                    <uiData x="796" y="247" width="250"/>
+                    <expandedPaths>
+                        <path value="Input`1"/>
+                    </expandedPaths>
+                </processor>
+                <processor id="14" factory="RepeatTracks">
+                    <modifiers>
+                        <assignInt path="Count`1" value="2"/>
+                        <arraySize path="Tracks`3" size="2"/>
+                        <assignFrom path="Tracks`3/0" sourceId="8" sourcePath="Tracks`2/0"/>
+                        <assignFrom path="Tracks`3/1" sourceId="8" sourcePath="Tracks`2/1"/>
+                    </modifiers>
+                    <uiData x="335" y="16" width="250"/>
+                    <expandedPaths>
+                        <path value="Tracks`3"/>
+                    </expandedPaths>
+                </processor>
+                <sourceFile id="15" factory="StandardMIDIFile" filePath="DucksInARow.mid">
+                    <uiData x="-556" y="205" width="250"/>
+                    <expandedPaths>
+                        <path value="tracks`2"/>
+                    </expandedPaths>
+                </sourceFile>
+            </elements>
+        </projectData>
+        <fieldMetadata>
+            <fields>
+                <field id="Chan`1" name="channel" uuid="cad592ef-2355-4837-a265-38b49eae7599"/>
+                <field id="CopyR`1" name="Copyright" uuid="a59dc914-d060-4f03-be83-5804fc4d6b6a"/>
+                <field id="Count`1" name="Count" uuid="f5d2ab08-4430-47fa-b26c-0ff2154826e3"/>
+                <field id="Duratn`1" name="Duration" uuid="d83ebbc2-1492-4578-a3b8-4969eb6a2042"/>
+                <field id="Durn`1" name="Duration" uuid="05d3ea91-cb90-42f5-9988-2fb2e02e231c"/>
+                <field id="Input`1" name="Input tracks" uuid="3b8d8cd7-21d9-44a1-877e-134915fe5aca"/>
+                <field id="Meta`1" name="Metadata" uuid="72bbbcee-2b53-4fb2-bfb8-4f5e495f9166"/>
+                <field id="Name`1" name="Name" uuid="c2e4910f-d006-4a93-97a7-ae5973157ec8"/>
+                <field id="Offset`1" name="Pitch Offset" uuid="5cfa1541-f25e-4671-ac11-2ff71c883418"/>
+                <field id="Output`1" name="Output Track" uuid="873d5d66-c5ec-46a4-9aba-f5f4223bdfd4"/>
+                <field id="Start`1" name="Start" uuid="4b95f5db-a542-4660-a8db-97d3a5f831ca"/>
+                <field id="Tempo`1" name="Tempo" uuid="3ef804e9-e34a-4a25-b6bf-ce7597d9d90b"/>
+                <field id="Track`1" name="track" uuid="a6db15c9-9f29-4fb3-92c4-771746b2b97f"/>
+                <field id="Track`2" name="Track" uuid="86f3d028-a616-4a95-a566-a010ffcabb19"/>
+                <field id="Tracks`1" name="Tracks" uuid="83f05b66-7890-4542-8344-1409e50539b5"/>
+                <field id="Tracks`2" name="Tracks" uuid="983b3bcb-7086-4791-8e18-d8c7550d45d3"/>
+                <field id="Tracks`3" name="Tracks" uuid="f727937f-0215-4527-bab4-0eca269d6c5c"/>
+                <field id="ch0`1" name="Ch. 0" uuid="18cb72e5-6891-428c-beae-aa17db453852"/>
+                <field id="ch1`1" name="Ch. 1" uuid="f4bc5369-5d7e-4e18-83ec-44560309edb7"/>
+                <field id="tracks`1" name="tracks" uuid="1aa014da-2fb3-46e2-96df-98c7798b4a87"/>
+                <field id="tracks`2" name="tracks" uuid="3fb0f062-4e8e-4b37-a598-edcd63f82971"/>
+            </fields>
+        </fieldMetadata>
+        <factoryMetadata>
+            <factory id="ConcatenateTracks" version="1"/>
+            <factory id="Format0SmfFile" version="1"/>
+            <factory id="RepeatTracks" version="1"/>
+            <factory id="SilentTrack" version="1"/>
+            <factory id="StandardMIDIFile" version="1"/>
+            <factory id="TrackExcerpt" version="1"/>
+            <factory id="TransposeTracks" version="1"/>
+        </factoryMetadata>
+    </project>
+    <serializationMetadata>
+        <serializable type="activatedOptionals" version="1"/>
+        <serializable type="arraySize" version="1"/>
+        <serializable type="assignFrom" version="1"/>
+        <serializable type="assignInt" version="1"/>
+        <serializable type="assignRational" version="1"/>
+        <serializable type="assignString" version="1"/>
+        <serializable type="factory" version="1"/>
+        <serializable type="field" version="1"/>
+        <serializable type="fieldMetadata" version="1"/>
+        <serializable type="processor" version="1"/>
+        <serializable type="project" version="1"/>
+        <serializable type="projectData" version="1"/>
+        <serializable type="sourceFile" version="1"/>
+        <serializable type="targetFile" version="1"/>
+        <serializable type="uiData" version="1"/>
+    </serializationMetadata>
+</contents>

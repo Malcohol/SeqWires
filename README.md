@@ -6,9 +6,12 @@ As well as getting track data out of an input format and putting it in an output
 SeqWires attempts to support many common processing use-cases with a convenient and intuitive user interface.
 However, it does not attempt to support every possible transformation of music data and nor does it try to be a visual programming language.
 
-Here's a screenshot of the current state:
+The following screenshot shows some musical data processing in SeqWires.
+The source file has two tracks: a melody and a simple accompanyment.
+The project repeats the melody, and adds an offset and transposed copy of it.
+The result is like a simple [musical round](https://en.wikipedia.org/wiki/Round_(music)).
 
-![Screenshot showing three nodes wired together](https://raw.githubusercontent.com/Malcohol/BabelWires/main/Docs/screenshot.png "The current state of SeqWires")
+![Screenshot showing several nodes wired together](https://raw.githubusercontent.com/Malcohol/BabelWires/main/Docs/screenshot.png "An example SeqWires project")
 
 Right now, the supported formats are:
 * SMF (standard MIDI file)
@@ -44,7 +47,8 @@ git clone --recurse-submodules https://github.com/Malcohol/SeqWires.git
 ```
 
 SeqWires is implemented using the [BabelWires](https://github.com/Malcohol/BabelWires) framework. 
-SeqWires is intended to be cross platform, but to date I have been working in a GNU/Linux environment. 
+SeqWires is intended to be cross platform.
+I primarily work in a GNU/Linux environment, but I'll try to ensure the Windows build works too.
 Building in other environments is untested.
 
 # License

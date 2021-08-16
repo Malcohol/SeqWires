@@ -11,45 +11,28 @@
 #include "BabelWires/Features/numericFeature.hpp"
 #include "SeqWiresLib/Features/trackFeature.hpp"
 #include "SeqWiresLib/Functions/excerptFunction.hpp"
+#include "SeqWiresLib/Features/durationFeature.hpp"
 
 #include "BabelWires/Features/Path/fieldName.hpp"
 
-#include <set>
-
 namespace {
-    using NonNegativeRationalFeature =
-        babelwires::HasStaticRange<babelwires::RationalFeature, 0, std::numeric_limits<int>::max()>;
     using ExcerptArrayFeature =
         babelwires::HasStaticSizeRange<babelwires::StandardArrayFeature<seqwires::TrackFeature>, 1, 16>;
 } // namespace
 
-seqwires::ExcerptProcessor::ExcerptProcessor()
-    : m_inputFeature(std::make_unique<babelwires::RecordFeature>())
-    , m_outputFeature(std::make_unique<babelwires::RecordFeature>()) {
-    m_start = m_inputFeature->addField(std::make_unique<NonNegativeRationalFeature>(),
+seqwires::ExcerptProcessor::ExcerptProcessor() {
+    m_start = m_inputFeature->addField(std::make_unique<DurationFeature>(),
                                        FIELD_NAME("Start", "Start", "4b95f5db-a542-4660-a8db-97d3a5f831ca"));
-    m_duration = m_inputFeature->addField(std::make_unique<NonNegativeRationalFeature>(),
+    m_duration = m_inputFeature->addField(std::make_unique<DurationFeature>(),
                                           FIELD_NAME("Duratn", "Duration", "d83ebbc2-1492-4578-a3b8-4969eb6a2042"));
     m_tracksIn = m_inputFeature->addField(std::make_unique<ExcerptArrayFeature>(),
-                                              FIELD_NAME("Notes", "Notes", "983b3bcb-7086-4791-8e18-d8c7550d45d3"));
+                                              FIELD_NAME("Tracks", "Tracks", "983b3bcb-7086-4791-8e18-d8c7550d45d3"));
     m_tracksOut = m_outputFeature->addField(std::make_unique<ExcerptArrayFeature>(),
-                                                FIELD_NAME("Notes", "Notes", "9feb0f11-fafb-4744-92f1-87eb34b30747"));
+                                                FIELD_NAME("Tracks", "Tracks", "9feb0f11-fafb-4744-92f1-87eb34b30747"));
 }
 
-seqwires::ExcerptProcessorFactory::ExcerptProcessorFactory()
-    : ProcessorFactory("ExcerptProcessor", "Excerpt Processor", 1) {}
-
-std::unique_ptr<babelwires::Processor> seqwires::ExcerptProcessorFactory::createNewProcessor() const {
-    return std::make_unique<ExcerptProcessor>();
-}
-
-babelwires::RecordFeature* seqwires::ExcerptProcessor::getInputFeature() {
-    return m_inputFeature.get();
-}
-
-babelwires::RecordFeature* seqwires::ExcerptProcessor::getOutputFeature() {
-    return m_outputFeature.get();
-}
+seqwires::ExcerptProcessor::Factory::Factory()
+    : CommonProcessorFactory("TrackExcerpt", "Excerpt", 1) {}
 
 void seqwires::ExcerptProcessor::process(babelwires::UserLogger& userLogger) {
     if (m_tracksIn->isChanged(babelwires::Feature::Changes::StructureChanged)) {

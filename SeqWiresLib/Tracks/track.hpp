@@ -20,7 +20,7 @@ namespace seqwires {
     class Track {
       public:
         /// Add a TrackEvent by moving or copying it into the track.
-        template <typename EVENT, typename = std::enable_if_t<std::is_convertible_v<EVENT&, TrackEvent&>>>
+        template <typename EVENT, typename = std::enable_if_t<std::is_convertible_v<EVENT&, const TrackEvent&>>>
         void addEvent(EVENT&& srcEvent) {
             onNewEvent(m_blockStream.addEvent(std::forward<EVENT>(srcEvent)));
         };
@@ -34,6 +34,9 @@ namespace seqwires {
         /// Sets the track to have the given duration, unless that is shorter than the total duration of the events,
         /// in which case, the operation is ignored.
         void setDuration(ModelDuration d);
+
+        /// Return the total duration of the events in the track (which may be smaller than m_duration).
+        ModelDuration getTotalEventDuration() const;
 
         /// Get a hash corresponding to the state of the track's contents
         std::size_t getHash() const;
@@ -61,9 +64,6 @@ namespace seqwires {
 
         /// Ensure the cached values are up-to-date.
         void ensureCache() const;
-
-        /// Return the total duration of the events in the track (which may be smaller than m_duration).
-        ModelDuration getTotalEventDuration() const;
 
       protected:
         /// The track's events are stored in a BlockStream.

@@ -154,6 +154,9 @@ void smf::SmfWriter::writeNotes(const target::ChannelGroup& channelGroup) {
     const int numChannels = channelGroup.getNumTracks();
 
     seqwires::ModelDuration trackDuration = 0;
+
+    // TODO Use the mergeFunction to multiplex the channels.
+    
     std::vector<seqwires::TrackTraverser<seqwires::FilteredTrackIterator<seqwires::NoteEvent>>> traversers;
 
     for (int i = 0; i < channelGroup.getNumTracks(); ++i) {

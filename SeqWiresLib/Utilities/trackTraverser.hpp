@@ -21,7 +21,7 @@ namespace seqwires {
       public:
         /// Construct a traverser for the given track.
         /// Span must have begin() and end() returning the ITERATOR type.
-        template <typename SPAN> TrackTraverser(const Track& track, SPAN span);
+        template <typename SPAN> TrackTraverser(const Track& track, const SPAN& span);
 
         /// Set duration to be the maximum between the its current value and the track's duration.
         void leastUpperBoundDuration(ModelDuration& duration) const;

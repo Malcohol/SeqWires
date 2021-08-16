@@ -15,7 +15,7 @@ namespace seqwires {
         EarliestNote
     };
 
-    // UNTESTED
+    // TODO UNTESTED
     std::vector<Track> getMonophonicSubtracks(const Track& trackIn, int maxNumTracks = -1,
                                               MonophonicSubtrackPolicy policy = MonophonicSubtrackPolicy::EarliestNote);
 } // namespace seqwires

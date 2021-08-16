@@ -14,6 +14,7 @@ namespace seqwires {
     /// Base of potentially set of note track events.
     struct NoteEvent : public TrackEvent {
         STREAM_EVENT_ABSTRACT(NoteEvent);
+        virtual void transpose(int pitchOffset) override;
 
         static GroupingInfo::Category s_noteEventCategory;
 

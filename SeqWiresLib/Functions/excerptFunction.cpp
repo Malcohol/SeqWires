@@ -11,9 +11,9 @@
 
 #include <set>
 
-std::unique_ptr<seqwires::Track> seqwires::getTrackExcerpt(const Track& trackIn, ModelDuration start,
+seqwires::Track seqwires::getTrackExcerpt(const Track& trackIn, ModelDuration start,
                                                            ModelDuration duration) {
-    auto trackOut = std::make_unique<Track>();
+    Track trackOut;
 
     ModelDuration end = start + duration;
     ModelDuration timeProcessed;
@@ -38,11 +38,17 @@ std::unique_ptr<seqwires::Track> seqwires::getTrackExcerpt(const Track& trackIn,
     }
 
     bool isFirstEvent = true;
-    while ((it != trackIn.end()) && ((timeProcessed + it->getTimeSinceLastEvent()) < end)) {
+    while ((it != trackIn.end()) && ((timeProcessed + it->getTimeSinceLastEvent()) <= end)) {
         bool skip = false;
         const TrackEvent::GroupingInfo info = it->getGroupingInfo();
         if (info.m_grouping == TrackEvent::GroupingInfo::Grouping::StartOfGroup) {
-            groupsOpenAtEnd.insert(std::make_tuple(info.m_category, info.m_groupValue));
+            if ((timeProcessed + it->getTimeSinceLastEvent()) != end) {
+                groupsOpenAtEnd.insert(std::make_tuple(info.m_category, info.m_groupValue));
+            }
+            else {
+                // Skip groups which start exactly at the end.
+                skip = true;
+            }
         } else if (info.m_grouping == TrackEvent::GroupingInfo::Grouping::EndOfGroup) {
             const Group group = std::make_tuple(info.m_category, info.m_groupValue);
             if (groupsOpenAtStart.find(group) != groupsOpenAtStart.end()) {
@@ -64,7 +70,7 @@ std::unique_ptr<seqwires::Track> seqwires::getTrackExcerpt(const Track& trackIn,
                 newEvent->setTimeSinceLastEvent(newEvent->getTimeSinceLastEvent() + timeProcessed - start);
                 isFirstEvent = false;
             }
-            trackOut->addEvent(newEvent.release());
+            trackOut.addEvent(newEvent.release());
         }
         timeProcessed += it->getTimeSinceLastEvent();
         ++it;
@@ -76,7 +82,7 @@ std::unique_ptr<seqwires::Track> seqwires::getTrackExcerpt(const Track& trackIn,
         const TrackEvent::GroupingInfo info = it->getGroupingInfo();
         if (info.m_grouping == TrackEvent::GroupingInfo::Grouping::EndOfGroup) {
             const Group group = std::make_tuple(info.m_category, info.m_groupValue);
-            if (groupsOpenAtStart.find(group) != groupsOpenAtStart.end()) {
+            if (groupsOpenAtStart.find(group) == groupsOpenAtStart.end()) {
                 groupsOpenAtEnd.erase(group);
 
                 TrackEventHolder newEvent = *it;
@@ -86,11 +92,11 @@ std::unique_ptr<seqwires::Track> seqwires::getTrackExcerpt(const Track& trackIn,
                 } else {
                     newEvent->setTimeSinceLastEvent(0);
                 }
-                trackOut->addEvent(newEvent.release());
+                trackOut.addEvent(newEvent.release());
             }
         }
         ++it;
     }
-    trackOut->setDuration(duration);
+    trackOut.setDuration(duration);
     return trackOut;
 }
