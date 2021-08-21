@@ -258,9 +258,9 @@ TEST(SmfSaveLoadTest, format1Chords) {
         auto smfFeature = dynamic_cast<const smf::source::Format1SmfFeature*>(feature.get());
         ASSERT_NE(smfFeature, nullptr);
 
-        EXPECT_EQ(smfFeature->getNumMidiTracks(), 4);
+        EXPECT_EQ(smfFeature->getNumMidiTracks(), 3);
         for (int i = 0; i < 3; ++i) {
-            const auto& channelGroup = dynamic_cast<const smf::source::ExtensibleChannelGroup&>(smfFeature->getMidiTrack(i + 1));
+            const auto& channelGroup = dynamic_cast<const smf::source::ExtensibleChannelGroup&>(smfFeature->getMidiTrack(i));
             EXPECT_EQ(channelGroup.getNumFeatures(), 2);
             const auto* channelFeature = dynamic_cast<const babelwires::IntFeature*>(&channelGroup.getChildFromStep(babelwires::PathStep("ChanNo")));
             ASSERT_NE(channelFeature, nullptr);

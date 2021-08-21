@@ -92,12 +92,7 @@ void smf::SmfWriter::writeHeaderChunk(const target::SmfFeature& sequence) {
     m_os->write("MThd", 4);
     writeUint32(6);
     writeUint16(int(sequence.getFormat()));
-    if (sequence.getFormat() == smf::target::SmfFeature::SMF_FORMAT_0) {
-        writeUint16(numTracks);
-    } else {
-        // Track 0 holds meta-data.
-        writeUint16(numTracks + 1);
-    }
+    writeUint16(numTracks);
     
     {
         int division = 1;
@@ -244,8 +239,8 @@ void smf::writeToSmfFormat1(std::ostream& output, const smf::target::Format1SmfF
     const int numTracks = sequence.getNumMidiTracks();
     smf::SmfWriter writer(output);
     writer.writeHeaderChunk(sequence);
-    writer.writeTrack(nullptr, sequence.getMidiMetadata());
-    for (int i = 0; i < numTracks; ++i) {
+    writer.writeTrack(&sequence.getMidiTrack(0), sequence.getMidiMetadata());
+    for (int i = 1; i < numTracks; ++i) {
         MidiMetadata dummyMetadata;
         writer.writeTrack(&sequence.getMidiTrack(i), dummyMetadata);
     }
