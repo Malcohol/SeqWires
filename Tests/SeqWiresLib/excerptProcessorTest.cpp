@@ -130,10 +130,10 @@ TEST(ExcerptProcessorTest, processor) {
     processor.getInputFeature()->setToDefault();
     processor.getOutputFeature()->setToDefault();
 
-    auto* startFeature = dynamic_cast<babelwires::RationalFeature*>(&processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Start")));
-    auto* durationFeature = dynamic_cast<babelwires::RationalFeature*>(&processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Duratn")));
-    auto* inputArray = dynamic_cast<babelwires::ArrayFeature*>(&processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Tracks")));
-    auto* outputArray = dynamic_cast<babelwires::ArrayFeature*>(&processor.getOutputFeature()->getChildFromStep(babelwires::PathStep("Tracks")));
+    auto* startFeature = processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Start")).asA<babelwires::RationalFeature>();
+    auto* durationFeature = processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Duratn")).asA<babelwires::RationalFeature>();
+    auto* inputArray = processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Tracks")).asA<babelwires::ArrayFeature>();
+    auto* outputArray = processor.getOutputFeature()->getChildFromStep(babelwires::PathStep("Tracks")).asA<babelwires::ArrayFeature>();
     ASSERT_NE(startFeature, nullptr);
     ASSERT_NE(durationFeature, nullptr);
     ASSERT_NE(inputArray, nullptr);
@@ -142,8 +142,8 @@ TEST(ExcerptProcessorTest, processor) {
     EXPECT_EQ(inputArray->getNumFeatures(), 1);
     EXPECT_EQ(outputArray->getNumFeatures(), 1);
 
-    auto getInputTrack = [&inputArray](int i) { return dynamic_cast<seqwires::TrackFeature*>(&inputArray->getChildFromStep(i)); };
-    auto getOutputTrack = [&outputArray](int i) { return dynamic_cast<seqwires::TrackFeature*>(&outputArray->getChildFromStep(i)); };
+    auto getInputTrack = [&inputArray](int i) { return inputArray->getChildFromStep(i).asA<seqwires::TrackFeature>(); };
+    auto getOutputTrack = [&outputArray](int i) { return outputArray->getChildFromStep(i).asA<seqwires::TrackFeature>(); };
 
     ASSERT_NE(getInputTrack(0), nullptr);
     ASSERT_NE(getOutputTrack(0), nullptr);
