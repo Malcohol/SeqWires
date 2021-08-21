@@ -34,7 +34,7 @@ std::string smf::SmfSourceFormat::getProductName() const {
 
 std::unique_ptr<babelwires::FileFeature> smf::SmfSourceFormat::loadFromFile(babelwires::DataSource& dataSource,
                                                                       babelwires::UserLogger& userLogger) const {
-    return parseSmfSequence(dataSource);
+    return parseSmfSequence(dataSource, userLogger);
 }
 
 smf::SmfFormat0TargetFormat::SmfFormat0TargetFormat()

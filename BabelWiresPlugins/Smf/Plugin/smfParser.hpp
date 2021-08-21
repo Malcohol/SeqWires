@@ -11,6 +11,7 @@
 #include "BabelWiresPlugins/Smf/Plugin/smfSourceModel.hpp"
 #include "Common/IO/dataSource.hpp"
 #include "SeqWiresLib/musicTypes.hpp"
+#include "Common/Log/userLogger.hpp"
 
 #include <cstdint>
 #include <memory>
@@ -21,9 +22,7 @@ namespace smf {
 
     class SmfParser {
       public:
-        SmfParser(babelwires::DataSource& dataSource);
-
-        static source::SmfFeature::Format getSequenceType(babelwires::DataSource& dataSource);
+        SmfParser(babelwires::DataSource& dataSource, babelwires::UserLogger& log);
 
         void parse();
         std::unique_ptr<babelwires::FileFeature> getResult() { return std::move(m_result); }
@@ -51,6 +50,9 @@ namespace smf {
 
         void skipBytes(int numBytes);
 
+        template<typename STREAMLIKE>
+        void logByteSequence(STREAMLIKE log, int length);
+
         ///
         std::uint16_t readU16();
         std::uint32_t readU24();
@@ -59,7 +61,7 @@ namespace smf {
 
       private:
         babelwires::DataSource& m_dataSource;
-        std::ostringstream m_log;
+        babelwires::UserLogger& m_userLogger;
         std::unique_ptr<babelwires::FileFeature> m_result;
 
         source::SmfFeature::Format m_sequenceType;
@@ -67,6 +69,6 @@ namespace smf {
         int m_division;
     };
 
-    std::unique_ptr<babelwires::FileFeature> parseSmfSequence(babelwires::DataSource& dataSource);
+    std::unique_ptr<babelwires::FileFeature> parseSmfSequence(babelwires::DataSource& dataSource, babelwires::UserLogger& userLogger);
 
 } // namespace smf

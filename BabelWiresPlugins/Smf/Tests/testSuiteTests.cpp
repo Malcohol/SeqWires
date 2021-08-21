@@ -21,7 +21,7 @@ TEST(SmfTestSuiteTest, loadAllTestFilesWithoutCrashing) {
             ++numFilesTested;
             try {
                 babelwires::FileDataSource midiFile(p.path());
-                smf::parseSmfSequence(midiFile);
+                smf::parseSmfSequence(midiFile, log);
             } catch (const babelwires::ParseException&) {
                 // Allowed.
             } catch (...) {
@@ -42,7 +42,7 @@ TEST(SmfTestSuiteTest, cMajorScale) {
 
     babelwires::FileDataSource midiFile("test-c-major-scale.mid");
 
-    const auto feature = smf::parseSmfSequence(midiFile);
+    const auto feature = smf::parseSmfSequence(midiFile, log);
     ASSERT_NE(feature, nullptr);
     auto smfFeature = dynamic_cast<const smf::source::Format0SmfFeature*>(feature.get());
     ASSERT_NE(smfFeature, nullptr);
@@ -74,7 +74,7 @@ TEST(SmfTestSuiteTest, multichannelChords0) {
 
     babelwires::FileDataSource midiFile("test-multichannel-chords-0.mid");
 
-    const auto feature = smf::parseSmfSequence(midiFile);
+    const auto feature = smf::parseSmfSequence(midiFile, log);
     ASSERT_NE(feature, nullptr);
     auto smfFeature = dynamic_cast<const smf::source::Format0SmfFeature*>(feature.get());
     ASSERT_NE(smfFeature, nullptr);
@@ -107,7 +107,7 @@ TEST(SmfTestSuiteTest, multichannelChords1) {
 
     babelwires::FileDataSource midiFile("test-multichannel-chords-1.mid");
 
-    const auto feature = smf::parseSmfSequence(midiFile);
+    const auto feature = smf::parseSmfSequence(midiFile, log);
     ASSERT_NE(feature, nullptr);
     auto smfFeature = dynamic_cast<const smf::source::Format1SmfFeature*>(feature.get());
     ASSERT_NE(smfFeature, nullptr);
@@ -148,7 +148,7 @@ TEST(SmfTestSuiteTest, multichannelChords2) {
 
     babelwires::FileDataSource midiFile("test-multichannel-chords-2.mid");
 
-    const auto feature = smf::parseSmfSequence(midiFile);
+    const auto feature = smf::parseSmfSequence(midiFile, log);
     ASSERT_NE(feature, nullptr);
     auto smfFeature = dynamic_cast<const smf::source::Format1SmfFeature*>(feature.get());
     ASSERT_NE(smfFeature, nullptr);
@@ -204,7 +204,7 @@ TEST(SmfTestSuiteTest, multichannelChords3) {
 
     babelwires::FileDataSource midiFile("test-multichannel-chords-3.mid");
 
-    const auto feature = smf::parseSmfSequence(midiFile);
+    const auto feature = smf::parseSmfSequence(midiFile, log);
     ASSERT_NE(feature, nullptr);
     auto smfFeature = dynamic_cast<const smf::source::Format1SmfFeature*>(feature.get());
     ASSERT_NE(smfFeature, nullptr);
@@ -247,7 +247,7 @@ TEST(SmfTestSuiteTest, trackLength) {
 
     babelwires::FileDataSource midiFile("test-track-length.mid");
 
-    const auto feature = smf::parseSmfSequence(midiFile);
+    const auto feature = smf::parseSmfSequence(midiFile, log);
     ASSERT_NE(feature, nullptr);
     auto smfFeature = dynamic_cast<const smf::source::Format0SmfFeature*>(feature.get());
     ASSERT_NE(smfFeature, nullptr);
@@ -267,7 +267,7 @@ TEST(SmfTestSuiteTest, tempoTest) {
 
     babelwires::FileDataSource midiFile("test-karaoke-kar.mid");
 
-    const auto feature = smf::parseSmfSequence(midiFile);
+    const auto feature = smf::parseSmfSequence(midiFile, log);
     ASSERT_NE(feature, nullptr);
     auto smfFeature = dynamic_cast<const smf::source::Format1SmfFeature*>(feature.get());
     ASSERT_NE(smfFeature, nullptr);
@@ -286,10 +286,10 @@ TEST(SmfTestSuiteTest, corruptFiles) {
     {
         babelwires::FileDataSource midiFile("test-corrupt-file-extra-byte.mid");
         // This is OK.
-        smf::parseSmfSequence(midiFile);
+        smf::parseSmfSequence(midiFile, log);
     }
     {
         babelwires::FileDataSource midiFile("test-corrupt-file-missing-byte.mid");
-        EXPECT_THROW(smf::parseSmfSequence(midiFile), babelwires::ParseException);
+        EXPECT_THROW(smf::parseSmfSequence(midiFile, log), babelwires::ParseException);
     }
 }

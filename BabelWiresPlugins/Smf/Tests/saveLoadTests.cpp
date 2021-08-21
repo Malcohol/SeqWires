@@ -51,7 +51,7 @@ TEST(SmfSaveLoadTest, cMajorScale) {
     {
         babelwires::FileDataSource midiFile(tempFile);
 
-        const auto feature = smf::parseSmfSequence(midiFile);
+        const auto feature = smf::parseSmfSequence(midiFile, log);
         ASSERT_NE(feature, nullptr);
         auto smfFeature = dynamic_cast<const smf::source::Format0SmfFeature*>(feature.get());
         ASSERT_NE(smfFeature, nullptr);
@@ -143,7 +143,7 @@ TEST(SmfSaveLoadTest, cMajorScaleWithMetadata) {
 
         babelwires::FileDataSource midiFile(tempFile);
 
-        const auto feature = smf::parseSmfSequence(midiFile);
+        const auto feature = smf::parseSmfSequence(midiFile, log);
         ASSERT_NE(feature, nullptr);
         auto smfFeature = dynamic_cast<const smf::source::Format0SmfFeature*>(feature.get());
         ASSERT_NE(smfFeature, nullptr);
@@ -200,7 +200,7 @@ TEST(SmfSaveLoadTest, format0Chords) {
     {
         babelwires::FileDataSource midiFile(tempFile);
 
-        const auto feature = smf::parseSmfSequence(midiFile);
+        const auto feature = smf::parseSmfSequence(midiFile, log);
         ASSERT_NE(feature, nullptr);
         auto smfFeature = dynamic_cast<const smf::source::Format0SmfFeature*>(feature.get());
         ASSERT_NE(smfFeature, nullptr);
@@ -253,7 +253,7 @@ TEST(SmfSaveLoadTest, format1Chords) {
     {
         babelwires::FileDataSource midiFile(tempFile);
 
-        const auto feature = smf::parseSmfSequence(midiFile);
+        const auto feature = smf::parseSmfSequence(midiFile, log);
         ASSERT_NE(feature, nullptr);
         auto smfFeature = dynamic_cast<const smf::source::Format1SmfFeature*>(feature.get());
         ASSERT_NE(smfFeature, nullptr);
