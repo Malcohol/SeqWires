@@ -130,10 +130,10 @@ TEST(ExcerptProcessorTest, processor) {
     processor.getInputFeature()->setToDefault();
     processor.getOutputFeature()->setToDefault();
 
-    auto* startFeature = processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Start")).asA<babelwires::RationalFeature>();
-    auto* durationFeature = processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Duratn")).asA<babelwires::RationalFeature>();
-    auto* inputArray = processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Tracks")).asA<babelwires::ArrayFeature>();
-    auto* outputArray = processor.getOutputFeature()->getChildFromStep(babelwires::PathStep("Tracks")).asA<babelwires::ArrayFeature>();
+    auto* startFeature = processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Start")).as<babelwires::RationalFeature>();
+    auto* durationFeature = processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Duratn")).as<babelwires::RationalFeature>();
+    auto* inputArray = processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Tracks")).as<babelwires::ArrayFeature>();
+    auto* outputArray = processor.getOutputFeature()->getChildFromStep(babelwires::PathStep("Tracks")).as<babelwires::ArrayFeature>();
     ASSERT_NE(startFeature, nullptr);
     ASSERT_NE(durationFeature, nullptr);
     ASSERT_NE(inputArray, nullptr);
@@ -142,8 +142,8 @@ TEST(ExcerptProcessorTest, processor) {
     EXPECT_EQ(inputArray->getNumFeatures(), 1);
     EXPECT_EQ(outputArray->getNumFeatures(), 1);
 
-    auto getInputTrack = [&inputArray](int i) { return inputArray->getChildFromStep(i).asA<seqwires::TrackFeature>(); };
-    auto getOutputTrack = [&outputArray](int i) { return outputArray->getChildFromStep(i).asA<seqwires::TrackFeature>(); };
+    auto getInputTrack = [&inputArray](int i) { return inputArray->getChildFromStep(i).as<seqwires::TrackFeature>(); };
+    auto getOutputTrack = [&outputArray](int i) { return outputArray->getChildFromStep(i).as<seqwires::TrackFeature>(); };
 
     ASSERT_NE(getInputTrack(0), nullptr);
     ASSERT_NE(getOutputTrack(0), nullptr);

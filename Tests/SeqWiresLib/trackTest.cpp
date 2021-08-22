@@ -64,7 +64,7 @@ TEST(Track, BlocksAndAlignment) {
     for (const auto& event : track) {
         EXPECT_EQ(event.getTimeSinceLastEvent(), 1);
         if (count % 2) {
-            EXPECT_NE(event.asA<TestEvent>(), nullptr);
+            EXPECT_NE(event.as<TestEvent>(), nullptr);
             const TestEvent& e = static_cast<const TestEvent&>(event);
             EXPECT_EQ(e.m_big[2], (count / 2));
         }

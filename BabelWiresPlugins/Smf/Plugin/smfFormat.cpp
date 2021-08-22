@@ -54,7 +54,7 @@ std::unique_ptr<babelwires::FileFeature> smf::SmfFormat0TargetFormat::createNewF
 
 void smf::SmfFormat0TargetFormat::writeToFile(const babelwires::FileFeature& sequence, std::ostream& os,
                                  babelwires::UserLogger& userLogger) const {
-    writeToSmfFormat0(os, *sequence.asA<target::Format0SmfFeature>());
+    writeToSmfFormat0(os, *sequence.as<target::Format0SmfFeature>());
 }
 
 smf::SmfFormat1TargetFormat::SmfFormat1TargetFormat()
@@ -74,5 +74,5 @@ std::unique_ptr<babelwires::FileFeature> smf::SmfFormat1TargetFormat::createNewF
 
 void smf::SmfFormat1TargetFormat::writeToFile(const babelwires::FileFeature& sequence, std::ostream& os,
                                  babelwires::UserLogger& userLogger) const {
-    writeToSmfFormat1(os, *sequence.asA<target::Format1SmfFeature>());
+    writeToSmfFormat1(os, *sequence.as<target::Format1SmfFeature>());
 }

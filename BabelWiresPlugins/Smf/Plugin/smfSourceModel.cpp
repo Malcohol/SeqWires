@@ -135,11 +135,11 @@ int smf::source::Format1SmfFeature::getNumMidiTracks() const {
 }
 
 const smf::source::ChannelGroup& smf::source::Format1SmfFeature::getMidiTrack(int i) const {
-    return *m_tracks->getFeature(i)->asA<ExtensibleChannelGroup>();
+    return *m_tracks->getFeature(i)->as<ExtensibleChannelGroup>();
 }
 
 smf::source::ChannelGroup* smf::source::Format1SmfFeature::addMidiTrack() {
-    return m_tracks->addEntry()->asA<ExtensibleChannelGroup>();
+    return m_tracks->addEntry()->as<ExtensibleChannelGroup>();
 }
 
 std::unique_ptr<babelwires::Feature> smf::source::TrackArray::createNextEntry() const {
