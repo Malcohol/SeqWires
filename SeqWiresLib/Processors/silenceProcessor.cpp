@@ -6,14 +6,14 @@
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
 #include "SeqWiresLib/Processors/silenceProcessor.hpp"
-#include "BabelWires/Features/arrayFeature.hpp"
-#include "BabelWires/Features/featureMixins.hpp"
-#include "BabelWires/Features/numericFeature.hpp"
+#include "BabelWiresLib/Features/arrayFeature.hpp"
+#include "BabelWiresLib/Features/featureMixins.hpp"
+#include "BabelWiresLib/Features/numericFeature.hpp"
 #include "SeqWiresLib/Features/trackFeature.hpp"
 #include "SeqWiresLib/Features/durationFeature.hpp"
 #include "SeqWiresLib/Functions/appendTrackFunction.hpp"
 
-#include "BabelWires/Features/Path/fieldName.hpp"
+#include "BabelWiresLib/Features/Path/fieldName.hpp"
 
 seqwires::SilenceProcessor::SilenceProcessor() {
     m_duration = m_inputFeature->addField(std::make_unique<DurationFeature>(),

@@ -6,7 +6,7 @@
 #include <SeqWiresLib/Features/trackFeature.hpp>
 #include <SeqWiresLib/Tracks/noteEvents.hpp>
 
-#include <BabelWires/Common/IO/fileDataSource.hpp>
+#include <Common/IO/fileDataSource.hpp>
 
 #include <Tests/TestUtils/seqTestUtils.hpp>
 

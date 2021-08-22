@@ -7,9 +7,9 @@
  **/
 #pragma once
 
-#include "BabelWires/FileFormat/fileFeature.hpp"
-#include "BabelWires/FileFormat/sourceFileFormat.hpp"
-#include "BabelWires/FileFormat/targetFileFormat.hpp"
+#include "BabelWiresLib/FileFormat/fileFeature.hpp"
+#include "BabelWiresLib/FileFormat/sourceFileFormat.hpp"
+#include "BabelWiresLib/FileFormat/targetFileFormat.hpp"
 
 namespace smf {
     /// Format for loading Standard MIDI Files..

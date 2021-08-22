@@ -10,7 +10,7 @@
 #include "SeqWiresLib/Tracks/trackEventHolder.hpp"
 #include "SeqWiresLib/Utilities/trackTraverser.hpp"
 
-#include "BabelWires/Features/modelExceptions.hpp"
+#include "BabelWiresLib/Features/modelExceptions.hpp"
 
 seqwires::Track seqwires::mergeTracks(const std::vector<const Track*>& sourceTracks) {
     Track trackOut;

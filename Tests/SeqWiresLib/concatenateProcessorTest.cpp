@@ -5,7 +5,7 @@
 #include <SeqWiresLib/Tracks/noteEvents.hpp>
 #include <SeqWiresLib/Features/trackFeature.hpp>
 
-#include <BabelWires/Features/arrayFeature.hpp>
+#include <BabelWiresLib/Features/arrayFeature.hpp>
 
 #include <Tests/TestUtils/testLog.hpp>
 #include <Tests/TestUtils/seqTestUtils.hpp>

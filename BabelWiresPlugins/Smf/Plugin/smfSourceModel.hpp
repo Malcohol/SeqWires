@@ -7,10 +7,10 @@
  **/
 #pragma once
 
-#include "BabelWires/Features/arrayFeature.hpp"
-#include "BabelWires/Features/stringFeature.hpp"
-#include "BabelWires/FileFormat/fileFeature.hpp"
-#include "BabelWires/Features/recordWithOptionalsFeature.hpp"
+#include "BabelWiresLib/Features/arrayFeature.hpp"
+#include "BabelWiresLib/Features/stringFeature.hpp"
+#include "BabelWiresLib/FileFormat/fileFeature.hpp"
+#include "BabelWiresLib/Features/recordWithOptionalsFeature.hpp"
 
 #include "SeqWiresLib/Features/tempoFeature.hpp"
 

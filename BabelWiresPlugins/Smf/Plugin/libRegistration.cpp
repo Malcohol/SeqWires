@@ -7,7 +7,7 @@
  **/
 #include "BabelWiresPlugins/Smf/Plugin/libRegistration.hpp"
 
-#include "BabelWires/Project/projectContext.hpp"
+#include "BabelWiresLib/Project/projectContext.hpp"
 
 #include "BabelWiresPlugins/Smf/Plugin/smfFormat.hpp"
 

@@ -7,9 +7,9 @@
  **/
 #include "SeqWiresLib/libRegistration.hpp"
 
-#include "BabelWires/Processors/processorFactory.hpp"
-#include "BabelWires/Processors/processorFactoryRegistry.hpp"
-#include "BabelWires/Project/projectContext.hpp"
+#include "BabelWiresLib/Processors/processorFactory.hpp"
+#include "BabelWiresLib/Processors/processorFactoryRegistry.hpp"
+#include "BabelWiresLib/Project/projectContext.hpp"
 
 #include "SeqWiresLib/Processors/excerptProcessor.hpp"
 #include "SeqWiresLib/Processors/concatenateProcessor.hpp"

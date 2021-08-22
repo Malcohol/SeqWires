@@ -7,8 +7,8 @@
  **/
 #pragma once
 
-#include "BabelWires/Features/arrayFeature.hpp"
-#include "BabelWires/FileFormat/fileFeature.hpp"
+#include "BabelWiresLib/Features/arrayFeature.hpp"
+#include "BabelWiresLib/FileFormat/fileFeature.hpp"
 #include "BabelWiresPlugins/Smf/Plugin/smfModelCommon.hpp"
 
 namespace seqwires {

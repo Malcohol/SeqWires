@@ -9,7 +9,7 @@
 
 #include "SeqWiresLib/musicTypes.hpp"
 
-#include "BabelWires/ValueNames/valueNames.hpp"
+#include "BabelWiresLib/ValueNames/valueNames.hpp"
 
 namespace {
     struct NoteValueNames : babelwires::ValueNames {

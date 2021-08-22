@@ -10,12 +10,12 @@
 #include "SeqWiresLib/Functions/splitAtPitchFunction.hpp"
 #include "SeqWiresLib/Features/pitchFeature.hpp"
 
-#include "BabelWires/Features/arrayFeature.hpp"
-#include "BabelWires/Features/featureMixins.hpp"
-#include "BabelWires/Features/numericFeature.hpp"
+#include "BabelWiresLib/Features/arrayFeature.hpp"
+#include "BabelWiresLib/Features/featureMixins.hpp"
+#include "BabelWiresLib/Features/numericFeature.hpp"
 
 
-#include "BabelWires/Features/Path/fieldName.hpp"
+#include "BabelWiresLib/Features/Path/fieldName.hpp"
 
 #include <set>
 

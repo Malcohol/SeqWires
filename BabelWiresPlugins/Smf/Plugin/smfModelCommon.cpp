@@ -7,11 +7,11 @@
  **/
 #include "BabelWiresPlugins/Smf/Plugin/smfModelCommon.hpp"
 
-#include "BabelWires/Features/featureMixins.hpp"
+#include "BabelWiresLib/Features/featureMixins.hpp"
 #include "BabelWiresPlugins/Smf/Plugin/smfFormat.hpp"
 #include "SeqWiresLib/Features/trackFeature.hpp"
 
-#include "BabelWires/Features/Path/fieldName.hpp"
+#include "BabelWiresLib/Features/Path/fieldName.hpp"
 
 
 namespace {

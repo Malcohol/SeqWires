@@ -7,7 +7,7 @@
  **/
 #pragma once
 
-#include "BabelWires/Features/heavyValueFeature.hpp"
+#include "BabelWiresLib/Features/heavyValueFeature.hpp"
 #include "SeqWiresLib/Tracks/track.hpp"
 
 namespace seqwires {
