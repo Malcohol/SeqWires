@@ -8,18 +8,18 @@
 #include "SeqWiresLib/Utilities/monophonicNoteIterator.hpp"
 
 bool seqwires::MonophonicNoteIterator::isEventOfInterest(const TrackEvent& event) {
-    if (const NoteOnEvent* noteOn = event.asA<NoteOnEvent>()) {
+    if (const NoteOnEvent* noteOn = event.as<NoteOnEvent>()) {
         if (!m_noteIsActive) {
             m_activePitch = noteOn->m_pitch;
             m_noteIsActive = true;
             return true;
         }
-    } else if (const NoteOffEvent* noteOff = event.asA<NoteOffEvent>()) {
+    } else if (const NoteOffEvent* noteOff = event.as<NoteOffEvent>()) {
         if (m_noteIsActive && (noteOff->m_pitch == m_activePitch)) {
             m_noteIsActive = false;
             return true;
         }
-    } else if (const NoteEvent* note = event.asA<NoteEvent>()) {
+    } else if (const NoteEvent* note = event.as<NoteEvent>()) {
         if ((m_interiorEventFilter == AllEvents) && m_noteIsActive && (note->m_pitch == m_activePitch)) {
             return true;
         }

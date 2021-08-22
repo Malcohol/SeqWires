@@ -32,7 +32,7 @@ void testUtils::testSimpleNotes(const std::vector<seqwires::Pitch>& expectedPitc
 
     for (auto pitch : expectedPitches) {
         EXPECT_NE(noteIterator, endIterator);
-        auto noteOn = noteIterator->asA<const seqwires::NoteOnEvent>();
+        auto noteOn = noteIterator->as<const seqwires::NoteOnEvent>();
         ASSERT_NE(noteOn, nullptr);
         EXPECT_EQ(noteOn->getTimeSinceLastEvent(), 0);
         EXPECT_EQ(noteOn->m_pitch, pitch);
@@ -40,7 +40,7 @@ void testUtils::testSimpleNotes(const std::vector<seqwires::Pitch>& expectedPitc
         ++noteIterator;
 
         EXPECT_NE(noteIterator, endIterator);
-        auto noteOff = noteIterator->asA<seqwires::NoteOffEvent>();
+        auto noteOff = noteIterator->as<seqwires::NoteOffEvent>();
         ASSERT_NE(noteOff, nullptr);
         EXPECT_EQ(noteOff->getTimeSinceLastEvent(), expectedNoteDuration);
         EXPECT_EQ(noteOff->m_pitch, pitch);
@@ -74,7 +74,7 @@ void testUtils::testNotes(const std::vector<NoteInfo>& expectedNotes, const seqw
     for (auto note : expectedNotes)
     {
         EXPECT_NE(noteIterator, endIterator);
-        auto noteOn = noteIterator->asA<const seqwires::NoteOnEvent>();
+        auto noteOn = noteIterator->as<const seqwires::NoteOnEvent>();
         ASSERT_NE(noteOn, nullptr);
         EXPECT_EQ(noteOn->getTimeSinceLastEvent(), note.m_noteOnTime);
         EXPECT_EQ(noteOn->m_pitch, note.m_pitch);
@@ -82,7 +82,7 @@ void testUtils::testNotes(const std::vector<NoteInfo>& expectedNotes, const seqw
         ++noteIterator;
 
         EXPECT_NE(noteIterator, endIterator);
-        auto noteOff = noteIterator->asA<seqwires::NoteOffEvent>();
+        auto noteOff = noteIterator->as<seqwires::NoteOffEvent>();
         ASSERT_NE(noteOff, nullptr);
         EXPECT_EQ(noteOff->getTimeSinceLastEvent(), note.m_noteOffTime);
         EXPECT_EQ(noteOff->m_pitch, note.m_pitch);
@@ -114,7 +114,7 @@ void testUtils::testChords(const std::vector<ChordInfo>& expectedChords, const s
 
     for (auto chord : expectedChords) {
         EXPECT_NE(chordIterator, endIterator);
-        auto chordOn = chordIterator->asA<const seqwires::ChordOnEvent>();
+        auto chordOn = chordIterator->as<const seqwires::ChordOnEvent>();
         ASSERT_NE(chordOn, nullptr);
         EXPECT_EQ(chordOn->getTimeSinceLastEvent(), chord.m_chordOnTime);
         EXPECT_EQ(chordOn->m_chordType, chord.m_chordType);
@@ -122,7 +122,7 @@ void testUtils::testChords(const std::vector<ChordInfo>& expectedChords, const s
         ++chordIterator;
 
         EXPECT_NE(chordIterator, endIterator);
-        auto chordOff = chordIterator->asA<seqwires::ChordOffEvent>();
+        auto chordOff = chordIterator->as<seqwires::ChordOffEvent>();
         ASSERT_NE(chordOff, nullptr);
         EXPECT_EQ(chordOff->getTimeSinceLastEvent(), chord.m_chordOffTime);
         ++chordIterator;

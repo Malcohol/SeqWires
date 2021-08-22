@@ -116,11 +116,11 @@ void smf::SmfWriter::writeNoteEvent(int channel, seqwires::ModelDuration timeSin
     assert(channel <= 15);
 
     writeModelDuration(timeSinceLastEvent);
-    if (const seqwires::NoteOnEvent* noteOn = e.asA<seqwires::NoteOnEvent>()) {
+    if (const seqwires::NoteOnEvent* noteOn = e.as<seqwires::NoteOnEvent>()) {
         m_os->put(0b10010000 | channel);
         m_os->put(noteOn->m_pitch);
         m_os->put(noteOn->m_velocity);
-    } else if (const seqwires::NoteOffEvent* noteOff = e.asA<seqwires::NoteOffEvent>()) {
+    } else if (const seqwires::NoteOffEvent* noteOff = e.as<seqwires::NoteOffEvent>()) {
         m_os->put(0b10000000 | channel);
         m_os->put(noteOff->m_pitch);
         m_os->put(noteOff->m_velocity);
@@ -134,9 +134,9 @@ namespace {
 
     /// Only noteOn and noteOff events are understood.
     bool noteOnOffFilter(const seqwires::TrackEvent& event) {
-        if (event.asA<seqwires::NoteOnEvent>()) {
+        if (event.as<seqwires::NoteOnEvent>()) {
             return true;
-        } else if (event.asA<seqwires::NoteOffEvent>()) {
+        } else if (event.as<seqwires::NoteOffEvent>()) {
             return true;
         } else {
             return false;

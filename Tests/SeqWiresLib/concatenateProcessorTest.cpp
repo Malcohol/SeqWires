@@ -69,15 +69,15 @@ TEST(ConcatenateProcessorTest, processor) {
     processor.getInputFeature()->setToDefault();
     processor.getOutputFeature()->setToDefault();
 
-    auto* inputArray = dynamic_cast<babelwires::ArrayFeature*>(&processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Input")));
-    auto* outputTrack = dynamic_cast<seqwires::TrackFeature*>(&processor.getOutputFeature()->getChildFromStep(babelwires::PathStep("Output")));
+    auto* inputArray = processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Input")).as<babelwires::ArrayFeature>();
+    auto* outputTrack = processor.getOutputFeature()->getChildFromStep(babelwires::PathStep("Output")).as<seqwires::TrackFeature>();
     ASSERT_NE(inputArray, nullptr);
     ASSERT_NE(outputTrack, nullptr);
 
     EXPECT_EQ(inputArray->getNumFeatures(), 2);
     EXPECT_EQ(outputTrack->get().getDuration(), 0);
 
-    auto getInputTrack = [&inputArray](int i) { return dynamic_cast<seqwires::TrackFeature*>(&inputArray->getChildFromStep(i)); };
+    auto getInputTrack = [&inputArray](int i) { return inputArray->getChildFromStep(i).as<seqwires::TrackFeature>(); };
 
     ASSERT_NE(getInputTrack(0), nullptr);
     ASSERT_NE(getInputTrack(1), nullptr);

@@ -133,9 +133,9 @@ TEST(TransposeProcessorTest, processor) {
     processor.getInputFeature()->setToDefault();
     processor.getOutputFeature()->setToDefault();
 
-    auto* pitchOffsetFeature = dynamic_cast<babelwires::IntFeature*>(&processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Offset")));
-    auto* inputArray = dynamic_cast<babelwires::ArrayFeature*>(&processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Tracks")));
-    auto* outputArray = dynamic_cast<babelwires::ArrayFeature*>(&processor.getOutputFeature()->getChildFromStep(babelwires::PathStep("Tracks")));
+    auto* pitchOffsetFeature = processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Offset")).as<babelwires::IntFeature>();
+    auto* inputArray = processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Tracks")).as<babelwires::ArrayFeature>();
+    auto* outputArray = processor.getOutputFeature()->getChildFromStep(babelwires::PathStep("Tracks")).as<babelwires::ArrayFeature>();
     ASSERT_NE(pitchOffsetFeature, nullptr);
     ASSERT_NE(inputArray, nullptr);
     ASSERT_NE(outputArray, nullptr);
@@ -144,8 +144,8 @@ TEST(TransposeProcessorTest, processor) {
     EXPECT_EQ(inputArray->getNumFeatures(), 1);
     EXPECT_EQ(outputArray->getNumFeatures(), 1);
 
-    auto getInputTrack = [&inputArray](int i) { return dynamic_cast<seqwires::TrackFeature*>(&inputArray->getChildFromStep(i)); };
-    auto getOutputTrack = [&outputArray](int i) { return dynamic_cast<seqwires::TrackFeature*>(&outputArray->getChildFromStep(i)); };
+    auto getInputTrack = [&inputArray](int i) { return inputArray->getChildFromStep(i).as<seqwires::TrackFeature>(); };
+    auto getOutputTrack = [&outputArray](int i) { return outputArray->getChildFromStep(i).as<seqwires::TrackFeature>(); };
 
     ASSERT_NE(getInputTrack(0), nullptr);
     ASSERT_NE(getOutputTrack(0), nullptr);

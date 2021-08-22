@@ -8,7 +8,7 @@ namespace {
         NotesAbove(const seqwires::Track& track, seqwires::Pitch pitch) : seqwires::FilteredTrackIterator<>(track), m_pitch(pitch) {}
 
         virtual bool isEventOfInterest(const seqwires::TrackEvent& event) override {
-            if (const seqwires::NoteEvent* noteEvent = event.asA<seqwires::NoteEvent>()) {
+            if (const seqwires::NoteEvent* noteEvent = event.as<seqwires::NoteEvent>()) {
                 return noteEvent->m_pitch >= m_pitch;
             }
             return false;
@@ -21,7 +21,7 @@ namespace {
         NotesBelow(const seqwires::Track& track, seqwires::Pitch pitch) : seqwires::FilteredTrackIterator<>(track), m_pitch(pitch) {}
 
         virtual bool isEventOfInterest(const seqwires::TrackEvent& event) override {
-            if (const seqwires::NoteEvent* noteEvent = event.asA<seqwires::NoteEvent>()) {
+            if (const seqwires::NoteEvent* noteEvent = event.as<seqwires::NoteEvent>()) {
                 return noteEvent->m_pitch < m_pitch;
             }
             return false;
@@ -34,7 +34,7 @@ namespace {
         NotNotes(const seqwires::Track& track) : seqwires::FilteredTrackIterator<>(track) {}
 
         virtual bool isEventOfInterest(const seqwires::TrackEvent& event) override {
-            return event.asA<seqwires::NoteEvent>() == nullptr;
+            return event.as<seqwires::NoteEvent>() == nullptr;
         }
 
         seqwires::Pitch m_pitch;

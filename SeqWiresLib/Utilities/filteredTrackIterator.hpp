@@ -23,7 +23,7 @@ namespace seqwires {
         using value_type = EVENT;
 
         /// The default implementation just selects by type
-        virtual bool isEventOfInterest(const TrackEvent& event) { return event.asA<EVENT>(); }
+        virtual bool isEventOfInterest(const TrackEvent& event) { return event.as<EVENT>(); }
 
         /// The iterator must be initialized after construction by called initBegin or initEnd.
         FilteredTrackIterator(const Track& track);

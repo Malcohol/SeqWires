@@ -15,7 +15,7 @@
 
 const seqwires::TrackFeature& seqwiresUi::TrackRowModel::getTrackFeature() const {
     // Favour output here, since tracks cannot be directly edited.
-    assert(dynamic_cast<const seqwires::TrackFeature*>(getOutputThenInputFeature()) && "Wrong type of feature stored");
+    assert(getOutputThenInputFeature()->as<const seqwires::TrackFeature>() && "Wrong type of feature stored");
     return *static_cast<const seqwires::TrackFeature*>(getOutputThenInputFeature());
 }
 
