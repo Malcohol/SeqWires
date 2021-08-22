@@ -76,7 +76,7 @@ namespace {
     };
 
     void addMetadata(smf::target::SmfFeature& smfFeature, std::uint8_t flags) {
-        auto* metadata = dynamic_cast<smf::MidiMetadata*>(&smfFeature.getChildFromStep(babelwires::PathStep("Meta")));
+        auto* metadata = smfFeature.getChildFromStep(babelwires::PathStep("Meta")).asA<smf::MidiMetadata>();
         if (flags & HAS_SEQUENCE_NAME) {
             metadata->getActivatedSequenceName().set("Test Sequence Name");
         }
@@ -89,7 +89,7 @@ namespace {
     }
 
     void checkMetadata(const smf::source::SmfFeature& smfFeature, std::uint8_t flags) {
-        const auto* metadata = dynamic_cast<const smf::MidiMetadata*>(&smfFeature.getChildFromStep(babelwires::PathStep("Meta")));
+        const auto* metadata = smfFeature.getChildFromStep(babelwires::PathStep("Meta")).asA<smf::MidiMetadata>();
         if (flags & HAS_SEQUENCE_NAME) {
             ASSERT_NE(metadata->getSequenceName(), nullptr);
             EXPECT_EQ(metadata->getSequenceName()->get(), "Test Sequence Name");
