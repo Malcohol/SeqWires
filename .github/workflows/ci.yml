@@ -80,7 +80,7 @@ jobs:
     - name: BabelWiresTest
       working-directory: build
       shell: bash
-      run: BabelWires/Tests/BabelWires/${{ matrix.config.targetFolder }}babelWiresTests${{ matrix.config.exeExtension }}
+      run: BabelWires/Tests/BabelWiresLib/${{ matrix.config.targetFolder }}babelWiresTests${{ matrix.config.exeExtension }}
 
     - name: SequenceLibTests
       working-directory: build
