@@ -8,17 +8,8 @@
 
 void testUtils::addSimpleNotes(const std::vector<seqwires::Pitch>& expectedPitches, seqwires::Track& track) {
     for (auto pitch : expectedPitches) {
-        seqwires::NoteOnEvent noteOn;
-        noteOn.setTimeSinceLastEvent(0);
-        noteOn.m_pitch = pitch;
-        noteOn.m_velocity = 127;
-        track.addEvent(noteOn);
-
-        seqwires::NoteOffEvent noteOff;
-        noteOff.setTimeSinceLastEvent(babelwires::Rational(1, 4));
-        noteOff.m_pitch = pitch;
-        noteOff.m_velocity = 64;
-        track.addEvent(noteOff);
+        track.addEvent(seqwires::NoteOnEvent{ 0, pitch });
+        track.addEvent(seqwires::NoteOffEvent{ babelwires::Rational(1, 4), pitch });
     }
 }
 
@@ -53,17 +44,8 @@ void testUtils::testSimpleNotes(const std::vector<seqwires::Pitch>& expectedPitc
 
 void testUtils::addNotes(const std::vector<NoteInfo>& notes, seqwires::Track& track) {
     for (auto note : notes) {
-        seqwires::NoteOnEvent noteOn;
-        noteOn.setTimeSinceLastEvent(note.m_noteOnTime);
-        noteOn.m_pitch = note.m_pitch;
-        noteOn.m_velocity = 127;
-        track.addEvent(noteOn);
-
-        seqwires::NoteOffEvent noteOff;
-        noteOff.setTimeSinceLastEvent(note.m_noteOffTime);
-        noteOff.m_pitch = note.m_pitch;
-        noteOff.m_velocity = 64;
-        track.addEvent(noteOff);
+        track.addEvent(seqwires::NoteOnEvent{ note.m_noteOnTime, note.m_pitch });
+        track.addEvent(seqwires::NoteOffEvent{ note.m_noteOffTime, note.m_pitch });
     }
 }
 
@@ -94,15 +76,8 @@ void testUtils::testNotes(const std::vector<NoteInfo>& expectedNotes, const seqw
 
 void testUtils::addChords(const std::vector<ChordInfo>& chords, seqwires::Track& track) {
     for (auto chord : chords) {
-        seqwires::ChordOnEvent chordOn;
-        chordOn.setTimeSinceLastEvent(chord.m_chordOnTime);
-        chordOn.m_root = chord.m_root;
-        chordOn.m_chordType = chord.m_chordType;
-        track.addEvent(chordOn);
-
-        seqwires::ChordOffEvent chordOff;
-        chordOff.setTimeSinceLastEvent(chord.m_chordOffTime);
-        track.addEvent(chordOff);
+        track.addEvent(seqwires::ChordOnEvent(chord.m_chordOnTime, chord.m_root, chord.m_chordType));
+        track.addEvent(seqwires::ChordOffEvent(chord.m_chordOffTime));
     }
 }
 

@@ -6,10 +6,10 @@
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
 #include "BabelWiresPlugins/Smf/Plugin/smfParser.hpp"
+#include "Common/Log/debugLogger.hpp"
 #include "Common/exceptions.hpp"
 #include "SeqWiresLib/Features/trackFeature.hpp"
 #include "SeqWiresLib/Tracks/noteEvents.hpp"
-#include "Common/Log/debugLogger.hpp"
 
 #include <cassert>
 #include <cmath>
@@ -162,7 +162,7 @@ namespace {
             : m_channels{} {}
 
         template <typename EVENT_TYPE>
-        void addToChannel(int c, seqwires::ModelDuration timeSinceLastTrackEvent, EVENT_TYPE& event) {
+        void addToChannel(int c, seqwires::ModelDuration timeSinceLastTrackEvent, EVENT_TYPE&& event) {
             seqwires::Track* channel = getChannel(c);
 
             m_timeSinceStart += timeSinceLastTrackEvent;
@@ -223,8 +223,7 @@ namespace {
     };
 } // namespace
 
-template<typename STREAMLIKE>
-void smf::SmfParser::logByteSequence(STREAMLIKE log, int length) {
+template <typename STREAMLIKE> void smf::SmfParser::logByteSequence(STREAMLIKE log, int length) {
     log << std::hex << static_cast<int>(getNext());
     for (auto i = 0; i < length - 1; ++i) {
         log << ", " << static_cast<int>(getNext());
@@ -254,7 +253,7 @@ void smf::SmfParser::readTrack(int i, source::ChannelGroup& channels, MidiMetada
         }
         lastStatusByte = statusByte;
 
-        // Implementation note: 
+        // Implementation note:
         // I use the debug log where an event is valid, but I haven't implemented support for it yet.
         // I use the user log where an event is invalid, so it could never be parsed.
 
@@ -276,9 +275,10 @@ void smf::SmfParser::readTrack(int i, source::ChannelGroup& channels, MidiMetada
                         case 0x00: // Sequence number
                         {
                             if (length != 2) {
-                                logByteSequence(m_userLogger.logWarning() << "Skipping sequence number meta-event with incorrect length: ", length);
-                            }
-                            else {
+                                logByteSequence(m_userLogger.logWarning()
+                                                    << "Skipping sequence number meta-event with incorrect length: ",
+                                                length);
+                            } else {
                                 babelwires::logDebug() << "Ignored meta-event! Sequence number: " << readU16();
                             }
                             break;
@@ -300,7 +300,8 @@ void smf::SmfParser::readTrack(int i, source::ChannelGroup& channels, MidiMetada
                         }
                         case 0x04: // Instrument name
                         {
-                            babelwires::logDebug() << "Ignored MIDI Event! Instrument name: " << readTextMetaEvent(length);
+                            babelwires::logDebug()
+                                << "Ignored MIDI Event! Instrument name: " << readTextMetaEvent(length);
                             break;
                         }
                         case 0x05: // Lyric
@@ -321,10 +322,12 @@ void smf::SmfParser::readTrack(int i, source::ChannelGroup& channels, MidiMetada
                         case 0x20: // Channel prefix
                         {
                             if (length != 1) {
-                                logByteSequence(m_userLogger.logWarning() << "Skipping channel prefix meta-event with incorrect length", length);
-                            }
-                            else {
-                                logByteSequence(babelwires::logDebug() << "Ignored meta-event! Channel prefix: ", length);
+                                logByteSequence(m_userLogger.logWarning()
+                                                    << "Skipping channel prefix meta-event with incorrect length",
+                                                length);
+                            } else {
+                                logByteSequence(babelwires::logDebug() << "Ignored meta-event! Channel prefix: ",
+                                                length);
                             }
                             break;
                         }
@@ -337,7 +340,10 @@ void smf::SmfParser::readTrack(int i, source::ChannelGroup& channels, MidiMetada
                             }
                             if (length != 0) {
                                 // Not a good idea to skip end of track events.
-                                logByteSequence(m_userLogger.logWarning() << "End of Track meta-event has incorrect length. Will try use it anyway.", length);
+                                logByteSequence(
+                                    m_userLogger.logWarning()
+                                        << "End of Track meta-event has incorrect length. Will try use it anyway.",
+                                    length);
                             }
                             tracks.setDurationsForAllChannels(timeSinceLastNoteEvent);
                             tracks.assignChannelsToChannelGroup(channels);
@@ -346,7 +352,9 @@ void smf::SmfParser::readTrack(int i, source::ChannelGroup& channels, MidiMetada
                         case 0x51: // Set tempo
                         {
                             if (length != 3) {
-                                logByteSequence(m_userLogger.logWarning() << "Skipping Tempo meta-event with incorrect length", length);
+                                logByteSequence(m_userLogger.logWarning()
+                                                    << "Skipping Tempo meta-event with incorrect length",
+                                                length);
                             } else {
                                 readTempoEvent(metadata.getActivatedTempoFeature());
                             }
@@ -355,7 +363,9 @@ void smf::SmfParser::readTrack(int i, source::ChannelGroup& channels, MidiMetada
                         case 0x54: // SMPTE offset
                         {
                             if (length != 5) {
-                                logByteSequence(m_userLogger.logWarning() << "Skipping SMPTE Offset meta-event with incorrect length", length);
+                                logByteSequence(m_userLogger.logWarning()
+                                                    << "Skipping SMPTE Offset meta-event with incorrect length",
+                                                length);
                             } else {
                                 logByteSequence(babelwires::logDebug() << "Ignored meta-event! SMPTE Offset: ", length);
                             }
@@ -364,30 +374,39 @@ void smf::SmfParser::readTrack(int i, source::ChannelGroup& channels, MidiMetada
                         case 0x58: // Time signature
                         {
                             if (length != 4) {
-                                logByteSequence(m_userLogger.logWarning() << "Skipping Time Signature meta-event with incorrect length", length);
+                                logByteSequence(m_userLogger.logWarning()
+                                                    << "Skipping Time Signature meta-event with incorrect length",
+                                                length);
                             } else {
-                                logByteSequence(babelwires::logDebug() << "Ignored meta-event! Time signature: ", length);
+                                logByteSequence(babelwires::logDebug() << "Ignored meta-event! Time signature: ",
+                                                length);
                             }
                             break;
                         }
                         case 0x59: // Key signature
                         {
                             if (length != 2) {
-                                logByteSequence(m_userLogger.logWarning() << "Skipping Key Signature event with incorrect length", length);
+                                logByteSequence(m_userLogger.logWarning()
+                                                    << "Skipping Key Signature event with incorrect length",
+                                                length);
                             } else {
-                                logByteSequence(babelwires::logDebug() << "Ignored meta-event! Key signature: ", length);
+                                logByteSequence(babelwires::logDebug() << "Ignored meta-event! Key signature: ",
+                                                length);
                             }
                             break;
                         }
                         case 0x7F: // Sequence specific event
                         {
-                            logByteSequence(babelwires::logDebug() << "Ignored meta-event! Sequencer specific event: ", length);
+                            logByteSequence(babelwires::logDebug() << "Ignored meta-event! Sequencer specific event: ",
+                                            length);
                             break;
                         }
                         default: // Unknown meta-event type
                         {
                             // This isn't in the spec, so warn: Perhaps SeqWires is out-of-date.
-                            logByteSequence(m_userLogger.logWarning() << "Skipping unknown meta-event of type " << std::hex << type << ": ", length);
+                            logByteSequence(m_userLogger.logWarning()
+                                                << "Skipping unknown meta-event of type " << std::hex << type << ": ",
+                                            length);
                             break;
                         }
                     }
@@ -399,19 +418,17 @@ void smf::SmfParser::readTrack(int i, source::ChannelGroup& channels, MidiMetada
             }
             case 0b1000: // Note off.
             {
-                seqwires::NoteOffEvent noteOff;
-                noteOff.m_pitch = getNext();
-                noteOff.m_velocity = getNext();
-                tracks.addToChannel(statusLo, timeSinceLastNoteEvent, noteOff);
+                const seqwires::Pitch pitch = getNext();
+                const seqwires::Velocity velocity = getNext();
+                tracks.addToChannel(statusLo, timeSinceLastNoteEvent, seqwires::NoteOffEvent{0, pitch, velocity});
                 timeSinceLastNoteEvent = 0;
                 break;
             }
             case 0b1001: // Note on.
             {
-                seqwires::NoteOnEvent noteOn;
-                noteOn.m_pitch = getNext();
-                noteOn.m_velocity = getNext();
-                tracks.addToChannel(statusLo, timeSinceLastNoteEvent, noteOn);
+                const seqwires::Pitch pitch = getNext();
+                const seqwires::Velocity velocity = getNext();
+                tracks.addToChannel(statusLo, timeSinceLastNoteEvent, seqwires::NoteOnEvent{0, pitch, velocity});
                 timeSinceLastNoteEvent = 0;
                 break;
             }
@@ -458,7 +475,8 @@ void smf::SmfParser::readFormat1Sequence(source::Format1SmfFeature& sequence) {
     }
 }
 
-std::unique_ptr<babelwires::FileFeature> smf::parseSmfSequence(babelwires::DataSource& dataSource, babelwires::UserLogger& userLogger) {
+std::unique_ptr<babelwires::FileFeature> smf::parseSmfSequence(babelwires::DataSource& dataSource,
+                                                               babelwires::UserLogger& userLogger) {
     SmfParser parser(dataSource, userLogger);
     parser.parse();
     return parser.getResult();

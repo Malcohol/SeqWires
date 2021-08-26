@@ -23,6 +23,8 @@ namespace seqwires {
     class TrackEvent : public babelwires::StreamEvent {
       public:
         STREAM_EVENT(TrackEvent);
+        TrackEvent() = default;
+        TrackEvent(ModelDuration timeSinceLastEvent) : m_timeSinceLastEvent(timeSinceLastEvent) {}
 
         /// The amount of time passed since the last event occurred.
         /// This can be 0 if the events are intended to occur at the same time.

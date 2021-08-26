@@ -17,8 +17,8 @@ namespace testUtils {
 
     struct NoteInfo {
         seqwires::Pitch m_pitch;
-        seqwires::ModelDuration m_noteOnTime;
-        seqwires::ModelDuration m_noteOffTime;
+        seqwires::ModelDuration m_noteOnTime = 0;
+        seqwires::ModelDuration m_noteOffTime = babelwires::Rational(1, 4);;
     };
 
     /// Add notes as described to the track. Each has quaternote duration.
@@ -30,7 +30,7 @@ namespace testUtils {
     struct ChordInfo {
         seqwires::PitchClass m_root;
         seqwires::ChordType m_chordType;
-        seqwires::ModelDuration m_chordOffTime = babelwires::Rational(1 / 2);
+        seqwires::ModelDuration m_chordOffTime = babelwires::Rational(1, 2);
         seqwires::ModelDuration m_chordOnTime = 0;
     };
 
