@@ -3,9 +3,11 @@ SET( SEQUENCELIB_TESTS_SRCS
       concatenateProcessorTest.cpp
       excerptProcessorTest.cpp
       filteredTrackIteratorTest.cpp
+      mergeProcessorTest.cpp
       monophonicNoteIteratorTest.cpp
       musicTypesTest.cpp
       repeatProcessorTest.cpp
+      splitAtPitchProcessorTest.cpp
       trackTest.cpp
       trackTraverserTest.cpp
       transposeProcessorTest.cpp

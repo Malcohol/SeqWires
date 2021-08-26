@@ -68,7 +68,7 @@ seqwires::SplitAtPitchResult seqwires::splitAtPitch(Pitch pitch, const Track& so
         otherIt.initBegin();
         otherItEnd.initEnd();
         for (; otherIt != otherItEnd; ++otherIt) {
-            result.m_below.addEvent(*otherIt);
+            result.m_other.addEvent(*otherIt);
         }
     }
 
