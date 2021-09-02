@@ -28,17 +28,17 @@ seqwires::SplitAtPitchProcessor::SplitAtPitchProcessor() {
     m_pitch = m_inputFeature->addField(std::make_unique<PitchFeature>(),
                                        FIELD_NAME("Pitch", "Pitch", "6b721baa-084f-450b-bf35-2e08a9592958"));
     m_trackIn = m_inputFeature->addField(std::make_unique<TrackFeature>(),
-                                              FIELD_NAME("Track", "Track", "9314a43f-256a-4915-b218-f2ba37133863"));
+                                              FIELD_NAME("Input", "Input Track", "9314a43f-256a-4915-b218-f2ba37133863"));
     m_equalOrAboveTrackOut = m_outputFeature->addField(std::make_unique<TrackFeature>(),
-                                                FIELD_NAME("Above", "Above", "4c65b7f1-e546-4df2-9891-23623b74bc23"));
+                                                FIELD_NAME("Above", "Notes at/above", "4c65b7f1-e546-4df2-9891-23623b74bc23"));
     m_belowTrackOut = m_outputFeature->addField(std::make_unique<TrackFeature>(),
-                                                FIELD_NAME("Below", "Below", "ab6a1d57-8c77-4df9-baf7-4b24136d9279"));
+                                                FIELD_NAME("Below", "Notes below", "ab6a1d57-8c77-4df9-baf7-4b24136d9279"));
     m_otherTrackOut = m_outputFeature->addField(std::make_unique<TrackFeature>(),
                                                 FIELD_NAME("Other", "Other", "83bf663c-2931-467f-8403-b12e18138c68"));
 }
 
 seqwires::SplitAtPitchProcessor::Factory::Factory()
-    : CommonProcessorFactory("SplitAtPitchProcessor", "Split At Picth", 1) {}
+    : CommonProcessorFactory("SplitAtPitchProcessor", "Split At Pitch", 1) {}
 
 void seqwires::SplitAtPitchProcessor::process(babelwires::UserLogger& userLogger) {
     if (m_pitch->isChanged(babelwires::Feature::Changes::SomethingChanged) || m_trackIn->isChanged(babelwires::Feature::Changes::SomethingChanged)) {

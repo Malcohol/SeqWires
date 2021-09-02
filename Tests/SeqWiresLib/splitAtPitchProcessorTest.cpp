@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include <SeqWiresLib/Features/trackFeature.hpp>
+#include <SeqWiresLib/Features/pitchFeature.hpp>
 #include <SeqWiresLib/Functions/mergeFunction.hpp>
 #include <SeqWiresLib/Functions/splitAtPitchFunction.hpp>
 #include <SeqWiresLib/Processors/splitAtPitchProcessor.hpp>
@@ -76,4 +77,76 @@ TEST(SplitAtPitchProcessorTest, aboveAndBelowSplit) {
                            {seqwires::PitchClass::PITCH_CLASS_D, seqwires::ChordType::CHORD_TYPE_MINOR}},
                           result.m_other);
     EXPECT_EQ(result.m_other.getDuration(), 1);
+}
+
+TEST(SplitAtPitchProcessorTest, processor) {
+    testUtils::TestLog log;
+
+    seqwires::SplitAtPitchProcessor processor;
+
+    processor.getInputFeature()->setToDefault();
+    processor.getOutputFeature()->setToDefault();
+
+    auto* pitchFeature = processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Pitch")).as<seqwires::PitchFeature>();
+    auto* inputTrack = processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Input")).as<seqwires::TrackFeature>();
+    auto* aboveTrack = processor.getOutputFeature()->getChildFromStep(babelwires::PathStep("Above")).as<seqwires::TrackFeature>();
+    auto* belowTrack = processor.getOutputFeature()->getChildFromStep(babelwires::PathStep("Below")).as<seqwires::TrackFeature>();
+    auto* otherTrack = processor.getOutputFeature()->getChildFromStep(babelwires::PathStep("Other")).as<seqwires::TrackFeature>();
+    ASSERT_NE(pitchFeature, nullptr);
+    ASSERT_NE(inputTrack, nullptr);
+    ASSERT_NE(aboveTrack, nullptr);
+    ASSERT_NE(belowTrack, nullptr);
+    ASSERT_NE(otherTrack, nullptr);
+
+    pitchFeature->set(67);
+    {
+        seqwires::Track track;
+        testUtils::addSimpleNotes({60, 62, 64, 65, 67, 69, 71, 72}, track);
+        inputTrack->set(std::move(track));
+    }
+    processor.process(log);    
+
+    std::vector<testUtils::NoteInfo> expectedNotesAbove{
+        {67, 1, babelwires::Rational(1, 4)},
+        {69, 0, babelwires::Rational(1, 4)},
+        {71, 0, babelwires::Rational(1, 4)},
+        {72, 0, babelwires::Rational(1, 4)},
+    };
+    std::vector<testUtils::NoteInfo> expectedNotesBelow{
+        {60, 0, babelwires::Rational(1, 4)},
+        {62, 0, babelwires::Rational(1, 4)},
+        {64, 0, babelwires::Rational(1, 4)},
+        {65, 0, babelwires::Rational(1, 4)},
+    };
+
+    testUtils::testNotes(expectedNotesAbove, aboveTrack->get());
+    EXPECT_EQ(aboveTrack->get().getDuration(), 2);
+    testUtils::testNotes(expectedNotesBelow, belowTrack->get());
+    EXPECT_EQ(belowTrack->get().getDuration(), 2);
+    EXPECT_EQ(otherTrack->get().getNumEvents(), 0);
+    EXPECT_EQ(otherTrack->get().getDuration(), 2);
+
+    processor.getInputFeature()->clearChanges();
+    pitchFeature->set(64);
+    processor.process(log);    
+
+    expectedNotesAbove = {
+        {64, babelwires::Rational(1, 2), babelwires::Rational(1, 4)},
+        {65, 0, babelwires::Rational(1, 4)},
+        {67, 0, babelwires::Rational(1, 4)},
+        {69, 0, babelwires::Rational(1, 4)},
+        {71, 0, babelwires::Rational(1, 4)},
+        {72, 0, babelwires::Rational(1, 4)},
+    };
+    expectedNotesBelow = {
+        {60, 0, babelwires::Rational(1, 4)},
+        {62, 0, babelwires::Rational(1, 4)},
+    };
+
+    testUtils::testNotes(expectedNotesAbove, aboveTrack->get());
+    EXPECT_EQ(aboveTrack->get().getDuration(), 2);
+    testUtils::testNotes(expectedNotesBelow, belowTrack->get());
+    EXPECT_EQ(belowTrack->get().getDuration(), 2);
+    EXPECT_EQ(otherTrack->get().getNumEvents(), 0);
+    EXPECT_EQ(otherTrack->get().getDuration(), 2);
 }
