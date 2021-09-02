@@ -5,6 +5,7 @@ SET( SEQUENCELIB_TESTS_SRCS
       filteredTrackIteratorTest.cpp
       mergeProcessorTest.cpp
       monophonicNoteIteratorTest.cpp
+      monophonicSubtracksProcessorTest.cpp
       musicTypesTest.cpp
       repeatProcessorTest.cpp
       splitAtPitchProcessorTest.cpp
