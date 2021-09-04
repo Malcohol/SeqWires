@@ -428,7 +428,11 @@ void smf::SmfParser::readTrack(int i, source::ChannelGroup& channels, MidiMetada
             {
                 const seqwires::Pitch pitch = getNext();
                 const seqwires::Velocity velocity = getNext();
-                tracks.addToChannel(statusLo, timeSinceLastNoteEvent, seqwires::NoteOnEvent{0, pitch, velocity});
+                if (velocity != 0) {
+                    tracks.addToChannel(statusLo, timeSinceLastNoteEvent, seqwires::NoteOnEvent{0, pitch, velocity});
+                } else {
+                    tracks.addToChannel(statusLo, timeSinceLastNoteEvent, seqwires::NoteOffEvent{0, pitch});
+                }
                 timeSinceLastNoteEvent = 0;
                 break;
             }
