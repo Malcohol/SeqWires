@@ -5,6 +5,7 @@ SET( SEQWIRESLIB_SRCS
 	Processors/concatenateProcessor.cpp
 	Processors/excerptProcessor.cpp
 	Processors/mergeProcessor.cpp
+	Processors/monophonicSubtracksProcessor.cpp
 	Processors/repeatProcessor.cpp
 	Processors/silenceProcessor.cpp
 	Processors/splitAtPitchProcessor.cpp

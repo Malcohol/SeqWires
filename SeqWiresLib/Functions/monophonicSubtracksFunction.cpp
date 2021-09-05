@@ -37,6 +37,7 @@ seqwires::MonophonicSubtracksResult seqwires::getMonophonicSubtracks(const Track
         int trackToUse = -1;
         if (info.m_category == noteCategory) {
             // Always pick the earliest available slot.
+            // TODO Compare all simultaneous events.
             for (int i = 0; i < numTracks; ++i) {
                 auto& t = trackInfos[i];
                 if (t.m_activeValue == info.m_groupValue) {

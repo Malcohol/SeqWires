@@ -19,11 +19,6 @@
 
 #include <set>
 
-namespace {
-    using RepeatArrayFeature =
-        babelwires::HasStaticSizeRange<babelwires::StandardArrayFeature<seqwires::TrackFeature>, 1, 16>;
-} // namespace
-
 seqwires::SplitAtPitchProcessor::SplitAtPitchProcessor() {
     m_pitch = m_inputFeature->addField(std::make_unique<PitchFeature>(),
                                        FIELD_NAME("Pitch", "Pitch", "6b721baa-084f-450b-bf35-2e08a9592958"));

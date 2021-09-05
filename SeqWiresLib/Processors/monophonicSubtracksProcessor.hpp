@@ -11,26 +11,26 @@
 
 namespace babelwires {
     class IntFeature;
+    class ArrayFeature;
 } // namespace babelwires
 
 namespace seqwires {
     class TrackFeature;
 
     /// A processor which limits a track to events between certain points.
-    class SplitAtPitchProcessor : public babelwires::CommonProcessor {
+    class MonophonicSubtracksProcessor : public babelwires::CommonProcessor {
       public:
-        SplitAtPitchProcessor();
+        MonophonicSubtracksProcessor();
 
         virtual void process(babelwires::UserLogger& userLogger) override;
 
-        struct Factory : public babelwires::CommonProcessorFactory<SplitAtPitchProcessor> {
+        struct Factory : public babelwires::CommonProcessorFactory<MonophonicSubtracksProcessor> {
             Factory();
         };
       private:
-        babelwires::IntFeature* m_pitch;
+        babelwires::IntFeature* m_numSubtracks;
         TrackFeature* m_trackIn;
-        TrackFeature* m_equalOrAboveTrackOut;
-        TrackFeature* m_belowTrackOut;
+        babelwires::ArrayFeature* m_tracksOut;
         TrackFeature* m_otherTrackOut;
     };
 
