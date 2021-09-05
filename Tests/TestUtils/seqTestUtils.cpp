@@ -22,7 +22,7 @@ void testUtils::testSimpleNotes(const std::vector<seqwires::Pitch>& expectedPitc
     const auto endIterator = track.end();
 
     for (auto pitch : expectedPitches) {
-        EXPECT_NE(noteIterator, endIterator);
+        ASSERT_NE(noteIterator, endIterator);
         auto noteOn = noteIterator->as<const seqwires::NoteOnEvent>();
         ASSERT_NE(noteOn, nullptr);
         EXPECT_EQ(noteOn->getTimeSinceLastEvent(), 0);
@@ -30,7 +30,7 @@ void testUtils::testSimpleNotes(const std::vector<seqwires::Pitch>& expectedPitc
         EXPECT_EQ(noteOn->m_velocity, 127);
         ++noteIterator;
 
-        EXPECT_NE(noteIterator, endIterator);
+        ASSERT_NE(noteIterator, endIterator);
         auto noteOff = noteIterator->as<seqwires::NoteOffEvent>();
         ASSERT_NE(noteOff, nullptr);
         EXPECT_EQ(noteOff->getTimeSinceLastEvent(), expectedNoteDuration);

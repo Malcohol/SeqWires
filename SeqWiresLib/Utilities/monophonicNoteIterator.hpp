@@ -12,6 +12,8 @@
 
 namespace seqwires {
     /// This returns note events which never overlap.
+    /// This just uses a first-come-first-serve policy, so the resulting track will probably not be as useful
+    /// as the tracks which come out of the MonophonicSubtrackFunction / MonophonicSubtrackProcessor. 
     /// Any note started when the active note is playing is ignored.
     struct MonophonicNoteIterator : FilteredTrackIterator<NoteEvent> {
         enum InteriorEventFilter { OnOffOnly, AllEvents };

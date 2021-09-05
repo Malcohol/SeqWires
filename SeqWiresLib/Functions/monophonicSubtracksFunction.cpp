@@ -59,10 +59,9 @@ namespace {
                 if (t.m_activeValue == groupInfo.m_groupValue) {
                     trackToUse = i;
                     break;
-                } else if (t.m_activeValue == seqwires::TrackEvent::GroupingInfo::c_notAValue) {
-                    if (trackToUse == -1) {
-                        trackToUse = i;
-                    }
+                } else if ((trackToUse == -1) && (t.m_activeValue == seqwires::TrackEvent::GroupingInfo::c_notAValue) &&
+                           (groupInfo.m_grouping == seqwires::TrackEvent::GroupingInfo::Grouping::StartOfGroup)) {
+                    trackToUse = i;
                 }
             }
         }
