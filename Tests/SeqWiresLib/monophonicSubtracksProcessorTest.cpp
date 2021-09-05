@@ -43,7 +43,7 @@ namespace {
 TEST(MonophonicSubtracksProcessorTest, simpleFunction) {
     seqwires::Track track = getSamplePolyphonicTrack();
 
-    seqwires::MonophonicSubtracksResult result = seqwires::getMonophonicSubtracks(track, 2);
+    seqwires::MonophonicSubtracksResult result = seqwires::getMonophonicSubtracks(track, 2, seqwires::MonophonicSubtracksPolicy::PreferHigherPitches);
 
     ASSERT_EQ(result.m_noteTracks.size(), 2);
     EXPECT_EQ(result.m_noteTracks[0].getDuration(), 1);
@@ -57,10 +57,27 @@ TEST(MonophonicSubtracksProcessorTest, simpleFunction) {
                           result.m_other);
 }
 
+TEST(MonophonicSubtracksProcessorTest, FunctionLower) {
+    seqwires::Track track = getSamplePolyphonicTrack();
+
+    seqwires::MonophonicSubtracksResult result = seqwires::getMonophonicSubtracks(track, 2, seqwires::MonophonicSubtracksPolicy::PreferLowerPitches);
+
+    ASSERT_EQ(result.m_noteTracks.size(), 2);
+    EXPECT_EQ(result.m_noteTracks[0].getDuration(), 1);
+    EXPECT_EQ(result.m_noteTracks[1].getDuration(), 1);
+    EXPECT_EQ(result.m_other.getDuration(), 1);
+
+    testUtils::testSimpleNotes({72, 74, 76, 77}, result.m_noteTracks[1]);
+    testUtils::testSimpleNotes({48, 50, 52, 53}, result.m_noteTracks[0]);
+    testUtils::testChords({{seqwires::PitchClass::PITCH_CLASS_C, seqwires::ChordType::CHORD_TYPE_MAJOR},
+                           {seqwires::PitchClass::PITCH_CLASS_D, seqwires::ChordType::CHORD_TYPE_MINOR}},
+                          result.m_other);
+}
+
 TEST(MonophonicSubtracksProcessorTest, redundantTracks) {
     seqwires::Track track = getSamplePolyphonicTrack();
 
-    seqwires::MonophonicSubtracksResult result = seqwires::getMonophonicSubtracks(track, 3);
+    seqwires::MonophonicSubtracksResult result = seqwires::getMonophonicSubtracks(track, 3, seqwires::MonophonicSubtracksPolicy::PreferHigherPitches);
 
     ASSERT_EQ(result.m_noteTracks.size(), 3);
     EXPECT_EQ(result.m_noteTracks[0].getDuration(), 1);
@@ -79,7 +96,7 @@ TEST(MonophonicSubtracksProcessorTest, redundantTracks) {
 TEST(MonophonicSubtracksProcessorTest, eventToOther) {
     seqwires::Track track = getSamplePolyphonicTrack();
 
-    seqwires::MonophonicSubtracksResult result = seqwires::getMonophonicSubtracks(track, 1);
+    seqwires::MonophonicSubtracksResult result = seqwires::getMonophonicSubtracks(track, 1, seqwires::MonophonicSubtracksPolicy::PreferHigherPitches);
 
     ASSERT_EQ(result.m_noteTracks.size(), 1);
     EXPECT_EQ(result.m_noteTracks[0].getDuration(), 1);

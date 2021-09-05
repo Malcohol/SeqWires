@@ -29,6 +29,7 @@ namespace seqwires {
         };
       private:
         babelwires::IntFeature* m_numSubtracks;
+        babelwires::IntFeature* m_policy;
         TrackFeature* m_trackIn;
         babelwires::ArrayFeature* m_tracksOut;
         TrackFeature* m_otherTrackOut;

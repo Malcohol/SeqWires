@@ -21,5 +21,4 @@ Processors:
 * PolyToChord
 * ChordToPoly
 * Harmonize
-* PolySplitter
 * etc.

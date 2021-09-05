@@ -69,8 +69,9 @@ namespace {
     }
 
     void assignNoteEventsToTracks(std::vector<TrackInfo>& trackInfos, seqwires::ModelDuration& timeSinceLastEventOther,
-                                  std::vector<NoteEventInfo>& noteEvents, seqwires::MonophonicSubtracksResult& result) {
-        const auto lessThan = [](NoteEventInfo& a, NoteEventInfo& b) {
+                                  std::vector<NoteEventInfo>& noteEvents, seqwires::MonophonicSubtracksPolicy policy, seqwires::MonophonicSubtracksResult& result) {
+        const bool preferHigherPitches = (policy == seqwires::MonophonicSubtracksPolicy::PreferHigherPitches);
+        const auto lessThan = [preferHigherPitches](NoteEventInfo& a, NoteEventInfo& b) {
             const auto& groupInfoA = a.m_event->getGroupingInfo();
             const auto& groupInfoB = b.m_event->getGroupingInfo();
             if ((groupInfoA.m_grouping == seqwires::TrackEvent::GroupingInfo::Grouping::EndOfGroup) &&
@@ -81,12 +82,11 @@ namespace {
                 (groupInfoB.m_grouping == seqwires::TrackEvent::GroupingInfo::Grouping::EndOfGroup)) {
                 return false;
             }
-            // TODO Make parametrizable.
             if (groupInfoA.m_groupValue > groupInfoB.m_groupValue) {
-                return true;
+                return preferHigherPitches;
             }
             if (groupInfoA.m_groupValue < groupInfoB.m_groupValue) {
-                return false;
+                return !preferHigherPitches;
             }
             // Preserve the original order in other cases.
             return a.m_originalIndex < b.m_originalIndex;
@@ -105,7 +105,7 @@ namespace {
     }
 } // namespace
 
-seqwires::MonophonicSubtracksResult seqwires::getMonophonicSubtracks(const Track& trackIn, int numTracks) {
+seqwires::MonophonicSubtracksResult seqwires::getMonophonicSubtracks(const Track& trackIn, int numTracks, MonophonicSubtracksPolicy policy) {
     assert(numTracks > 0);
     seqwires::MonophonicSubtracksResult result;
 
@@ -120,7 +120,7 @@ seqwires::MonophonicSubtracksResult seqwires::getMonophonicSubtracks(const Track
 
     for (auto& event : trackIn) {
         if (event.getTimeSinceLastEvent() != 0) {
-            assignNoteEventsToTracks(trackInfos, timeSinceLastEventOther, noteEventsNow, result);
+            assignNoteEventsToTracks(trackInfos, timeSinceLastEventOther, noteEventsNow, policy, result);
             noteEventsNow.clear();
 
             for (auto& t : trackInfos) {
@@ -139,7 +139,7 @@ seqwires::MonophonicSubtracksResult seqwires::getMonophonicSubtracks(const Track
             moveEventToOtherTrack(timeSinceLastEventOther, otherEvent, result);
         }
     }
-    assignNoteEventsToTracks(trackInfos, timeSinceLastEventOther, noteEventsNow, result);
+    assignNoteEventsToTracks(trackInfos, timeSinceLastEventOther, noteEventsNow, policy, result);
 
     for (int i = 0; i < numTracks; ++i) {
         result.m_noteTracks[i].setDuration(trackIn.getDuration());

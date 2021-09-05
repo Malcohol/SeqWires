@@ -10,10 +10,15 @@
 #include "SeqWiresLib/Tracks/track.hpp"
 
 namespace seqwires {
+    enum class MonophonicSubtracksPolicy {
+        PreferHigherPitches,
+        PreferLowerPitches
+    };
+
     struct MonophonicSubtracksResult {
         std::vector<Track> m_noteTracks;
         Track m_other;
     };
 
-    MonophonicSubtracksResult getMonophonicSubtracks(const Track& trackIn, int numTracks);
+    MonophonicSubtracksResult getMonophonicSubtracks(const Track& trackIn, int numTracks, MonophonicSubtracksPolicy policy);
 } // namespace seqwires

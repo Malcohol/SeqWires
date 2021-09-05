@@ -15,17 +15,29 @@
 
 
 #include "BabelWiresLib/Features/Path/fieldName.hpp"
+#include "BabelWiresLib/ValueNames/valueNamesImpl.hpp"
 
 #include <set>
 
 namespace {
     using SubtrackArrayFeature =
         babelwires::HasStaticSizeRange<babelwires::StandardArrayFeature<seqwires::TrackFeature>, 1, 16>;
+
+    const babelwires::SparseValueNamesImpl::NameFromValuesMap enumPairs = {{0, "Higher pitches"}, {1, "Lower pitches"}};
+    const babelwires::SparseValueNamesImpl enumValues(enumPairs);
+
+    struct PolicyFeature : babelwires::HasStaticRange<babelwires::IntFeature, 0, 1> {
+        const babelwires::ValueNames* getValueNames() const override {
+            return &enumValues;
+        }
+    };
+    
 } // namespace
 
 seqwires::MonophonicSubtracksProcessor::MonophonicSubtracksProcessor() {
     m_numSubtracks = m_inputFeature->addField(std::make_unique<babelwires::HasStaticRange<babelwires::IntFeature, 1, 16>>(),
                                        FIELD_NAME("NumTrk", "Num subtracks", "036ba53e-fdf5-4278-a2c3-7232fc10731c"));
+    m_policy = m_inputFeature->addField(std::make_unique<PolicyFeature>(), FIELD_NAME("Policy", "Policy", "6dca88e9-a6ec-4d43-adb8-78b7bfa00ab9"));
     m_trackIn = m_inputFeature->addField(std::make_unique<TrackFeature>(),
                                               FIELD_NAME("Input", "Input Track", "7e50ba70-0c5e-4493-b088-a3327d65256f"));
     m_tracksOut = m_outputFeature->addField(std::make_unique<SubtrackArrayFeature>(),
@@ -41,8 +53,9 @@ void seqwires::MonophonicSubtracksProcessor::process(babelwires::UserLogger& use
     if (m_numSubtracks->isChanged(babelwires::Feature::Changes::SomethingChanged)) {
         m_tracksOut->setSize(m_numSubtracks->get());
     }
-    if (m_numSubtracks->isChanged(babelwires::Feature::Changes::SomethingChanged) || m_trackIn->isChanged(babelwires::Feature::Changes::SomethingChanged)) {
-        auto result = getMonophonicSubtracks(m_trackIn->get(), m_numSubtracks->get());
+    if (m_numSubtracks->isChanged(babelwires::Feature::Changes::SomethingChanged) || m_trackIn->isChanged(babelwires::Feature::Changes::SomethingChanged)
+        || m_policy->isChanged(babelwires::Feature::Changes::SomethingChanged)) {
+        auto result = getMonophonicSubtracks(m_trackIn->get(), m_numSubtracks->get(), static_cast<seqwires::MonophonicSubtracksPolicy>(m_policy->get()));
         for (int i = 0; i < result.m_noteTracks.size(); ++i) {
             assert(m_tracksOut->getFeature(i)->as<TrackFeature>() != nullptr);
             auto trackOut = static_cast<TrackFeature*>(m_tracksOut->getFeature(i));
