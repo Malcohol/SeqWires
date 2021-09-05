@@ -1,8 +1,8 @@
 /**
  * The TrackRowModel provides the UI for a Track.
- * 
+ *
  * (C) 2021 Malcolm Tyrrell
- * 
+ *
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
 #include "SeqWiresLibUi/RowModels/trackRowModel.hpp"
@@ -44,6 +44,8 @@ QVariant seqwiresUi::TrackRowModel::getTooltip() const {
                 delim = "\n";
             }
             ret = summary;
+        } else {
+            return QString("No events");
         }
     }
     return ret;
