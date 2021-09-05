@@ -10,69 +10,137 @@
 #include "SeqWiresLib/Tracks/noteEvents.hpp"
 #include "SeqWiresLib/Tracks/trackEventHolder.hpp"
 
-seqwires::MonophonicSubtracksResult seqwires::getMonophonicSubtracks(const Track& trackIn, int numTracks) {
-    assert(numTracks > 0);
-    seqwires::MonophonicSubtracksResult result;
+#include <algorithm>
 
+namespace {
     struct TrackInfo {
-        ModelDuration m_timeSinceLastEvent;
-        TrackEvent::GroupingInfo::GroupValue m_activeValue = TrackEvent::GroupingInfo::c_notAValue;
+        seqwires::ModelDuration m_timeSinceLastEvent;
+        seqwires::TrackEvent::GroupingInfo::GroupValue m_activeValue = seqwires::TrackEvent::GroupingInfo::c_notAValue;
     };
-    std::vector<TrackInfo> trackInfos;
-    trackInfos.resize(numTracks);
-    result.m_noteTracks.resize(numTracks);
-    ModelDuration timeSinceLastEventOther;
 
-    using Group = std::tuple<TrackEvent::GroupingInfo::Category, TrackEvent::GroupingInfo::GroupValue>;
-    const TrackEvent::GroupingInfo::Category noteCategory = NoteEvent::s_noteEventCategory;
+    struct NoteEventInfo {
+        /// Notes only.
+        seqwires::TrackEventHolder m_event;
+        /// This is used to ensure sorting is stable when other factors compare equal.
+        int m_originalIndex;
+    };
 
-    for (const auto& event : trackIn) {
-        const TrackEvent::GroupingInfo info = event.getGroupingInfo();
+    const seqwires::TrackEvent::GroupingInfo::Category c_noteCategory = seqwires::NoteEvent::s_noteEventCategory;
 
-        for (auto& t : trackInfos) {
-            t.m_timeSinceLastEvent += event.getTimeSinceLastEvent();
+    void moveEventToOtherTrack(seqwires::ModelDuration& timeSinceLastEventOther, seqwires::TrackEventHolder& event,
+                               seqwires::MonophonicSubtracksResult& result) {
+        event->setTimeSinceLastEvent(timeSinceLastEventOther);
+        result.m_other.addEvent(event.release());
+        timeSinceLastEventOther = 0;
+    }
+
+    void moveNoteEventToTrack(std::vector<TrackInfo>& trackInfos, NoteEventInfo& noteEvent, int trackToUse,
+                              seqwires::MonophonicSubtracksResult& result) {
+        const seqwires::TrackEvent::GroupingInfo groupInfo = noteEvent.m_event->getGroupingInfo();
+        auto& t = trackInfos[trackToUse];
+        noteEvent.m_event->setTimeSinceLastEvent(t.m_timeSinceLastEvent);
+        result.m_noteTracks[trackToUse].addEvent(noteEvent.m_event.release());
+        if (groupInfo.m_grouping == seqwires::TrackEvent::GroupingInfo::Grouping::StartOfGroup) {
+            // Too strong?
+            assert(t.m_activeValue == seqwires::TrackEvent::GroupingInfo::c_notAValue);
+            t.m_activeValue = groupInfo.m_groupValue;
+        } else if (groupInfo.m_grouping == seqwires::TrackEvent::GroupingInfo::Grouping::EndOfGroup) {
+            t.m_activeValue = seqwires::TrackEvent::GroupingInfo::c_notAValue;
         }
-        timeSinceLastEventOther += event.getTimeSinceLastEvent();
+        t.m_timeSinceLastEvent = 0;
+    }
 
+    int getTrackToUse(const std::vector<TrackInfo>& trackInfos, const seqwires::TrackEventHolder& event) {
         int trackToUse = -1;
-        if (info.m_category == noteCategory) {
-            // Always pick the earliest available slot.
-            // TODO Compare all simultaneous events.
-            for (int i = 0; i < numTracks; ++i) {
+        const auto& groupInfo = event->getGroupingInfo();
+        if (groupInfo.m_category == c_noteCategory) {
+            for (int i = 0; i < trackInfos.size(); ++i) {
                 auto& t = trackInfos[i];
-                if (t.m_activeValue == info.m_groupValue) {
+                if (t.m_activeValue == groupInfo.m_groupValue) {
                     trackToUse = i;
                     break;
-                } else if (t.m_activeValue == TrackEvent::GroupingInfo::c_notAValue) {
+                } else if (t.m_activeValue == seqwires::TrackEvent::GroupingInfo::c_notAValue) {
                     if (trackToUse == -1) {
                         trackToUse = i;
                     }
                 }
             }
         }
+        return trackToUse;
+    }
 
-        if (trackToUse != -1) {
-            auto& t = trackInfos[trackToUse];
-            {
-                TrackEventHolder newEvent = event;
-                newEvent->setTimeSinceLastEvent(t.m_timeSinceLastEvent);
-                result.m_noteTracks[trackToUse].addEvent(newEvent.release());
+    void assignNoteEventsToTracks(std::vector<TrackInfo>& trackInfos, seqwires::ModelDuration& timeSinceLastEventOther,
+                                  std::vector<NoteEventInfo>& noteEvents, seqwires::MonophonicSubtracksResult& result) {
+        const auto lessThan = [](NoteEventInfo& a, NoteEventInfo& b) {
+            const auto& groupInfoA = a.m_event->getGroupingInfo();
+            const auto& groupInfoB = b.m_event->getGroupingInfo();
+            if ((groupInfoA.m_grouping == seqwires::TrackEvent::GroupingInfo::Grouping::EndOfGroup) &&
+                (groupInfoB.m_grouping == seqwires::TrackEvent::GroupingInfo::Grouping::StartOfGroup)) {
+                return true;
             }
-            t.m_timeSinceLastEvent = 0;
-            if (info.m_grouping == TrackEvent::GroupingInfo::Grouping::StartOfGroup) {
-                // Too strong?
-                assert(t.m_activeValue == TrackEvent::GroupingInfo::c_notAValue);
-                t.m_activeValue = info.m_groupValue;
-            } else if (info.m_grouping == TrackEvent::GroupingInfo::Grouping::EndOfGroup) {
-                t.m_activeValue = TrackEvent::GroupingInfo::c_notAValue;
+            if ((groupInfoA.m_grouping == seqwires::TrackEvent::GroupingInfo::Grouping::StartOfGroup) &&
+                (groupInfoB.m_grouping == seqwires::TrackEvent::GroupingInfo::Grouping::EndOfGroup)) {
+                return false;
             }
-        } else {
-            TrackEventHolder newEvent = event;
-            newEvent->setTimeSinceLastEvent(timeSinceLastEventOther);
-            result.m_other.addEvent(newEvent.release());
-            timeSinceLastEventOther = 0;
+            // TODO Make parametrizable.
+            if (groupInfoA.m_groupValue > groupInfoB.m_groupValue) {
+                return true;
+            }
+            if (groupInfoA.m_groupValue < groupInfoB.m_groupValue) {
+                return false;
+            }
+            // Preserve the original order in other cases.
+            return a.m_originalIndex < b.m_originalIndex;
+        };
+
+        std::sort(noteEvents.begin(), noteEvents.end(), lessThan);
+
+        for (auto& noteEvent : noteEvents) {
+            const int trackToUse = getTrackToUse(trackInfos, noteEvent.m_event);
+            if (trackToUse != -1) {
+                moveNoteEventToTrack(trackInfos, noteEvent, trackToUse, result);
+            } else {
+                moveEventToOtherTrack(timeSinceLastEventOther, noteEvent.m_event, result);
+            }
         }
     }
+} // namespace
+
+seqwires::MonophonicSubtracksResult seqwires::getMonophonicSubtracks(const Track& trackIn, int numTracks) {
+    assert(numTracks > 0);
+    seqwires::MonophonicSubtracksResult result;
+
+    std::vector<TrackInfo> trackInfos;
+    trackInfos.resize(numTracks);
+    result.m_noteTracks.resize(numTracks);
+    ModelDuration timeSinceLastEventOther;
+
+    using Group = std::tuple<TrackEvent::GroupingInfo::Category, TrackEvent::GroupingInfo::GroupValue>;
+
+    std::vector<NoteEventInfo> noteEventsNow;
+
+    for (auto& event : trackIn) {
+        if (event.getTimeSinceLastEvent() != 0) {
+            assignNoteEventsToTracks(trackInfos, timeSinceLastEventOther, noteEventsNow, result);
+            noteEventsNow.clear();
+
+            for (auto& t : trackInfos) {
+                t.m_timeSinceLastEvent += event.getTimeSinceLastEvent();
+            }
+            timeSinceLastEventOther += event.getTimeSinceLastEvent();
+        }
+
+        const TrackEvent::GroupingInfo groupInfo = event.getGroupingInfo();
+        if (groupInfo.m_category == c_noteCategory) {
+            NoteEventInfo& noteInfo = noteEventsNow.emplace_back();
+            noteInfo.m_event = event;
+            noteInfo.m_originalIndex = noteEventsNow.size() - 1;
+        } else {
+            TrackEventHolder otherEvent = event;
+            moveEventToOtherTrack(timeSinceLastEventOther, otherEvent, result);
+        }
+    }
+    assignNoteEventsToTracks(trackInfos, timeSinceLastEventOther, noteEventsNow, result);
 
     for (int i = 0; i < numTracks; ++i) {
         result.m_noteTracks[i].setDuration(trackIn.getDuration());
