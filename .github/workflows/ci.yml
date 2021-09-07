@@ -82,10 +82,10 @@ jobs:
       shell: bash
       run: BabelWires/Tests/BabelWiresLib/${{ matrix.config.targetFolder }}babelWiresTests${{ matrix.config.exeExtension }}
 
-    - name: SequenceLibTests
+    - name: SeqWiresLibTests
       working-directory: build
       shell: bash
-      run: Tests/SeqWiresLib/${{ matrix.config.targetFolder }}sequenceLibTests${{ matrix.config.exeExtension }}
+      run: Tests/SeqWiresLib/${{ matrix.config.targetFolder }}seqWiresLibTests${{ matrix.config.exeExtension }}
 
     - name: Seq2tapeLibTests
       working-directory: build

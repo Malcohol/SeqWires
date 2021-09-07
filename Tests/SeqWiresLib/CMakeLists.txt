@@ -1,5 +1,5 @@
 SET( SEQUENCELIB_TESTS_SRCS
-      sequenceLibTests.cpp
+      seqWiresLibTests.cpp
       concatenateProcessorTest.cpp
       excerptProcessorTest.cpp
       filteredTrackIteratorTest.cpp
@@ -14,6 +14,6 @@ SET( SEQUENCELIB_TESTS_SRCS
       transposeProcessorTest.cpp
    )
 
-ADD_EXECUTABLE( sequenceLibTests ${SEQUENCELIB_TESTS_SRCS} )
-TARGET_INCLUDE_DIRECTORIES( sequenceLibTests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../../BabelWires ${CMAKE_CURRENT_SOURCE_DIR}/../.. )
-TARGET_LINK_LIBRARIES(sequenceLibTests Common SeqWiresLib testUtils seqTestUtils gtest)
+ADD_EXECUTABLE( seqWiresLibTests ${SEQUENCELIB_TESTS_SRCS} )
+TARGET_INCLUDE_DIRECTORIES( seqWiresLibTests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../../BabelWires ${CMAKE_CURRENT_SOURCE_DIR}/../.. )
+TARGET_LINK_LIBRARIES(seqWiresLibTests Common SeqWiresLib testUtils seqTestUtils gtest)
