@@ -67,6 +67,35 @@ namespace {
         track.addEvent(seqwires::ChordOffEvent{0});
         return track;
     }
+
+    seqwires::Track getStaggeredPolyphonicTrack2() {
+        seqwires::Track track;
+        track.addEvent(
+            seqwires::ChordOnEvent{0, seqwires::PitchClass::PITCH_CLASS_C, seqwires::ChordType::CHORD_TYPE_MAJOR});
+        track.addEvent(seqwires::NoteOnEvent{0, 72});
+        track.addEvent(seqwires::NoteOnEvent{babelwires::Rational(1, 4), 60});
+        track.addEvent(seqwires::NoteOnEvent{babelwires::Rational(1, 4), 48});
+        track.addEvent(seqwires::NoteOffEvent{babelwires::Rational(1, 4), 72});
+        track.addEvent(seqwires::NoteOnEvent{0, 74});
+        track.addEvent(seqwires::NoteOffEvent{babelwires::Rational(1, 4), 60});
+        track.addEvent(seqwires::NoteOnEvent{0, 62});
+        track.addEvent(seqwires::NoteOffEvent{babelwires::Rational(1, 4), 48});
+        track.addEvent(seqwires::NoteOnEvent{0, 50});
+        track.addEvent(seqwires::ChordOffEvent{0});
+        track.addEvent(
+            seqwires::ChordOnEvent{0, seqwires::PitchClass::PITCH_CLASS_D, seqwires::ChordType::CHORD_TYPE_MINOR});
+        track.addEvent(seqwires::NoteOffEvent{babelwires::Rational(1, 4), 74});
+        track.addEvent(seqwires::NoteOnEvent{0, 72});
+        track.addEvent(seqwires::NoteOffEvent{babelwires::Rational(1, 4), 62});
+        track.addEvent(seqwires::NoteOnEvent{0, 60});
+        track.addEvent(seqwires::NoteOffEvent{babelwires::Rational(1, 4), 50});
+        track.addEvent(seqwires::NoteOnEvent{0, 48});
+        track.addEvent(seqwires::NoteOffEvent{babelwires::Rational(1, 4), 72});
+        track.addEvent(seqwires::NoteOffEvent{babelwires::Rational(1, 4), 60});
+        track.addEvent(seqwires::NoteOffEvent{babelwires::Rational(1, 4), 48});
+        track.addEvent(seqwires::ChordOffEvent{0});
+        return track;
+    }
 } // namespace
 
 TEST(MonophonicSubtracksProcessorTest, simpleFunction) {
@@ -186,6 +215,46 @@ TEST(MonophonicSubtracksProcessorTest, higherPitchesEvictOneTrack) {
         seqwires::NoteOffEvent{babelwires::Rational(1, 4), 62},
         seqwires::NoteOnEvent{0, 60},
         seqwires::NoteOffEvent{babelwires::Rational(1, 2), 48},
+        seqwires::NoteOffEvent{babelwires::Rational(1, 4), 60},
+        seqwires::ChordOffEvent{babelwires::Rational(1, 4)},
+    };
+
+    testUtils::testNotesAndChords(otherEvents, result.m_other);
+}
+
+
+TEST(MonophonicSubtracksProcessorTest, lowerPitchesEvictOneTrack) {
+    seqwires::Track track = getStaggeredPolyphonicTrack2();
+
+    seqwires::MonophonicSubtracksResult result =
+        seqwires::getMonophonicSubtracks(track, 1, seqwires::MonophonicSubtracksPolicy::PreferLowerPitchesEvict);
+
+    ASSERT_EQ(result.m_noteTracks.size(), 1);
+    EXPECT_EQ(result.m_noteTracks[0].getDuration(), babelwires::Rational(11, 4));
+    EXPECT_EQ(result.m_other.getDuration(), babelwires::Rational(11, 4));
+
+
+    const std::vector<seqwires::TrackEventHolder> monoEvents = {
+        seqwires::NoteOnEvent{0, 72}, seqwires::NoteOffEvent{babelwires::Rational(1, 4), 72},
+        seqwires::NoteOnEvent{0, 60}, seqwires::NoteOffEvent{babelwires::Rational(1, 4), 60},
+        seqwires::NoteOnEvent{0, 48}, seqwires::NoteOffEvent{babelwires::Rational(3, 4), 48},
+        seqwires::NoteOnEvent{0, 50}, seqwires::NoteOffEvent{babelwires::Rational(3, 4), 50},
+        seqwires::NoteOnEvent{0, 48}, seqwires::NoteOffEvent{babelwires::Rational(3, 4), 48},
+    };
+
+    testUtils::testNotesAndChords(monoEvents, result.m_noteTracks[0]);
+
+    const std::vector<seqwires::TrackEventHolder> otherEvents = {
+        seqwires::ChordOnEvent{0, seqwires::PitchClass::PITCH_CLASS_C, seqwires::ChordType::CHORD_TYPE_MAJOR},
+        seqwires::NoteOnEvent{babelwires::Rational(3, 4), 74},
+        seqwires::NoteOnEvent{babelwires::Rational(1, 4), 62},
+        seqwires::ChordOffEvent{babelwires::Rational(1, 4)},
+        seqwires::ChordOnEvent{0, seqwires::PitchClass::PITCH_CLASS_D, seqwires::ChordType::CHORD_TYPE_MINOR},
+        seqwires::NoteOffEvent{babelwires::Rational(1, 4), 74},
+        seqwires::NoteOnEvent{0, 72},
+        seqwires::NoteOffEvent{babelwires::Rational(1, 4), 62},
+        seqwires::NoteOnEvent{0, 60},
+        seqwires::NoteOffEvent{babelwires::Rational(1, 2), 72},
         seqwires::NoteOffEvent{babelwires::Rational(1, 4), 60},
         seqwires::ChordOffEvent{babelwires::Rational(1, 4)},
     };
