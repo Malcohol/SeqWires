@@ -23,10 +23,10 @@ namespace {
     using SubtrackArrayFeature =
         babelwires::HasStaticSizeRange<babelwires::StandardArrayFeature<seqwires::TrackFeature>, 1, 16>;
 
-    const babelwires::SparseValueNamesImpl::NameFromValuesMap enumPairs = {{0, "Higher pitches"}, {1, "Lower pitches"}};
+    const babelwires::SparseValueNamesImpl::NameFromValuesMap enumPairs = {{0, "Higher pitches"}, {1, "Lower pitches"}, {2, "Higher pitches evict"}, {3, "Lower pitches evict"}};
     const babelwires::SparseValueNamesImpl enumValues(enumPairs);
 
-    struct PolicyFeature : babelwires::HasStaticRange<babelwires::IntFeature, 0, 1> {
+    struct PolicyFeature : babelwires::HasStaticRange<babelwires::IntFeature, 0, 3> {
         const babelwires::ValueNames* getValueNames() const override {
             return &enumValues;
         }

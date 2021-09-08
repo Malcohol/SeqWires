@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SeqWiresLib/musicTypes.hpp>
+#include <SeqWiresLib/Tracks/trackEventHolder.hpp>
 
 #include <vector>
 
@@ -38,4 +39,6 @@ namespace testUtils {
     void addChords(const std::vector<ChordInfo>& chords, seqwires::Track& track);
 
     void testChords(const std::vector<ChordInfo>& expectedChords, const seqwires::Track& track);
+
+    void testNotesAndChords(const std::vector<seqwires::TrackEventHolder>& expectedEvents, const seqwires::Track& track);
 }

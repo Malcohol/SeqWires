@@ -12,7 +12,9 @@
 namespace seqwires {
     enum class MonophonicSubtracksPolicy {
         PreferHigherPitches,
-        PreferLowerPitches
+        PreferLowerPitches,
+        PreferHigherPitchesEvict,
+        PreferLowerPitchesEvict
     };
 
     struct MonophonicSubtracksResult {

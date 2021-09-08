@@ -38,12 +38,42 @@ namespace {
         track.addEvent(seqwires::ChordOffEvent{0});
         return track;
     }
+
+    seqwires::Track getStaggeredPolyphonicTrack() {
+        seqwires::Track track;
+        track.addEvent(
+            seqwires::ChordOnEvent{0, seqwires::PitchClass::PITCH_CLASS_C, seqwires::ChordType::CHORD_TYPE_MAJOR});
+        track.addEvent(seqwires::NoteOnEvent{0, 48});
+        track.addEvent(seqwires::NoteOnEvent{babelwires::Rational(1, 4), 60});
+        track.addEvent(seqwires::NoteOnEvent{babelwires::Rational(1, 4), 72});
+        track.addEvent(seqwires::NoteOffEvent{babelwires::Rational(1, 4), 48});
+        track.addEvent(seqwires::NoteOnEvent{0, 50});
+        track.addEvent(seqwires::NoteOffEvent{babelwires::Rational(1, 4), 60});
+        track.addEvent(seqwires::NoteOnEvent{0, 62});
+        track.addEvent(seqwires::NoteOffEvent{babelwires::Rational(1, 4), 72});
+        track.addEvent(seqwires::NoteOnEvent{0, 74});
+        track.addEvent(seqwires::ChordOffEvent{0});
+        track.addEvent(
+            seqwires::ChordOnEvent{0, seqwires::PitchClass::PITCH_CLASS_D, seqwires::ChordType::CHORD_TYPE_MINOR});
+        track.addEvent(seqwires::NoteOffEvent{babelwires::Rational(1, 4), 50});
+        track.addEvent(seqwires::NoteOnEvent{0, 48});
+        track.addEvent(seqwires::NoteOffEvent{babelwires::Rational(1, 4), 62});
+        track.addEvent(seqwires::NoteOnEvent{0, 60});
+        track.addEvent(seqwires::NoteOffEvent{babelwires::Rational(1, 4), 74});
+        track.addEvent(seqwires::NoteOnEvent{0, 72});
+        track.addEvent(seqwires::NoteOffEvent{babelwires::Rational(1, 4), 48});
+        track.addEvent(seqwires::NoteOffEvent{babelwires::Rational(1, 4), 60});
+        track.addEvent(seqwires::NoteOffEvent{babelwires::Rational(1, 4), 72});
+        track.addEvent(seqwires::ChordOffEvent{0});
+        return track;
+    }
 } // namespace
 
 TEST(MonophonicSubtracksProcessorTest, simpleFunction) {
     seqwires::Track track = getSamplePolyphonicTrack();
 
-    seqwires::MonophonicSubtracksResult result = seqwires::getMonophonicSubtracks(track, 2, seqwires::MonophonicSubtracksPolicy::PreferHigherPitches);
+    seqwires::MonophonicSubtracksResult result =
+        seqwires::getMonophonicSubtracks(track, 2, seqwires::MonophonicSubtracksPolicy::PreferHigherPitches);
 
     ASSERT_EQ(result.m_noteTracks.size(), 2);
     EXPECT_EQ(result.m_noteTracks[0].getDuration(), 1);
@@ -60,7 +90,8 @@ TEST(MonophonicSubtracksProcessorTest, simpleFunction) {
 TEST(MonophonicSubtracksProcessorTest, FunctionLower) {
     seqwires::Track track = getSamplePolyphonicTrack();
 
-    seqwires::MonophonicSubtracksResult result = seqwires::getMonophonicSubtracks(track, 2, seqwires::MonophonicSubtracksPolicy::PreferLowerPitches);
+    seqwires::MonophonicSubtracksResult result =
+        seqwires::getMonophonicSubtracks(track, 2, seqwires::MonophonicSubtracksPolicy::PreferLowerPitches);
 
     ASSERT_EQ(result.m_noteTracks.size(), 2);
     EXPECT_EQ(result.m_noteTracks[0].getDuration(), 1);
@@ -77,7 +108,8 @@ TEST(MonophonicSubtracksProcessorTest, FunctionLower) {
 TEST(MonophonicSubtracksProcessorTest, redundantTracks) {
     seqwires::Track track = getSamplePolyphonicTrack();
 
-    seqwires::MonophonicSubtracksResult result = seqwires::getMonophonicSubtracks(track, 3, seqwires::MonophonicSubtracksPolicy::PreferHigherPitches);
+    seqwires::MonophonicSubtracksResult result =
+        seqwires::getMonophonicSubtracks(track, 3, seqwires::MonophonicSubtracksPolicy::PreferHigherPitches);
 
     ASSERT_EQ(result.m_noteTracks.size(), 3);
     EXPECT_EQ(result.m_noteTracks[0].getDuration(), 1);
@@ -96,7 +128,8 @@ TEST(MonophonicSubtracksProcessorTest, redundantTracks) {
 TEST(MonophonicSubtracksProcessorTest, eventToOther) {
     seqwires::Track track = getSamplePolyphonicTrack();
 
-    seqwires::MonophonicSubtracksResult result = seqwires::getMonophonicSubtracks(track, 1, seqwires::MonophonicSubtracksPolicy::PreferHigherPitches);
+    seqwires::MonophonicSubtracksResult result =
+        seqwires::getMonophonicSubtracks(track, 1, seqwires::MonophonicSubtracksPolicy::PreferHigherPitches);
 
     ASSERT_EQ(result.m_noteTracks.size(), 1);
     EXPECT_EQ(result.m_noteTracks[0].getDuration(), 1);
@@ -104,38 +137,58 @@ TEST(MonophonicSubtracksProcessorTest, eventToOther) {
 
     testUtils::testSimpleNotes({72, 74, 76, 77}, result.m_noteTracks[0]);
 
-    std::vector<seqwires::TrackEventHolder> expectedEvents = {seqwires::ChordOnEvent{0, seqwires::PitchClass::PITCH_CLASS_C, seqwires::ChordType::CHORD_TYPE_MAJOR},
-                                                              seqwires::NoteOnEvent{0, 48},
-                                                              seqwires::NoteOffEvent{babelwires::Rational(1, 4), 48},
-                                                              seqwires::NoteOnEvent{0, 50},
-                                                              seqwires::ChordOffEvent{babelwires::Rational(1, 4)},
-                                                              seqwires::ChordOnEvent{0, seqwires::PitchClass::PITCH_CLASS_D, seqwires::ChordType::CHORD_TYPE_MINOR},
-                                                              seqwires::NoteOffEvent{0, 50},
-                                                              seqwires::NoteOnEvent{0, 52},
-                                                              seqwires::NoteOffEvent{babelwires::Rational(1, 4), 52},
-                                                              seqwires::NoteOnEvent{0, 53},
-                                                              seqwires::ChordOffEvent{babelwires::Rational(1, 4)},
-                                                              seqwires::NoteOffEvent{0, 53}};
+    const std::vector<seqwires::TrackEventHolder> expectedEvents = {
+        seqwires::ChordOnEvent{0, seqwires::PitchClass::PITCH_CLASS_C, seqwires::ChordType::CHORD_TYPE_MAJOR},
+        seqwires::NoteOnEvent{0, 48},
+        seqwires::NoteOffEvent{babelwires::Rational(1, 4), 48},
+        seqwires::NoteOnEvent{0, 50},
+        seqwires::ChordOffEvent{babelwires::Rational(1, 4)},
+        seqwires::ChordOnEvent{0, seqwires::PitchClass::PITCH_CLASS_D, seqwires::ChordType::CHORD_TYPE_MINOR},
+        seqwires::NoteOffEvent{0, 50},
+        seqwires::NoteOnEvent{0, 52},
+        seqwires::NoteOffEvent{babelwires::Rational(1, 4), 52},
+        seqwires::NoteOnEvent{0, 53},
+        seqwires::ChordOffEvent{babelwires::Rational(1, 4)},
+        seqwires::NoteOffEvent{0, 53}};
 
-    auto it = result.m_other.begin();
-    const auto end = result.m_other.end();
+    testUtils::testNotesAndChords(expectedEvents, result.m_other);
+}
 
-    for (auto e : expectedEvents) {
-        ASSERT_NE(it, end);
-        EXPECT_EQ(it->getTimeSinceLastEvent(), e->getTimeSinceLastEvent());
-        EXPECT_EQ((it->as<seqwires::NoteOnEvent>() == nullptr), (e->as<seqwires::NoteOnEvent>() == nullptr));
-        EXPECT_EQ((it->as<seqwires::NoteOffEvent>() == nullptr), (e->as<seqwires::NoteOffEvent>() == nullptr));
-        EXPECT_EQ((it->as<seqwires::ChordOnEvent>() == nullptr), (e->as<seqwires::ChordOnEvent>() == nullptr));
-        EXPECT_EQ((it->as<seqwires::ChordOffEvent>() == nullptr), (e->as<seqwires::ChordOffEvent>() == nullptr));
-        if (it->as<seqwires::NoteEvent>() != nullptr) {
-            EXPECT_EQ(it->as<seqwires::NoteEvent>()->m_pitch, e->as<seqwires::NoteEvent>()->m_pitch);
-            EXPECT_EQ(it->as<seqwires::NoteEvent>()->m_velocity, e->as<seqwires::NoteEvent>()->m_velocity);
-        }
-        if (it->as<seqwires::ChordOnEvent>() != nullptr) {
-            EXPECT_EQ(it->as<seqwires::ChordOnEvent>()->m_root, e->as<seqwires::ChordOnEvent>()->m_root);
-            EXPECT_EQ(it->as<seqwires::ChordOnEvent>()->m_chordType, e->as<seqwires::ChordOnEvent>()->m_chordType);
-        }
-        ++it;
-    }
-    EXPECT_EQ(it, end);
+TEST(MonophonicSubtracksProcessorTest, higherPitchesEvictOneTrack) {
+    seqwires::Track track = getStaggeredPolyphonicTrack();
+
+    seqwires::MonophonicSubtracksResult result =
+        seqwires::getMonophonicSubtracks(track, 1, seqwires::MonophonicSubtracksPolicy::PreferHigherPitchesEvict);
+
+    ASSERT_EQ(result.m_noteTracks.size(), 1);
+    EXPECT_EQ(result.m_noteTracks[0].getDuration(), babelwires::Rational(11, 4));
+    EXPECT_EQ(result.m_other.getDuration(), babelwires::Rational(11, 4));
+
+
+    const std::vector<seqwires::TrackEventHolder> monoEvents = {
+        seqwires::NoteOnEvent{0, 48}, seqwires::NoteOffEvent{babelwires::Rational(1, 4), 48},
+        seqwires::NoteOnEvent{0, 60}, seqwires::NoteOffEvent{babelwires::Rational(1, 4), 60},
+        seqwires::NoteOnEvent{0, 72}, seqwires::NoteOffEvent{babelwires::Rational(3, 4), 72},
+        seqwires::NoteOnEvent{0, 74}, seqwires::NoteOffEvent{babelwires::Rational(3, 4), 74},
+        seqwires::NoteOnEvent{0, 72}, seqwires::NoteOffEvent{babelwires::Rational(3, 4), 72},
+    };
+
+    testUtils::testNotesAndChords(monoEvents, result.m_noteTracks[0]);
+
+    const std::vector<seqwires::TrackEventHolder> otherEvents = {
+        seqwires::ChordOnEvent{0, seqwires::PitchClass::PITCH_CLASS_C, seqwires::ChordType::CHORD_TYPE_MAJOR},
+        seqwires::NoteOnEvent{babelwires::Rational(3, 4), 50},
+        seqwires::NoteOnEvent{babelwires::Rational(1, 4), 62},
+        seqwires::ChordOffEvent{babelwires::Rational(1, 4)},
+        seqwires::ChordOnEvent{0, seqwires::PitchClass::PITCH_CLASS_D, seqwires::ChordType::CHORD_TYPE_MINOR},
+        seqwires::NoteOffEvent{babelwires::Rational(1, 4), 50},
+        seqwires::NoteOnEvent{0, 48},
+        seqwires::NoteOffEvent{babelwires::Rational(1, 4), 62},
+        seqwires::NoteOnEvent{0, 60},
+        seqwires::NoteOffEvent{babelwires::Rational(1, 2), 48},
+        seqwires::NoteOffEvent{babelwires::Rational(1, 4), 60},
+        seqwires::ChordOffEvent{babelwires::Rational(1, 4)},
+    };
+
+    testUtils::testNotesAndChords(otherEvents, result.m_other);
 }
