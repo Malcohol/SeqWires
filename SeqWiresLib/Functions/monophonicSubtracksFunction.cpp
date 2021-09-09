@@ -75,25 +75,24 @@ namespace {
         int trackToUse = -1;
         bool shouldEvict = false;
         const auto& groupInfo = event->getGroupingInfo();
-        if (groupInfo.m_category == c_noteCategory) {
-            for (int i = 0; i < trackInfos.size(); ++i) {
-                auto& t = trackInfos[i];
-                if (t.m_activeValue == groupInfo.m_groupValue) {
-                    trackToUse = i;
-                    break;
-                } else if ((trackToUse == -1) && (t.m_activeValue == seqwires::TrackEvent::GroupingInfo::c_notAValue) &&
-                           (groupInfo.m_grouping == seqwires::TrackEvent::GroupingInfo::Grouping::StartOfGroup)) {
-                    trackToUse = i;
-                }
+        assert(groupInfo.m_category == c_noteCategory);
+        for (int i = 0; i < trackInfos.size(); ++i) {
+            auto& t = trackInfos[i];
+            if (t.m_activeValue == groupInfo.m_groupValue) {
+                trackToUse = i;
+                break;
+            } else if ((trackToUse == -1) && (t.m_activeValue == seqwires::TrackEvent::GroupingInfo::c_notAValue) &&
+                        (groupInfo.m_grouping == seqwires::TrackEvent::GroupingInfo::Grouping::StartOfGroup)) {
+                trackToUse = i;
             }
         }
         if (isEvicting && (trackToUse == -1)) {
-            seqwires::Pitch bestEvictablePitch = preferHigherPitches ? std::numeric_limits<seqwires::Pitch>::min()
-                                                                     : std::numeric_limits<seqwires::Pitch>::max();
+            seqwires::Pitch bestEvictablePitch = preferHigherPitches ? std::numeric_limits<seqwires::Pitch>::max()
+                                                                     : std::numeric_limits<seqwires::Pitch>::min();
             for (int i = 0; i < trackInfos.size(); ++i) {
                 auto& t = trackInfos[i];
                 if (((groupInfo.m_groupValue > t.m_activeValue) == preferHigherPitches) &&
-                    ((t.m_activeValue > bestEvictablePitch) == preferHigherPitches)) {
+                    ((t.m_activeValue < bestEvictablePitch) == preferHigherPitches)) {
                     trackToUse = i;
                     bestEvictablePitch = t.m_activeValue;
                     shouldEvict = true;
