@@ -7,7 +7,9 @@
  **/
 #pragma once
 
-#include "BabelWiresLib/Processors/commonProcessor.hpp"
+#include "SeqWiresLib/Features/trackFeature.hpp"
+
+#include "BabelWiresLib/Processors/parallelProcessor.hpp"
 
 namespace babelwires {
     class RationalFeature;
@@ -17,11 +19,11 @@ namespace babelwires {
 namespace seqwires {
 
     /// A processor which limits a track to events between certain points.
-    class ExcerptProcessor : public babelwires::CommonProcessor {
+    class ExcerptProcessor : public babelwires::ParallelProcessor<seqwires::TrackFeature, seqwires::TrackFeature> {
       public:
         ExcerptProcessor();
 
-        virtual void process(babelwires::UserLogger& userLogger) override;
+        void processEntry(babelwires::UserLogger& userLogger, const seqwires::TrackFeature& input, seqwires::TrackFeature& output) const override;
 
         struct Factory : public babelwires::CommonProcessorFactory<ExcerptProcessor> {
             Factory();
@@ -30,9 +32,6 @@ namespace seqwires {
       private:
         babelwires::RationalFeature* m_start;
         babelwires::RationalFeature* m_duration;
-
-        babelwires::ArrayFeature* m_tracksIn;
-        babelwires::ArrayFeature* m_tracksOut;
     };
 
 } // namespace seqwires

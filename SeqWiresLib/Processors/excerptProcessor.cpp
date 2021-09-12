@@ -25,33 +25,14 @@ seqwires::ExcerptProcessor::ExcerptProcessor() {
                                        FIELD_NAME("Start", "Start", "4b95f5db-a542-4660-a8db-97d3a5f831ca"));
     m_duration = m_inputFeature->addField(std::make_unique<DurationFeature>(),
                                           FIELD_NAME("Duratn", "Duration", "d83ebbc2-1492-4578-a3b8-4969eb6a2042"));
-    m_tracksIn = m_inputFeature->addField(std::make_unique<ExcerptArrayFeature>(),
-                                              FIELD_NAME("Tracks", "Tracks", "983b3bcb-7086-4791-8e18-d8c7550d45d3"));
-    m_tracksOut = m_outputFeature->addField(std::make_unique<ExcerptArrayFeature>(),
-                                                FIELD_NAME("Tracks", "Tracks", "9feb0f11-fafb-4744-92f1-87eb34b30747"));
+    addArrayFeature(FIELD_NAME("Tracks", "Tracks", "983b3bcb-7086-4791-8e18-d8c7550d45d3"));
 }
 
 seqwires::ExcerptProcessor::Factory::Factory()
     : CommonProcessorFactory("TrackExcerpt", "Excerpt", 1) {}
 
-void seqwires::ExcerptProcessor::process(babelwires::UserLogger& userLogger) {
-    if (m_tracksIn->isChanged(babelwires::Feature::Changes::StructureChanged)) {
-        // Keep the out structure in sync with the in structure, and
-        // try to ensure that tracks which corresponding before still
-        // correspond afterwards.
-        m_tracksOut->copyStructureFrom(*m_tracksIn);
-    }
-
-    const bool durationChanged = m_start->isChanged(babelwires::Feature::Changes::SomethingChanged) ||
-                                 m_duration->isChanged(babelwires::Feature::Changes::SomethingChanged);
-
-    const ModelDuration start = m_start->get();
-    const ModelDuration duration = m_duration->get();
-    for (int i = 0; i < m_tracksIn->getNumFeatures(); ++i) {
-        auto trackFeatureIn = static_cast<const TrackFeature*>(m_tracksIn->getFeature(i));
-        if (durationChanged || trackFeatureIn->isChanged(babelwires::Feature::Changes::SomethingChanged)) {
-            auto trackOut = getTrackExcerpt(trackFeatureIn->get(), start, duration);
-            static_cast<TrackFeature*>(m_tracksOut->getFeature(i))->set(std::move(trackOut));
-        }
-    }
+void seqwires::ExcerptProcessor::processEntry(babelwires::UserLogger& userLogger, const seqwires::TrackFeature& input, seqwires::TrackFeature& output) const {
+    auto trackOut = getTrackExcerpt(input.get(), m_start->get(), m_duration->get());
+    output.set(std::move(trackOut));
 }
+
