@@ -23,7 +23,7 @@ namespace {
 }
 
 seqwires::MonophonicSubtracksPolicyEnum::MonophonicSubtracksPolicyEnum()
-    : babelwires::RegisteredEnum<MonophonicSubtracksPolicyEnum>("MonophonicSubtracksPolicy", "Monophonic Subtracks Policy", 1, FIELD_NAME_VECTOR(s_enums), 1) {}
+    : babelwires::RegisteredEnum<MonophonicSubtracksPolicyEnum>("MonophonicSubtracksPolicy", "Monophonic Subtracks Policy", 1, FIELD_NAME_VECTOR(s_enums), 0) {}
 
 
 namespace {
