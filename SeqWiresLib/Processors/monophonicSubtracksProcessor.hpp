@@ -12,7 +12,9 @@
 namespace babelwires {
     class IntFeature;
     class ArrayFeature;
+    class EnumFeature;
 } // namespace babelwires
+
 
 namespace seqwires {
     class TrackFeature;
@@ -29,7 +31,7 @@ namespace seqwires {
         };
       private:
         babelwires::IntFeature* m_numSubtracks;
-        babelwires::IntFeature* m_policy;
+        babelwires::EnumFeature* m_policy;
         TrackFeature* m_trackIn;
         babelwires::ArrayFeature* m_tracksOut;
         TrackFeature* m_otherTrackOut;
