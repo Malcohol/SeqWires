@@ -1,8 +1,8 @@
 /**
  * SeqWires application main function.
- * 
+ *
  * (C) 2021 Malcolm Tyrrell
- * 
+ *
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
 #include "Common/Audio/fileAudioDest.hpp"
@@ -13,6 +13,7 @@
 #include "BabelWiresQtUi/ModelBridge/RowModels/rowModelRegistry.hpp"
 #include "BabelWiresQtUi/uiProjectContext.hpp"
 
+#include "BabelWiresLib/Enums/enum.hpp"
 #include "BabelWiresLib/Features/Path/fieldNameRegistry.hpp"
 #include "BabelWiresLib/FileFormat/fileFeature.hpp"
 #include "BabelWiresLib/FileFormat/sourceFileFormat.hpp"
@@ -72,14 +73,16 @@ int main(int argc, char* argv[]) {
         ProcessorFactoryRegistry processorReg;
         babelwires::AutomaticDeserializationRegistry deserializationRegistry;
         babelwires::RowModelRegistry rowModelRegistry;
+        babelwires::EnumRegistry enumRegistry;
 
         const unsigned int seed = std::chrono::system_clock::now().time_since_epoch().count();
         babelwires::logDebug() << "The random seed was " << seed;
         std::default_random_engine randomEngine(seed);
 
-        babelwires::UiProjectContext context{sourceFileFormatReg, targetFileFormatReg, processorReg,
-                                             deserializationRegistry, randomEngine,  rowModelRegistry};
-        
+        babelwires::UiProjectContext context{sourceFileFormatReg,     targetFileFormatReg, processorReg,
+                                             deserializationRegistry, enumRegistry,        randomEngine,
+                                             rowModelRegistry};
+
         context.m_applicationIdentity.m_applicationTitle = "Seqwires";
         context.m_applicationIdentity.m_projectExtension = ".seqwires";
 
@@ -89,7 +92,8 @@ int main(int argc, char* argv[]) {
         smf::registerLib(context);
 
         if (options.m_mode == ProgramOptions::MODE_DUMP) {
-            if (const SourceFileFormat* format = context.m_sourceFileFormatReg.getEntryByFileName(options.m_inputFileName)) {
+            if (const SourceFileFormat* format =
+                    context.m_sourceFileFormatReg.getEntryByFileName(options.m_inputFileName)) {
                 try {
                     babelwires::FileDataSource file(options.m_inputFileName);
                     std::shared_ptr<babelwires::FileFeature> loadedFile = format->loadFromFile(file, log);

@@ -102,7 +102,7 @@ TEST(MonophonicSubtracksProcessorTest, simpleFunction) {
     seqwires::Track track = getSamplePolyphonicTrack();
 
     seqwires::MonophonicSubtracksResult result =
-        seqwires::getMonophonicSubtracks(track, 2, seqwires::MonophonicSubtracksPolicy::PreferHigherPitches);
+        seqwires::getMonophonicSubtracks(track, 2, seqwires::MonophonicSubtracksPolicyEnum::Value::High);
 
     ASSERT_EQ(result.m_noteTracks.size(), 2);
     EXPECT_EQ(result.m_noteTracks[0].getDuration(), 1);
@@ -120,7 +120,7 @@ TEST(MonophonicSubtracksProcessorTest, FunctionLower) {
     seqwires::Track track = getSamplePolyphonicTrack();
 
     seqwires::MonophonicSubtracksResult result =
-        seqwires::getMonophonicSubtracks(track, 2, seqwires::MonophonicSubtracksPolicy::PreferLowerPitches);
+        seqwires::getMonophonicSubtracks(track, 2, seqwires::MonophonicSubtracksPolicyEnum::Value::Low);
 
     ASSERT_EQ(result.m_noteTracks.size(), 2);
     EXPECT_EQ(result.m_noteTracks[0].getDuration(), 1);
@@ -138,7 +138,7 @@ TEST(MonophonicSubtracksProcessorTest, redundantTracks) {
     seqwires::Track track = getSamplePolyphonicTrack();
 
     seqwires::MonophonicSubtracksResult result =
-        seqwires::getMonophonicSubtracks(track, 3, seqwires::MonophonicSubtracksPolicy::PreferHigherPitches);
+        seqwires::getMonophonicSubtracks(track, 3, seqwires::MonophonicSubtracksPolicyEnum::Value::High);
 
     ASSERT_EQ(result.m_noteTracks.size(), 3);
     EXPECT_EQ(result.m_noteTracks[0].getDuration(), 1);
@@ -158,7 +158,7 @@ TEST(MonophonicSubtracksProcessorTest, eventToOther) {
     seqwires::Track track = getSamplePolyphonicTrack();
 
     seqwires::MonophonicSubtracksResult result =
-        seqwires::getMonophonicSubtracks(track, 1, seqwires::MonophonicSubtracksPolicy::PreferHigherPitches);
+        seqwires::getMonophonicSubtracks(track, 1, seqwires::MonophonicSubtracksPolicyEnum::Value::High);
 
     ASSERT_EQ(result.m_noteTracks.size(), 1);
     EXPECT_EQ(result.m_noteTracks[0].getDuration(), 1);
@@ -187,7 +187,7 @@ TEST(MonophonicSubtracksProcessorTest, higherPitchesEvictOneTrack) {
     seqwires::Track track = getStaggeredPolyphonicTrack();
 
     seqwires::MonophonicSubtracksResult result =
-        seqwires::getMonophonicSubtracks(track, 1, seqwires::MonophonicSubtracksPolicy::PreferHigherPitchesEvict);
+        seqwires::getMonophonicSubtracks(track, 1, seqwires::MonophonicSubtracksPolicyEnum::Value::HighEv);
 
     ASSERT_EQ(result.m_noteTracks.size(), 1);
     EXPECT_EQ(result.m_noteTracks[0].getDuration(), babelwires::Rational(11, 4));
@@ -226,7 +226,7 @@ TEST(MonophonicSubtracksProcessorTest, higherPitchesEvictTwoTracks) {
     seqwires::Track track = getStaggeredPolyphonicTrack();
 
     seqwires::MonophonicSubtracksResult result =
-        seqwires::getMonophonicSubtracks(track, 2, seqwires::MonophonicSubtracksPolicy::PreferHigherPitchesEvict);
+        seqwires::getMonophonicSubtracks(track, 2, seqwires::MonophonicSubtracksPolicyEnum::Value::HighEv);
 
     ASSERT_EQ(result.m_noteTracks.size(), 2);
     EXPECT_EQ(result.m_noteTracks[0].getDuration(), babelwires::Rational(11, 4));
@@ -268,7 +268,7 @@ TEST(MonophonicSubtracksProcessorTest, lowerPitchesEvictOneTrack) {
     seqwires::Track track = getStaggeredPolyphonicTrack2();
 
     seqwires::MonophonicSubtracksResult result =
-        seqwires::getMonophonicSubtracks(track, 1, seqwires::MonophonicSubtracksPolicy::PreferLowerPitchesEvict);
+        seqwires::getMonophonicSubtracks(track, 1, seqwires::MonophonicSubtracksPolicyEnum::Value::LowEv);
 
     ASSERT_EQ(result.m_noteTracks.size(), 1);
     EXPECT_EQ(result.m_noteTracks[0].getDuration(), babelwires::Rational(11, 4));
@@ -307,7 +307,7 @@ TEST(MonophonicSubtracksProcessorTest, lowerPitchesEvictTwoTracks) {
     seqwires::Track track = getStaggeredPolyphonicTrack2();
 
     seqwires::MonophonicSubtracksResult result =
-        seqwires::getMonophonicSubtracks(track, 2, seqwires::MonophonicSubtracksPolicy::PreferLowerPitchesEvict);
+        seqwires::getMonophonicSubtracks(track, 2, seqwires::MonophonicSubtracksPolicyEnum::Value::LowEv);
 
     ASSERT_EQ(result.m_noteTracks.size(), 2);
     EXPECT_EQ(result.m_noteTracks[0].getDuration(), babelwires::Rational(11, 4));

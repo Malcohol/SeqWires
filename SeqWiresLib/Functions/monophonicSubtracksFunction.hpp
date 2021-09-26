@@ -8,13 +8,21 @@
 #pragma once
 
 #include "SeqWiresLib/Tracks/track.hpp"
+#include "BabelWiresLib/Enums/enumWithCppEnum.hpp"
 
 namespace seqwires {
-    enum class MonophonicSubtracksPolicy {
-        PreferHigherPitches,
-        PreferLowerPitches,
-        PreferHigherPitchesEvict,
-        PreferLowerPitchesEvict
+#define MONOPHONIC_SUBTRACK_POLICY(X)                                                                                  \
+    X(High, "Higher pitches", "00b17c7c-f520-4058-b57d-15f9cc89a890")                                                  \
+    X(Low, "Lower pitches", "9a0b8072-11a2-492d-a21a-4e568c3483e0")                                                    \
+    X(HighEv, "Higher pitches evict", "37f9408a-2e91-47d7-94ed-9e4e2086a4b6")                                          \
+    X(LowEv, "Lower pitches evict", "7068c9fd-d80a-47fa-8f82-6b000cd1e0be")
+
+    /// The enum that determines the algorithm used.
+    class MonophonicSubtracksPolicyEnum : public babelwires::RegisteredEnum<MonophonicSubtracksPolicyEnum> {
+      public:
+        MonophonicSubtracksPolicyEnum();
+
+        ENUM_DEFINE_CPP_ENUM(MONOPHONIC_SUBTRACK_POLICY);
     };
 
     struct MonophonicSubtracksResult {
@@ -22,5 +30,6 @@ namespace seqwires {
         Track m_other;
     };
 
-    MonophonicSubtracksResult getMonophonicSubtracks(const Track& trackIn, int numTracks, MonophonicSubtracksPolicy policy);
+    MonophonicSubtracksResult getMonophonicSubtracks(const Track& trackIn, int numTracks,
+                                                     MonophonicSubtracksPolicyEnum::Value policy);
 } // namespace seqwires

@@ -9,9 +9,16 @@
 
 #include "SeqWiresLib/Tracks/noteEvents.hpp"
 #include "SeqWiresLib/Tracks/trackEventHolder.hpp"
+#include "BabelWiresLib/Features/Path/fieldName.hpp"
 
 #include <algorithm>
 #include <set>
+
+ENUM_DEFINE_ENUM_VALUE_SOURCE(MONOPHONIC_SUBTRACK_POLICY);
+
+seqwires::MonophonicSubtracksPolicyEnum::MonophonicSubtracksPolicyEnum()
+    : babelwires::RegisteredEnum<MonophonicSubtracksPolicyEnum>("MonophonicSubtracksPolicy", "Monophonic Subtracks Policy", 1, ENUM_IDENTIFIER_VECTOR(MONOPHONIC_SUBTRACK_POLICY), 0) {}
+
 
 namespace {
     struct TrackInfo {
@@ -67,11 +74,11 @@ namespace {
     /// Returns [trackToUse, shouldEvict]
     std::tuple<int, bool> getTrackToUse(const std::vector<TrackInfo>& trackInfos,
                                         const seqwires::TrackEventHolder& event,
-                                        seqwires::MonophonicSubtracksPolicy policy) {
-        const bool isEvicting = (policy == seqwires::MonophonicSubtracksPolicy::PreferHigherPitchesEvict) ||
-                                (policy == seqwires::MonophonicSubtracksPolicy::PreferLowerPitchesEvict);
-        const bool preferHigherPitches = (policy == seqwires::MonophonicSubtracksPolicy::PreferHigherPitches) ||
-                                         (policy == seqwires::MonophonicSubtracksPolicy::PreferHigherPitchesEvict);
+                                        seqwires::MonophonicSubtracksPolicyEnum::Value policy) {
+        const bool isEvicting = (policy == seqwires::MonophonicSubtracksPolicyEnum::Value::HighEv) ||
+                                (policy == seqwires::MonophonicSubtracksPolicyEnum::Value::LowEv);
+        const bool preferHigherPitches = (policy == seqwires::MonophonicSubtracksPolicyEnum::Value::High) ||
+                                         (policy == seqwires::MonophonicSubtracksPolicyEnum::Value::HighEv);
         int trackToUse = -1;
         bool shouldEvict = false;
         const auto& groupInfo = event->getGroupingInfo();
@@ -104,10 +111,10 @@ namespace {
 
     void assignNoteEventsToTracks(std::vector<TrackInfo>& trackInfos, seqwires::ModelDuration& timeSinceLastEventOther,
                                   std::vector<NoteEventInfo>& noteEvents, PitchSet& evictedPitches,
-                                  seqwires::MonophonicSubtracksPolicy policy,
+                                  seqwires::MonophonicSubtracksPolicyEnum::Value policy,
                                   seqwires::MonophonicSubtracksResult& result) {
-        const bool preferHigherPitches = (policy == seqwires::MonophonicSubtracksPolicy::PreferHigherPitches) ||
-                                         (policy == seqwires::MonophonicSubtracksPolicy::PreferHigherPitchesEvict);
+        const bool preferHigherPitches = (policy == seqwires::MonophonicSubtracksPolicyEnum::Value::High) ||
+                                         (policy == seqwires::MonophonicSubtracksPolicyEnum::Value::HighEv);
         const auto lessThan = [preferHigherPitches](NoteEventInfo& a, NoteEventInfo& b) {
             const auto& groupInfoA = a.m_event->getGroupingInfo();
             const auto& groupInfoB = b.m_event->getGroupingInfo();
@@ -154,7 +161,7 @@ namespace {
 } // namespace
 
 seqwires::MonophonicSubtracksResult seqwires::getMonophonicSubtracks(const Track& trackIn, int numTracks,
-                                                                     MonophonicSubtracksPolicy policy) {
+                                                                     MonophonicSubtracksPolicyEnum::Value policy) {
     assert(numTracks > 0);
     seqwires::MonophonicSubtracksResult result;
 
