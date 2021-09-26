@@ -62,7 +62,7 @@ namespace seqwires {
 
     /// Defines the assignment of chord types to int values.
     /// These match the "Chord type" values from the XF Format Specifications v2.01
-    enum ChordType : std::uint8_t { CHORD_TYPE_VALUES(CHORD_TYPE_SELECT_FIRST_ARGUMENT) NUM_CHORD_TYPES };
+    enum ChordType : std::uint8_t { CHORD_TYPE_VALUES(CHORD_TYPE_SELECT_FIRST_ARGUMENT) CHORD_TYPE_NotAChord, NUM_CHORD_TYPES = CHORD_TYPE_NotAChord };
 
     /// Note: Not trying to match the representation from XF, because I don't currently know how to transpose those
     /// values.
