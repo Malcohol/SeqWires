@@ -14,16 +14,10 @@
 #include <algorithm>
 #include <set>
 
-
-namespace {
-    // TODO Encorporate this in boilerplate macros, somehow.
-    const babelwires::FieldIdentifiersSource s_enums = {
-        MONOPHONIC_SUBTRACK_POLICY(ENUM_ARGUMENTS_AS_INITIALIZERS)        
-    };    
-}
+ENUM_DEFINE_ENUM_VALUE_SOURCE(MONOPHONIC_SUBTRACK_POLICY);
 
 seqwires::MonophonicSubtracksPolicyEnum::MonophonicSubtracksPolicyEnum()
-    : babelwires::RegisteredEnum<MonophonicSubtracksPolicyEnum>("MonophonicSubtracksPolicy", "Monophonic Subtracks Policy", 1, FIELD_NAME_VECTOR(s_enums), 0) {}
+    : babelwires::RegisteredEnum<MonophonicSubtracksPolicyEnum>("MonophonicSubtracksPolicy", "Monophonic Subtracks Policy", 1, ENUM_IDENTIFIER_VECTOR(MONOPHONIC_SUBTRACK_POLICY), 0) {}
 
 
 namespace {

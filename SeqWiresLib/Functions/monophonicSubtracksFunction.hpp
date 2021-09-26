@@ -8,7 +8,7 @@
 #pragma once
 
 #include "SeqWiresLib/Tracks/track.hpp"
-#include "BabelWiresLib/Enums/enum.hpp"
+#include "BabelWiresLib/Enums/enumWithCppEnum.hpp"
 
 namespace seqwires {
 #define MONOPHONIC_SUBTRACK_POLICY(X)                                                                                  \

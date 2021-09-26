@@ -22,10 +22,8 @@
 namespace {
     using SubtrackArrayFeature =
         babelwires::HasStaticSizeRange<babelwires::StandardArrayFeature<seqwires::TrackFeature>, 1, 16>;
-} // namespace
 
-namespace {
-    struct PolicyFeature : babelwires::EnumFeatureImpl<seqwires::MonophonicSubtracksPolicyEnum> {};
+    using PolicyFeature = babelwires::EnumWithCppEnumFeature<seqwires::MonophonicSubtracksPolicyEnum>;
 } // namespace
 
 seqwires::MonophonicSubtracksProcessor::MonophonicSubtracksProcessor() {
