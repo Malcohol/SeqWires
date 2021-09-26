@@ -18,8 +18,10 @@ namespace {
     const char* s_pitchClassNames[seqwires::NUM_PITCH_CLASSES] = {"C",  "C#", "D",  "D#", "E",  "F",
                                                                   "F#", "G",  "G#", "A",  "A#", "B"};
 
+#define CHORD_TYPE_SELECT_SECOND_ARGUMENT(A, B, C) B,
     const char* s_chordTypeNames[seqwires::ChordType::NUM_CHORD_TYPES] = {
-        "M", "m", "7", "m7", "M7", "6", "m6", "+5", "m7-5", "DIM", "SUS4", "M+9", "m+9"};
+        CHORD_TYPE_VALUES(CHORD_TYPE_SELECT_SECOND_ARGUMENT)
+    };
 } // namespace
 
 std::string seqwires::pitchToString(Pitch p) {
