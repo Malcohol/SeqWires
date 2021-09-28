@@ -88,6 +88,7 @@ namespace seqwires {
     std::string durationToString(ModelDuration d);
     std::string chordTypeToString(ChordType t);
     std::string pitchClassToString(PitchClass p);
+    PitchClass pitchToPitchClass(Pitch p);
 
     /// The percussion map from GM spec.
     enum PercussionInstrumentMap {

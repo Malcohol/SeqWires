@@ -124,3 +124,7 @@ std::string seqwires::chordTypeToString(ChordType t) {
 std::string seqwires::pitchClassToString(PitchClass p) {
     return s_pitchClassNames[p];
 }
+
+seqwires::PitchClass seqwires::pitchToPitchClass(seqwires::Pitch p) {
+    return static_cast<seqwires::PitchClass>(p % 12);
+}
