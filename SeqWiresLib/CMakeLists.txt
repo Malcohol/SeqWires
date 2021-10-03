@@ -2,6 +2,7 @@ SET( SEQWIRESLIB_SRCS
 	Utilities/musicUtilities.cpp
 	Features/trackFeature.cpp
 	Features/pitchFeature.cpp
+	Processors/chordsFromNotesProcessor.cpp
 	Processors/concatenateProcessor.cpp
 	Processors/excerptProcessor.cpp
 	Processors/mergeProcessor.cpp
