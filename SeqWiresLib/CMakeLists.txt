@@ -23,6 +23,7 @@ SET( SEQWIRESLIB_SRCS
 	Tracks/noteEvents.cpp
 	Tracks/chordEvents.cpp
 	Tracks/track.cpp
+	chord.cpp
 	musicTypes.cpp
 	Utilities/monophonicNoteIterator.cpp
 	libRegistration.cpp

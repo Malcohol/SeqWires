@@ -13,16 +13,13 @@
 #include <cctype>
 #include <charconv>
 #include <cassert>
-namespace {
 
+
+namespace {
     const char* s_pitchClassNames[seqwires::NUM_PITCH_CLASSES] = {"C",  "C#", "D",  "D#", "E",  "F",
                                                                   "F#", "G",  "G#", "A",  "A#", "B"};
-
-#define CHORD_TYPE_SELECT_SECOND_ARGUMENT(A, B, C) B,
-    const char* s_chordTypeNames[seqwires::ChordType::NUM_CHORD_TYPES] = {
-        CHORD_TYPE_VALUES(CHORD_TYPE_SELECT_SECOND_ARGUMENT)
-    };
 } // namespace
+
 
 std::string seqwires::pitchToString(Pitch p) {
     const int pitchClass = p % 12;
@@ -115,10 +112,6 @@ std::string seqwires::durationToString(ModelDuration d) {
     std::ostringstream stringOut;
     stringOut << d;
     return stringOut.str();
-}
-
-std::string seqwires::chordTypeToString(ChordType t) {
-    return s_chordTypeNames[t];
 }
 
 std::string seqwires::pitchClassToString(PitchClass p) {

@@ -17,7 +17,7 @@ namespace {
         track.addEvent(seqwires::NoteOnEvent{0, 72});
         track.addEvent(seqwires::NoteOnEvent{0, 48});
         track.addEvent(
-            seqwires::ChordOnEvent{0, seqwires::PitchClass::PITCH_CLASS_C, seqwires::ChordType::CHORD_TYPE_Maj});
+            seqwires::ChordOnEvent{0, {seqwires::PitchClass::PITCH_CLASS_C, seqwires::ChordType::CHORD_TYPE_Maj}});
         track.addEvent(seqwires::NoteOffEvent{babelwires::Rational(1, 4), 72});
         track.addEvent(seqwires::NoteOffEvent{0, 48});
         track.addEvent(seqwires::NoteOnEvent{0, 74});
@@ -28,7 +28,7 @@ namespace {
         track.addEvent(seqwires::NoteOnEvent{0, 76});
         track.addEvent(seqwires::NoteOnEvent{0, 52});
         track.addEvent(
-            seqwires::ChordOnEvent{0, seqwires::PitchClass::PITCH_CLASS_D, seqwires::ChordType::CHORD_TYPE_min});
+            seqwires::ChordOnEvent{0, {seqwires::PitchClass::PITCH_CLASS_D, seqwires::ChordType::CHORD_TYPE_min}});
         track.addEvent(seqwires::NoteOffEvent{babelwires::Rational(1, 4), 76});
         track.addEvent(seqwires::NoteOffEvent{0, 52});
         track.addEvent(seqwires::NoteOnEvent{0, 77});
@@ -42,7 +42,7 @@ namespace {
     seqwires::Track getStaggeredPolyphonicTrack() {
         seqwires::Track track;
         track.addEvent(
-            seqwires::ChordOnEvent{0, seqwires::PitchClass::PITCH_CLASS_C, seqwires::ChordType::CHORD_TYPE_Maj});
+            seqwires::ChordOnEvent{0, {seqwires::PitchClass::PITCH_CLASS_C, seqwires::ChordType::CHORD_TYPE_Maj}});
         track.addEvent(seqwires::NoteOnEvent{0, 48});
         track.addEvent(seqwires::NoteOnEvent{babelwires::Rational(1, 4), 60});
         track.addEvent(seqwires::NoteOnEvent{babelwires::Rational(1, 4), 72});
@@ -54,7 +54,7 @@ namespace {
         track.addEvent(seqwires::NoteOnEvent{0, 74});
         track.addEvent(seqwires::ChordOffEvent{0});
         track.addEvent(
-            seqwires::ChordOnEvent{0, seqwires::PitchClass::PITCH_CLASS_D, seqwires::ChordType::CHORD_TYPE_min});
+            seqwires::ChordOnEvent{0, {seqwires::PitchClass::PITCH_CLASS_D, seqwires::ChordType::CHORD_TYPE_min}});
         track.addEvent(seqwires::NoteOffEvent{babelwires::Rational(1, 4), 50});
         track.addEvent(seqwires::NoteOnEvent{0, 48});
         track.addEvent(seqwires::NoteOffEvent{babelwires::Rational(1, 4), 62});
@@ -71,7 +71,7 @@ namespace {
     seqwires::Track getStaggeredPolyphonicTrack2() {
         seqwires::Track track;
         track.addEvent(
-            seqwires::ChordOnEvent{0, seqwires::PitchClass::PITCH_CLASS_C, seqwires::ChordType::CHORD_TYPE_Maj});
+            seqwires::ChordOnEvent{0, {seqwires::PitchClass::PITCH_CLASS_C, seqwires::ChordType::CHORD_TYPE_Maj}});
         track.addEvent(seqwires::NoteOnEvent{0, 72});
         track.addEvent(seqwires::NoteOnEvent{babelwires::Rational(1, 4), 60});
         track.addEvent(seqwires::NoteOnEvent{babelwires::Rational(1, 4), 48});
@@ -83,7 +83,7 @@ namespace {
         track.addEvent(seqwires::NoteOnEvent{0, 50});
         track.addEvent(seqwires::ChordOffEvent{0});
         track.addEvent(
-            seqwires::ChordOnEvent{0, seqwires::PitchClass::PITCH_CLASS_D, seqwires::ChordType::CHORD_TYPE_min});
+            seqwires::ChordOnEvent{0, {seqwires::PitchClass::PITCH_CLASS_D, seqwires::ChordType::CHORD_TYPE_min}});
         track.addEvent(seqwires::NoteOffEvent{babelwires::Rational(1, 4), 74});
         track.addEvent(seqwires::NoteOnEvent{0, 72});
         track.addEvent(seqwires::NoteOffEvent{babelwires::Rational(1, 4), 62});
@@ -167,12 +167,12 @@ TEST(MonophonicSubtracksProcessorTest, eventToOther) {
     testUtils::testSimpleNotes({72, 74, 76, 77}, result.m_noteTracks[0]);
 
     const std::vector<seqwires::TrackEventHolder> expectedEvents = {
-        seqwires::ChordOnEvent{0, seqwires::PitchClass::PITCH_CLASS_C, seqwires::ChordType::CHORD_TYPE_Maj},
+        seqwires::ChordOnEvent{0, {seqwires::PitchClass::PITCH_CLASS_C, seqwires::ChordType::CHORD_TYPE_Maj}},
         seqwires::NoteOnEvent{0, 48},
         seqwires::NoteOffEvent{babelwires::Rational(1, 4), 48},
         seqwires::NoteOnEvent{0, 50},
         seqwires::ChordOffEvent{babelwires::Rational(1, 4)},
-        seqwires::ChordOnEvent{0, seqwires::PitchClass::PITCH_CLASS_D, seqwires::ChordType::CHORD_TYPE_min},
+        seqwires::ChordOnEvent{0, {seqwires::PitchClass::PITCH_CLASS_D, seqwires::ChordType::CHORD_TYPE_min}},
         seqwires::NoteOffEvent{0, 50},
         seqwires::NoteOnEvent{0, 52},
         seqwires::NoteOffEvent{babelwires::Rational(1, 4), 52},
@@ -205,11 +205,11 @@ TEST(MonophonicSubtracksProcessorTest, higherPitchesEvictOneTrack) {
     testUtils::testNotesAndChords(monoEvents, result.m_noteTracks[0]);
 
     const std::vector<seqwires::TrackEventHolder> otherEvents = {
-        seqwires::ChordOnEvent{0, seqwires::PitchClass::PITCH_CLASS_C, seqwires::ChordType::CHORD_TYPE_Maj},
+        seqwires::ChordOnEvent{0, {seqwires::PitchClass::PITCH_CLASS_C, seqwires::ChordType::CHORD_TYPE_Maj}},
         seqwires::NoteOnEvent{babelwires::Rational(3, 4), 50},
         seqwires::NoteOnEvent{babelwires::Rational(1, 4), 62},
         seqwires::ChordOffEvent{babelwires::Rational(1, 4)},
-        seqwires::ChordOnEvent{0, seqwires::PitchClass::PITCH_CLASS_D, seqwires::ChordType::CHORD_TYPE_min},
+        seqwires::ChordOnEvent{0, {seqwires::PitchClass::PITCH_CLASS_D, seqwires::ChordType::CHORD_TYPE_min}},
         seqwires::NoteOffEvent{babelwires::Rational(1, 4), 50},
         seqwires::NoteOnEvent{0, 48},
         seqwires::NoteOffEvent{babelwires::Rational(1, 4), 62},
@@ -251,10 +251,10 @@ TEST(MonophonicSubtracksProcessorTest, higherPitchesEvictTwoTracks) {
     testUtils::testNotesAndChords(monoEvents1, result.m_noteTracks[1]);
 
     const std::vector<seqwires::TrackEventHolder> otherEvents = {
-        seqwires::ChordOnEvent{0, seqwires::PitchClass::PITCH_CLASS_C, seqwires::ChordType::CHORD_TYPE_Maj},
+        seqwires::ChordOnEvent{0, {seqwires::PitchClass::PITCH_CLASS_C, seqwires::ChordType::CHORD_TYPE_Maj}},
         seqwires::NoteOnEvent{babelwires::Rational(3, 4), 50},
         seqwires::ChordOffEvent{babelwires::Rational(1, 2)},
-        seqwires::ChordOnEvent{0, seqwires::PitchClass::PITCH_CLASS_D, seqwires::ChordType::CHORD_TYPE_min},
+        seqwires::ChordOnEvent{0, {seqwires::PitchClass::PITCH_CLASS_D, seqwires::ChordType::CHORD_TYPE_min}},
         seqwires::NoteOffEvent{babelwires::Rational(1, 4), 50},
         seqwires::NoteOnEvent{0, 48},
         seqwires::NoteOffEvent{babelwires::Rational(3, 4), 48},
@@ -286,11 +286,11 @@ TEST(MonophonicSubtracksProcessorTest, lowerPitchesEvictOneTrack) {
     testUtils::testNotesAndChords(monoEvents, result.m_noteTracks[0]);
 
     const std::vector<seqwires::TrackEventHolder> otherEvents = {
-        seqwires::ChordOnEvent{0, seqwires::PitchClass::PITCH_CLASS_C, seqwires::ChordType::CHORD_TYPE_Maj},
+        seqwires::ChordOnEvent{0, {seqwires::PitchClass::PITCH_CLASS_C, seqwires::ChordType::CHORD_TYPE_Maj}},
         seqwires::NoteOnEvent{babelwires::Rational(3, 4), 74},
         seqwires::NoteOnEvent{babelwires::Rational(1, 4), 62},
         seqwires::ChordOffEvent{babelwires::Rational(1, 4)},
-        seqwires::ChordOnEvent{0, seqwires::PitchClass::PITCH_CLASS_D, seqwires::ChordType::CHORD_TYPE_min},
+        seqwires::ChordOnEvent{0, {seqwires::PitchClass::PITCH_CLASS_D, seqwires::ChordType::CHORD_TYPE_min}},
         seqwires::NoteOffEvent{babelwires::Rational(1, 4), 74},
         seqwires::NoteOnEvent{0, 72},
         seqwires::NoteOffEvent{babelwires::Rational(1, 4), 62},
@@ -332,10 +332,10 @@ TEST(MonophonicSubtracksProcessorTest, lowerPitchesEvictTwoTracks) {
     testUtils::testNotesAndChords(monoEvents1, result.m_noteTracks[1]);
 
     const std::vector<seqwires::TrackEventHolder> otherEvents = {
-        seqwires::ChordOnEvent{0, seqwires::PitchClass::PITCH_CLASS_C, seqwires::ChordType::CHORD_TYPE_Maj},
+        seqwires::ChordOnEvent{0, {seqwires::PitchClass::PITCH_CLASS_C, seqwires::ChordType::CHORD_TYPE_Maj}},
         seqwires::NoteOnEvent{babelwires::Rational(3, 4), 74},
         seqwires::ChordOffEvent{babelwires::Rational(1, 2)},
-        seqwires::ChordOnEvent{0, seqwires::PitchClass::PITCH_CLASS_D, seqwires::ChordType::CHORD_TYPE_min},
+        seqwires::ChordOnEvent{0, {seqwires::PitchClass::PITCH_CLASS_D, seqwires::ChordType::CHORD_TYPE_min}},
         seqwires::NoteOffEvent{babelwires::Rational(1, 4), 74},
         seqwires::NoteOnEvent{0, 72},
         seqwires::NoteOffEvent{babelwires::Rational(3, 4), 72},

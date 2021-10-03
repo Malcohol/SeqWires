@@ -46,7 +46,7 @@ TEST(SplitAtPitchProcessorTest, aboveAndBelowSplit) {
     track.addEvent(seqwires::NoteOnEvent{0, 72});
     track.addEvent(seqwires::NoteOnEvent{0, 48});
     track.addEvent(
-        seqwires::ChordOnEvent{0, seqwires::PitchClass::PITCH_CLASS_C, seqwires::ChordType::CHORD_TYPE_Maj});
+        seqwires::ChordOnEvent{0, {seqwires::PitchClass::PITCH_CLASS_C, seqwires::ChordType::CHORD_TYPE_Maj}});
     track.addEvent(seqwires::NoteOffEvent{babelwires::Rational(1, 4), 72});
     track.addEvent(seqwires::NoteOffEvent{0, 48});
     track.addEvent(seqwires::NoteOnEvent{0, 74});
@@ -57,7 +57,7 @@ TEST(SplitAtPitchProcessorTest, aboveAndBelowSplit) {
     track.addEvent(seqwires::NoteOnEvent{0, 76});
     track.addEvent(seqwires::NoteOnEvent{0, 52});
     track.addEvent(
-        seqwires::ChordOnEvent{0, seqwires::PitchClass::PITCH_CLASS_D, seqwires::ChordType::CHORD_TYPE_min});
+        seqwires::ChordOnEvent{0, {seqwires::PitchClass::PITCH_CLASS_D, seqwires::ChordType::CHORD_TYPE_min}});
     track.addEvent(seqwires::NoteOffEvent{babelwires::Rational(1, 4), 76});
     track.addEvent(seqwires::NoteOffEvent{0, 52});
     track.addEvent(seqwires::NoteOnEvent{0, 77});

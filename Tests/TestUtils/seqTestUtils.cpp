@@ -76,7 +76,7 @@ void testUtils::testNotes(const std::vector<NoteInfo>& expectedNotes, const seqw
 
 void testUtils::addChords(const std::vector<ChordInfo>& chords, seqwires::Track& track) {
     for (auto chord : chords) {
-        track.addEvent(seqwires::ChordOnEvent(chord.m_chordOnTime, chord.m_root, chord.m_chordType));
+        track.addEvent(seqwires::ChordOnEvent(chord.m_chordOnTime, chord.m_chord));
         track.addEvent(seqwires::ChordOffEvent(chord.m_chordOffTime));
     }
 }
@@ -92,8 +92,7 @@ void testUtils::testChords(const std::vector<ChordInfo>& expectedChords, const s
         auto chordOn = chordIterator->as<const seqwires::ChordOnEvent>();
         ASSERT_NE(chordOn, nullptr);
         EXPECT_EQ(chordOn->getTimeSinceLastEvent(), chord.m_chordOnTime);
-        EXPECT_EQ(chordOn->m_chordType, chord.m_chordType);
-        EXPECT_EQ(chordOn->m_root, chord.m_root);
+        EXPECT_EQ(chordOn->m_chord, chord.m_chord);
         ++chordIterator;
 
         EXPECT_NE(chordIterator, endIterator);
@@ -121,8 +120,7 @@ void testUtils::testNotesAndChords(const std::vector<seqwires::TrackEventHolder>
             EXPECT_EQ(it->as<seqwires::NoteEvent>()->m_velocity, e->as<seqwires::NoteEvent>()->m_velocity);
         }
         if (it->as<seqwires::ChordOnEvent>() != nullptr) {
-            EXPECT_EQ(it->as<seqwires::ChordOnEvent>()->m_root, e->as<seqwires::ChordOnEvent>()->m_root);
-            EXPECT_EQ(it->as<seqwires::ChordOnEvent>()->m_chordType, e->as<seqwires::ChordOnEvent>()->m_chordType);
+            EXPECT_EQ(it->as<seqwires::ChordOnEvent>()->m_chord, e->as<seqwires::ChordOnEvent>()->m_chord);
         }
         ++it;
     }

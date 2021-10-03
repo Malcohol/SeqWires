@@ -109,18 +109,6 @@ namespace {
         return seqwires::CHORD_TYPE_NotAChord;
     }
 
-    struct Chord {
-        seqwires::PitchClass m_pitchClass = seqwires::PITCH_CLASS_C;
-        seqwires::ChordType m_chordType = seqwires::CHORD_TYPE_NotAChord;
-
-        bool operator==(Chord other) const {
-            return (m_pitchClass == other.m_pitchClass) && (m_chordType == other.m_chordType);
-        }
-        bool operator!=(Chord other) const {
-            return (m_pitchClass != other.m_pitchClass) || (m_chordType != other.m_chordType);
-        }
-    };
-
     /// The pitches of the set of currently playing notes.
     struct ActivePitches {
         void addPitch(seqwires::Pitch pitch) {
@@ -136,12 +124,12 @@ namespace {
         }
 
         /// Check whether the currently active pitches match an known IntervalSet or inversion of that IntervalSet.
-        Chord getBestMatchChord() const {
+        seqwires::Chord getBestMatchChord() const {
             const unsigned int numPitches = m_pitches.size();
             // TODO Assert numPitches is matches the recognized chords.
             constexpr unsigned int maxNumPitches = 6;
             if ((numPitches < 3) || (numPitches > maxNumPitches)) {
-                return Chord();
+                return seqwires::Chord();
             }
             // The intervals between neighbouring pitches as integers.
             unsigned int pitchDiffs[maxNumPitches - 1] = { 0 };
@@ -161,14 +149,14 @@ namespace {
             for (unsigned int i = 0; i < numPitches; ++i) {
                 const seqwires::ChordType chordType = getMatchingChordTypeFromIntervals(interval);
                 if (chordType != seqwires::CHORD_TYPE_NotAChord) {
-                    return Chord{seqwires::pitchToPitchClass(m_pitches[i]), chordType};
+                    return seqwires::Chord{seqwires::pitchToPitchClass(m_pitches[i]), chordType};
                 }
                 if (i < numPitches - 1) {
                     // Add the old root raised by an octave.
                     interval = (interval + (1 << 12)) >> pitchDiffs[i];
                 }
             }
-            return Chord();
+            return seqwires::Chord();
         }
 
         /// The pitches of the current active set, in lowest-to-highest order.
@@ -197,7 +185,7 @@ seqwires::Track seqwires::chordsFromNotesFunction(const Track& sourceTrack) {
                 }
                 if (bestChord.m_chordType != CHORD_TYPE_NotAChord) {
                     trackOut.addEvent(
-                        ChordOnEvent(timeSinceLastChordEvent, bestChord.m_pitchClass, bestChord.m_chordType));
+                        ChordOnEvent(timeSinceLastChordEvent, bestChord));
                     currentChord = bestChord;
                     timeSinceLastChordEvent = 0;
                 }
