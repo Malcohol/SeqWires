@@ -11,6 +11,7 @@
 #include "SeqWiresLib/Utilities/filteredTrackIterator.hpp"
 
 #include <algorithm>
+#include <array>
 
 namespace {
     using IntervalSet = std::uint16_t;
