@@ -100,6 +100,8 @@ namespace {
     /// Try to identify a chord type which matches the interval.
     seqwires::ChordType getMatchingChordTypeFromIntervals(IntervalSet intervals) {
         // Sortedness is asserted at the beginning of chordsFromNotesFunction.
+        // For such a small array size, I guessed that binary search would be a good approach,
+        // but I didn't do any timings.
         const auto it = std::lower_bound(recognizedIntervals.begin(), recognizedIntervals.end(), intervals);
         if ((it != recognizedIntervals.end()) && (it->m_intervals == intervals)) {
             return it->m_chordType;
@@ -136,7 +138,8 @@ namespace {
         /// Check whether the currently active pitches match an known IntervalSet or inversion of that IntervalSet.
         Chord getBestMatchChord() const {
             const unsigned int numPitches = m_pitches.size();
-            constexpr unsigned int maxNumPitches = 5;
+            // TODO Assert numPitches is matches the recognized chords.
+            constexpr unsigned int maxNumPitches = 6;
             if ((numPitches < 3) || (numPitches > maxNumPitches)) {
                 return Chord();
             }
@@ -144,13 +147,17 @@ namespace {
             unsigned int pitchDiffs[maxNumPitches - 1] = { 0 };
 
             IntervalSet interval = 1;
-            for (unsigned int i = 1; i < numPitches; ++i) {
-                // Bring neighbouring intervals within the octave.
-                pitchDiffs[i - 1] = (m_pitches[i] - m_pitches[i - 1]) % 12;
-                interval |= IntervalSet(1) << pitchDiffs[i - 1];
+            {
+                unsigned int shift = 0;
+                for (unsigned int i = 1; i < numPitches; ++i) {
+                    // Bring neighbouring intervals within the octave.
+                    pitchDiffs[i - 1] = (m_pitches[i] - m_pitches[i - 1]) % 12;
+                    shift += pitchDiffs[i - 1];
+                    interval |= IntervalSet(1) << shift;
+                }
             }
 
-            // Try each inversions
+            // Try each inversion.
             for (unsigned int i = 0; i < numPitches; ++i) {
                 const seqwires::ChordType chordType = getMatchingChordTypeFromIntervals(interval);
                 if (chordType != seqwires::CHORD_TYPE_NotAChord) {
@@ -185,11 +192,13 @@ seqwires::Track seqwires::chordsFromNotesFunction(const Track& sourceTrack) {
             if (currentChord != bestChord) {
                 if (currentChord.m_chordType != CHORD_TYPE_NotAChord) {
                     trackOut.addEvent(ChordOffEvent(timeSinceLastChordEvent));
+                    currentChord.m_chordType = CHORD_TYPE_NotAChord;
                     timeSinceLastChordEvent = 0;
                 }
                 if (bestChord.m_chordType != CHORD_TYPE_NotAChord) {
                     trackOut.addEvent(
                         ChordOnEvent(timeSinceLastChordEvent, bestChord.m_pitchClass, bestChord.m_chordType));
+                    currentChord = bestChord;
                     timeSinceLastChordEvent = 0;
                 }
             }
