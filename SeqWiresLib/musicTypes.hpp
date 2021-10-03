@@ -46,10 +46,10 @@
     X(svs9, "7(#9)", "d5c917b5-079b-487b-ac0e-ceb33bed5fd6")                                                           \
     X(Mj7aug, "Maj7aug", "8f6b9f0a-9ce5-4b62-9a04-23610f7c7781")                                                       \
     X(svaug, "7aug", "3c848378-1755-4788-bb8c-3f5c49dbcb47")                                                           \
-    X(onepl8, "1+8", "63f443e4-93d5-4609-b91a-5a6491ac19be")                                                           \
-    X(onepl5, "1+5", "a513bc99-e978-4699-bc7c-7e30d71f33d0")                                                           \
+    X(onep8, "1+8", "63f443e4-93d5-4609-b91a-5a6491ac19be")                                                           \
+    X(onep5, "1+5", "a513bc99-e978-4699-bc7c-7e30d71f33d0")                                                           \
     X(sus4, "sus4", "ce218a4b-4600-47de-8a77-45a490457ff4")                                                            \
-    X(opl2pl5, "1+2+5", "28875d31-45c8-488f-9cc3-9172c0ad7929")
+    X(op2p5, "1+2+5", "28875d31-45c8-488f-9cc3-9172c0ad7929")
 // I'm guessing the "cc" XF value means "cancel chord", so it doesn't need to be represented.
 
 #define CHORD_TYPE_SELECT_FIRST_ARGUMENT(A, B, C) CHORD_TYPE_##A,
