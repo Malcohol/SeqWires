@@ -32,6 +32,9 @@ namespace {
     // No root note: {0b0000010000011000, seqwires::CHORD_TYPE_svs9}
     // No root note: {0b0000010010011000, seqwires::CHORD_TYPE_svs9}
     // No root note: {0b0000010100010000, seqwires::CHORD_TYPE_svaug}
+    // Not in XF spec: {0b0000000001010001} b5
+    // Not in XF spec: {0b0000100001010001} M7b5
+    // Not in XF spec: {0b0000010000100101} mM7b5
     // TODO - CHORD_TYPE_onep8,
     // TODO - CHORD_TYPE_onep5,
     const std::array<IntervalSetToChordType, 58> recognizedIntervals = {{
