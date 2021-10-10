@@ -19,12 +19,11 @@ bool seqwires::ChordOnEvent::operator==(const TrackEvent& other) const {
         return false;
     }
     auto otherOn = static_cast<const ChordOnEvent&>(other);
-    return (m_timeSinceLastEvent == otherOn.m_timeSinceLastEvent) && (m_root == otherOn.m_root) &&
-           (m_chordType == otherOn.m_chordType);
+    return (m_timeSinceLastEvent == otherOn.m_timeSinceLastEvent) && (m_chord == otherOn.m_chord);
 }
 
 std::size_t seqwires::ChordOnEvent::getHash() const {
-    return babelwires::hash::mixtureOf(static_cast<const char*>("ChordOn"), m_timeSinceLastEvent, m_root, m_chordType);
+    return babelwires::hash::mixtureOf(static_cast<const char*>("ChordOn"), m_timeSinceLastEvent, m_chord.m_root, m_chord.m_chordType);
 }
 
 seqwires::TrackEvent::GroupingInfo seqwires::ChordOnEvent::getGroupingInfo() const {
@@ -35,8 +34,8 @@ void seqwires::ChordOnEvent::transpose(int pitchOffset) {
     assert(pitchOffset <= 127);
     assert(pitchOffset >= -127);
     static_assert(NUM_PITCH_CLASSES == 12);
-    unsigned int rootPitch = (m_root + 132 + pitchOffset) % 12;
-    m_root = static_cast<PitchClass>(rootPitch);
+    unsigned int rootPitch = (m_chord.m_root + 132 + pitchOffset) % 12;
+    m_chord.m_root = static_cast<PitchClass>(rootPitch);
 }
 
 bool seqwires::ChordOffEvent::operator==(const TrackEvent& other) const {

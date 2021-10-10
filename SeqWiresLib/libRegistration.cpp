@@ -20,6 +20,7 @@
 #include "SeqWiresLib/Processors/silenceProcessor.hpp"
 #include "SeqWiresLib/Processors/splitAtPitchProcessor.hpp"
 #include "SeqWiresLib/Processors/transposeProcessor.hpp"
+#include "SeqWiresLib/Processors/chordsFromNotesProcessor.hpp"
 
 #include "SeqWiresLib/Functions/monophonicSubtracksFunction.hpp"
 
@@ -31,6 +32,7 @@ void seqwires::registerLib(babelwires::ProjectContext& context) {
     context.m_processorReg.addEntry(std::make_unique<ExcerptProcessor::Factory>());
     context.m_processorReg.addEntry(std::make_unique<MergeProcessor::Factory>());
     context.m_processorReg.addEntry(std::make_unique<MonophonicSubtracksProcessor::Factory>());
+    context.m_processorReg.addEntry(std::make_unique<ChordsFromNotesProcessor::Factory>());
     context.m_processorReg.addEntry(std::make_unique<RepeatProcessor::Factory>());
     context.m_processorReg.addEntry(std::make_unique<SilenceProcessor::Factory>());
     context.m_processorReg.addEntry(std::make_unique<SplitAtPitchProcessor::Factory>());

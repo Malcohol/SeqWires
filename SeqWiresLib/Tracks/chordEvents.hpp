@@ -8,6 +8,7 @@
 #pragma once
 
 #include "SeqWiresLib/Tracks/trackEvent.hpp"
+#include "SeqWiresLib/chord.hpp"
 
 namespace seqwires {
 
@@ -25,17 +26,15 @@ namespace seqwires {
     struct ChordOnEvent : public ChordEvent {
         STREAM_EVENT(ChordOnEvent);
         ChordOnEvent() = default;
-        ChordOnEvent(ModelDuration timeSinceLastEvent, PitchClass root, ChordType chordType)
+        ChordOnEvent(ModelDuration timeSinceLastEvent, Chord chord)
             : ChordEvent(timeSinceLastEvent)
-            , m_root(root)
-            , m_chordType(chordType) {}
+            , m_chord(chord) {}
 
         virtual bool operator==(const TrackEvent& other) const override;
         virtual std::size_t getHash() const override;
         virtual GroupingInfo getGroupingInfo() const override;
         virtual void transpose(int pitchOffset) override;
-        PitchClass m_root;
-        ChordType m_chordType;
+        Chord m_chord;
     };
 
     /// The end of a chord.

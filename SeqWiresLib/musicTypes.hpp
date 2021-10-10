@@ -1,16 +1,17 @@
 /**
  * Some common type definitions for musical data.
- * 
+ *
  * (C) 2021 Malcolm Tyrrell
- * 
+ *
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
 #pragma once
 
+#include "BabelWiresLib/Enums/enumWithCppEnum.hpp"
 #include "Common/Math/rational.hpp"
 #include "Common/types.hpp"
-#include <string>
 
+#include <string>
 #include <cstdint>
 
 namespace seqwires {
@@ -19,25 +20,8 @@ namespace seqwires {
     typedef babelwires::Byte Pitch;
     typedef babelwires::Byte Velocity;
 
-    /// Defines the assignment of chord types to int values.
-    enum ChordType : std::uint8_t {
-        CHORD_TYPE_MAJOR,
-        CHORD_TYPE_MINOR,
-        CHORD_TYPE_DOMINANT_7TH,
-        CHORD_TYPE_MINOR_7TH,
-        CHORD_TYPE_MAJOR_7TH,
-        CHORD_TYPE_MAJOR_6Th,
-        CHORD_TYPE_MINOR_6TH,
-        CHORD_TYPE_AUGMENTED_5TH,
-        CHORD_TYPE_DOMINANT_7TH_FLAT_5TH,
-        CHORD_TYPE_DIMINISHED,
-        CHORD_TYPE_SUSPENDED_4TH,
-        CHORD_TYPE_MAJOR_9TH,
-        CHORD_TYPE_MINOR_9TH,
-
-        NUM_CHORD_TYPES
-    };
-
+    /// Note: Not trying to match the representation from XF, because I don't currently know how to transpose those
+    /// values.
     enum PitchClass : std::uint8_t {
         PITCH_CLASS_C,
         PITCH_CLASS_C_SHARP,
@@ -55,11 +39,12 @@ namespace seqwires {
         NUM_PITCH_CLASSES
     };
 
+    std::string pitchClassToString(PitchClass p);
+    PitchClass pitchToPitchClass(Pitch p);
+
     std::string pitchToString(Pitch p);
     Pitch stringToPitch(std::string_view s);
     std::string durationToString(ModelDuration d);
-    std::string chordTypeToString(ChordType t);
-    std::string pitchClassToString(PitchClass p);
 
     /// The percussion map from GM spec.
     enum PercussionInstrumentMap {

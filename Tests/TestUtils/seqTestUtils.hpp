@@ -2,6 +2,7 @@
 
 #include <SeqWiresLib/musicTypes.hpp>
 #include <SeqWiresLib/Tracks/trackEventHolder.hpp>
+#include <SeqWiresLib/chord.hpp>
 
 #include <vector>
 
@@ -29,8 +30,7 @@ namespace testUtils {
     void testNotes(const std::vector<NoteInfo>& expectedNotes, const seqwires::Track& track);
 
     struct ChordInfo {
-        seqwires::PitchClass m_root;
-        seqwires::ChordType m_chordType;
+        seqwires::Chord m_chord;
         seqwires::ModelDuration m_chordOffTime = babelwires::Rational(1, 2);
         seqwires::ModelDuration m_chordOnTime = 0;
     };
