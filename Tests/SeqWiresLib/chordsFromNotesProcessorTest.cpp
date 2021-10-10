@@ -2,8 +2,11 @@
 
 #include <SeqWiresLib/Functions/chordsFromNotesFunction.hpp>
 #include <SeqWiresLib/Tracks/noteEvents.hpp>
+#include <SeqWiresLib/Processors/chordsFromNotesProcessor.hpp>
+#include <SeqWiresLib/Features/trackFeature.hpp>
 
 #include <Tests/TestUtils/seqTestUtils.hpp>
+#include <Tests/TestUtils/testLog.hpp>
 
 TEST(ChordsFromNotesTest, functionBasic) {
     seqwires::Track track;
@@ -667,3 +670,49 @@ TEST(ChordsFromNotesTest, schemeC) {
     testUtils::testChords(expectedChords, chordTrack);
 }
 
+TEST(ChordsFromNotesTest, processor) {
+    testUtils::TestLog log;
+
+    seqwires::ChordsFromNotesProcessor processor;
+
+    processor.getInputFeature()->setToDefault();
+    processor.getOutputFeature()->setToDefault();
+
+    auto* inputTrack = processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Notes")).as<seqwires::TrackFeature>();
+    auto* outputTrack = processor.getOutputFeature()->getChildFromStep(babelwires::PathStep("Chords")).as<seqwires::TrackFeature>();
+    ASSERT_NE(inputTrack, nullptr);
+    ASSERT_NE(outputTrack, nullptr);
+
+    EXPECT_EQ(inputTrack->get().getDuration(), 0);
+    EXPECT_EQ(outputTrack->get().getDuration(), 0);
+
+    {
+        seqwires::Track track;
+        track.addEvent(seqwires::NoteOnEvent(0, 60));
+        track.addEvent(seqwires::NoteOnEvent(0, 64));
+        track.addEvent(seqwires::NoteOnEvent(0, 67));
+        track.addEvent(seqwires::NoteOffEvent(1, 60));
+        track.addEvent(seqwires::NoteOffEvent(0, 64));
+        track.addEvent(seqwires::NoteOffEvent(0, 67));
+        inputTrack->set(std::move(track));
+    }
+
+    processor.process(log);
+
+    testUtils::testChords({{seqwires::PITCH_CLASS_C, seqwires::ChordType::Value::M, 1}}, outputTrack->get());
+
+    {
+        seqwires::Track track;
+        track.addEvent(seqwires::NoteOnEvent(0, 62));
+        track.addEvent(seqwires::NoteOnEvent(0, 65));
+        track.addEvent(seqwires::NoteOnEvent(0, 69));
+        track.addEvent(seqwires::NoteOffEvent(1, 62));
+        track.addEvent(seqwires::NoteOffEvent(0, 65));
+        track.addEvent(seqwires::NoteOffEvent(0, 69));
+        inputTrack->set(std::move(track));
+    }
+
+    processor.process(log);
+
+    testUtils::testChords({{seqwires::PITCH_CLASS_D, seqwires::ChordType::Value::m, 1}}, outputTrack->get());
+}
