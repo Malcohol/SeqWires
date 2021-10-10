@@ -11,6 +11,7 @@
 #include "SeqWiresLib/musicTypes.hpp"
 
 /// Use the same biolerplate pattern as for Enums, since it is likely I will add an Enum for this eventually.
+/// These match the "Chord type" values from the XF Format Specifications v2.01
 #define CHORD_TYPE_VALUES(X)                                                                                           \
     X(Maj, "Maj", "1ef34c5c-e8d4-4cac-b189-e4ac2fffefd4")                                                              \
     X(Maj6, "Maj6", "b8290240-fce4-4747-b9e4-07132222d0d0")                                                            \
@@ -48,7 +49,7 @@
     X(op2p5, "1+2+5", "28875d31-45c8-488f-9cc3-9172c0ad7929")
 // I'm guessing the "cc" XF value means "cancel chord", so it doesn't need to be represented.
 
-#define CHORD_TYPE_SELECT_FIRST_ARGUMENT(A, B, C) CHORD_TYPE_##A,
+#define CHORD_TYPE_SELECT_FIRST_ARGUMENT(A, B, C) A,
 
 namespace seqwires {
 
@@ -56,18 +57,23 @@ namespace seqwires {
     typedef babelwires::Byte Pitch;
     typedef babelwires::Byte Velocity;
 
-    /// Defines the assignment of chord types to int values.
-    /// These match the "Chord type" values from the XF Format Specifications v2.01
-    enum ChordType : std::uint8_t {
-        CHORD_TYPE_VALUES(CHORD_TYPE_SELECT_FIRST_ARGUMENT) CHORD_TYPE_NotAChord,
-        NUM_CHORD_TYPES = CHORD_TYPE_NotAChord
+    /// Carries the enum of chord types.
+    /// This can become an "Enum" when needed.
+    class ChordType {
+    public:
+        enum class Value : std::uint8_t {
+            CHORD_TYPE_VALUES(CHORD_TYPE_SELECT_FIRST_ARGUMENT) NotAChord,
+            NUM_CHORD_TYPES = NotAChord
+        };
     };
 
-    std::string chordTypeToString(ChordType t);
+    std::string chordTypeToString(ChordType::Value t);
 
+    /// Defines the state of a chord event.
+    // Note: This does not currently include all the data in a XF chord event.
     struct Chord {
         PitchClass m_root = seqwires::PITCH_CLASS_C;
-        ChordType m_chordType = seqwires::CHORD_TYPE_NotAChord;
+        ChordType::Value m_chordType = seqwires::ChordType::Value::NotAChord;
 
         bool operator==(Chord other) const {
             return (m_root == other.m_root) && (m_chordType == other.m_chordType);

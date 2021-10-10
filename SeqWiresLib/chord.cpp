@@ -10,12 +10,12 @@
 namespace {
 
 #define CHORD_TYPE_SELECT_SECOND_ARGUMENT(A, B, C) B,
-    const char* s_chordTypeNames[seqwires::ChordType::NUM_CHORD_TYPES] = {
+    const char* s_chordTypeNames[static_cast<std::uint8_t>(seqwires::ChordType::Value::NUM_CHORD_TYPES)] = {
         CHORD_TYPE_VALUES(CHORD_TYPE_SELECT_SECOND_ARGUMENT)
     };
 } // namespace
 
 
-std::string seqwires::chordTypeToString(ChordType t) {
-    return s_chordTypeNames[t];
+std::string seqwires::chordTypeToString(ChordType::Value t) {
+    return s_chordTypeNames[static_cast<std::uint8_t>(t)];
 }

@@ -67,19 +67,19 @@ TEST(TransposeProcessorTest, funcSimpleChordsZero) {
 
     // Some random chords.
     testUtils::addChords({
-        {seqwires::PitchClass::PITCH_CLASS_C, seqwires::ChordType::CHORD_TYPE_Maj},
-        {seqwires::PitchClass::PITCH_CLASS_E, seqwires::ChordType::CHORD_TYPE_min},
-        {seqwires::PitchClass::PITCH_CLASS_G_SHARP, seqwires::ChordType::CHORD_TYPE_dim},
-        {seqwires::PitchClass::PITCH_CLASS_A, seqwires::ChordType::CHORD_TYPE_aug},
+        {seqwires::PitchClass::PITCH_CLASS_C, seqwires::ChordType::ChordType::Value::Maj},
+        {seqwires::PitchClass::PITCH_CLASS_E, seqwires::ChordType::ChordType::Value::min},
+        {seqwires::PitchClass::PITCH_CLASS_G_SHARP, seqwires::ChordType::ChordType::Value::dim},
+        {seqwires::PitchClass::PITCH_CLASS_A, seqwires::ChordType::ChordType::Value::aug},
         }, trackIn);
 
     auto trackOut = seqwires::transposeTrack(trackIn, 0);
 
     testUtils::testChords({
-        {seqwires::PitchClass::PITCH_CLASS_C, seqwires::ChordType::CHORD_TYPE_Maj},
-        {seqwires::PitchClass::PITCH_CLASS_E, seqwires::ChordType::CHORD_TYPE_min},
-        {seqwires::PitchClass::PITCH_CLASS_G_SHARP, seqwires::ChordType::CHORD_TYPE_dim},
-        {seqwires::PitchClass::PITCH_CLASS_A, seqwires::ChordType::CHORD_TYPE_aug},
+        {seqwires::PitchClass::PITCH_CLASS_C, seqwires::ChordType::ChordType::Value::Maj},
+        {seqwires::PitchClass::PITCH_CLASS_E, seqwires::ChordType::ChordType::Value::min},
+        {seqwires::PitchClass::PITCH_CLASS_G_SHARP, seqwires::ChordType::ChordType::Value::dim},
+        {seqwires::PitchClass::PITCH_CLASS_A, seqwires::ChordType::ChordType::Value::aug},
         }, trackIn);
 }
 
@@ -88,19 +88,19 @@ TEST(TransposeProcessorTest, funcSimpleChordsPositive) {
 
     // Some random chords.
     testUtils::addChords({
-        {seqwires::PitchClass::PITCH_CLASS_C, seqwires::ChordType::CHORD_TYPE_Maj},
-        {seqwires::PitchClass::PITCH_CLASS_E, seqwires::ChordType::CHORD_TYPE_min},
-        {seqwires::PitchClass::PITCH_CLASS_G_SHARP, seqwires::ChordType::CHORD_TYPE_dim},
-        {seqwires::PitchClass::PITCH_CLASS_B, seqwires::ChordType::CHORD_TYPE_aug},
+        {seqwires::PitchClass::PITCH_CLASS_C, seqwires::ChordType::ChordType::Value::Maj},
+        {seqwires::PitchClass::PITCH_CLASS_E, seqwires::ChordType::ChordType::Value::min},
+        {seqwires::PitchClass::PITCH_CLASS_G_SHARP, seqwires::ChordType::ChordType::Value::dim},
+        {seqwires::PitchClass::PITCH_CLASS_B, seqwires::ChordType::ChordType::Value::aug},
         }, trackIn);
 
     auto trackOut = seqwires::transposeTrack(trackIn, 1);
 
     testUtils::testChords({
-        {seqwires::PitchClass::PITCH_CLASS_C_SHARP, seqwires::ChordType::CHORD_TYPE_Maj},
-        {seqwires::PitchClass::PITCH_CLASS_F, seqwires::ChordType::CHORD_TYPE_min},
-        {seqwires::PitchClass::PITCH_CLASS_A, seqwires::ChordType::CHORD_TYPE_dim},
-        {seqwires::PitchClass::PITCH_CLASS_C, seqwires::ChordType::CHORD_TYPE_aug},
+        {seqwires::PitchClass::PITCH_CLASS_C_SHARP, seqwires::ChordType::ChordType::Value::Maj},
+        {seqwires::PitchClass::PITCH_CLASS_F, seqwires::ChordType::ChordType::Value::min},
+        {seqwires::PitchClass::PITCH_CLASS_A, seqwires::ChordType::ChordType::Value::dim},
+        {seqwires::PitchClass::PITCH_CLASS_C, seqwires::ChordType::ChordType::Value::aug},
         }, trackOut);
 }
 
@@ -109,19 +109,19 @@ TEST(TransposeProcessorTest, funcSimpleChordsNegative) {
 
     // Some random chords.
     testUtils::addChords({
-        {seqwires::PitchClass::PITCH_CLASS_C, seqwires::ChordType::CHORD_TYPE_Maj},
-        {seqwires::PitchClass::PITCH_CLASS_E, seqwires::ChordType::CHORD_TYPE_min},
-        {seqwires::PitchClass::PITCH_CLASS_G_SHARP, seqwires::ChordType::CHORD_TYPE_dim},
-        {seqwires::PitchClass::PITCH_CLASS_B, seqwires::ChordType::CHORD_TYPE_aug},
+        {seqwires::PitchClass::PITCH_CLASS_C, seqwires::ChordType::ChordType::Value::Maj},
+        {seqwires::PitchClass::PITCH_CLASS_E, seqwires::ChordType::ChordType::Value::min},
+        {seqwires::PitchClass::PITCH_CLASS_G_SHARP, seqwires::ChordType::ChordType::Value::dim},
+        {seqwires::PitchClass::PITCH_CLASS_B, seqwires::ChordType::ChordType::Value::aug},
         }, trackIn);
 
     auto trackOut = seqwires::transposeTrack(trackIn, -1);
 
     testUtils::testChords({
-        {seqwires::PitchClass::PITCH_CLASS_B, seqwires::ChordType::CHORD_TYPE_Maj},
-        {seqwires::PitchClass::PITCH_CLASS_D_SHARP, seqwires::ChordType::CHORD_TYPE_min},
-        {seqwires::PitchClass::PITCH_CLASS_G, seqwires::ChordType::CHORD_TYPE_dim},
-        {seqwires::PitchClass::PITCH_CLASS_A_SHARP, seqwires::ChordType::CHORD_TYPE_aug},
+        {seqwires::PitchClass::PITCH_CLASS_B, seqwires::ChordType::ChordType::Value::Maj},
+        {seqwires::PitchClass::PITCH_CLASS_D_SHARP, seqwires::ChordType::ChordType::Value::min},
+        {seqwires::PitchClass::PITCH_CLASS_G, seqwires::ChordType::ChordType::Value::dim},
+        {seqwires::PitchClass::PITCH_CLASS_A_SHARP, seqwires::ChordType::ChordType::Value::aug},
         }, trackOut);
 }
 

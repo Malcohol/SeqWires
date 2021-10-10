@@ -26,8 +26,8 @@ TEST(ChordsFromNotesTest, functionBasic) {
     seqwires::Track chordTrack = seqwires::chordsFromNotesFunction(track);
     EXPECT_EQ(chordTrack.getDuration(), 2);
 
-    std::vector<testUtils::ChordInfo> expectedChords = {{seqwires::PITCH_CLASS_C, seqwires::CHORD_TYPE_Maj, 1},
-                                                        {seqwires::PITCH_CLASS_D, seqwires::CHORD_TYPE_min, 1}};
+    std::vector<testUtils::ChordInfo> expectedChords = {{seqwires::PITCH_CLASS_C, seqwires::ChordType::Value::Maj, 1},
+                                                        {seqwires::PITCH_CLASS_D, seqwires::ChordType::Value::min, 1}};
 
     testUtils::testChords(expectedChords, chordTrack);
 }
@@ -49,7 +49,7 @@ TEST(ChordsFromNotesTest, rootPitchClass) {
     std::vector<testUtils::ChordInfo> expectedChords;
     for (int o = 0; o < 10; ++o) {
         for (int pc = 0; pc < 12; ++pc) {
-            expectedChords.emplace_back(testUtils::ChordInfo{static_cast<seqwires::PitchClass>(pc), seqwires::CHORD_TYPE_Maj, 1, 1});
+            expectedChords.emplace_back(testUtils::ChordInfo{static_cast<seqwires::PitchClass>(pc), seqwires::ChordType::Value::Maj, 1, 1});
         }
     }
 
@@ -73,8 +73,8 @@ TEST(ChordsFromNotesTest, functionChordToChord) {
     seqwires::Track chordTrack = seqwires::chordsFromNotesFunction(track);
     EXPECT_EQ(chordTrack.getDuration(), 2);
 
-    std::vector<testUtils::ChordInfo> expectedChords = {{seqwires::PITCH_CLASS_C, seqwires::CHORD_TYPE_Maj, 1},
-                                                        {seqwires::PITCH_CLASS_C, seqwires::CHORD_TYPE_min, 1}};
+    std::vector<testUtils::ChordInfo> expectedChords = {{seqwires::PITCH_CLASS_C, seqwires::ChordType::Value::Maj, 1},
+                                                        {seqwires::PITCH_CLASS_C, seqwires::ChordType::Value::min, 1}};
 
     testUtils::testChords(expectedChords, chordTrack);
 }
@@ -109,9 +109,9 @@ TEST(ChordsFromNotesTest, majorInversions) {
     seqwires::Track chordTrack = seqwires::chordsFromNotesFunction(track);
     EXPECT_EQ(chordTrack.getDuration(), 5);
 
-    std::vector<testUtils::ChordInfo> expectedChords = {{seqwires::PITCH_CLASS_C, seqwires::CHORD_TYPE_Maj, 1, 0},
-                                                        {seqwires::PITCH_CLASS_C, seqwires::CHORD_TYPE_Maj, 1, 1},
-                                                        {seqwires::PITCH_CLASS_C, seqwires::CHORD_TYPE_Maj, 1, 1}};
+    std::vector<testUtils::ChordInfo> expectedChords = {{seqwires::PITCH_CLASS_C, seqwires::ChordType::Value::Maj, 1, 0},
+                                                        {seqwires::PITCH_CLASS_C, seqwires::ChordType::Value::Maj, 1, 1},
+                                                        {seqwires::PITCH_CLASS_C, seqwires::ChordType::Value::Maj, 1, 1}};
 
     testUtils::testChords(expectedChords, chordTrack);
 }
@@ -146,9 +146,9 @@ TEST(ChordsFromNotesTest, minorInversions) {
     seqwires::Track chordTrack = seqwires::chordsFromNotesFunction(track);
     EXPECT_EQ(chordTrack.getDuration(), 5);
 
-    std::vector<testUtils::ChordInfo> expectedChords = {{seqwires::PITCH_CLASS_C, seqwires::CHORD_TYPE_min, 1, 0},
-                                                        {seqwires::PITCH_CLASS_C, seqwires::CHORD_TYPE_min, 1, 1},
-                                                        {seqwires::PITCH_CLASS_C, seqwires::CHORD_TYPE_min, 1, 1}};
+    std::vector<testUtils::ChordInfo> expectedChords = {{seqwires::PITCH_CLASS_C, seqwires::ChordType::Value::min, 1, 0},
+                                                        {seqwires::PITCH_CLASS_C, seqwires::ChordType::Value::min, 1, 1},
+                                                        {seqwires::PITCH_CLASS_C, seqwires::ChordType::Value::min, 1, 1}};
 
     testUtils::testChords(expectedChords, chordTrack);
 }
@@ -293,70 +293,70 @@ TEST(ChordsFromNotesTest, schemeY) {
 
     seqwires::Track chordTrack = seqwires::chordsFromNotesFunction(track);
 
-    std::vector<ChordType> expectedChordTypes = {
-        CHORD_TYPE_onep8,
-        CHORD_TYPE_onep5,
-        CHORD_TYPE_Maj,
-        CHORD_TYPE_Maj9,
-        CHORD_TYPE_Maj6,
-        CHORD_TYPE_Maj6,
-        CHORD_TYPE_Maj69,
-        CHORD_TYPE_Maj69,
-        CHORD_TYPE_Maj7,
-        CHORD_TYPE_Maj7,
-        CHORD_TYPE_Maj79,
-        CHORD_TYPE_Maj79,
-        CHORD_TYPE_Maj7se,
-        CHORD_TYPE_Maj7se,
+    std::vector<ChordType::Value> expectedChordType = {
+        ChordType::Value::onep8,
+        ChordType::Value::onep5,
+        ChordType::Value::Maj,
+        ChordType::Value::Maj9,
+        ChordType::Value::Maj6,
+        ChordType::Value::Maj6,
+        ChordType::Value::Maj69,
+        ChordType::Value::Maj69,
+        ChordType::Value::Maj7,
+        ChordType::Value::Maj7,
+        ChordType::Value::Maj79,
+        ChordType::Value::Maj79,
+        ChordType::Value::Maj7se,
+        ChordType::Value::Maj7se,
         // C(b5)
         // CM7(b5)
-        CHORD_TYPE_sus4,
-        CHORD_TYPE_aug,
-        CHORD_TYPE_Mj7aug,
-        CHORD_TYPE_Mj7aug,
-        CHORD_TYPE_min,
-        CHORD_TYPE_min9,
-        CHORD_TYPE_min6,
-        CHORD_TYPE_min7,
-        CHORD_TYPE_min7,
-        CHORD_TYPE_min79,
-        CHORD_TYPE_min79,
-        CHORD_TYPE_min7e,
-        CHORD_TYPE_min7e,
-        CHORD_TYPE_min7e,
-        CHORD_TYPE_min7e,
-        CHORD_TYPE_mnMj7,
-        CHORD_TYPE_mnMj7,
-        CHORD_TYPE_mnMj79,
-        CHORD_TYPE_mnMj79,
-        CHORD_TYPE_min7b5,
+        ChordType::Value::sus4,
+        ChordType::Value::aug,
+        ChordType::Value::Mj7aug,
+        ChordType::Value::Mj7aug,
+        ChordType::Value::min,
+        ChordType::Value::min9,
+        ChordType::Value::min6,
+        ChordType::Value::min7,
+        ChordType::Value::min7,
+        ChordType::Value::min79,
+        ChordType::Value::min79,
+        ChordType::Value::min7e,
+        ChordType::Value::min7e,
+        ChordType::Value::min7e,
+        ChordType::Value::min7e,
+        ChordType::Value::mnMj7,
+        ChordType::Value::mnMj7,
+        ChordType::Value::mnMj79,
+        ChordType::Value::mnMj79,
+        ChordType::Value::min7b5,
         // mM7b5,
-        CHORD_TYPE_dim,
-        CHORD_TYPE_dim7,
-        CHORD_TYPE_svth,
-        CHORD_TYPE_svth,
-        CHORD_TYPE_svb9,
-        CHORD_TYPE_svb9,
-        CHORD_TYPE_svb13,
-        CHORD_TYPE_sv9,
-        CHORD_TYPE_sv9,
-        CHORD_TYPE_svs11,
-        CHORD_TYPE_svs11,
-        CHORD_TYPE_sv13,
-        CHORD_TYPE_sv13,
-        CHORD_TYPE_svs9,
-        CHORD_TYPE_svs9,
-        CHORD_TYPE_svb5,
-        CHORD_TYPE_svaug,
-        CHORD_TYPE_svsus4,
-        CHORD_TYPE_svsus4,
-        CHORD_TYPE_op2p5
+        ChordType::Value::dim,
+        ChordType::Value::dim7,
+        ChordType::Value::svth,
+        ChordType::Value::svth,
+        ChordType::Value::svb9,
+        ChordType::Value::svb9,
+        ChordType::Value::svb13,
+        ChordType::Value::sv9,
+        ChordType::Value::sv9,
+        ChordType::Value::svs11,
+        ChordType::Value::svs11,
+        ChordType::Value::sv13,
+        ChordType::Value::sv13,
+        ChordType::Value::svs9,
+        ChordType::Value::svs9,
+        ChordType::Value::svb5,
+        ChordType::Value::svaug,
+        ChordType::Value::svsus4,
+        ChordType::Value::svsus4,
+        ChordType::Value::op2p5
     };
 
-    EXPECT_EQ(pitches.size(), expectedChordTypes.size());
+    EXPECT_EQ(pitches.size(), expectedChordType.size());
 
     std::vector<testUtils::ChordInfo> expectedChords;
-    for (auto c : expectedChordTypes) {
+    for (auto c : expectedChordType) {
         expectedChords.emplace_back(testUtils::ChordInfo{PITCH_CLASS_C, c, 1, 1});
     }
 
@@ -498,71 +498,71 @@ TEST(ChordsFromNotesTest, schemeR) {
 
     seqwires::Track chordTrack = seqwires::chordsFromNotesFunction(track);
 
-    std::vector<ChordType> expectedChordTypes = {
-        CHORD_TYPE_Maj,
-        CHORD_TYPE_Maj6,
-        CHORD_TYPE_Maj6,
-        CHORD_TYPE_Maj7,
-        CHORD_TYPE_Maj7,
-        CHORD_TYPE_Maj7se,
-        CHORD_TYPE_Maj7se,
-        CHORD_TYPE_Maj7se,
-        CHORD_TYPE_Maj7se,
-        CHORD_TYPE_Maj9,
-        CHORD_TYPE_Maj79,
-        CHORD_TYPE_Maj79,
-        CHORD_TYPE_Maj69,
-        CHORD_TYPE_Maj69,
-        CHORD_TYPE_aug,
-        CHORD_TYPE_min,
-        CHORD_TYPE_min6,
-        CHORD_TYPE_min7,
-        CHORD_TYPE_min7,
-        CHORD_TYPE_min7b5,
-        CHORD_TYPE_min9,
-        CHORD_TYPE_min79,
-        CHORD_TYPE_min79,
-        CHORD_TYPE_min7e,
-        CHORD_TYPE_min7e,
-        CHORD_TYPE_min7e,
-        CHORD_TYPE_min7e,
-        CHORD_TYPE_mnMj7,
-        CHORD_TYPE_mnMj7,
-        CHORD_TYPE_mnMj79,
-        CHORD_TYPE_mnMj79,
-        CHORD_TYPE_dim,
-        CHORD_TYPE_dim7,
-        CHORD_TYPE_svth,
-        CHORD_TYPE_svth,
-        CHORD_TYPE_svsus4,
-        CHORD_TYPE_svb5,
-        CHORD_TYPE_sv9,
-        CHORD_TYPE_sv9,
-        CHORD_TYPE_svs11,
-        CHORD_TYPE_svs11,
-        CHORD_TYPE_sv13,
-        CHORD_TYPE_sv13,
-        CHORD_TYPE_svb9,
-        CHORD_TYPE_svb9,
-        CHORD_TYPE_svb13,
-        CHORD_TYPE_svs9,
+    std::vector<ChordType::Value> expectedChordType = {
+        ChordType::Value::Maj,
+        ChordType::Value::Maj6,
+        ChordType::Value::Maj6,
+        ChordType::Value::Maj7,
+        ChordType::Value::Maj7,
+        ChordType::Value::Maj7se,
+        ChordType::Value::Maj7se,
+        ChordType::Value::Maj7se,
+        ChordType::Value::Maj7se,
+        ChordType::Value::Maj9,
+        ChordType::Value::Maj79,
+        ChordType::Value::Maj79,
+        ChordType::Value::Maj69,
+        ChordType::Value::Maj69,
+        ChordType::Value::aug,
+        ChordType::Value::min,
+        ChordType::Value::min6,
+        ChordType::Value::min7,
+        ChordType::Value::min7,
+        ChordType::Value::min7b5,
+        ChordType::Value::min9,
+        ChordType::Value::min79,
+        ChordType::Value::min79,
+        ChordType::Value::min7e,
+        ChordType::Value::min7e,
+        ChordType::Value::min7e,
+        ChordType::Value::min7e,
+        ChordType::Value::mnMj7,
+        ChordType::Value::mnMj7,
+        ChordType::Value::mnMj79,
+        ChordType::Value::mnMj79,
+        ChordType::Value::dim,
+        ChordType::Value::dim7,
+        ChordType::Value::svth,
+        ChordType::Value::svth,
+        ChordType::Value::svsus4,
+        ChordType::Value::svb5,
+        ChordType::Value::sv9,
+        ChordType::Value::sv9,
+        ChordType::Value::svs11,
+        ChordType::Value::svs11,
+        ChordType::Value::sv13,
+        ChordType::Value::sv13,
+        ChordType::Value::svb9,
+        ChordType::Value::svb9,
+        ChordType::Value::svb13,
+        ChordType::Value::svs9,
         // No root note,
-        //CHORD_TYPE_svs9,
-        CHORD_TYPE_svs9,
+        //ChordType::Value::svs9,
+        ChordType::Value::svs9,
         // No root note,
-        //CHORD_TYPE_svs9,
-        CHORD_TYPE_Mj7aug,
-        CHORD_TYPE_svaug,
-        // CHORD_TYPE_No root note,
-        //CHORD_TYPE_svaug,
-        CHORD_TYPE_sus4,
-        CHORD_TYPE_op2p5,
+        //ChordType::Value::svs9,
+        ChordType::Value::Mj7aug,
+        ChordType::Value::svaug,
+        // ChordType::Value::No root note,
+        //ChordType::Value::svaug,
+        ChordType::Value::sus4,
+        ChordType::Value::op2p5,
     };
 
-    EXPECT_EQ(pitches.size(), expectedChordTypes.size());
+    EXPECT_EQ(pitches.size(), expectedChordType.size());
 
     std::vector<testUtils::ChordInfo> expectedChords;
-    for (auto c : expectedChordTypes) {
+    for (auto c : expectedChordType) {
         expectedChords.emplace_back(testUtils::ChordInfo{PITCH_CLASS_C, c, 1, 1});
     }
 
@@ -633,34 +633,34 @@ TEST(ChordsFromNotesTest, schemeC) {
 
     seqwires::Track chordTrack = seqwires::chordsFromNotesFunction(track);
 
-    std::vector<ChordType> expectedChordTypes = {
-        CHORD_TYPE_Maj,
-        CHORD_TYPE_min,
-        CHORD_TYPE_dim,
-        CHORD_TYPE_aug,
-        CHORD_TYPE_sus4,
-        CHORD_TYPE_svth,
-        CHORD_TYPE_svth,
-        CHORD_TYPE_min7,
-        CHORD_TYPE_min7,
-        CHORD_TYPE_Maj7,
-        CHORD_TYPE_Maj7,
-        CHORD_TYPE_min7b5,
-        CHORD_TYPE_svb5,
-        CHORD_TYPE_svsus4,
-        CHORD_TYPE_Maj9,
-        CHORD_TYPE_Maj9,
-        CHORD_TYPE_min9,
-        CHORD_TYPE_min9,
-        CHORD_TYPE_mnMj7,
-        CHORD_TYPE_mnMj7,
-        CHORD_TYPE_dim7
+    std::vector<ChordType::Value> expectedChordType = {
+        ChordType::Value::Maj,
+        ChordType::Value::min,
+        ChordType::Value::dim,
+        ChordType::Value::aug,
+        ChordType::Value::sus4,
+        ChordType::Value::svth,
+        ChordType::Value::svth,
+        ChordType::Value::min7,
+        ChordType::Value::min7,
+        ChordType::Value::Maj7,
+        ChordType::Value::Maj7,
+        ChordType::Value::min7b5,
+        ChordType::Value::svb5,
+        ChordType::Value::svsus4,
+        ChordType::Value::Maj9,
+        ChordType::Value::Maj9,
+        ChordType::Value::min9,
+        ChordType::Value::min9,
+        ChordType::Value::mnMj7,
+        ChordType::Value::mnMj7,
+        ChordType::Value::dim7
     };
 
-    EXPECT_EQ(pitches.size(), expectedChordTypes.size());
+    EXPECT_EQ(pitches.size(), expectedChordType.size());
 
     std::vector<testUtils::ChordInfo> expectedChords;
-    for (auto c : expectedChordTypes) {
+    for (auto c : expectedChordType) {
         expectedChords.emplace_back(testUtils::ChordInfo{PITCH_CLASS_C, c, 1, 1});
     }
 
