@@ -32,6 +32,30 @@ TEST(ChordsFromNotesTest, functionBasic) {
     testUtils::testChords(expectedChords, chordTrack);
 }
 
+TEST(ChordsFromNotesTest, rootPitchClass) {
+    seqwires::Track track;
+
+    for (int i = 0; i < 12 * 10; ++i) {
+        track.addEvent(seqwires::NoteOnEvent(1, i));
+        track.addEvent(seqwires::NoteOnEvent(0, i + 4));
+        track.addEvent(seqwires::NoteOnEvent(0, i + 7));
+        track.addEvent(seqwires::NoteOffEvent(1, i));
+        track.addEvent(seqwires::NoteOffEvent(0, i + 4));
+        track.addEvent(seqwires::NoteOffEvent(0, i + 7));
+    }
+
+    seqwires::Track chordTrack = seqwires::chordsFromNotesFunction(track);
+
+    std::vector<testUtils::ChordInfo> expectedChords;
+    for (int o = 0; o < 10; ++o) {
+        for (int pc = 0; pc < 12; ++pc) {
+            expectedChords.emplace_back(testUtils::ChordInfo{static_cast<seqwires::PitchClass>(pc), seqwires::CHORD_TYPE_Maj, 1, 1});
+        }
+    }
+
+    testUtils::testChords(expectedChords, chordTrack);
+}
+
 TEST(ChordsFromNotesTest, functionChordToChord) {
     seqwires::Track track;
     track.addEvent(seqwires::NoteOnEvent(0, 60));
