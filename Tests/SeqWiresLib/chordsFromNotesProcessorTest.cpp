@@ -26,8 +26,8 @@ TEST(ChordsFromNotesTest, functionBasic) {
     seqwires::Track chordTrack = seqwires::chordsFromNotesFunction(track);
     EXPECT_EQ(chordTrack.getDuration(), 2);
 
-    std::vector<testUtils::ChordInfo> expectedChords = {{seqwires::PITCH_CLASS_C, seqwires::ChordType::Value::Maj, 1},
-                                                        {seqwires::PITCH_CLASS_D, seqwires::ChordType::Value::min, 1}};
+    std::vector<testUtils::ChordInfo> expectedChords = {{seqwires::PITCH_CLASS_C, seqwires::ChordType::Value::M, 1},
+                                                        {seqwires::PITCH_CLASS_D, seqwires::ChordType::Value::m, 1}};
 
     testUtils::testChords(expectedChords, chordTrack);
 }
@@ -49,7 +49,7 @@ TEST(ChordsFromNotesTest, rootPitchClass) {
     std::vector<testUtils::ChordInfo> expectedChords;
     for (int o = 0; o < 10; ++o) {
         for (int pc = 0; pc < 12; ++pc) {
-            expectedChords.emplace_back(testUtils::ChordInfo{static_cast<seqwires::PitchClass>(pc), seqwires::ChordType::Value::Maj, 1, 1});
+            expectedChords.emplace_back(testUtils::ChordInfo{static_cast<seqwires::PitchClass>(pc), seqwires::ChordType::Value::M, 1, 1});
         }
     }
 
@@ -73,8 +73,8 @@ TEST(ChordsFromNotesTest, functionChordToChord) {
     seqwires::Track chordTrack = seqwires::chordsFromNotesFunction(track);
     EXPECT_EQ(chordTrack.getDuration(), 2);
 
-    std::vector<testUtils::ChordInfo> expectedChords = {{seqwires::PITCH_CLASS_C, seqwires::ChordType::Value::Maj, 1},
-                                                        {seqwires::PITCH_CLASS_C, seqwires::ChordType::Value::min, 1}};
+    std::vector<testUtils::ChordInfo> expectedChords = {{seqwires::PITCH_CLASS_C, seqwires::ChordType::Value::M, 1},
+                                                        {seqwires::PITCH_CLASS_C, seqwires::ChordType::Value::m, 1}};
 
     testUtils::testChords(expectedChords, chordTrack);
 }
@@ -109,9 +109,9 @@ TEST(ChordsFromNotesTest, majorInversions) {
     seqwires::Track chordTrack = seqwires::chordsFromNotesFunction(track);
     EXPECT_EQ(chordTrack.getDuration(), 5);
 
-    std::vector<testUtils::ChordInfo> expectedChords = {{seqwires::PITCH_CLASS_C, seqwires::ChordType::Value::Maj, 1, 0},
-                                                        {seqwires::PITCH_CLASS_C, seqwires::ChordType::Value::Maj, 1, 1},
-                                                        {seqwires::PITCH_CLASS_C, seqwires::ChordType::Value::Maj, 1, 1}};
+    std::vector<testUtils::ChordInfo> expectedChords = {{seqwires::PITCH_CLASS_C, seqwires::ChordType::Value::M, 1, 0},
+                                                        {seqwires::PITCH_CLASS_C, seqwires::ChordType::Value::M, 1, 1},
+                                                        {seqwires::PITCH_CLASS_C, seqwires::ChordType::Value::M, 1, 1}};
 
     testUtils::testChords(expectedChords, chordTrack);
 }
@@ -146,9 +146,9 @@ TEST(ChordsFromNotesTest, minorInversions) {
     seqwires::Track chordTrack = seqwires::chordsFromNotesFunction(track);
     EXPECT_EQ(chordTrack.getDuration(), 5);
 
-    std::vector<testUtils::ChordInfo> expectedChords = {{seqwires::PITCH_CLASS_C, seqwires::ChordType::Value::min, 1, 0},
-                                                        {seqwires::PITCH_CLASS_C, seqwires::ChordType::Value::min, 1, 1},
-                                                        {seqwires::PITCH_CLASS_C, seqwires::ChordType::Value::min, 1, 1}};
+    std::vector<testUtils::ChordInfo> expectedChords = {{seqwires::PITCH_CLASS_C, seqwires::ChordType::Value::m, 1, 0},
+                                                        {seqwires::PITCH_CLASS_C, seqwires::ChordType::Value::m, 1, 1},
+                                                        {seqwires::PITCH_CLASS_C, seqwires::ChordType::Value::m, 1, 1}};
 
     testUtils::testChords(expectedChords, chordTrack);
 }
@@ -294,63 +294,63 @@ TEST(ChordsFromNotesTest, schemeY) {
     seqwires::Track chordTrack = seqwires::chordsFromNotesFunction(track);
 
     std::vector<ChordType::Value> expectedChordType = {
-        ChordType::Value::onep8,
-        ChordType::Value::onep5,
-        ChordType::Value::Maj,
-        ChordType::Value::Maj9,
-        ChordType::Value::Maj6,
-        ChordType::Value::Maj6,
-        ChordType::Value::Maj69,
-        ChordType::Value::Maj69,
-        ChordType::Value::Maj7,
-        ChordType::Value::Maj7,
-        ChordType::Value::Maj79,
-        ChordType::Value::Maj79,
-        ChordType::Value::Maj7se,
-        ChordType::Value::Maj7se,
+        ChordType::Value::_1p8,
+        ChordType::Value::_1p5,
+        ChordType::Value::M,
+        ChordType::Value::M9,
+        ChordType::Value::M6,
+        ChordType::Value::M6,
+        ChordType::Value::M6_9,
+        ChordType::Value::M6_9,
+        ChordType::Value::M7,
+        ChordType::Value::M7,
+        ChordType::Value::M7_9,
+        ChordType::Value::M7_9,
+        ChordType::Value::M7s11,
+        ChordType::Value::M7s11,
         // C(b5)
         // CM7(b5)
         ChordType::Value::sus4,
         ChordType::Value::aug,
         ChordType::Value::Mj7aug,
         ChordType::Value::Mj7aug,
-        ChordType::Value::min,
-        ChordType::Value::min9,
-        ChordType::Value::min6,
-        ChordType::Value::min7,
-        ChordType::Value::min7,
-        ChordType::Value::min79,
-        ChordType::Value::min79,
-        ChordType::Value::min7e,
-        ChordType::Value::min7e,
-        ChordType::Value::min7e,
-        ChordType::Value::min7e,
-        ChordType::Value::mnMj7,
-        ChordType::Value::mnMj7,
-        ChordType::Value::mnMj79,
-        ChordType::Value::mnMj79,
-        ChordType::Value::min7b5,
+        ChordType::Value::m,
+        ChordType::Value::m9,
+        ChordType::Value::m6,
+        ChordType::Value::m7,
+        ChordType::Value::m7,
+        ChordType::Value::m7_9,
+        ChordType::Value::m7_9,
+        ChordType::Value::m7_11,
+        ChordType::Value::m7_11,
+        ChordType::Value::m7_11,
+        ChordType::Value::m7_11,
+        ChordType::Value::mM7,
+        ChordType::Value::mM7,
+        ChordType::Value::mM7_9,
+        ChordType::Value::mM7_9,
+        ChordType::Value::m7b5,
         // mM7b5,
         ChordType::Value::dim,
         ChordType::Value::dim7,
-        ChordType::Value::svth,
-        ChordType::Value::svth,
-        ChordType::Value::svb9,
-        ChordType::Value::svb9,
-        ChordType::Value::svb13,
-        ChordType::Value::sv9,
-        ChordType::Value::sv9,
-        ChordType::Value::svs11,
-        ChordType::Value::svs11,
-        ChordType::Value::sv13,
-        ChordType::Value::sv13,
-        ChordType::Value::svs9,
-        ChordType::Value::svs9,
-        ChordType::Value::svb5,
-        ChordType::Value::svaug,
-        ChordType::Value::svsus4,
-        ChordType::Value::svsus4,
-        ChordType::Value::op2p5
+        ChordType::Value::_7,
+        ChordType::Value::_7,
+        ChordType::Value::_7b9,
+        ChordType::Value::_7b9,
+        ChordType::Value::_7b13,
+        ChordType::Value::_79,
+        ChordType::Value::_79,
+        ChordType::Value::_7s11,
+        ChordType::Value::_7s11,
+        ChordType::Value::_7_13,
+        ChordType::Value::_7_13,
+        ChordType::Value::_7s9,
+        ChordType::Value::_7s9,
+        ChordType::Value::_7b5,
+        ChordType::Value::_7aug,
+        ChordType::Value::_7sus4,
+        ChordType::Value::_7sus4,
+        ChordType::Value::_1p2p5
     };
 
     EXPECT_EQ(pitches.size(), expectedChordType.size());
@@ -499,64 +499,64 @@ TEST(ChordsFromNotesTest, schemeR) {
     seqwires::Track chordTrack = seqwires::chordsFromNotesFunction(track);
 
     std::vector<ChordType::Value> expectedChordType = {
-        ChordType::Value::Maj,
-        ChordType::Value::Maj6,
-        ChordType::Value::Maj6,
-        ChordType::Value::Maj7,
-        ChordType::Value::Maj7,
-        ChordType::Value::Maj7se,
-        ChordType::Value::Maj7se,
-        ChordType::Value::Maj7se,
-        ChordType::Value::Maj7se,
-        ChordType::Value::Maj9,
-        ChordType::Value::Maj79,
-        ChordType::Value::Maj79,
-        ChordType::Value::Maj69,
-        ChordType::Value::Maj69,
+        ChordType::Value::M,
+        ChordType::Value::M6,
+        ChordType::Value::M6,
+        ChordType::Value::M7,
+        ChordType::Value::M7,
+        ChordType::Value::M7s11,
+        ChordType::Value::M7s11,
+        ChordType::Value::M7s11,
+        ChordType::Value::M7s11,
+        ChordType::Value::M9,
+        ChordType::Value::M7_9,
+        ChordType::Value::M7_9,
+        ChordType::Value::M6_9,
+        ChordType::Value::M6_9,
         ChordType::Value::aug,
-        ChordType::Value::min,
-        ChordType::Value::min6,
-        ChordType::Value::min7,
-        ChordType::Value::min7,
-        ChordType::Value::min7b5,
-        ChordType::Value::min9,
-        ChordType::Value::min79,
-        ChordType::Value::min79,
-        ChordType::Value::min7e,
-        ChordType::Value::min7e,
-        ChordType::Value::min7e,
-        ChordType::Value::min7e,
-        ChordType::Value::mnMj7,
-        ChordType::Value::mnMj7,
-        ChordType::Value::mnMj79,
-        ChordType::Value::mnMj79,
+        ChordType::Value::m,
+        ChordType::Value::m6,
+        ChordType::Value::m7,
+        ChordType::Value::m7,
+        ChordType::Value::m7b5,
+        ChordType::Value::m9,
+        ChordType::Value::m7_9,
+        ChordType::Value::m7_9,
+        ChordType::Value::m7_11,
+        ChordType::Value::m7_11,
+        ChordType::Value::m7_11,
+        ChordType::Value::m7_11,
+        ChordType::Value::mM7,
+        ChordType::Value::mM7,
+        ChordType::Value::mM7_9,
+        ChordType::Value::mM7_9,
         ChordType::Value::dim,
         ChordType::Value::dim7,
-        ChordType::Value::svth,
-        ChordType::Value::svth,
-        ChordType::Value::svsus4,
-        ChordType::Value::svb5,
-        ChordType::Value::sv9,
-        ChordType::Value::sv9,
-        ChordType::Value::svs11,
-        ChordType::Value::svs11,
-        ChordType::Value::sv13,
-        ChordType::Value::sv13,
-        ChordType::Value::svb9,
-        ChordType::Value::svb9,
-        ChordType::Value::svb13,
-        ChordType::Value::svs9,
+        ChordType::Value::_7,
+        ChordType::Value::_7,
+        ChordType::Value::_7sus4,
+        ChordType::Value::_7b5,
+        ChordType::Value::_79,
+        ChordType::Value::_79,
+        ChordType::Value::_7s11,
+        ChordType::Value::_7s11,
+        ChordType::Value::_7_13,
+        ChordType::Value::_7_13,
+        ChordType::Value::_7b9,
+        ChordType::Value::_7b9,
+        ChordType::Value::_7b13,
+        ChordType::Value::_7s9,
         // No root note,
-        //ChordType::Value::svs9,
-        ChordType::Value::svs9,
+        //ChordType::Value::_7s9,
+        ChordType::Value::_7s9,
         // No root note,
-        //ChordType::Value::svs9,
+        //ChordType::Value::_7s9,
         ChordType::Value::Mj7aug,
-        ChordType::Value::svaug,
+        ChordType::Value::_7aug,
         // ChordType::Value::No root note,
-        //ChordType::Value::svaug,
+        //ChordType::Value::_7aug,
         ChordType::Value::sus4,
-        ChordType::Value::op2p5,
+        ChordType::Value::_1p2p5,
     };
 
     EXPECT_EQ(pitches.size(), expectedChordType.size());
@@ -634,26 +634,26 @@ TEST(ChordsFromNotesTest, schemeC) {
     seqwires::Track chordTrack = seqwires::chordsFromNotesFunction(track);
 
     std::vector<ChordType::Value> expectedChordType = {
-        ChordType::Value::Maj,
-        ChordType::Value::min,
+        ChordType::Value::M,
+        ChordType::Value::m,
         ChordType::Value::dim,
         ChordType::Value::aug,
         ChordType::Value::sus4,
-        ChordType::Value::svth,
-        ChordType::Value::svth,
-        ChordType::Value::min7,
-        ChordType::Value::min7,
-        ChordType::Value::Maj7,
-        ChordType::Value::Maj7,
-        ChordType::Value::min7b5,
-        ChordType::Value::svb5,
-        ChordType::Value::svsus4,
-        ChordType::Value::Maj9,
-        ChordType::Value::Maj9,
-        ChordType::Value::min9,
-        ChordType::Value::min9,
-        ChordType::Value::mnMj7,
-        ChordType::Value::mnMj7,
+        ChordType::Value::_7,
+        ChordType::Value::_7,
+        ChordType::Value::m7,
+        ChordType::Value::m7,
+        ChordType::Value::M7,
+        ChordType::Value::M7,
+        ChordType::Value::m7b5,
+        ChordType::Value::_7b5,
+        ChordType::Value::_7sus4,
+        ChordType::Value::M9,
+        ChordType::Value::M9,
+        ChordType::Value::m9,
+        ChordType::Value::m9,
+        ChordType::Value::mM7,
+        ChordType::Value::mM7,
         ChordType::Value::dim7
     };
 
