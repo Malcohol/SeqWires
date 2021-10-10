@@ -10,9 +10,10 @@
 #include "BabelWiresLib/Enums/enumWithCppEnum.hpp"
 #include "SeqWiresLib/musicTypes.hpp"
 
-/// Use the same biolerplate pattern as for Enums, since it is likely I will add an Enum for this eventually.
+/// Use uuids, etc, as for Enums, since it is very likely I will add an Enum for this.
 /// These match the "Chord type" values from the XF Format Specifications v2.01
 // TODO Consider using \u266d (flat) and \u266f (sharp) in names.
+// TODO Not in XF spec v2.01 but available on more recent keyboards: b5, M7b5, mM7b5
 #define CHORD_TYPE_VALUES(X)                                                                                           \
     X(M, "Maj", "1ef34c5c-e8d4-4cac-b189-e4ac2fffefd4")                                                              \
     X(M6, "Maj6", "b8290240-fce4-4747-b9e4-07132222d0d0")                                                            \
