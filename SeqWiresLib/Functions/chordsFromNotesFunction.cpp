@@ -26,78 +26,73 @@ namespace {
     };
 
     /// Represent a chord type by intervals from the root note, which is in the unit position.
-    // The chords recognized here follow the fingered chord schemes of the some keyboards from
-    // major manufacturers.
-    // Not currently supported:
-    // No root note: {0b0000010000011000, seqwires::CHORD_TYPE_svs9} // R
-    // No root note: {0b0000010010011000, seqwires::CHORD_TYPE_svs9} // R
-    // No root note: {0b0000010100010000, seqwires::CHORD_TYPE_svaug} // R
-    // Not in XF spec: {0b0000000001010001} b5 // Y
-    // Not in XF spec: {0b0000100001010001} M7b5 // Y
-    // Not in XF spec: {0b0000100001001001} mM7b5 // Y
-    // Unknown fingering - CHORD_TYPE_onep8,
-    // Unknown fingering - CHORD_TYPE_onep5,
-    const std::array<IntervalSetToChordType, 58> recognizedIntervals = {{
+    // The "fingered chords" of many arranger-style keyboards are supported, although the root note is always required.
+    // Not in XF spec: {0b0000000001010001} b5
+    // Not in XF spec: {0b0000100001010001} M7b5
+    // Not in XF spec: {0b0000100001001001} mM7b5
+    const std::array<IntervalSetToChordType, 60> recognizedIntervals = {{
         // clang-format off
         // This must be sorted (the alphabetic sort of a typical editor will work to keep this sorted).
-        {0b0000000000001101, seqwires::CHORD_TYPE_min9}, // C
-        {0b0000000000010101, seqwires::CHORD_TYPE_Maj9}, // C
-        {0b0000000001001001, seqwires::CHORD_TYPE_dim}, // YRC
-        {0b0000000010000101, seqwires::CHORD_TYPE_op2p5}, // YR
-        {0b0000000010001001, seqwires::CHORD_TYPE_min}, // YRC
-        {0b0000000010001101, seqwires::CHORD_TYPE_min9}, // YR
-        {0b0000000010010001, seqwires::CHORD_TYPE_Maj}, // YRC
-        {0b0000000010010101, seqwires::CHORD_TYPE_Maj9}, // YRC
-        {0b0000000010100001, seqwires::CHORD_TYPE_sus4}, // YRC
-        {0b0000000010101001, seqwires::CHORD_TYPE_min7e}, // YR
-        {0b0000000010101101, seqwires::CHORD_TYPE_min7e}, // YR
-        {0b0000000100010001, seqwires::CHORD_TYPE_aug}, // YRC
-        {0b0000001000010101, seqwires::CHORD_TYPE_Maj69}, // YR
-        {0b0000001001001001, seqwires::CHORD_TYPE_dim7}, // YRC
-        {0b0000001010000001, seqwires::CHORD_TYPE_Maj6}, // YR
-        {0b0000001010001001, seqwires::CHORD_TYPE_min6}, // YR
-        {0b0000001010010001, seqwires::CHORD_TYPE_Maj6}, // YR
-        {0b0000001010010101, seqwires::CHORD_TYPE_Maj69}, // YR
-        {0b0000010000001001, seqwires::CHORD_TYPE_min7}, // YRC
-        {0b0000010000001101, seqwires::CHORD_TYPE_min79}, // YR
-        {0b0000010000010001, seqwires::CHORD_TYPE_svth}, // YRC
-        {0b0000010000010011, seqwires::CHORD_TYPE_svb9}, // YR
-        {0b0000010000010101, seqwires::CHORD_TYPE_sv9}, // YR
-        {0b0000010000011001, seqwires::CHORD_TYPE_svs9}, // YR
-        {0b0000010000100001, seqwires::CHORD_TYPE_svsus4}, // Y
-        {0b0000010001001001, seqwires::CHORD_TYPE_min7b5}, // YRC
-        {0b0000010001010001, seqwires::CHORD_TYPE_svb5}, // YRC
-        {0b0000010001010101, seqwires::CHORD_TYPE_svs11}, // R
-        {0b0000010010001001, seqwires::CHORD_TYPE_min7}, // YRC
-        {0b0000010010001101, seqwires::CHORD_TYPE_min79}, // YR
-        {0b0000010010010001, seqwires::CHORD_TYPE_svth}, // YRC
-        {0b0000010010010011, seqwires::CHORD_TYPE_svb9}, // YR
-        {0b0000010010010101, seqwires::CHORD_TYPE_sv9}, // YR
-        {0b0000010010011001, seqwires::CHORD_TYPE_svs9}, // YR
-        {0b0000010010100001, seqwires::CHORD_TYPE_svsus4}, // YRC
-        {0b0000010010101001, seqwires::CHORD_TYPE_min7e}, // YR
-        {0b0000010010101101, seqwires::CHORD_TYPE_min7e}, // YR
-        {0b0000010011010001, seqwires::CHORD_TYPE_svs11}, // Y
-        {0b0000010011010101, seqwires::CHORD_TYPE_svs11}, // YR
-        {0b0000010100010001, seqwires::CHORD_TYPE_svaug}, // YR
-        {0b0000010110010001, seqwires::CHORD_TYPE_svb13}, // YR
-        {0b0000011000010001, seqwires::CHORD_TYPE_sv13}, // YR
-        {0b0000011010010001, seqwires::CHORD_TYPE_sv13}, // YR
-        {0b0000100000001001, seqwires::CHORD_TYPE_mnMj7}, // YRC
-        {0b0000100000001101, seqwires::CHORD_TYPE_mnMj79}, // YR
-        {0b0000100000010001, seqwires::CHORD_TYPE_Maj7}, // YRC
-        {0b0000100000010101, seqwires::CHORD_TYPE_Maj79}, // YR
-        {0b0000100001010001, seqwires::CHORD_TYPE_Maj7se}, // R
-        {0b0000100001010101, seqwires::CHORD_TYPE_Maj7se}, // R
-        {0b0000100010001001, seqwires::CHORD_TYPE_mnMj7}, // YRC
-        {0b0000100010001101, seqwires::CHORD_TYPE_mnMj79}, // YR
-        {0b0000100010010001, seqwires::CHORD_TYPE_Maj7}, // YRC
-        {0b0000100010010101, seqwires::CHORD_TYPE_Maj79}, // YR
-        {0b0000100011010001, seqwires::CHORD_TYPE_Maj7se}, // YR
-        {0b0000100011010001, seqwires::CHORD_TYPE_Maj7se}, // YR
-        {0b0000100011010101, seqwires::CHORD_TYPE_Maj7se}, // YR
-        {0b0000100100000001, seqwires::CHORD_TYPE_Mj7aug}, // Y
-        {0b0000100100010001, seqwires::CHORD_TYPE_Mj7aug}, // YR
+        {0b0000000000001101, seqwires::CHORD_TYPE_min9},
+        {0b0000000000010101, seqwires::CHORD_TYPE_Maj9},
+        {0b0000000001001001, seqwires::CHORD_TYPE_dim},
+        {0b0000000010000001, seqwires::CHORD_TYPE_onep5},
+        {0b0000000010000101, seqwires::CHORD_TYPE_op2p5},
+        {0b0000000010001001, seqwires::CHORD_TYPE_min},
+        {0b0000000010001101, seqwires::CHORD_TYPE_min9},
+        {0b0000000010010001, seqwires::CHORD_TYPE_Maj},
+        {0b0000000010010101, seqwires::CHORD_TYPE_Maj9},
+        {0b0000000010100001, seqwires::CHORD_TYPE_sus4},
+        {0b0000000010101001, seqwires::CHORD_TYPE_min7e},
+        {0b0000000010101101, seqwires::CHORD_TYPE_min7e},
+        {0b0000000100010001, seqwires::CHORD_TYPE_aug},
+        {0b0000001000010101, seqwires::CHORD_TYPE_Maj69},
+        {0b0000001001001001, seqwires::CHORD_TYPE_dim7},
+        {0b0000001010000001, seqwires::CHORD_TYPE_Maj6},
+        {0b0000001010001001, seqwires::CHORD_TYPE_min6},
+        {0b0000001010010001, seqwires::CHORD_TYPE_Maj6},
+        {0b0000001010010101, seqwires::CHORD_TYPE_Maj69},
+        {0b0000010000001001, seqwires::CHORD_TYPE_min7},
+        {0b0000010000001101, seqwires::CHORD_TYPE_min79},
+        {0b0000010000010001, seqwires::CHORD_TYPE_svth},
+        {0b0000010000010011, seqwires::CHORD_TYPE_svb9},
+        {0b0000010000010101, seqwires::CHORD_TYPE_sv9},
+        {0b0000010000011001, seqwires::CHORD_TYPE_svs9},
+        {0b0000010000100001, seqwires::CHORD_TYPE_svsus4},
+        {0b0000010001001001, seqwires::CHORD_TYPE_min7b5},
+        {0b0000010001010001, seqwires::CHORD_TYPE_svb5},
+        {0b0000010001010101, seqwires::CHORD_TYPE_svs11},
+        {0b0000010010001001, seqwires::CHORD_TYPE_min7},
+        {0b0000010010001101, seqwires::CHORD_TYPE_min79},
+        {0b0000010010010001, seqwires::CHORD_TYPE_svth},
+        {0b0000010010010011, seqwires::CHORD_TYPE_svb9},
+        {0b0000010010010101, seqwires::CHORD_TYPE_sv9},
+        {0b0000010010011001, seqwires::CHORD_TYPE_svs9},
+        {0b0000010010100001, seqwires::CHORD_TYPE_svsus4},
+        {0b0000010010101001, seqwires::CHORD_TYPE_min7e},
+        {0b0000010010101101, seqwires::CHORD_TYPE_min7e},
+        {0b0000010011010001, seqwires::CHORD_TYPE_svs11},
+        {0b0000010011010101, seqwires::CHORD_TYPE_svs11},
+        {0b0000010100010001, seqwires::CHORD_TYPE_svaug},
+        {0b0000010110010001, seqwires::CHORD_TYPE_svb13},
+        {0b0000011000010001, seqwires::CHORD_TYPE_sv13},
+        {0b0000011010010001, seqwires::CHORD_TYPE_sv13},
+        {0b0000100000001001, seqwires::CHORD_TYPE_mnMj7},
+        {0b0000100000001101, seqwires::CHORD_TYPE_mnMj79},
+        {0b0000100000010001, seqwires::CHORD_TYPE_Maj7},
+        {0b0000100000010101, seqwires::CHORD_TYPE_Maj79},
+        {0b0000100001010001, seqwires::CHORD_TYPE_Maj7se},
+        {0b0000100001010101, seqwires::CHORD_TYPE_Maj7se},
+        {0b0000100010001001, seqwires::CHORD_TYPE_mnMj7},
+        {0b0000100010001101, seqwires::CHORD_TYPE_mnMj79},
+        {0b0000100010010001, seqwires::CHORD_TYPE_Maj7},
+        {0b0000100010010101, seqwires::CHORD_TYPE_Maj79},
+        {0b0000100011010001, seqwires::CHORD_TYPE_Maj7se},
+        {0b0000100011010001, seqwires::CHORD_TYPE_Maj7se},
+        {0b0000100011010101, seqwires::CHORD_TYPE_Maj7se},
+        {0b0000100100000001, seqwires::CHORD_TYPE_Mj7aug},
+        {0b0000100100010001, seqwires::CHORD_TYPE_Mj7aug},
+        {0b0001000000000001, seqwires::CHORD_TYPE_onep8},
         // clang-format on
     }};
     
@@ -130,9 +125,10 @@ namespace {
         /// Check whether the currently active pitches match an known IntervalSet or inversion of that IntervalSet.
         seqwires::Chord getBestMatchChord() const {
             const unsigned int numPitches = m_pitches.size();
-            // TODO Assert numPitches is matches the recognized chords.
+            // TODO Assert min and max match the recognized chords.
+            constexpr unsigned int minNumPitches = 2;
             constexpr unsigned int maxNumPitches = 6;
-            if ((numPitches < 3) || (numPitches > maxNumPitches)) {
+            if ((numPitches < minNumPitches) || (numPitches > maxNumPitches)) {
                 return seqwires::Chord();
             }
             // The intervals between neighbouring pitches as integers.

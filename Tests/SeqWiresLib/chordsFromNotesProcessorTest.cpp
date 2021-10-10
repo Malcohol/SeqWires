@@ -134,6 +134,10 @@ TEST(ChordsFromNotesTest, schemeY) {
     using namespace seqwires;
 
     std::vector<std::vector<seqwires::Pitch>> pitches = {
+    // C1+8
+    { 60, 72 },
+    // C1+5
+    { 60, 67 },
     // C
     { 60, 64, 67 },
     // C9
@@ -266,6 +270,8 @@ TEST(ChordsFromNotesTest, schemeY) {
     seqwires::Track chordTrack = seqwires::chordsFromNotesFunction(track);
 
     std::vector<ChordType> expectedChordTypes = {
+        CHORD_TYPE_onep8,
+        CHORD_TYPE_onep5,
         CHORD_TYPE_Maj,
         CHORD_TYPE_Maj9,
         CHORD_TYPE_Maj6,
@@ -538,3 +544,102 @@ TEST(ChordsFromNotesTest, schemeR) {
 
     testUtils::testChords(expectedChords, chordTrack);
 }
+
+// Casio-style fingered chords.
+TEST(ChordsFromNotesTest, schemeC) {
+    using namespace seqwires;
+
+    std::vector<std::vector<seqwires::Pitch>> pitches = {
+        // C
+        { 60, 64, 67 },
+        // Cm
+        { 60, 63, 67 },
+        // Cdim
+        { 60, 63, 66 },
+        // Caug
+        { 60, 64, 68 },
+        // Csus4
+        { 60, 65, 67 },
+        // C7
+        { 60, 64, 70 },
+        // C7
+        { 60, 64, 67, 70 },
+        // Cm7
+        { 60, 63, 70 },
+        // Cm7
+        { 60, 63, 67, 70 },
+        // Cmaj7
+        { 60, 64, 71 },
+        // Cmaj7
+        { 60, 64, 67, 71 },
+        // Cm7b5
+        { 60, 63, 66, 70 },
+        // C7b5
+        { 60, 64, 66, 70 },
+        // C7sus4
+        { 60, 65, 67, 70 },
+        // Cadd9
+        { 60, 62, 64 },
+        // Cadd9
+        { 60, 62, 64, 67 },
+        // Cmadd9
+        { 60, 62, 63 },
+        // Cmadd9
+        { 60, 62, 63, 67 },
+        // CmM7
+        { 60, 63, 71 },
+        // CmM7
+        { 60, 63, 67, 71 },
+        // Cdim7
+        { 60, 63, 66, 69 }};
+
+    seqwires::Track track;
+    for (const auto& v : pitches) {
+        babelwires::Rational time = 1;
+        for (auto p : v) {
+            track.addEvent(NoteOnEvent{ time, p });
+            time = 0;
+        }
+        time = 1;
+        for (auto p : v) {
+            track.addEvent(NoteOffEvent{ time, p });
+            time = 0;
+        }
+    }
+
+    seqwires::Track chordTrack = seqwires::chordsFromNotesFunction(track);
+
+    std::vector<ChordType> expectedChordTypes = {
+        CHORD_TYPE_Maj,
+        CHORD_TYPE_min,
+        CHORD_TYPE_dim,
+        CHORD_TYPE_aug,
+        CHORD_TYPE_sus4,
+        CHORD_TYPE_svth,
+        CHORD_TYPE_svth,
+        CHORD_TYPE_min7,
+        CHORD_TYPE_min7,
+        CHORD_TYPE_Maj7,
+        CHORD_TYPE_Maj7,
+        CHORD_TYPE_min7b5,
+        CHORD_TYPE_svb5,
+        CHORD_TYPE_svsus4,
+        CHORD_TYPE_Maj9,
+        CHORD_TYPE_Maj9,
+        CHORD_TYPE_min9,
+        CHORD_TYPE_min9,
+        CHORD_TYPE_mnMj7,
+        CHORD_TYPE_mnMj7,
+        CHORD_TYPE_dim7
+    };
+
+    EXPECT_EQ(pitches.size(), expectedChordTypes.size());
+
+    std::vector<testUtils::ChordInfo> expectedChords;
+    for (auto c : expectedChordTypes) {
+        expectedChords.emplace_back(testUtils::ChordInfo{PITCH_CLASS_C, c, 1, 1});
+    }
+
+    testUtils::testChords(expectedChords, chordTrack);
+}
+
