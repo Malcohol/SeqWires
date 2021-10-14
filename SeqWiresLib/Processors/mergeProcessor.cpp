@@ -11,7 +11,7 @@
 #include "SeqWiresLib/Features/trackFeature.hpp"
 #include "SeqWiresLib/Functions/mergeFunction.hpp"
 
-#include "BabelWiresLib/Identifiers/declareIdentifier.hpp"
+#include "BabelWiresLib/Identifiers/registeredIdentifier.hpp"
 
 #include <set>
 

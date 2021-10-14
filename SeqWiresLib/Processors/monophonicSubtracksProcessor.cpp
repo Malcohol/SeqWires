@@ -14,7 +14,7 @@
 #include "BabelWiresLib/Features/featureMixins.hpp"
 #include "BabelWiresLib/Features/numericFeature.hpp"
 
-#include "BabelWiresLib/Identifiers/declareIdentifier.hpp"
+#include "BabelWiresLib/Identifiers/registeredIdentifier.hpp"
 #include "BabelWiresLib/ValueNames/valueNamesImpl.hpp"
 
 #include <set>
