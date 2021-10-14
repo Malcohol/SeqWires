@@ -25,8 +25,8 @@ namespace {
 
 seqwires::RepeatProcessor::RepeatProcessor() {
     m_count = m_inputFeature->addField(std::make_unique<NonNegativeIntFeature>(),
-                                       FIELD_NAME("Count", "Count", "f5d2ab08-4430-47fa-b26c-0ff2154826e3"));
-    addArrayFeature(FIELD_NAME("Tracks", "Tracks", "f727937f-0215-4527-bab4-0eca269d6c5c"));
+                                       REGISTERED_ID("Count", "Count", "f5d2ab08-4430-47fa-b26c-0ff2154826e3"));
+    addArrayFeature(REGISTERED_ID("Tracks", "Tracks", "f727937f-0215-4527-bab4-0eca269d6c5c"));
 }
 
 seqwires::RepeatProcessor::Factory::Factory()

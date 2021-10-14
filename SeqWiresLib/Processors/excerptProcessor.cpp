@@ -22,10 +22,10 @@ namespace {
 
 seqwires::ExcerptProcessor::ExcerptProcessor() {
     m_start = m_inputFeature->addField(std::make_unique<DurationFeature>(),
-                                       FIELD_NAME("Start", "Start", "4b95f5db-a542-4660-a8db-97d3a5f831ca"));
+                                       REGISTERED_ID("Start", "Start", "4b95f5db-a542-4660-a8db-97d3a5f831ca"));
     m_duration = m_inputFeature->addField(std::make_unique<DurationFeature>(),
-                                          FIELD_NAME("Duratn", "Duration", "d83ebbc2-1492-4578-a3b8-4969eb6a2042"));
-    addArrayFeature(FIELD_NAME("Tracks", "Tracks", "983b3bcb-7086-4791-8e18-d8c7550d45d3"));
+                                          REGISTERED_ID("Duratn", "Duration", "d83ebbc2-1492-4578-a3b8-4969eb6a2042"));
+    addArrayFeature(REGISTERED_ID("Tracks", "Tracks", "983b3bcb-7086-4791-8e18-d8c7550d45d3"));
 }
 
 seqwires::ExcerptProcessor::Factory::Factory()

@@ -23,8 +23,8 @@ namespace {
 
 seqwires::TransposeProcessor::TransposeProcessor() {
     m_pitchOffset = m_inputFeature->addField(std::make_unique<babelwires::HasStaticRange<babelwires::IntFeature, -127, 127>>(),
-                                       FIELD_NAME("Offset", "Pitch Offset", "5cfa1541-f25e-4671-ac11-2ff71c883418"));
-    addArrayFeature(FIELD_NAME("Tracks", "Tracks", "83f05b66-7890-4542-8344-1409e50539b5"));
+                                       REGISTERED_ID("Offset", "Pitch Offset", "5cfa1541-f25e-4671-ac11-2ff71c883418"));
+    addArrayFeature(REGISTERED_ID("Tracks", "Tracks", "83f05b66-7890-4542-8344-1409e50539b5"));
 }
 
 seqwires::TransposeProcessor::Factory::Factory()

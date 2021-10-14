@@ -17,9 +17,9 @@
 
 seqwires::SilenceProcessor::SilenceProcessor() {
     m_duration = m_inputFeature->addField(std::make_unique<DurationFeature>(),
-                                       FIELD_NAME("Durn", "Duration", "05d3ea91-cb90-42f5-9988-2fb2e02e231c"));
+                                       REGISTERED_ID("Durn", "Duration", "05d3ea91-cb90-42f5-9988-2fb2e02e231c"));
     m_trackOut = m_outputFeature->addField(std::make_unique<TrackFeature>(),
-                                                FIELD_NAME("Track", "Track", "86f3d028-a616-4a95-a566-a010ffcabb19"));
+                                                REGISTERED_ID("Track", "Track", "86f3d028-a616-4a95-a566-a010ffcabb19"));
 }
 
 seqwires::SilenceProcessor::Factory::Factory()

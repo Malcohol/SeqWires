@@ -15,9 +15,9 @@
 
 smf::target::ChannelTrackFeature::ChannelTrackFeature() {
     m_channelNum = addField(std::make_unique<babelwires::HasStaticRange<babelwires::IntFeature, 0, 15>>(),
-                            FIELD_NAME("Chan", "channel", "cad592ef-2355-4837-a265-38b49eae7599"));
+                            REGISTERED_ID("Chan", "channel", "cad592ef-2355-4837-a265-38b49eae7599"));
     m_trackFeature = addField(std::make_unique<seqwires::TrackFeature>(),
-                                  FIELD_NAME("Track", "track", "a6db15c9-9f29-4fb3-92c4-771746b2b97f"));
+                                  REGISTERED_ID("Track", "track", "a6db15c9-9f29-4fb3-92c4-771746b2b97f"));
 }
 
 int smf::target::ChannelTrackFeature::getNumTracks() const {
@@ -51,7 +51,7 @@ smf::target::SmfFeature::SmfFeature(Format f)
     , m_format(f) {
     assert((f != SMF_UNKNOWN_FORMAT) && "You can only construct a format 0, 1 or 2 MIDI file");
     m_metadata = addField(std::make_unique<MidiMetadata>(),
-        FIELD_NAME("Meta", "Metadata", "72bbbcee-2b53-4fb2-bfb8-4f5e495f9166"));
+        REGISTERED_ID("Meta", "Metadata", "72bbbcee-2b53-4fb2-bfb8-4f5e495f9166"));
 }
 
 smf::target::SmfFeature::Format smf::target::SmfFeature::getFormat() const {
@@ -65,7 +65,7 @@ const smf::MidiMetadata& smf::target::SmfFeature::getMidiMetadata() const {
 smf::target::Format0SmfFeature::Format0SmfFeature()
     : SmfFeature(SMF_FORMAT_0) {
     m_channelGroup = addField(std::make_unique<ArrayChannelGroup>(),
-                              FIELD_NAME("tracks", "tracks", "1aa014da-2fb3-46e2-96df-98c7798b4a87"));
+                              REGISTERED_ID("tracks", "tracks", "1aa014da-2fb3-46e2-96df-98c7798b4a87"));
 }
 
 int smf::target::Format0SmfFeature::getNumMidiTracks() const {
@@ -80,7 +80,7 @@ const smf::target::ChannelGroup& smf::target::Format0SmfFeature::getMidiTrack(in
 smf::target::Format1SmfFeature::Format1SmfFeature()
     : SmfFeature(SMF_FORMAT_1) {
     m_channelGroup = addField(std::make_unique<ArrayChannelGroup>(),
-                        FIELD_NAME("tracks", "tracks", "9b3642d2-b50e-487e-96c9-bc39e418c687"));
+                        REGISTERED_ID("tracks", "tracks", "9b3642d2-b50e-487e-96c9-bc39e418c687"));
 }
 
 int smf::target::Format1SmfFeature::getNumMidiTracks() const {

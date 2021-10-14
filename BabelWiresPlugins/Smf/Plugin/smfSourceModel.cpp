@@ -57,7 +57,7 @@ seqwires::TrackFeature* smf::source::RecordChannelGroup::addTrack(int c) {
     assert((tryGetChildFromStep(babelwires::PathStep(std::get<0>(s_trackNames[c]))) == nullptr) &&
            "A track with that channel number is already present");
     // TODO Assert that the fields are in channel order.
-    return addField(std::make_unique<seqwires::TrackFeature>(), FIELD_NAME_VECTOR(s_trackNames)[c]);
+    return addField(std::make_unique<seqwires::TrackFeature>(), REGISTERED_ID_VECTOR(s_trackNames)[c]);
 }
 
 void smf::source::ExtensibleChannelGroup::setPrivilegedTrack(int c) {
@@ -65,9 +65,9 @@ void smf::source::ExtensibleChannelGroup::setPrivilegedTrack(int c) {
     assert((c <= 15) && "Channel number out of range");
     assert((m_channelNum == nullptr) && "The first channel was already set");
     m_channelNum = addField(std::make_unique<babelwires::HasStaticRange<babelwires::IntFeature, 0, 15>>(),
-                            FIELD_NAME("ChanNo", "channel", "011e3ef1-4c06-4e40-bba4-b242dc8a3d3a"));
+                            REGISTERED_ID("ChanNo", "channel", "011e3ef1-4c06-4e40-bba4-b242dc8a3d3a"));
     m_trackFeature = addField(std::make_unique<seqwires::TrackFeature>(),
-                                  FIELD_NAME("Track", "track", "b48b1dff-6fa4-4c2f-8f77-bc50f44fb09a"));
+                                  REGISTERED_ID("Track", "track", "b48b1dff-6fa4-4c2f-8f77-bc50f44fb09a"));
     m_channelNum->set(c);
 }
 
@@ -81,7 +81,7 @@ seqwires::TrackFeature* smf::source::ExtensibleChannelGroup::addTrack(int c) {
         assert((tryGetChildFromStep(babelwires::PathStep(std::get<0>(s_extraTrackNames[c]))) == nullptr) &&
                "A track with that channel number is already present");
         // TODO Assert that the fields are in channel order.
-        return addField(std::make_unique<seqwires::TrackFeature>(), FIELD_NAME_VECTOR(s_extraTrackNames)[c]);
+        return addField(std::make_unique<seqwires::TrackFeature>(), REGISTERED_ID_VECTOR(s_extraTrackNames)[c]);
     }
 }
 
@@ -90,7 +90,7 @@ smf::source::SmfFeature::SmfFeature(Format f)
     , m_format(f) {
     assert((f != SMF_UNKNOWN_FORMAT) && "You can only construct a format 0, 1 or 2 MIDI file");
     m_metadata = addField(std::make_unique<MidiMetadata>(),
-        FIELD_NAME("Meta", "Metadata", "72bbbcee-2b53-4fb2-bfb8-4f5e495f9166"));
+        REGISTERED_ID("Meta", "Metadata", "72bbbcee-2b53-4fb2-bfb8-4f5e495f9166"));
 }
 
 smf::source::SmfFeature::Format smf::source::SmfFeature::getFormat() const {
@@ -108,7 +108,7 @@ const smf::MidiMetadata& smf::source::SmfFeature::getMidiMetadata() const {
 smf::source::Format0SmfFeature::Format0SmfFeature()
     : SmfFeature(SMF_FORMAT_0) {
     m_channelGroup = addField(std::make_unique<RecordChannelGroup>(),
-                              FIELD_NAME("tracks", "tracks", "3fb0f062-4e8e-4b37-a598-edcd63f82971"));
+                              REGISTERED_ID("tracks", "tracks", "3fb0f062-4e8e-4b37-a598-edcd63f82971"));
 }
 
 int smf::source::Format0SmfFeature::getNumMidiTracks() const {
@@ -127,7 +127,7 @@ smf::source::ChannelGroup* smf::source::Format0SmfFeature::getMidiTrack0() {
 smf::source::Format1SmfFeature::Format1SmfFeature()
     : SmfFeature(SMF_FORMAT_1) {
     m_tracks = addField(std::make_unique<TrackArray>(),
-                        FIELD_NAME("Tracks", "tracks", "3042e0e6-62a6-4a75-b886-77b873005da8"));
+                        REGISTERED_ID("Tracks", "tracks", "3042e0e6-62a6-4a75-b886-77b873005da8"));
 }
 
 int smf::source::Format1SmfFeature::getNumMidiTracks() const {

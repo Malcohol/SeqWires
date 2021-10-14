@@ -29,16 +29,16 @@ namespace {
 seqwires::MonophonicSubtracksProcessor::MonophonicSubtracksProcessor() {
     m_numSubtracks =
         m_inputFeature->addField(std::make_unique<babelwires::HasStaticRange<babelwires::IntFeature, 1, 16>>(),
-                                 FIELD_NAME("NumTrk", "Num subtracks", "036ba53e-fdf5-4278-a2c3-7232fc10731c"));
+                                 REGISTERED_ID("NumTrk", "Num subtracks", "036ba53e-fdf5-4278-a2c3-7232fc10731c"));
     m_policy = m_inputFeature->addField(std::make_unique<PolicyFeature>(),
-                                        FIELD_NAME("Policy", "Policy", "6dca88e9-a6ec-4d43-adb8-78b7bfa00ab9"));
+                                        REGISTERED_ID("Policy", "Policy", "6dca88e9-a6ec-4d43-adb8-78b7bfa00ab9"));
     m_trackIn = m_inputFeature->addField(std::make_unique<TrackFeature>(),
-                                         FIELD_NAME("Input", "Input Track", "7e50ba70-0c5e-4493-b088-a3327d65256f"));
+                                         REGISTERED_ID("Input", "Input Track", "7e50ba70-0c5e-4493-b088-a3327d65256f"));
     m_tracksOut =
         m_outputFeature->addField(std::make_unique<SubtrackArrayFeature>(),
-                                  FIELD_NAME("Sbtrks", "Mono tracks", "d3e08407-a6e1-4b1f-b6f7-8fa9be6bdf5f"));
+                                  REGISTERED_ID("Sbtrks", "Mono tracks", "d3e08407-a6e1-4b1f-b6f7-8fa9be6bdf5f"));
     m_otherTrackOut = m_outputFeature->addField(std::make_unique<TrackFeature>(),
-                                                FIELD_NAME("Other", "Other", "bc69fa38-8727-40c3-a90e-bfe6de8ad847"));
+                                                REGISTERED_ID("Other", "Other", "bc69fa38-8727-40c3-a90e-bfe6de8ad847"));
 }
 
 seqwires::MonophonicSubtracksProcessor::Factory::Factory()

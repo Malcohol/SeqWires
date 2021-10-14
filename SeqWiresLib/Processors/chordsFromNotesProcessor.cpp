@@ -4,9 +4,9 @@
 
 seqwires::ChordsFromNotesProcessor::ChordsFromNotesProcessor() {
     m_trackIn = m_inputFeature->addField(std::make_unique<TrackFeature>(),
-                                              FIELD_NAME("Notes", "Notes", "f0ef98dd-6b1a-4a11-ac21-5492ec7ce038"));
+                                              REGISTERED_ID("Notes", "Notes", "f0ef98dd-6b1a-4a11-ac21-5492ec7ce038"));
     m_trackOut = m_outputFeature->addField(std::make_unique<TrackFeature>(),
-                                              FIELD_NAME("Chords", "Chords", "e9edb860-33fb-4c99-bcdc-d746b6bf244e"));
+                                              REGISTERED_ID("Chords", "Chords", "e9edb860-33fb-4c99-bcdc-d746b6bf244e"));
 }
 
 seqwires::ChordsFromNotesProcessor::Factory::Factory()
