@@ -14,7 +14,7 @@
 #include "BabelWiresLib/Identifiers/registeredIdentifier.hpp"
 
 namespace {
-    static const babelwires::FieldIdentifiersSource s_trackNames = {
+    static const babelwires::IdentifiersSource s_trackNames = {
         {"ch0", "Ch. 0", "18cb72e5-6891-428c-beae-aa17db453852"},
         {"ch1", "Ch. 1", "f4bc5369-5d7e-4e18-83ec-44560309edb7"},
         {"ch2", "Ch. 2", "8e58bcc7-af0b-40d0-8a13-ca2c35db8c5e"},
@@ -32,7 +32,7 @@ namespace {
         {"ch14", "Ch. 14", "2742e897-3182-48bf-9558-21e6184cddec"},
         {"ch15", "Ch. 15", "46fb6f3a-15bf-4c3a-972a-78e7ba2ca5b9"}};
 
-    static const babelwires::FieldIdentifiersSource s_extraTrackNames = {
+    static const babelwires::IdentifiersSource s_extraTrackNames = {
         {"ex0", "Extra Ch. 0", "1ae79cf3-41c3-4311-ae93-4cd78f7e1273"},
         {"ex1", "Extra Ch. 1", "3d02ebfa-cf59-4885-8522-d37ce08c6afb"},
         {"ex2", "Extra Ch. 2", "2afadcc4-8b05-425c-b0ff-60c2d126c02f"},
