@@ -14,7 +14,7 @@
 #include "BabelWiresQtUi/uiProjectContext.hpp"
 
 #include "BabelWiresLib/Enums/enum.hpp"
-#include "BabelWiresLib/Features/Path/fieldNameRegistry.hpp"
+#include "BabelWiresLib/Identifiers/identifierRegistry.hpp"
 #include "BabelWiresLib/FileFormat/fileFeature.hpp"
 #include "BabelWiresLib/FileFormat/sourceFileFormat.hpp"
 #include "BabelWiresLib/FileFormat/targetFileFormat.hpp"

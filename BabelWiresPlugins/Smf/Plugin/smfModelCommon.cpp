@@ -11,7 +11,7 @@
 #include "BabelWiresPlugins/Smf/Plugin/smfFormat.hpp"
 #include "SeqWiresLib/Features/trackFeature.hpp"
 
-#include "BabelWiresLib/Features/Path/fieldName.hpp"
+#include "BabelWiresLib/Identifiers/declareIdentifier.hpp"
 
 
 namespace {

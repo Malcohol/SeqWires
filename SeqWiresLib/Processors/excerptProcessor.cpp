@@ -13,7 +13,7 @@
 #include "SeqWiresLib/Functions/excerptFunction.hpp"
 #include "SeqWiresLib/Features/durationFeature.hpp"
 
-#include "BabelWiresLib/Features/Path/fieldName.hpp"
+#include "BabelWiresLib/Identifiers/declareIdentifier.hpp"
 
 namespace {
     using ExcerptArrayFeature =

@@ -15,7 +15,7 @@
 #include "BabelWiresLib/Features/numericFeature.hpp"
 
 
-#include "BabelWiresLib/Features/Path/fieldName.hpp"
+#include "BabelWiresLib/Identifiers/declareIdentifier.hpp"
 
 #include <set>
 

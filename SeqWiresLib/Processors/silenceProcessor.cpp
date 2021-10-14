@@ -13,7 +13,7 @@
 #include "SeqWiresLib/Features/durationFeature.hpp"
 #include "SeqWiresLib/Functions/appendTrackFunction.hpp"
 
-#include "BabelWiresLib/Features/Path/fieldName.hpp"
+#include "BabelWiresLib/Identifiers/declareIdentifier.hpp"
 
 seqwires::SilenceProcessor::SilenceProcessor() {
     m_duration = m_inputFeature->addField(std::make_unique<DurationFeature>(),
