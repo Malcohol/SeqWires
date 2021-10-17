@@ -1,12 +1,12 @@
 # SeqWires
 
-SeqWires is an application for converting music sequence data between various music sequencer formats.
+SeqWires is an application for converting between music sequencer formats.
 
-As well as getting track data out of an input format and putting it in an output format, some support for processing that data is provided. 
-SeqWires attempts to support many common processing use-cases with a convenient and intuitive user interface.
-However, it does not attempt to support every possible transformation of music data and nor does it try to be a visual programming language.
+As well as getting track data out of an input format and putting it in an output format, some support for transforming that data is provided. 
+SeqWires attempts to support many common music transformation scenarios with a convenient and intuitive user interface.
+It does not attempt to support every possible transformation of music data and nor does it try to be a visual programming language.
 
-The following screenshot shows some musical data processing in SeqWires.
+The following screenshot shows an example of music data processing in SeqWires.
 The source file has two tracks: a melody and a simple accompanyment.
 The project repeats the melody, and adds an offset and transposed copy of it.
 The result is like a simple [musical round](https://en.wikipedia.org/wiki/Round_(music)).
