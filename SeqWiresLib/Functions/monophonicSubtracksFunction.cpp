@@ -9,7 +9,7 @@
 
 #include "SeqWiresLib/Tracks/noteEvents.hpp"
 #include "SeqWiresLib/Tracks/trackEventHolder.hpp"
-#include "BabelWiresLib/Features/Path/fieldName.hpp"
+#include "BabelWiresLib/Identifiers/registeredIdentifier.hpp"
 
 #include <algorithm>
 #include <set>

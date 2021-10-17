@@ -11,15 +11,15 @@
 #include "SeqWiresLib/Features/trackFeature.hpp"
 #include "SeqWiresLib/Functions/mergeFunction.hpp"
 
-#include "BabelWiresLib/Features/Path/fieldName.hpp"
+#include "BabelWiresLib/Identifiers/registeredIdentifier.hpp"
 
 #include <set>
 
 seqwires::MergeProcessor::MergeProcessor() {
     m_tracksIn = m_inputFeature->addField(std::make_unique<babelwires::HasStaticSizeRange<babelwires::StandardArrayFeature<seqwires::TrackFeature>, 2, 16>>(),
-                                              FIELD_NAME("Input", "Input tracks", "80b175ae-c954-4943-96d8-eaffcd7ed6e1"));
+                                              REGISTERED_ID("Input", "Input tracks", "80b175ae-c954-4943-96d8-eaffcd7ed6e1"));
     m_trackOut = m_outputFeature->addField(std::make_unique<TrackFeature>(),
-                                              FIELD_NAME("Output", "Output Track", "ab56e996-d361-42ed-a0df-44a90a73dc20"));
+                                              REGISTERED_ID("Output", "Output Track", "ab56e996-d361-42ed-a0df-44a90a73dc20"));
 }
 
 seqwires::MergeProcessor::Factory::Factory()
