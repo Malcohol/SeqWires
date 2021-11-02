@@ -15,7 +15,6 @@
 #include "BabelWiresLib/Features/numericFeature.hpp"
 
 #include "BabelWiresLib/Identifiers/registeredIdentifier.hpp"
-#include "BabelWiresLib/ValueNames/valueNamesImpl.hpp"
 
 #include <set>
 
