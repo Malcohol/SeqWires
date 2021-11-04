@@ -29,7 +29,7 @@ seqwires::ExcerptProcessor::ExcerptProcessor() {
 }
 
 seqwires::ExcerptProcessor::Factory::Factory()
-    : CommonProcessorFactory("TrackExcerpt", "Excerpt", 1) {}
+    : CommonProcessorFactory(REGISTERED_LONGID("TrackExcerpt", "Excerpt", "83c74dba-7861-447c-9abb-0b4439061baf"), 1) {}
 
 void seqwires::ExcerptProcessor::processEntry(babelwires::UserLogger& userLogger, const seqwires::TrackFeature& input, seqwires::TrackFeature& output) const {
     auto trackOut = getTrackExcerpt(input.get(), m_start->get(), m_duration->get());

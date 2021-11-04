@@ -23,7 +23,7 @@ seqwires::MergeProcessor::MergeProcessor() {
 }
 
 seqwires::MergeProcessor::Factory::Factory()
-    : CommonProcessorFactory("MergeTracks", "Merge", 1) {}
+    : CommonProcessorFactory(REGISTERED_LONGID("MergeTracks", "Merge", "ed004257-0ae3-44aa-abb9-d752c2eba0c1"), 1) {}
 
 void seqwires::MergeProcessor::process(babelwires::UserLogger& userLogger) {
     bool hasChanges = false;

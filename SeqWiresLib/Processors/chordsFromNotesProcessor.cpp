@@ -10,7 +10,7 @@ seqwires::ChordsFromNotesProcessor::ChordsFromNotesProcessor() {
 }
 
 seqwires::ChordsFromNotesProcessor::Factory::Factory()
-    : CommonProcessorFactory("ChordsFromNotes", "Chords from Notes", 1) {}
+    : CommonProcessorFactory(REGISTERED_LONGID("ChordsFromNotes", "Chords from Notes", "9980627f-22b5-48d1-b26f-911038750568"), 1) {}
 
 void seqwires::ChordsFromNotesProcessor::process(babelwires::UserLogger& userLogger) {
     if (m_trackIn->isChanged(babelwires::Feature::Changes::SomethingChanged)) {

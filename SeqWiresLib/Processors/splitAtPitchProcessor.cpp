@@ -33,7 +33,7 @@ seqwires::SplitAtPitchProcessor::SplitAtPitchProcessor() {
 }
 
 seqwires::SplitAtPitchProcessor::Factory::Factory()
-    : CommonProcessorFactory("SplitAtPitchProcessor", "Split At Pitch", 1) {}
+    : CommonProcessorFactory(REGISTERED_LONGID("SplitAtPitchProcessor", "Split At Pitch", "9f5076f5-42a1-4655-a71e-b6b06a4e92cc"), 1) {}
 
 void seqwires::SplitAtPitchProcessor::process(babelwires::UserLogger& userLogger) {
     if (m_pitch->isChanged(babelwires::Feature::Changes::SomethingChanged) || m_trackIn->isChanged(babelwires::Feature::Changes::SomethingChanged)) {

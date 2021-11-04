@@ -1,8 +1,8 @@
 /**
  * A TapeFile holds a decoded version of the audio storage for a sequence.
- * 
+ *
  * (C) 2021 Malcolm Tyrrell
- * 
+ *
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
 #include "Seq2tapeLib/tapeFile.hpp"
@@ -15,12 +15,10 @@
 #include <cstring>
 #include <sstream>
 
-seq2tape::TapeFile::TapeFile(std::string formatIdentifier) {
-    assert(babelwires::isValidIdentifier(formatIdentifier.c_str()) && "Format identifier was not valid");
-    m_formatIdentifier = std::move(formatIdentifier);
-}
+seq2tape::TapeFile::TapeFile(babelwires::Identifier formatIdentifier)
+    : m_formatIdentifier(formatIdentifier) {}
 
-std::string seq2tape::TapeFile::getFormatIdentifier() const {
+babelwires::Identifier seq2tape::TapeFile::getFormatIdentifier() const {
     return m_formatIdentifier;
 }
 
@@ -90,6 +88,12 @@ namespace {
         stream << str;
     }
 
+    void writeIdentifier(std::ostream& stream, babelwires::Identifier identifier) {
+        std::ostringstream os;
+        os << identifier;
+        writeString(stream, os.str());
+    }
+
     std::string readString(babelwires::DataSource& dataSource) {
         std::uint16_t size = readU16(dataSource);
         std::string result(size, '\0');
@@ -97,6 +101,11 @@ namespace {
             result[i] = dataSource.getNextByte();
         }
         return result;
+    }
+
+    babelwires::Identifier readIdentifier(babelwires::DataSource& dataSource) {
+        const std::string s = readString(dataSource);
+        return babelwires::Identifier::deserializeFromString(s);
     }
 
 } // namespace
@@ -108,7 +117,7 @@ void seq2tape::TapeFile::write(std::ostream& stream) const {
     }
     stream.put(s_seq2tapeVersion);
     stream.put(' ');
-    writeString(stream, m_formatIdentifier);
+    writeIdentifier(stream, m_formatIdentifier);
     writeString(stream, m_name);
     writeString(stream, m_copyright);
 
@@ -120,7 +129,9 @@ void seq2tape::TapeFile::write(std::ostream& stream) const {
     }
 }
 
-seq2tape::TapeFile::TapeFile(babelwires::DataSource& dataSource) {
+seq2tape::TapeFile::TapeFile(babelwires::DataSource& dataSource)
+    : m_formatIdentifier("_bad_")
+{
     for (int i = 0; i < strlen(s_seq2tapePrefix); ++i) {
         if (dataSource.getNextByte() != s_seq2tapePrefix[i]) {
             throw babelwires::IoException() << "Not a valid seq2tape file";
@@ -131,7 +142,7 @@ seq2tape::TapeFile::TapeFile(babelwires::DataSource& dataSource) {
         throw babelwires::IoException()
             << "Unrecognized version. This program only handles seq2tape files up to version " << s_seq2tapeVersion;
     }
-    m_formatIdentifier = readString(dataSource);
+    m_formatIdentifier = readIdentifier(dataSource);
     m_name = readString(dataSource);
     m_copyright = readString(dataSource);
     std::uint16_t numDataFiles = readU16(dataSource);
