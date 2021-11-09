@@ -41,7 +41,7 @@ seqwires::MonophonicSubtracksProcessor::MonophonicSubtracksProcessor() {
 }
 
 seqwires::MonophonicSubtracksProcessor::Factory::Factory()
-    : CommonProcessorFactory(REGISTERED_LONGID("MonophonicSubtracksProcessor", "Monophonic subtracks", "0b131aaf-91ce-4552-9206-a680615775b1"), 1) {}
+    : CommonProcessorFactory(REGISTERED_LONGID("MonoSubtracksProcessor", "Monophonic subtracks", "0b131aaf-91ce-4552-9206-a680615775b1"), 1) {}
 
 void seqwires::MonophonicSubtracksProcessor::process(babelwires::UserLogger& userLogger) {
     if (m_numSubtracks->isChanged(babelwires::Feature::Changes::SomethingChanged)) {

@@ -17,7 +17,7 @@
 ENUM_DEFINE_ENUM_VALUE_SOURCE(MONOPHONIC_SUBTRACK_POLICY);
 
 seqwires::MonophonicSubtracksPolicyEnum::MonophonicSubtracksPolicyEnum()
-    : babelwires::RegisteredEnum<MonophonicSubtracksPolicyEnum>("MonophonicSubtracksPolicy", "Monophonic Subtracks Policy", 1, ENUM_IDENTIFIER_VECTOR(MONOPHONIC_SUBTRACK_POLICY), 0) {}
+    : babelwires::RegisteredEnum<MonophonicSubtracksPolicyEnum>(REGISTERED_LONGID("MonoSubtracksPolicy", "Monophonic Subtracks Policy", "d9ae8da5-3001-45ff-b2ce-4375f7d18afd"), 1, ENUM_IDENTIFIER_VECTOR(MONOPHONIC_SUBTRACK_POLICY), 0) {}
 
 
 namespace {
