@@ -8,6 +8,7 @@
 #pragma once
 
 #include "Common/types.hpp"
+#include "Common/Identifiers/identifier.hpp"
 
 #include <memory>
 #include <string>
@@ -26,7 +27,7 @@ namespace seq2tape {
     class TapeFile {
       public:
         /// Construct an empty TapeFile for the given format.
-        TapeFile(std::string formatIdentifier);
+        TapeFile(babelwires::LongIdentifier formatIdentifier);
 
         /// Load the TapeFile from the data stream.
         TapeFile(babelwires::DataSource& dataSource);
@@ -34,7 +35,7 @@ namespace seq2tape {
         /// Write the PmcTapFile as bytes to the stream.
         void write(std::ostream& stream) const;
 
-        std::string getFormatIdentifier() const;
+        babelwires::LongIdentifier getFormatIdentifier() const;
 
         std::string getName() const;
         void setName(std::string name);
@@ -50,7 +51,7 @@ namespace seq2tape {
         void addDataFile(std::unique_ptr<DataFile> dataFile);
 
       protected:
-        std::string m_formatIdentifier;
+        babelwires::LongIdentifier m_formatIdentifier;
         std::string m_name;
         std::string m_copyright;
 

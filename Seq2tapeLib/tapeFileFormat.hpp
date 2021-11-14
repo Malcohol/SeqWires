@@ -26,7 +26,7 @@ namespace seq2tape {
 
     /// A registered format which knows how to convert between a TapeFile::DataFile and audio.
     struct TapeFileFormat : public babelwires::FileTypeEntry, babelwires::ProductInfo {
-        TapeFileFormat(std::string identifier, std::string name, babelwires::VersionNumber version,
+        TapeFileFormat(babelwires::LongIdentifier identifier, babelwires::VersionNumber version,
                        Extensions extensions);
 
         virtual std::unique_ptr<TapeFile::DataFile> loadFromAudio(babelwires::AudioSource& source) const = 0;

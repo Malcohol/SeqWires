@@ -11,7 +11,7 @@
 #include "SeqWiresLib/Features/trackFeature.hpp"
 #include "SeqWiresLib/Functions/appendTrackFunction.hpp"
 
-#include "BabelWiresLib/Identifiers/registeredIdentifier.hpp"
+#include "Common/Identifiers/registeredIdentifier.hpp"
 
 #include <set>
 
@@ -23,7 +23,7 @@ seqwires::ConcatenateProcessor::ConcatenateProcessor() {
 }
 
 seqwires::ConcatenateProcessor::Factory::Factory()
-    : CommonProcessorFactory("ConcatenateTracks", "Concatenate", 1) {}
+    : CommonProcessorFactory(REGISTERED_LONGID("ConcatenateTracks", "Concatenate", "42b00d10-9d16-42d2-8ba6-971aad016da0"), 1) {}
 
 void seqwires::ConcatenateProcessor::process(babelwires::UserLogger& userLogger) {
     bool hasChanges = false;

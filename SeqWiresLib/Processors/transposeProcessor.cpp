@@ -12,7 +12,7 @@
 #include "SeqWiresLib/Features/trackFeature.hpp"
 #include "SeqWiresLib/Functions/transposeFunction.hpp"
 
-#include "BabelWiresLib/Identifiers/registeredIdentifier.hpp"
+#include "Common/Identifiers/registeredIdentifier.hpp"
 
 #include <set>
 
@@ -28,7 +28,7 @@ seqwires::TransposeProcessor::TransposeProcessor() {
 }
 
 seqwires::TransposeProcessor::Factory::Factory()
-    : CommonProcessorFactory("TransposeTracks", "Transpose", 1) {}
+    : CommonProcessorFactory(REGISTERED_LONGID("TransposeTracks", "Transpose", "3414f6cf-290a-421e-bce5-6a98ed0483af"), 1) {}
 
 void seqwires::TransposeProcessor::processEntry(babelwires::UserLogger& userLogger, const seqwires::TrackFeature& input, seqwires::TrackFeature& output) const {
     auto trackOut = transposeTrack(input.get(), m_pitchOffset->get());

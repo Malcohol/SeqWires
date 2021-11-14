@@ -13,7 +13,7 @@
 #include "SeqWiresLib/Features/durationFeature.hpp"
 #include "SeqWiresLib/Functions/appendTrackFunction.hpp"
 
-#include "BabelWiresLib/Identifiers/registeredIdentifier.hpp"
+#include "Common/Identifiers/registeredIdentifier.hpp"
 
 seqwires::SilenceProcessor::SilenceProcessor() {
     m_duration = m_inputFeature->addField(std::make_unique<DurationFeature>(),
@@ -23,7 +23,7 @@ seqwires::SilenceProcessor::SilenceProcessor() {
 }
 
 seqwires::SilenceProcessor::Factory::Factory()
-    : CommonProcessorFactory("SilentTrack", "Silence", 1) {}
+    : CommonProcessorFactory(REGISTERED_LONGID("SilentTrack", "Silence", "c59e4643-b7d8-430b-980b-bd81b5aa007b"), 1) {}
 
 void seqwires::SilenceProcessor::process(babelwires::UserLogger& userLogger) {
     if (m_duration->isChanged(babelwires::Feature::Changes::SomethingChanged)) {

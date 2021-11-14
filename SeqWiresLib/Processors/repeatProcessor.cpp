@@ -12,7 +12,7 @@
 #include "SeqWiresLib/Features/trackFeature.hpp"
 #include "SeqWiresLib/Functions/appendTrackFunction.hpp"
 
-#include "BabelWiresLib/Identifiers/registeredIdentifier.hpp"
+#include "Common/Identifiers/registeredIdentifier.hpp"
 
 #include <set>
 
@@ -30,7 +30,7 @@ seqwires::RepeatProcessor::RepeatProcessor() {
 }
 
 seqwires::RepeatProcessor::Factory::Factory()
-    : CommonProcessorFactory("RepeatTracks", "Repeat", 1) {}
+    : CommonProcessorFactory(REGISTERED_LONGID("RepeatTracks", "Repeat", "6c5b3e89-bb57-4c90-8a66-1d8cdeb29db9"), 1) {}
 
 void seqwires::RepeatProcessor::processEntry(babelwires::UserLogger& userLogger, const seqwires::TrackFeature& input, seqwires::TrackFeature& output) const {
     auto trackOut = std::make_unique<Track>();

@@ -11,7 +11,7 @@
 #include "BabelWiresPlugins/Smf/Plugin/smfFormat.hpp"
 #include "SeqWiresLib/Features/trackFeature.hpp"
 
-#include "BabelWiresLib/Identifiers/registeredIdentifier.hpp"
+#include "Common/Identifiers/registeredIdentifier.hpp"
 
 smf::target::ChannelTrackFeature::ChannelTrackFeature() {
     m_channelNum = addField(std::make_unique<babelwires::HasStaticRange<babelwires::IntFeature, 0, 15>>(),
