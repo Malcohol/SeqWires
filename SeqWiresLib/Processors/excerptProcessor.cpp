@@ -6,7 +6,11 @@
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
 #include "SeqWiresLib/Processors/excerptProcessor.hpp"
+<<<<<<< HEAD
 #include "SeqWiresLib/Features/trackFeature.hpp"
+=======
+
+>>>>>>> 02d1df7 (Add sketch of ChordMapProcessor)
 #include "SeqWiresLib/Functions/excerptFunction.hpp"
 #include "SeqWiresLib/Features/durationFeature.hpp"
 
@@ -17,6 +21,7 @@
 
 #include "Common/Identifiers/registeredIdentifier.hpp"
 
+<<<<<<< HEAD
 namespace {
     using ExcerptArrayFeature =
         babelwires::HasStaticSizeRange<babelwires::StandardArrayFeature<seqwires::TrackFeature>, 1, 16>;
@@ -24,6 +29,9 @@ namespace {
 
 seqwires::ExcerptProcessor::ExcerptProcessor(const babelwires::ProjectContext& projectContext)
 : babelwires::ParallelProcessor<seqwires::TrackFeature, seqwires::TrackFeature>(projectContext) {
+=======
+seqwires::ExcerptProcessor::ExcerptProcessor() {
+>>>>>>> 02d1df7 (Add sketch of ChordMapProcessor)
     m_start = m_inputFeature->addField(std::make_unique<DurationFeature>(),
                                        REGISTERED_ID("Start", "Start", "4b95f5db-a542-4660-a8db-97d3a5f831ca"));
     m_duration = m_inputFeature->addField(std::make_unique<DurationFeature>(),

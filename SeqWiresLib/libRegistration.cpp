@@ -21,6 +21,7 @@
 #include "SeqWiresLib/Processors/splitAtPitchProcessor.hpp"
 #include "SeqWiresLib/Processors/transposeProcessor.hpp"
 #include "SeqWiresLib/Processors/chordsFromNotesProcessor.hpp"
+#include "SeqWiresLib/Processors/chordMapProcessor.hpp"
 
 #include "SeqWiresLib/Functions/monophonicSubtracksFunction.hpp"
 
@@ -28,6 +29,7 @@
 void seqwires::registerLib(babelwires::ProjectContext& context) {
     context.m_enumRegistry.addEntry(std::make_unique<MonophonicSubtracksPolicyEnum>());
 
+    context.m_processorReg.addEntry(std::make_unique<ChordMapProcessor::Factory>());
     context.m_processorReg.addEntry(std::make_unique<ConcatenateProcessor::Factory>());
     context.m_processorReg.addEntry(std::make_unique<ExcerptProcessor::Factory>());
     context.m_processorReg.addEntry(std::make_unique<MergeProcessor::Factory>());

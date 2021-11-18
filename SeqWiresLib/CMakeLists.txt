@@ -3,6 +3,7 @@ SET( SEQWIRESLIB_SRCS
 	Features/trackFeature.cpp
 	Features/pitchFeature.cpp
 	Processors/chordsFromNotesProcessor.cpp
+	Processors/chordMapProcessor.cpp
 	Processors/concatenateProcessor.cpp
 	Processors/excerptProcessor.cpp
 	Processors/mergeProcessor.cpp
