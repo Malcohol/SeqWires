@@ -28,6 +28,8 @@ Currently, no plugins are included in the code base, but please watch this space
 Ultimately, I do intend to include functionality for interacting with audio storage formats within SeqWires, which is why the Seq2tape code is part of this project.
 However, even when I do so, there will be still be a use-case for the stand-alone seq2tape application.
 
+See also, the [FAQ](Docs/FAQ.md).
+
 ## Status
 
 [![SeqWires build and test pipeline](https://github.com/Malcohol/SeqWires/actions/workflows/ci.yml/badge.svg)](https://github.com/Malcohol/SeqWires/actions/workflows/ci.yml)
