@@ -17,6 +17,8 @@ Right now, the supported formats are:
 * SMF (standard MIDI file)
 * Many more formats to come :D 
 
+See also, the [FAQ](Docs/FAQ.md).
+
 ## Seq2tape
 
 Many pre-MIDI or low-end sequencers and drum machines use cassette tapes to store their sequence data.
@@ -27,8 +29,6 @@ Currently, no plugins are included in the code base, but please watch this space
 
 Ultimately, I do intend to include functionality for interacting with audio storage formats within SeqWires, which is why the Seq2tape code is part of this project.
 However, even when I do so, there will be still be a use-case for the stand-alone seq2tape application.
-
-See also, the [FAQ](Docs/FAQ.md).
 
 ## Status
 
