@@ -7,8 +7,9 @@
  **/
 #pragma once
 
-#include "BabelWiresLib/Enums/enumWithCppEnum.hpp"
 #include "SeqWiresLib/musicTypes.hpp"
+
+#include "BabelWiresLib/Enums/enumWithCppEnum.hpp"
 
 /// Use uuids, etc, as for Enums, since it is very likely I will add an Enum for this.
 /// These match the "Chord type" values from the XF Format Specifications v2.01
@@ -60,22 +61,18 @@ namespace seqwires {
     typedef babelwires::Byte Velocity;
 
     /// Carries the enum of chord types.
-    /// This can become an "Enum" when needed.
-    class ChordType {
+    class ChordType : public babelwires::RegisteredEnum<ChordType> {
     public:
-        enum class Value : std::uint8_t {
-            CHORD_TYPE_VALUES(CHORD_TYPE_SELECT_FIRST_ARGUMENT) NotAChord,
-            NUM_CHORD_TYPES = NotAChord
-        };
-    };
+        ChordType();
 
-    std::string chordTypeToString(ChordType::Value t);
+        ENUM_DEFINE_CPP_ENUM(CHORD_TYPE_VALUES);
+    };
 
     /// Defines the state of a chord event.
     // Note: This does not currently include all the data in a XF chord event.
     struct Chord {
         PitchClass m_root = seqwires::PITCH_CLASS_C;
-        ChordType::Value m_chordType = seqwires::ChordType::Value::NotAChord;
+        ChordType::Value m_chordType = seqwires::ChordType::Value::NotAValue;
 
         bool operator==(Chord other) const {
             return (m_root == other.m_root) && (m_chordType == other.m_chordType);

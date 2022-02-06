@@ -24,11 +24,12 @@
 #include "SeqWiresLib/Processors/chordMapProcessor.hpp"
 
 #include "SeqWiresLib/Functions/monophonicSubtracksFunction.hpp"
-
+#include "SeqWiresLib/chord.hpp"
 
 void seqwires::registerLib(babelwires::ProjectContext& context) {
     context.m_enumRegistry.addEntry(std::make_unique<MonophonicSubtracksPolicyEnum>());
-
+    context.m_enumRegistry.addEntry(std::make_unique<ChordType>());
+    
     context.m_processorReg.addEntry(std::make_unique<ChordMapProcessor::Factory>());
     context.m_processorReg.addEntry(std::make_unique<ConcatenateProcessor::Factory>());
     context.m_processorReg.addEntry(std::make_unique<ExcerptProcessor::Factory>());

@@ -7,15 +7,7 @@
  **/
 #include "SeqWiresLib/chord.hpp"
 
-namespace {
+ENUM_DEFINE_ENUM_VALUE_SOURCE(CHORD_TYPE_VALUES);
 
-#define CHORD_TYPE_SELECT_SECOND_ARGUMENT(A, B, C) B,
-    const char* s_chordTypeNames[static_cast<std::uint8_t>(seqwires::ChordType::Value::NUM_CHORD_TYPES)] = {
-        CHORD_TYPE_VALUES(CHORD_TYPE_SELECT_SECOND_ARGUMENT)
-    };
-} // namespace
-
-
-std::string seqwires::chordTypeToString(ChordType::Value t) {
-    return s_chordTypeNames[static_cast<std::uint8_t>(t)];
-}
+seqwires::ChordType::ChordType()
+: RegisteredEnum<ChordType>(REGISTERED_LONGID("ChordType", "Chord Type", "c63ea174-1562-4cb5-a456-d6c0bd89e335"), 1, ENUM_IDENTIFIER_VECTOR(CHORD_TYPE_VALUES), 0) {}
