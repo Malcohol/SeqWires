@@ -48,7 +48,7 @@ Clone recursively to ensure submodules are populated:
 git clone --recurse-submodules https://github.com/Malcohol/SeqWires.git
 ```
 
-SeqWires is implemented using the [BabelWires](https://github.com/Malcohol/BabelWires) framework. 
+SeqWires is implemented using the [BabelWires](https://github.com/Malcohol/BabelWires) framework (which in turn makes heavy use of the [QT Node Editor](https://github.com/paceholder/nodeeditor) project). 
 SeqWires is intended to be cross platform.
 I primarily work in a GNU/Linux environment, but I'll try to ensure the Windows build works too.
 Building in other environments is untested.
