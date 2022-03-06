@@ -19,7 +19,7 @@ namespace seqwires {
     /// A processor which limits a track to events between certain points.
     class SplitAtPitchProcessor : public babelwires::CommonProcessor {
       public:
-        SplitAtPitchProcessor();
+        SplitAtPitchProcessor(const babelwires::ProjectContext& projectContext);
 
         virtual void process(babelwires::UserLogger& userLogger) override;
 

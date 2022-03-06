@@ -32,7 +32,7 @@ std::string smf::SmfSourceFormat::getProductName() const {
     return s_productName;
 }
 
-std::unique_ptr<babelwires::FileFeature> smf::SmfSourceFormat::loadFromFile(babelwires::DataSource& dataSource,
+std::unique_ptr<babelwires::FileFeature> smf::SmfSourceFormat::loadFromFile(babelwires::DataSource& dataSource, const ProjectContext& projectContext,
                                                                       babelwires::UserLogger& userLogger) const {
     return parseSmfSequence(dataSource, userLogger);
 }
@@ -48,7 +48,7 @@ std::string smf::SmfFormat0TargetFormat::getProductName() const {
     return s_productName;
 }
 
-std::unique_ptr<babelwires::FileFeature> smf::SmfFormat0TargetFormat::createNewFeature() const {
+std::unique_ptr<babelwires::FileFeature> smf::SmfFormat0TargetFormat::createNewFeature(const ProjectContext& projectContext) const {
     return std::make_unique<target::Format0SmfFeature>();
 }
 

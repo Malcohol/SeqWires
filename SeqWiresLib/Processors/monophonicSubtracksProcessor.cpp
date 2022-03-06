@@ -13,6 +13,7 @@
 #include "BabelWiresLib/Features/enumFeature.hpp"
 #include "BabelWiresLib/Features/featureMixins.hpp"
 #include "BabelWiresLib/Features/numericFeature.hpp"
+#include "BabelWiresLib/Features/rootFeature.hpp"
 
 #include "Common/Identifiers/registeredIdentifier.hpp"
 
@@ -25,7 +26,8 @@ namespace {
     using PolicyFeature = babelwires::EnumWithCppEnumFeature<seqwires::MonophonicSubtracksPolicyEnum>;
 } // namespace
 
-seqwires::MonophonicSubtracksProcessor::MonophonicSubtracksProcessor() {
+seqwires::MonophonicSubtracksProcessor::MonophonicSubtracksProcessor(const babelwires::ProjectContext& projectContext)
+: CommonProcessor(projectContext) {
     m_numSubtracks =
         m_inputFeature->addField(std::make_unique<babelwires::HasStaticRange<babelwires::IntFeature, 1, 16>>(),
                                  REGISTERED_ID("NumTrk", "Num subtracks", "036ba53e-fdf5-4278-a2c3-7232fc10731c"));

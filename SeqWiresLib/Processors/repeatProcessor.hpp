@@ -21,7 +21,7 @@ namespace seqwires {
     /// A processor which limits a track to events between certain points.
     class RepeatProcessor : public babelwires::ParallelProcessor<seqwires::TrackFeature, seqwires::TrackFeature> {
       public:
-        RepeatProcessor();
+        RepeatProcessor(const babelwires::ProjectContext& projectContext);
 
         void processEntry(babelwires::UserLogger& userLogger, const seqwires::TrackFeature& input, seqwires::TrackFeature& output) const override;
 

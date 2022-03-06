@@ -6,6 +6,7 @@
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
 #include "SeqWiresLib/Processors/splitAtPitchProcessor.hpp"
+
 #include "SeqWiresLib/Features/trackFeature.hpp"
 #include "SeqWiresLib/Functions/splitAtPitchFunction.hpp"
 #include "SeqWiresLib/Features/pitchFeature.hpp"
@@ -13,13 +14,14 @@
 #include "BabelWiresLib/Features/arrayFeature.hpp"
 #include "BabelWiresLib/Features/featureMixins.hpp"
 #include "BabelWiresLib/Features/numericFeature.hpp"
-
+#include "BabelWiresLib/Features/rootFeature.hpp"
 
 #include "Common/Identifiers/registeredIdentifier.hpp"
 
 #include <set>
 
-seqwires::SplitAtPitchProcessor::SplitAtPitchProcessor() {
+seqwires::SplitAtPitchProcessor::SplitAtPitchProcessor(const babelwires::ProjectContext& projectContext)
+: CommonProcessor(projectContext) {
     m_pitch = m_inputFeature->addField(std::make_unique<PitchFeature>(),
                                        REGISTERED_ID("Pitch", "Pitch", "6b721baa-084f-450b-bf35-2e08a9592958"));
     m_trackIn = m_inputFeature->addField(std::make_unique<TrackFeature>(),

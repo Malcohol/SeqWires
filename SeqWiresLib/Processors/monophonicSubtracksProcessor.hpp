@@ -22,7 +22,7 @@ namespace seqwires {
     /// A processor which limits a track to events between certain points.
     class MonophonicSubtracksProcessor : public babelwires::CommonProcessor {
       public:
-        MonophonicSubtracksProcessor();
+        MonophonicSubtracksProcessor(const babelwires::ProjectContext& projectContext);
 
         virtual void process(babelwires::UserLogger& userLogger) override;
 

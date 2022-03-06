@@ -2,7 +2,10 @@
 #include "SeqWiresLib/Features/trackFeature.hpp"
 #include "SeqWiresLib/Functions/chordsFromNotesFunction.hpp"
 
-seqwires::ChordsFromNotesProcessor::ChordsFromNotesProcessor() {
+#include "BabelWiresLib/Features/rootFeature.hpp"
+
+seqwires::ChordsFromNotesProcessor::ChordsFromNotesProcessor(const babelwires::ProjectContext& projectContext)
+: babelwires::CommonProcessor(projectContext) {
     m_trackIn = m_inputFeature->addField(std::make_unique<TrackFeature>(),
                                               REGISTERED_ID("Notes", "Notes", "f0ef98dd-6b1a-4a11-ac21-5492ec7ce038"));
     m_trackOut = m_outputFeature->addField(std::make_unique<TrackFeature>(),

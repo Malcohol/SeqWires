@@ -6,16 +6,20 @@
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
 #include "SeqWiresLib/Processors/silenceProcessor.hpp"
-#include "BabelWiresLib/Features/arrayFeature.hpp"
-#include "BabelWiresLib/Features/featureMixins.hpp"
-#include "BabelWiresLib/Features/numericFeature.hpp"
+
 #include "SeqWiresLib/Features/trackFeature.hpp"
 #include "SeqWiresLib/Features/durationFeature.hpp"
 #include "SeqWiresLib/Functions/appendTrackFunction.hpp"
 
+#include "BabelWiresLib/Features/arrayFeature.hpp"
+#include "BabelWiresLib/Features/featureMixins.hpp"
+#include "BabelWiresLib/Features/numericFeature.hpp"
+#include "BabelWiresLib/Features/rootFeature.hpp"
+
 #include "Common/Identifiers/registeredIdentifier.hpp"
 
-seqwires::SilenceProcessor::SilenceProcessor() {
+seqwires::SilenceProcessor::SilenceProcessor(const babelwires::ProjectContext& projectContext)
+: CommonProcessor(projectContext) {
     m_duration = m_inputFeature->addField(std::make_unique<DurationFeature>(),
                                        REGISTERED_ID("Durn", "Duration", "05d3ea91-cb90-42f5-9988-2fb2e02e231c"));
     m_trackOut = m_outputFeature->addField(std::make_unique<TrackFeature>(),

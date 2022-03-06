@@ -12,7 +12,7 @@ namespace seqwires {
 
     class ChordsFromNotesProcessor : public babelwires::CommonProcessor {
       public:
-        ChordsFromNotesProcessor();
+        ChordsFromNotesProcessor(const babelwires::ProjectContext& projectContext);
 
         virtual void process(babelwires::UserLogger& userLogger) override;
 
