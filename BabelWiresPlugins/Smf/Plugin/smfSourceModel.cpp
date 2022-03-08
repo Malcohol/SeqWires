@@ -7,9 +7,11 @@
  **/
 #include "BabelWiresPlugins/Smf/Plugin/smfSourceModel.hpp"
 
-#include "BabelWiresLib/Features/featureMixins.hpp"
 #include "BabelWiresPlugins/Smf/Plugin/smfFormat.hpp"
+
 #include "SeqWiresLib/Features/trackFeature.hpp"
+
+#include "BabelWiresLib/Features/featureMixins.hpp"
 
 #include "Common/Identifiers/registeredIdentifier.hpp"
 
@@ -85,8 +87,8 @@ seqwires::TrackFeature* smf::source::ExtensibleChannelGroup::addTrack(int c) {
     }
 }
 
-smf::source::SmfFeature::SmfFeature(Format f)
-    : babelwires::FileFeature(SmfSourceFormat::getThisIdentifier())
+smf::source::SmfFeature::SmfFeature(const babelwires::ProjectContext& projectContext, Format f)
+    : babelwires::FileFeature(projectContext, SmfSourceFormat::getThisIdentifier())
     , m_format(f) {
     assert((f != SMF_UNKNOWN_FORMAT) && "You can only construct a format 0, 1 or 2 MIDI file");
     m_metadata = addField(std::make_unique<MidiMetadata>(),
@@ -105,8 +107,8 @@ const smf::MidiMetadata& smf::source::SmfFeature::getMidiMetadata() const {
     return *m_metadata;
 }
 
-smf::source::Format0SmfFeature::Format0SmfFeature()
-    : SmfFeature(SMF_FORMAT_0) {
+smf::source::Format0SmfFeature::Format0SmfFeature(const babelwires::ProjectContext& projectContext)
+    : SmfFeature(projectContext, SMF_FORMAT_0) {
     m_channelGroup = addField(std::make_unique<RecordChannelGroup>(),
                               REGISTERED_ID("tracks", "tracks", "3fb0f062-4e8e-4b37-a598-edcd63f82971"));
 }
@@ -124,8 +126,8 @@ smf::source::ChannelGroup* smf::source::Format0SmfFeature::getMidiTrack0() {
     return m_channelGroup;
 }
 
-smf::source::Format1SmfFeature::Format1SmfFeature()
-    : SmfFeature(SMF_FORMAT_1) {
+smf::source::Format1SmfFeature::Format1SmfFeature(const babelwires::ProjectContext& projectContext)
+    : SmfFeature(projectContext, SMF_FORMAT_1) {
     m_tracks = addField(std::make_unique<TrackArray>(),
                         REGISTERED_ID("Tracks", "tracks", "3042e0e6-62a6-4a75-b886-77b873005da8"));
 }

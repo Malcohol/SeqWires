@@ -76,7 +76,7 @@ namespace source {
         MidiMetadata& getMidiMetadata();
         const MidiMetadata& getMidiMetadata() const;
       protected:
-        SmfFeature(Format f);
+        SmfFeature(const babelwires::ProjectContext& projectContext, Format f);
 
       protected:
         Format m_format;
@@ -89,7 +89,7 @@ namespace source {
     /// All note data for each channel is mixed into one midi track.
     class Format0SmfFeature : public SmfFeature {
       public:
-        Format0SmfFeature();
+        Format0SmfFeature(const babelwires::ProjectContext& projectContext);
 
         virtual int getNumMidiTracks() const override;
         virtual const ChannelGroup& getMidiTrack(int i) const override;
@@ -108,7 +108,7 @@ namespace source {
     /// Note data is organized into tracks, but the events may belong to different channels.
     class Format1SmfFeature : public SmfFeature {
       public:
-        Format1SmfFeature();
+        Format1SmfFeature(const babelwires::ProjectContext& projectContext);
 
         virtual int getNumMidiTracks() const override;
         virtual const ChannelGroup& getMidiTrack(int i) const override;

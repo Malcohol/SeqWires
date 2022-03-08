@@ -32,9 +32,9 @@ std::string smf::SmfSourceFormat::getProductName() const {
     return s_productName;
 }
 
-std::unique_ptr<babelwires::FileFeature> smf::SmfSourceFormat::loadFromFile(babelwires::DataSource& dataSource, const ProjectContext& projectContext,
+std::unique_ptr<babelwires::FileFeature> smf::SmfSourceFormat::loadFromFile(babelwires::DataSource& dataSource, const babelwires::ProjectContext& projectContext,
                                                                       babelwires::UserLogger& userLogger) const {
-    return parseSmfSequence(dataSource, userLogger);
+    return parseSmfSequence(dataSource, projectContext, userLogger);
 }
 
 smf::SmfFormat0TargetFormat::SmfFormat0TargetFormat()
@@ -48,8 +48,8 @@ std::string smf::SmfFormat0TargetFormat::getProductName() const {
     return s_productName;
 }
 
-std::unique_ptr<babelwires::FileFeature> smf::SmfFormat0TargetFormat::createNewFeature(const ProjectContext& projectContext) const {
-    return std::make_unique<target::Format0SmfFeature>();
+std::unique_ptr<babelwires::FileFeature> smf::SmfFormat0TargetFormat::createNewFeature(const babelwires::ProjectContext& projectContext) const {
+    return std::make_unique<target::Format0SmfFeature>(projectContext);
 }
 
 void smf::SmfFormat0TargetFormat::writeToFile(const babelwires::FileFeature& sequence, std::ostream& os,
@@ -68,8 +68,8 @@ std::string smf::SmfFormat1TargetFormat::getProductName() const {
     return s_productName;
 }
 
-std::unique_ptr<babelwires::FileFeature> smf::SmfFormat1TargetFormat::createNewFeature() const {
-    return std::make_unique<target::Format1SmfFeature>();
+std::unique_ptr<babelwires::FileFeature> smf::SmfFormat1TargetFormat::createNewFeature(const babelwires::ProjectContext& projectContext) const {
+    return std::make_unique<target::Format1SmfFeature>(projectContext);
 }
 
 void smf::SmfFormat1TargetFormat::writeToFile(const babelwires::FileFeature& sequence, std::ostream& os,

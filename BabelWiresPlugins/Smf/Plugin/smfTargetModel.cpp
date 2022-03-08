@@ -46,8 +46,8 @@ babelwires::Range<unsigned int> smf::target::ArrayChannelGroup::doGetSizeRange()
     return defaultRange;
 }
 
-smf::target::SmfFeature::SmfFeature(Format f)
-    : babelwires::FileFeature(SmfSourceFormat::getThisIdentifier())
+smf::target::SmfFeature::SmfFeature(const babelwires::ProjectContext& projectContext, Format f)
+    : babelwires::FileFeature(projectContext, SmfSourceFormat::getThisIdentifier())
     , m_format(f) {
     assert((f != SMF_UNKNOWN_FORMAT) && "You can only construct a format 0, 1 or 2 MIDI file");
     m_metadata = addField(std::make_unique<MidiMetadata>(),
@@ -62,8 +62,8 @@ const smf::MidiMetadata& smf::target::SmfFeature::getMidiMetadata() const {
     return *m_metadata;
 }
 
-smf::target::Format0SmfFeature::Format0SmfFeature()
-    : SmfFeature(SMF_FORMAT_0) {
+smf::target::Format0SmfFeature::Format0SmfFeature(const babelwires::ProjectContext& projectContext)
+    : SmfFeature(projectContext, SMF_FORMAT_0) {
     m_channelGroup = addField(std::make_unique<ArrayChannelGroup>(),
                               REGISTERED_ID("tracks", "tracks", "1aa014da-2fb3-46e2-96df-98c7798b4a87"));
 }
@@ -77,8 +77,8 @@ const smf::target::ChannelGroup& smf::target::Format0SmfFeature::getMidiTrack(in
     return *m_channelGroup;
 }
 
-smf::target::Format1SmfFeature::Format1SmfFeature()
-    : SmfFeature(SMF_FORMAT_1) {
+smf::target::Format1SmfFeature::Format1SmfFeature(const babelwires::ProjectContext& projectContext)
+    : SmfFeature(projectContext, SMF_FORMAT_1) {
     m_channelGroup = addField(std::make_unique<ArrayChannelGroup>(),
                         REGISTERED_ID("tracks", "tracks", "9b3642d2-b50e-487e-96c9-bc39e418c687"));
 }
