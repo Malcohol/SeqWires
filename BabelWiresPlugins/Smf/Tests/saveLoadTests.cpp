@@ -18,7 +18,7 @@
 
 
 TEST(SmfSaveLoadTest, cMajorScale) {
-    libTestUtils::TestEnvironment testEnvironment;
+    testUtils::TestEnvironment testEnvironment;
     testUtils::TempFilePath tempFile("cMajor.mid");
 
     const std::vector<seqwires::Pitch> pitches{60, 62, 64, 65, 67, 69, 71, 72};
@@ -107,7 +107,7 @@ namespace {
 }
 
 TEST(SmfSaveLoadTest, cMajorScaleWithMetadata) {
-    libTestUtils::TestEnvironment testEnvironment;
+    testUtils::TestEnvironment testEnvironment;
 
     const std::vector<seqwires::Pitch> pitches{60, 62, 64, 65, 67, 69, 71, 72};
 
@@ -167,7 +167,7 @@ namespace {
 }
 
 TEST(SmfSaveLoadTest, format0Chords) {
-    libTestUtils::TestEnvironment testEnvironment;
+    testUtils::TestEnvironment testEnvironment;
     testUtils::TempFilePath tempFile("format0Chords.mid");
 
     const char* trackName[3] = { "ch0", "ch1", "ch2" };
@@ -220,7 +220,7 @@ TEST(SmfSaveLoadTest, format0Chords) {
 }
 
 TEST(SmfSaveLoadTest, format1Chords) {
-    libTestUtils::TestEnvironment testEnvironment;
+    testUtils::TestEnvironment testEnvironment;
     testUtils::TempFilePath tempFile("format1Chords.mid");
 
     const char* trackName[3] = { "ch0", "ch1", "ch2" };

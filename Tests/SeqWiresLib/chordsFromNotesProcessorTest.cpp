@@ -673,7 +673,7 @@ TEST(ChordsFromNotesTest, schemeC) {
 }
 
 TEST(ChordsFromNotesTest, processor) {
-    libTestUtils::TestEnvironment testEnvironment;
+    testUtils::TestEnvironment testEnvironment;
 
     seqwires::ChordsFromNotesProcessor processor(testEnvironment.m_projectContext);
 

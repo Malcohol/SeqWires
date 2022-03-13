@@ -63,7 +63,7 @@ TEST(MergeProcessorTest, simpleFunction) {
 
 
 TEST(MergeProcessorTest, processor) {
-    libTestUtils::TestEnvironment testEnvironment;
+    testUtils::TestEnvironment testEnvironment;
 
     seqwires::MergeProcessor processor(testEnvironment.m_projectContext);
 

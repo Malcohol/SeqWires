@@ -81,7 +81,7 @@ TEST(SplitAtPitchProcessorTest, aboveAndBelowSplit) {
 }
 
 TEST(SplitAtPitchProcessorTest, processor) {
-    libTestUtils::TestEnvironment testEnvironment;
+    testUtils::TestEnvironment testEnvironment;
 
     seqwires::SplitAtPitchProcessor processor(testEnvironment.m_projectContext);
 

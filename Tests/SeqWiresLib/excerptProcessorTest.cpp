@@ -124,7 +124,7 @@ TEST(ExcerptProcessorTest, funcGaps) {
 }
 
 TEST(ExcerptProcessorTest, processor) {
-    libTestUtils::TestEnvironment testEnvironment;
+    testUtils::TestEnvironment testEnvironment;
 
     seqwires::ExcerptProcessor processor(testEnvironment.m_projectContext);
 

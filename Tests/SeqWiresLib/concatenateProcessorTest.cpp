@@ -63,7 +63,7 @@ TEST(ConcatenateProcessorTest, appendFuncGaps) {
 }
 
 TEST(ConcatenateProcessorTest, processor) {
-    libTestUtils::TestEnvironment testEnvironment;
+    testUtils::TestEnvironment testEnvironment;
 
     seqwires::ConcatenateProcessor processor(testEnvironment.m_projectContext);
 

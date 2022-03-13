@@ -13,7 +13,7 @@
 #include <Tests/TestUtils/seqTestUtils.hpp>
 
 TEST(SmfTestSuiteTest, loadAllTestFilesWithoutCrashing) {
-    libTestUtils::TestEnvironment testEnvironment;
+    testUtils::TestEnvironment testEnvironment;
     int numFilesTested = 0;
 
     for (auto& p : std::filesystem::directory_iterator(std::filesystem::current_path())) {
@@ -38,7 +38,7 @@ namespace {
 } // namespace
 
 TEST(SmfTestSuiteTest, cMajorScale) {
-    libTestUtils::TestEnvironment testEnvironment;
+    testUtils::TestEnvironment testEnvironment;
 
     babelwires::FileDataSource midiFile("test-c-major-scale.mid");
 
@@ -70,7 +70,7 @@ TEST(SmfTestSuiteTest, cMajorScale) {
 }
 
 TEST(SmfTestSuiteTest, multichannelChords0) {
-    libTestUtils::TestEnvironment testEnvironment;
+    testUtils::TestEnvironment testEnvironment;
 
     babelwires::FileDataSource midiFile("test-multichannel-chords-0.mid");
 
@@ -103,7 +103,7 @@ TEST(SmfTestSuiteTest, multichannelChords0) {
 }
 
 TEST(SmfTestSuiteTest, multichannelChords1) {
-    libTestUtils::TestEnvironment testEnvironment;
+    testUtils::TestEnvironment testEnvironment;
 
     babelwires::FileDataSource midiFile("test-multichannel-chords-1.mid");
 
@@ -144,7 +144,7 @@ TEST(SmfTestSuiteTest, multichannelChords1) {
 }
 
 TEST(SmfTestSuiteTest, multichannelChords2) {
-    libTestUtils::TestEnvironment testEnvironment;
+    testUtils::TestEnvironment testEnvironment;
 
     babelwires::FileDataSource midiFile("test-multichannel-chords-2.mid");
 
@@ -200,7 +200,7 @@ TEST(SmfTestSuiteTest, multichannelChords2) {
 }
 
 TEST(SmfTestSuiteTest, multichannelChords3) {
-    libTestUtils::TestEnvironment testEnvironment;
+    testUtils::TestEnvironment testEnvironment;
 
     babelwires::FileDataSource midiFile("test-multichannel-chords-3.mid");
 
@@ -243,7 +243,7 @@ TEST(SmfTestSuiteTest, multichannelChords3) {
 }
 
 TEST(SmfTestSuiteTest, trackLength) {
-    libTestUtils::TestEnvironment testEnvironment;
+    testUtils::TestEnvironment testEnvironment;
 
     babelwires::FileDataSource midiFile("test-track-length.mid");
 
@@ -263,7 +263,7 @@ TEST(SmfTestSuiteTest, trackLength) {
 }
 
 TEST(SmfTestSuiteTest, tempoTest) {
-    libTestUtils::TestEnvironment testEnvironment;
+    testUtils::TestEnvironment testEnvironment;
 
     babelwires::FileDataSource midiFile("test-karaoke-kar.mid");
 
@@ -281,7 +281,7 @@ TEST(SmfTestSuiteTest, tempoTest) {
 }
 
 TEST(SmfTestSuiteTest, corruptFiles) {
-    libTestUtils::TestEnvironment testEnvironment;
+    testUtils::TestEnvironment testEnvironment;
 
     {
         babelwires::FileDataSource midiFile("test-corrupt-file-extra-byte.mid");

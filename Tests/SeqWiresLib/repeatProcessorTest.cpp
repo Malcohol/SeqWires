@@ -43,7 +43,7 @@ TEST(RepeatProcessorTest, funcSimpleTwice) {
 }
 
 TEST(RepeatProcessorTest, processor) {
-    libTestUtils::TestEnvironment testEnvironment;
+    testUtils::TestEnvironment testEnvironment;
 
     seqwires::RepeatProcessor processor(testEnvironment.m_projectContext);
 
