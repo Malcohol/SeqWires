@@ -8,7 +8,7 @@
 #include <BabelWiresLib/Features/arrayFeature.hpp>
 #include <BabelWiresLib/Features/rootFeature.hpp>
 
-#include <Tests/BabelWiresLib/TestUtils/testProjectContext.hpp>
+#include <Tests/BabelWiresLib/TestUtils/testEnvironment.hpp>
 #include <Tests/TestUtils/seqTestUtils.hpp>
 
 TEST(ConcatenateProcessorTest, appendFuncSimple) {

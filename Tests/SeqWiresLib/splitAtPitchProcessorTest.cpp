@@ -13,7 +13,7 @@
 #include <BabelWiresLib/Features/rootFeature.hpp>
 
 #include <Tests/TestUtils/seqTestUtils.hpp>
-#include <Tests/BabelWiresLib/TestUtils/testProjectContext.hpp>
+#include <Tests/BabelWiresLib/TestUtils/testEnvironment.hpp>
 
 TEST(SplitAtPitchProcessorTest, monophonicSplit) {
     seqwires::Track track;

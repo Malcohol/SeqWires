@@ -8,7 +8,7 @@
 #include <BabelWiresLib/Features/rootFeature.hpp>
 
 #include <Tests/TestUtils/seqTestUtils.hpp>
-#include <Tests/BabelWiresLib/TestUtils/testProjectContext.hpp>
+#include <Tests/BabelWiresLib/TestUtils/testEnvironment.hpp>
 
 TEST(ChordsFromNotesTest, functionBasic) {
     seqwires::Track track;

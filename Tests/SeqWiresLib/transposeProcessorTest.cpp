@@ -9,7 +9,7 @@
 #include <BabelWiresLib/Features/arrayFeature.hpp>
 
 #include <Tests/TestUtils/seqTestUtils.hpp>
-#include <Tests/BabelWiresLib/TestUtils/testProjectContext.hpp>
+#include <Tests/BabelWiresLib/TestUtils/testEnvironment.hpp>
 
 
 TEST(TransposeProcessorTest, funcSimpleZero) {

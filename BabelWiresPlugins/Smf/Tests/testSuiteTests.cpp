@@ -8,7 +8,7 @@
 
 #include <Common/IO/fileDataSource.hpp>
 
-#include <Tests/BabelWiresLib/TestUtils/testProjectContext.hpp>
+#include <Tests/BabelWiresLib/TestUtils/testEnvironment.hpp>
 
 #include <Tests/TestUtils/seqTestUtils.hpp>
 

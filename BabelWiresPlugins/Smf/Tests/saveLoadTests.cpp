@@ -12,7 +12,7 @@
 
 #include <Tests/TestUtils/seqTestUtils.hpp>
 
-#include <Tests/BabelWiresLib/TestUtils/testProjectContext.hpp>
+#include <Tests/BabelWiresLib/TestUtils/testEnvironment.hpp>
 
 #include <Tests/TestUtils/tempFilePath.hpp>
 
