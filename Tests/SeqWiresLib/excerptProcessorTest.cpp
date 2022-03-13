@@ -7,9 +7,10 @@
 
 #include <BabelWiresLib/Features/numericFeature.hpp>
 #include <BabelWiresLib/Features/arrayFeature.hpp>
+#include <BabelWiresLib/Features/rootFeature.hpp>
 
 #include <Tests/TestUtils/seqTestUtils.hpp>
-#include <Tests/TestUtils/testLog.hpp>
+#include <Tests/BabelWiresLib/TestUtils/testEnvironment.hpp>
 
 TEST(ExcerptProcessorTest, funcSimple) {
     seqwires::Track trackIn;
@@ -123,9 +124,9 @@ TEST(ExcerptProcessorTest, funcGaps) {
 }
 
 TEST(ExcerptProcessorTest, processor) {
-    testUtils::TestLog log;
+    testUtils::TestEnvironment testEnvironment;
 
-    seqwires::ExcerptProcessor processor;
+    seqwires::ExcerptProcessor processor(testEnvironment.m_projectContext);
 
     processor.getInputFeature()->setToDefault();
     processor.getOutputFeature()->setToDefault();
@@ -152,7 +153,7 @@ TEST(ExcerptProcessorTest, processor) {
     EXPECT_EQ(getOutputTrack(0)->get().getDuration(), 0);
 
     durationFeature->set(1);
-    processor.process(log);
+    processor.process(testEnvironment.m_log);
     EXPECT_EQ(getOutputTrack(0)->get().getDuration(), 1);
     EXPECT_EQ(getOutputTrack(0)->get().getNumEvents(), 0);
 
@@ -161,12 +162,12 @@ TEST(ExcerptProcessorTest, processor) {
         testUtils::addSimpleNotes({60, 62, 64, 65, 67, 69, 71, 72}, track);
         getInputTrack(0)->set(std::move(track));
     }
-    processor.process(log);
+    processor.process(testEnvironment.m_log);
     EXPECT_EQ(getOutputTrack(0)->get().getDuration(), 1);
     testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65}, getOutputTrack(0)->get());
 
     startFeature->set(1);
-    processor.process(log);
+    processor.process(testEnvironment.m_log);
     EXPECT_EQ(getOutputTrack(0)->get().getDuration(), 1);
     testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{67, 69, 71, 72}, getOutputTrack(0)->get());
 
@@ -179,7 +180,7 @@ TEST(ExcerptProcessorTest, processor) {
         testUtils::addSimpleNotes(std::vector<seqwires::Pitch>{48, 50, 52, 53, 55, 57, 59, 60}, track);
         getInputTrack(0)->set(std::move(track));
     }
-    processor.process(log);
+    processor.process(testEnvironment.m_log);
     ASSERT_EQ(outputArray->getNumFeatures(), 2);
     ASSERT_NE(getOutputTrack(0), nullptr);
     ASSERT_NE(getOutputTrack(1), nullptr);

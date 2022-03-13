@@ -6,8 +6,9 @@
 #include <SeqWiresLib/Features/trackFeature.hpp>
 
 #include <BabelWiresLib/Features/arrayFeature.hpp>
+#include <BabelWiresLib/Features/rootFeature.hpp>
 
-#include <Tests/TestUtils/testLog.hpp>
+#include <Tests/BabelWiresLib/TestUtils/testEnvironment.hpp>
 #include <Tests/TestUtils/seqTestUtils.hpp>
 
 TEST(ConcatenateProcessorTest, appendFuncSimple) {
@@ -62,9 +63,9 @@ TEST(ConcatenateProcessorTest, appendFuncGaps) {
 }
 
 TEST(ConcatenateProcessorTest, processor) {
-    testUtils::TestLog log;
+    testUtils::TestEnvironment testEnvironment;
 
-    seqwires::ConcatenateProcessor processor;
+    seqwires::ConcatenateProcessor processor(testEnvironment.m_projectContext);
 
     processor.getInputFeature()->setToDefault();
     processor.getOutputFeature()->setToDefault();
@@ -91,7 +92,7 @@ TEST(ConcatenateProcessorTest, processor) {
         getInputTrack(0)->set(std::move(track));
     }
 
-    processor.process(log);
+    processor.process(testEnvironment.m_log);
 
     testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65}, outputTrack->get());
 
@@ -101,7 +102,7 @@ TEST(ConcatenateProcessorTest, processor) {
         getInputTrack(1)->set(std::move(track));
     }
 
-    processor.process(log);
+    processor.process(testEnvironment.m_log);
 
     testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65, 67, 69, 71, 72}, outputTrack->get());
 
@@ -113,7 +114,7 @@ TEST(ConcatenateProcessorTest, processor) {
         getInputTrack(1)->set(std::move(track));
     }
 
-    processor.process(log);
+    processor.process(testEnvironment.m_log);
 
     testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65, 67, 65, 67, 69, 71, 72}, outputTrack->get());
 }

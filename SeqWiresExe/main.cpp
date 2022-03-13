@@ -96,7 +96,7 @@ int main(int argc, char* argv[]) {
                     context.m_sourceFileFormatReg.getEntryByFileName(options.m_inputFileName)) {
                 try {
                     babelwires::FileDataSource file(options.m_inputFileName);
-                    std::shared_ptr<babelwires::FileFeature> loadedFile = format->loadFromFile(file, log);
+                    std::shared_ptr<babelwires::FileFeature> loadedFile = format->loadFromFile(file, context, log);
                     babelwires::featureToXml(*loadedFile, std::cout, options.m_dumpIsFullDump);
                 } catch (const babelwires::BaseException& e) {
                     std::cerr << "Failed to load source file \"" << options.m_inputFileName << "\": " << e.what()

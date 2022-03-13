@@ -10,9 +10,10 @@
 #include <SeqWiresLib/Tracks/trackEventHolder.hpp>
 
 #include <BabelWiresLib/Features/arrayFeature.hpp>
+#include <BabelWiresLib/Features/rootFeature.hpp>
 
 #include <Tests/TestUtils/seqTestUtils.hpp>
-#include <Tests/TestUtils/testLog.hpp>
+#include <Tests/BabelWiresLib/TestUtils/testEnvironment.hpp>
 
 TEST(SplitAtPitchProcessorTest, monophonicSplit) {
     seqwires::Track track;
@@ -80,9 +81,9 @@ TEST(SplitAtPitchProcessorTest, aboveAndBelowSplit) {
 }
 
 TEST(SplitAtPitchProcessorTest, processor) {
-    testUtils::TestLog log;
+    testUtils::TestEnvironment testEnvironment;
 
-    seqwires::SplitAtPitchProcessor processor;
+    seqwires::SplitAtPitchProcessor processor(testEnvironment.m_projectContext);
 
     processor.getInputFeature()->setToDefault();
     processor.getOutputFeature()->setToDefault();
@@ -104,7 +105,7 @@ TEST(SplitAtPitchProcessorTest, processor) {
         testUtils::addSimpleNotes({60, 62, 64, 65, 67, 69, 71, 72}, track);
         inputTrack->set(std::move(track));
     }
-    processor.process(log);    
+    processor.process(testEnvironment.m_log);    
 
     std::vector<testUtils::NoteInfo> expectedNotesAbove{
         {67, 1, babelwires::Rational(1, 4)},
@@ -128,7 +129,7 @@ TEST(SplitAtPitchProcessorTest, processor) {
 
     processor.getInputFeature()->clearChanges();
     pitchFeature->set(64);
-    processor.process(log);    
+    processor.process(testEnvironment.m_log); 
 
     expectedNotesAbove = {
         {64, babelwires::Rational(1, 2), babelwires::Rational(1, 4)},

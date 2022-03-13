@@ -5,8 +5,10 @@
 #include <SeqWiresLib/Processors/chordsFromNotesProcessor.hpp>
 #include <SeqWiresLib/Features/trackFeature.hpp>
 
+#include <BabelWiresLib/Features/rootFeature.hpp>
+
 #include <Tests/TestUtils/seqTestUtils.hpp>
-#include <Tests/TestUtils/testLog.hpp>
+#include <Tests/BabelWiresLib/TestUtils/testEnvironment.hpp>
 
 TEST(ChordsFromNotesTest, functionBasic) {
     seqwires::Track track;
@@ -671,9 +673,9 @@ TEST(ChordsFromNotesTest, schemeC) {
 }
 
 TEST(ChordsFromNotesTest, processor) {
-    testUtils::TestLog log;
+    testUtils::TestEnvironment testEnvironment;
 
-    seqwires::ChordsFromNotesProcessor processor;
+    seqwires::ChordsFromNotesProcessor processor(testEnvironment.m_projectContext);
 
     processor.getInputFeature()->setToDefault();
     processor.getOutputFeature()->setToDefault();
@@ -697,7 +699,7 @@ TEST(ChordsFromNotesTest, processor) {
         inputTrack->set(std::move(track));
     }
 
-    processor.process(log);
+    processor.process(testEnvironment.m_log);
 
     testUtils::testChords({{seqwires::PITCH_CLASS_C, seqwires::ChordType::Value::M, 1}}, outputTrack->get());
 
@@ -712,7 +714,7 @@ TEST(ChordsFromNotesTest, processor) {
         inputTrack->set(std::move(track));
     }
 
-    processor.process(log);
+    processor.process(testEnvironment.m_log);
 
     testUtils::testChords({{seqwires::PITCH_CLASS_D, seqwires::ChordType::Value::m, 1}}, outputTrack->get());
 }

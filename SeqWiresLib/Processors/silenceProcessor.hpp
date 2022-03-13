@@ -21,7 +21,7 @@ namespace seqwires {
     // Note: The excerpt processor can do this too, but someone might not think of that.
     class SilenceProcessor : public babelwires::CommonProcessor {
       public:
-        SilenceProcessor();
+        SilenceProcessor(const babelwires::ProjectContext& projectContext);
 
         virtual void process(babelwires::UserLogger& userLogger) override;
 

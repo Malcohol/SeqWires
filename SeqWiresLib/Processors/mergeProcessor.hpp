@@ -19,7 +19,7 @@ namespace seqwires {
     /// A processor which limits a track to events between certain points.
     class MergeProcessor : public babelwires::CommonProcessor {
       public:
-        MergeProcessor();
+        MergeProcessor(const babelwires::ProjectContext& projectContext);
 
         virtual void process(babelwires::UserLogger& userLogger) override;
 

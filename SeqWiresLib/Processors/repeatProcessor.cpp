@@ -6,11 +6,14 @@
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
 #include "SeqWiresLib/Processors/repeatProcessor.hpp"
+
+#include "SeqWiresLib/Features/trackFeature.hpp"
+#include "SeqWiresLib/Functions/appendTrackFunction.hpp"
+
 #include "BabelWiresLib/Features/arrayFeature.hpp"
 #include "BabelWiresLib/Features/featureMixins.hpp"
 #include "BabelWiresLib/Features/numericFeature.hpp"
-#include "SeqWiresLib/Features/trackFeature.hpp"
-#include "SeqWiresLib/Functions/appendTrackFunction.hpp"
+#include "BabelWiresLib/Features/rootFeature.hpp"
 
 #include "Common/Identifiers/registeredIdentifier.hpp"
 
@@ -23,7 +26,8 @@ namespace {
         babelwires::HasStaticSizeRange<babelwires::StandardArrayFeature<seqwires::TrackFeature>, 1, 16>;
 } // namespace
 
-seqwires::RepeatProcessor::RepeatProcessor() {
+seqwires::RepeatProcessor::RepeatProcessor(const babelwires::ProjectContext& projectContext) 
+: babelwires::ParallelProcessor<seqwires::TrackFeature, seqwires::TrackFeature>(projectContext) {
     m_count = m_inputFeature->addField(std::make_unique<NonNegativeIntFeature>(),
                                        REGISTERED_ID("Count", "Count", "f5d2ab08-4430-47fa-b26c-0ff2154826e3"));
     addArrayFeature(REGISTERED_ID("Tracks", "Tracks", "f727937f-0215-4527-bab4-0eca269d6c5c"));

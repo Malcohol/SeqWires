@@ -14,8 +14,10 @@
 #include <cassert>
 #include <cmath>
 
-smf::SmfParser::SmfParser(babelwires::DataSource& dataSource, babelwires::UserLogger& userLogger)
-    : m_dataSource(dataSource)
+smf::SmfParser::SmfParser(babelwires::DataSource& dataSource, const babelwires::ProjectContext& projectContext,
+                          babelwires::UserLogger& userLogger)
+    : m_projectContext(projectContext)
+    , m_dataSource(dataSource)
     , m_userLogger(userLogger)
     , m_sequenceType(source::SmfFeature::SMF_UNKNOWN_FORMAT)
     , m_numTracks(-1)
@@ -126,14 +128,14 @@ void smf::SmfParser::parse() {
     readHeaderChunk();
     switch (m_sequenceType) {
         case source::SmfFeature::SMF_FORMAT_0: {
-            auto seqPtr = std::make_unique<source::Format0SmfFeature>();
+            auto seqPtr = std::make_unique<source::Format0SmfFeature>(m_projectContext);
             source::Format0SmfFeature& seq = *seqPtr;
             m_result = std::move(seqPtr);
             readFormat0Sequence(seq);
             break;
         }
         case source::SmfFeature::SMF_FORMAT_1: {
-            auto seqPtr = std::make_unique<source::Format1SmfFeature>();
+            auto seqPtr = std::make_unique<source::Format1SmfFeature>(m_projectContext);
             source::Format1SmfFeature& seq = *seqPtr;
             m_result = std::move(seqPtr);
             readFormat1Sequence(seq);
@@ -480,8 +482,9 @@ void smf::SmfParser::readFormat1Sequence(source::Format1SmfFeature& sequence) {
 }
 
 std::unique_ptr<babelwires::FileFeature> smf::parseSmfSequence(babelwires::DataSource& dataSource,
+                                                               const babelwires::ProjectContext& projectContext,
                                                                babelwires::UserLogger& userLogger) {
-    SmfParser parser(dataSource, userLogger);
+    SmfParser parser(dataSource, projectContext, userLogger);
     parser.parse();
     return parser.getResult();
 }

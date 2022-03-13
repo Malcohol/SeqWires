@@ -22,7 +22,7 @@ namespace smf {
 
     class SmfParser {
       public:
-        SmfParser(babelwires::DataSource& dataSource, babelwires::UserLogger& log);
+        SmfParser(babelwires::DataSource& dataSource, const babelwires::ProjectContext& projectContext, babelwires::UserLogger& log);
 
         void parse();
         std::unique_ptr<babelwires::FileFeature> getResult() { return std::move(m_result); }
@@ -60,6 +60,7 @@ namespace smf {
         std::uint32_t readVariableLengthQuantity();
 
       private:
+        const babelwires::ProjectContext& m_projectContext;
         babelwires::DataSource& m_dataSource;
         babelwires::UserLogger& m_userLogger;
         std::unique_ptr<babelwires::FileFeature> m_result;
@@ -69,6 +70,6 @@ namespace smf {
         int m_division;
     };
 
-    std::unique_ptr<babelwires::FileFeature> parseSmfSequence(babelwires::DataSource& dataSource, babelwires::UserLogger& userLogger);
+    std::unique_ptr<babelwires::FileFeature> parseSmfSequence(babelwires::DataSource& dataSource, const babelwires::ProjectContext& projectContext, babelwires::UserLogger& userLogger);
 
 } // namespace smf

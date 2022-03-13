@@ -17,4 +17,4 @@ SET( SEQUENCELIB_TESTS_SRCS
 
 ADD_EXECUTABLE( seqWiresLibTests ${SEQUENCELIB_TESTS_SRCS} )
 TARGET_INCLUDE_DIRECTORIES( seqWiresLibTests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../../BabelWires ${CMAKE_CURRENT_SOURCE_DIR}/../.. )
-TARGET_LINK_LIBRARIES(seqWiresLibTests Common SeqWiresLib testUtils seqTestUtils gtest)
+TARGET_LINK_LIBRARIES(seqWiresLibTests Common SeqWiresLib testUtils libTestUtils seqTestUtils gtest)

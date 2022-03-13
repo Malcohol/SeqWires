@@ -19,7 +19,7 @@ namespace seqwires {
     /// A processor which limits a track to events between certain points.
     class ConcatenateProcessor : public babelwires::CommonProcessor {
       public:
-        ConcatenateProcessor();
+        ConcatenateProcessor(const babelwires::ProjectContext& projectContext);
 
         virtual void process(babelwires::UserLogger& userLogger) override;
 

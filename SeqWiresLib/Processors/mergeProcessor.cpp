@@ -1,25 +1,32 @@
 /**
- * A processor which extracts a section of sequence data from a track. 
- * 
+ * A processor which extracts a section of sequence data from a track.
+ *
  * (C) 2021 Malcolm Tyrrell
- * 
+ *
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
 #include "SeqWiresLib/Processors/mergeProcessor.hpp"
-#include "BabelWiresLib/Features/arrayFeature.hpp"
-#include "BabelWiresLib/Features/featureMixins.hpp"
+
 #include "SeqWiresLib/Features/trackFeature.hpp"
 #include "SeqWiresLib/Functions/mergeFunction.hpp"
+
+#include "BabelWiresLib/Features/arrayFeature.hpp"
+#include "BabelWiresLib/Features/featureMixins.hpp"
+#include "BabelWiresLib/Features/rootFeature.hpp"
 
 #include "Common/Identifiers/registeredIdentifier.hpp"
 
 #include <set>
 
-seqwires::MergeProcessor::MergeProcessor() {
-    m_tracksIn = m_inputFeature->addField(std::make_unique<babelwires::HasStaticSizeRange<babelwires::StandardArrayFeature<seqwires::TrackFeature>, 2, 16>>(),
-                                              REGISTERED_ID("Input", "Input tracks", "80b175ae-c954-4943-96d8-eaffcd7ed6e1"));
-    m_trackOut = m_outputFeature->addField(std::make_unique<TrackFeature>(),
-                                              REGISTERED_ID("Output", "Output Track", "ab56e996-d361-42ed-a0df-44a90a73dc20"));
+seqwires::MergeProcessor::MergeProcessor(const babelwires::ProjectContext& projectContext)
+    : babelwires::CommonProcessor(projectContext) {
+    m_tracksIn = m_inputFeature->addField(
+        std::make_unique<
+            babelwires::HasStaticSizeRange<babelwires::StandardArrayFeature<seqwires::TrackFeature>, 2, 16>>(),
+        REGISTERED_ID("Input", "Input tracks", "80b175ae-c954-4943-96d8-eaffcd7ed6e1"));
+    m_trackOut =
+        m_outputFeature->addField(std::make_unique<TrackFeature>(),
+                                  REGISTERED_ID("Output", "Output Track", "ab56e996-d361-42ed-a0df-44a90a73dc20"));
 }
 
 seqwires::MergeProcessor::Factory::Factory()
