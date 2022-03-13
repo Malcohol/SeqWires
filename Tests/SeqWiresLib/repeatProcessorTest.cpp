@@ -9,7 +9,7 @@
 #include <BabelWiresLib/Features/arrayFeature.hpp>
 
 #include <Tests/TestUtils/seqTestUtils.hpp>
-#include <Tests/TestUtils/testLog.hpp>
+#include <Tests/BabelWiresLib/TestUtils/testProjectContext.hpp>
 
 TEST(RepeatProcessorTest, funcSimpleZero) {
     seqwires::Track trackIn;
@@ -43,9 +43,9 @@ TEST(RepeatProcessorTest, funcSimpleTwice) {
 }
 
 TEST(RepeatProcessorTest, processor) {
-    testUtils::TestLog log;
+    libTestUtils::TestProjectContext context;
 
-    seqwires::RepeatProcessor processor;
+    seqwires::RepeatProcessor processor(context.m_projectContext);
 
     processor.getInputFeature()->setToDefault();
     processor.getOutputFeature()->setToDefault();
@@ -75,11 +75,11 @@ TEST(RepeatProcessorTest, processor) {
         testUtils::addSimpleNotes({60, 62, 64, 65}, track);
         getInputTrack(0)->set(std::move(track));
     }
-    processor.process(log);
+    processor.process(context.m_log);
     testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65, 60, 62, 64, 65}, getOutputTrack(0)->get());
 
     countFeature->set(1);
-    processor.process(log);
+    processor.process(context.m_log);
     testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65}, getOutputTrack(0)->get());
 
     // Confirm that adding a track entry does not cause existing entries to be changed.
@@ -91,7 +91,7 @@ TEST(RepeatProcessorTest, processor) {
         testUtils::addSimpleNotes(std::vector<seqwires::Pitch>{48, 50, 52, 53}, track);
         getInputTrack(0)->set(std::move(track));
     }
-    processor.process(log);
+    processor.process(context.m_log);
     ASSERT_EQ(outputArray->getNumFeatures(), 2);
     ASSERT_NE(getOutputTrack(0), nullptr);
     ASSERT_NE(getOutputTrack(1), nullptr);

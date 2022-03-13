@@ -7,8 +7,9 @@
 #include <SeqWiresLib/Tracks/trackEventHolder.hpp>
 
 #include <BabelWiresLib/Features/arrayFeature.hpp>
+#include <BabelWiresLib/Features/rootFeature.hpp>
 
-#include <Tests/TestUtils/testLog.hpp>
+#include <Tests/BabelWiresLib/TestUtils/testProjectContext.hpp>
 #include <Tests/TestUtils/seqTestUtils.hpp>
 
 TEST(MergeProcessorTest, simpleFunction) {
@@ -62,9 +63,9 @@ TEST(MergeProcessorTest, simpleFunction) {
 
 
 TEST(MergeProcessorTest, processor) {
-    testUtils::TestLog log;
+    libTestUtils::TestProjectContext context;
 
-    seqwires::MergeProcessor processor;
+    seqwires::MergeProcessor processor(context.m_projectContext);
 
     processor.getInputFeature()->setToDefault();
     processor.getOutputFeature()->setToDefault();
@@ -91,7 +92,7 @@ TEST(MergeProcessorTest, processor) {
         getInputTrack(0)->set(std::move(track));
     }
 
-    processor.process(log);
+    processor.process(context.m_log);
 
     testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{72, 74}, outputTrack->get());
 
@@ -101,7 +102,7 @@ TEST(MergeProcessorTest, processor) {
         getInputTrack(1)->set(std::move(track));
     }
 
-    processor.process(log);
+    processor.process(context.m_log);
 
     std::vector<seqwires::TrackEventHolder> expectedEvents = {
       seqwires::NoteOnEvent{ 0, 72 },
@@ -139,7 +140,7 @@ TEST(MergeProcessorTest, processor) {
         getInputTrack(1)->set(std::move(track));
     }
 
-    processor.process(log);
+    processor.process(context.m_log);
 
     expectedEvents = {
       seqwires::NoteOnEvent{ 0, 72 },
