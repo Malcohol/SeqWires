@@ -673,9 +673,9 @@ TEST(ChordsFromNotesTest, schemeC) {
 }
 
 TEST(ChordsFromNotesTest, processor) {
-    libTestUtils::TestProjectContext context;
+    libTestUtils::TestEnvironment testEnvironment;
 
-    seqwires::ChordsFromNotesProcessor processor(context.m_projectContext);
+    seqwires::ChordsFromNotesProcessor processor(testEnvironment.m_projectContext);
 
     processor.getInputFeature()->setToDefault();
     processor.getOutputFeature()->setToDefault();
@@ -699,7 +699,7 @@ TEST(ChordsFromNotesTest, processor) {
         inputTrack->set(std::move(track));
     }
 
-    processor.process(context.m_log);
+    processor.process(testEnvironment.m_log);
 
     testUtils::testChords({{seqwires::PITCH_CLASS_C, seqwires::ChordType::Value::M, 1}}, outputTrack->get());
 
@@ -714,7 +714,7 @@ TEST(ChordsFromNotesTest, processor) {
         inputTrack->set(std::move(track));
     }
 
-    processor.process(context.m_log);
+    processor.process(testEnvironment.m_log);
 
     testUtils::testChords({{seqwires::PITCH_CLASS_D, seqwires::ChordType::Value::m, 1}}, outputTrack->get());
 }

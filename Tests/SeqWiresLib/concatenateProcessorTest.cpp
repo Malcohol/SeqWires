@@ -63,9 +63,9 @@ TEST(ConcatenateProcessorTest, appendFuncGaps) {
 }
 
 TEST(ConcatenateProcessorTest, processor) {
-    libTestUtils::TestProjectContext context;
+    libTestUtils::TestEnvironment testEnvironment;
 
-    seqwires::ConcatenateProcessor processor(context.m_projectContext);
+    seqwires::ConcatenateProcessor processor(testEnvironment.m_projectContext);
 
     processor.getInputFeature()->setToDefault();
     processor.getOutputFeature()->setToDefault();
@@ -92,7 +92,7 @@ TEST(ConcatenateProcessorTest, processor) {
         getInputTrack(0)->set(std::move(track));
     }
 
-    processor.process(context.m_log);
+    processor.process(testEnvironment.m_log);
 
     testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65}, outputTrack->get());
 
@@ -102,7 +102,7 @@ TEST(ConcatenateProcessorTest, processor) {
         getInputTrack(1)->set(std::move(track));
     }
 
-    processor.process(context.m_log);
+    processor.process(testEnvironment.m_log);
 
     testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65, 67, 69, 71, 72}, outputTrack->get());
 
@@ -114,7 +114,7 @@ TEST(ConcatenateProcessorTest, processor) {
         getInputTrack(1)->set(std::move(track));
     }
 
-    processor.process(context.m_log);
+    processor.process(testEnvironment.m_log);
 
     testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65, 67, 65, 67, 69, 71, 72}, outputTrack->get());
 }

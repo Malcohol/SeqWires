@@ -18,12 +18,12 @@
 
 
 TEST(SmfSaveLoadTest, cMajorScale) {
-    libTestUtils::TestProjectContext context;
+    libTestUtils::TestEnvironment testEnvironment;
     testUtils::TempFilePath tempFile("cMajor.mid");
 
     const std::vector<seqwires::Pitch> pitches{60, 62, 64, 65, 67, 69, 71, 72};
     {
-        smf::target::Format0SmfFeature smfFeature(context.m_projectContext);
+        smf::target::Format0SmfFeature smfFeature(testEnvironment.m_projectContext);
         smfFeature.setToDefault();
 
         auto* tracks = smfFeature.getChildFromStep(babelwires::PathStep("tracks")).as<babelwires::ArrayFeature>();
@@ -52,7 +52,7 @@ TEST(SmfSaveLoadTest, cMajorScale) {
     {
         babelwires::FileDataSource midiFile(tempFile);
 
-        const auto feature = smf::parseSmfSequence(midiFile, context.m_projectContext, context.m_log);
+        const auto feature = smf::parseSmfSequence(midiFile, testEnvironment.m_projectContext, testEnvironment.m_log);
         ASSERT_NE(feature, nullptr);
         auto smfFeature = feature.get()->as<const smf::source::Format0SmfFeature>();
         ASSERT_NE(smfFeature, nullptr);
@@ -107,14 +107,14 @@ namespace {
 }
 
 TEST(SmfSaveLoadTest, cMajorScaleWithMetadata) {
-    libTestUtils::TestProjectContext context;
+    libTestUtils::TestEnvironment testEnvironment;
 
     const std::vector<seqwires::Pitch> pitches{60, 62, 64, 65, 67, 69, 71, 72};
 
     for (std::uint8_t metadata = 0; metadata < 8; ++metadata) {
         testUtils::TempFilePath tempFile("cMajorWithMetadata.mid", metadata);
         {
-            smf::target::Format0SmfFeature smfFeature(context.m_projectContext);
+            smf::target::Format0SmfFeature smfFeature(testEnvironment.m_projectContext);
             smfFeature.setToDefault();
 
             addMetadata(smfFeature, metadata);
@@ -144,7 +144,7 @@ TEST(SmfSaveLoadTest, cMajorScaleWithMetadata) {
 
         babelwires::FileDataSource midiFile(tempFile);
 
-        const auto feature = smf::parseSmfSequence(midiFile, context.m_projectContext, context.m_log);
+        const auto feature = smf::parseSmfSequence(midiFile, testEnvironment.m_projectContext, testEnvironment.m_log);
         ASSERT_NE(feature, nullptr);
         auto smfFeature = feature.get()->as<const smf::source::Format0SmfFeature>();
         ASSERT_NE(smfFeature, nullptr);
@@ -167,13 +167,13 @@ namespace {
 }
 
 TEST(SmfSaveLoadTest, format0Chords) {
-    libTestUtils::TestProjectContext context;
+    libTestUtils::TestEnvironment testEnvironment;
     testUtils::TempFilePath tempFile("format0Chords.mid");
 
     const char* trackName[3] = { "ch0", "ch1", "ch2" };
 
     {
-        smf::target::Format0SmfFeature smfFeature(context.m_projectContext);
+        smf::target::Format0SmfFeature smfFeature(testEnvironment.m_projectContext);
         smfFeature.setToDefault();
 
         auto* tracks = smfFeature.getChildFromStep(babelwires::PathStep("tracks")).as<babelwires::ArrayFeature>();
@@ -201,7 +201,7 @@ TEST(SmfSaveLoadTest, format0Chords) {
     {
         babelwires::FileDataSource midiFile(tempFile);
 
-        const auto feature = smf::parseSmfSequence(midiFile, context.m_projectContext, context.m_log);
+        const auto feature = smf::parseSmfSequence(midiFile, testEnvironment.m_projectContext, testEnvironment.m_log);
         ASSERT_NE(feature, nullptr);
         auto smfFeature = feature.get()->as<const smf::source::Format0SmfFeature>();
         ASSERT_NE(smfFeature, nullptr);
@@ -220,13 +220,13 @@ TEST(SmfSaveLoadTest, format0Chords) {
 }
 
 TEST(SmfSaveLoadTest, format1Chords) {
-    libTestUtils::TestProjectContext context;
+    libTestUtils::TestEnvironment testEnvironment;
     testUtils::TempFilePath tempFile("format1Chords.mid");
 
     const char* trackName[3] = { "ch0", "ch1", "ch2" };
 
     {
-        smf::target::Format1SmfFeature smfFeature(context.m_projectContext);
+        smf::target::Format1SmfFeature smfFeature(testEnvironment.m_projectContext);
         smfFeature.setToDefault();
 
         auto* tracks = smfFeature.getChildFromStep(babelwires::PathStep("tracks")).as<babelwires::ArrayFeature>();
@@ -254,7 +254,7 @@ TEST(SmfSaveLoadTest, format1Chords) {
     {
         babelwires::FileDataSource midiFile(tempFile);
 
-        const auto feature = smf::parseSmfSequence(midiFile, context.m_projectContext, context.m_log);
+        const auto feature = smf::parseSmfSequence(midiFile, testEnvironment.m_projectContext, testEnvironment.m_log);
         ASSERT_NE(feature, nullptr);
         auto smfFeature = feature.get()->as<const smf::source::Format1SmfFeature>();
         ASSERT_NE(smfFeature, nullptr);

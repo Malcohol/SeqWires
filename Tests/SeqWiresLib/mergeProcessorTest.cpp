@@ -63,9 +63,9 @@ TEST(MergeProcessorTest, simpleFunction) {
 
 
 TEST(MergeProcessorTest, processor) {
-    libTestUtils::TestProjectContext context;
+    libTestUtils::TestEnvironment testEnvironment;
 
-    seqwires::MergeProcessor processor(context.m_projectContext);
+    seqwires::MergeProcessor processor(testEnvironment.m_projectContext);
 
     processor.getInputFeature()->setToDefault();
     processor.getOutputFeature()->setToDefault();
@@ -92,7 +92,7 @@ TEST(MergeProcessorTest, processor) {
         getInputTrack(0)->set(std::move(track));
     }
 
-    processor.process(context.m_log);
+    processor.process(testEnvironment.m_log);
 
     testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{72, 74}, outputTrack->get());
 
@@ -102,7 +102,7 @@ TEST(MergeProcessorTest, processor) {
         getInputTrack(1)->set(std::move(track));
     }
 
-    processor.process(context.m_log);
+    processor.process(testEnvironment.m_log);
 
     std::vector<seqwires::TrackEventHolder> expectedEvents = {
       seqwires::NoteOnEvent{ 0, 72 },
@@ -140,7 +140,7 @@ TEST(MergeProcessorTest, processor) {
         getInputTrack(1)->set(std::move(track));
     }
 
-    processor.process(context.m_log);
+    processor.process(testEnvironment.m_log);
 
     expectedEvents = {
       seqwires::NoteOnEvent{ 0, 72 },
