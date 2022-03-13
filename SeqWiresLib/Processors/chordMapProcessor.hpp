@@ -17,7 +17,7 @@ namespace seqwires {
 
     class ChordMapProcessor : public babelwires::ParallelProcessor<seqwires::TrackFeature, seqwires::TrackFeature> {
       public:
-        ChordMapProcessor();
+        ChordMapProcessor(const babelwires::ProjectContext& context);
 
         void processEntry(babelwires::UserLogger& userLogger, const seqwires::TrackFeature& input, seqwires::TrackFeature& output) const override;
 
