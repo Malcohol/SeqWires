@@ -61,9 +61,11 @@ namespace seqwires {
     typedef babelwires::Byte Velocity;
 
     /// Carries the enum of chord types.
-    class ChordType : public babelwires::RegisteredEnum<ChordType> {
+    class ChordType : public babelwires::Enum {
     public:
         ChordType();
+
+        static babelwires::LongIdentifier getThisIdentifier();
 
         ENUM_DEFINE_CPP_ENUM(CHORD_TYPE_VALUES);
     };

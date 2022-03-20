@@ -13,7 +13,7 @@
 #include "BabelWiresQtUi/ModelBridge/RowModels/rowModelRegistry.hpp"
 #include "BabelWiresQtUi/uiProjectContext.hpp"
 
-#include "BabelWiresLib/Enums/enum.hpp"
+#include "BabelWiresLib/TypeSystem/typeSystem.hpp"
 #include "Common/Identifiers/identifierRegistry.hpp"
 #include "BabelWiresLib/FileFormat/fileFeature.hpp"
 #include "BabelWiresLib/FileFormat/sourceFileFormat.hpp"
@@ -73,14 +73,14 @@ int main(int argc, char* argv[]) {
         ProcessorFactoryRegistry processorReg;
         babelwires::AutomaticDeserializationRegistry deserializationRegistry;
         babelwires::RowModelRegistry rowModelRegistry;
-        babelwires::EnumRegistry enumRegistry;
+        babelwires::TypeSystem typeSystem;
 
         const unsigned int seed = std::chrono::system_clock::now().time_since_epoch().count();
         babelwires::logDebug() << "The random seed was " << seed;
         std::default_random_engine randomEngine(seed);
 
         babelwires::UiProjectContext context{sourceFileFormatReg,     targetFileFormatReg, processorReg,
-                                             deserializationRegistry, enumRegistry,        randomEngine,
+                                             deserializationRegistry, typeSystem,        randomEngine,
                                              rowModelRegistry};
 
         context.m_applicationIdentity.m_applicationTitle = "Seqwires";

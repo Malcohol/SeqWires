@@ -18,9 +18,11 @@ namespace seqwires {
     X(LowEv, "Lower pitches evict", "7068c9fd-d80a-47fa-8f82-6b000cd1e0be")
 
     /// The enum that determines the algorithm used.
-    class MonophonicSubtracksPolicyEnum : public babelwires::RegisteredEnum<MonophonicSubtracksPolicyEnum> {
+    class MonophonicSubtracksPolicyEnum : public babelwires::Enum {
       public:
         MonophonicSubtracksPolicyEnum();
+
+        static babelwires::LongIdentifier getThisIdentifier();
 
         ENUM_DEFINE_CPP_ENUM(MONOPHONIC_SUBTRACK_POLICY);
     };

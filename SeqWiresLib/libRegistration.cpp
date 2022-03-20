@@ -10,7 +10,7 @@
 #include "BabelWiresLib/Processors/processorFactory.hpp"
 #include "BabelWiresLib/Processors/processorFactoryRegistry.hpp"
 #include "BabelWiresLib/Project/projectContext.hpp"
-#include "BabelWiresLib/Enums/enum.hpp"
+#include "BabelWiresLib/TypeSystem/typeSystem.hpp"
 
 #include "SeqWiresLib/Processors/excerptProcessor.hpp"
 #include "SeqWiresLib/Processors/concatenateProcessor.hpp"
@@ -27,8 +27,8 @@
 #include "SeqWiresLib/chord.hpp"
 
 void seqwires::registerLib(babelwires::ProjectContext& context) {
-    context.m_enumRegistry.addEntry(std::make_unique<MonophonicSubtracksPolicyEnum>());
-    context.m_enumRegistry.addEntry(std::make_unique<ChordType>());
+    context.m_typeSystem.addEntry(std::make_unique<MonophonicSubtracksPolicyEnum>());
+    context.m_typeSystem.addEntry(std::make_unique<ChordType>());
     
     context.m_processorReg.addEntry(std::make_unique<ChordMapProcessor::Factory>());
     context.m_processorReg.addEntry(std::make_unique<ConcatenateProcessor::Factory>());
