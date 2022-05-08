@@ -8,13 +8,15 @@
 #include "Common/Audio/fileAudioDest.hpp"
 #include "Common/Audio/fileAudioSource.hpp"
 
-#include "BabelWiresLib/Features/Utilities/featureXml.hpp"
+#include "SeqWiresExe/seqWiresOptions.hpp"
 
 #include "BabelWiresQtUi/ModelBridge/RowModels/rowModelRegistry.hpp"
 #include "BabelWiresQtUi/uiProjectContext.hpp"
+#include "BabelWiresQtUi/uiMain.hpp"
+
+#include "BabelWiresLib/Features/Utilities/featureXml.hpp"
 
 #include "BabelWiresLib/TypeSystem/typeSystem.hpp"
-#include "Common/Identifiers/identifierRegistry.hpp"
 #include "BabelWiresLib/FileFormat/fileFeature.hpp"
 #include "BabelWiresLib/FileFormat/sourceFileFormat.hpp"
 #include "BabelWiresLib/FileFormat/targetFileFormat.hpp"
@@ -24,10 +26,10 @@
 #include "BabelWiresLib/Project/project.hpp"
 #include "BabelWiresLib/Project/projectData.hpp"
 #include "BabelWiresLib/Serialization/projectSerialization.hpp"
-#include "Common/IO/fileDataSource.hpp"
-#include "SeqWiresExe/seqWiresOptions.hpp"
+#include "BabelWiresLib/libRegistration.hpp"
 
-#include "BabelWiresQtUi/uiMain.hpp"
+#include "Common/Identifiers/identifierRegistry.hpp"
+#include "Common/IO/fileDataSource.hpp"
 #include "Common/Log/ostreamLogListener.hpp"
 #include "Common/Log/unifiedLog.hpp"
 #include "Common/Serialization/deserializationRegistry.hpp"
@@ -87,6 +89,7 @@ int main(int argc, char* argv[]) {
         context.m_applicationIdentity.m_projectExtension = ".seqwires";
 
         // register factories, etc.
+        babelwires::registerLib(context);
         seqwires::registerLib(context);
         seqwiresUi::registerLib(context);
         smf::registerLib(context);
