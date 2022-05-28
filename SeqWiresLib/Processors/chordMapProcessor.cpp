@@ -14,7 +14,7 @@
 #include <BabelWiresLib/Features/mapFeature.hpp>
 #include <BabelWiresLib/Features/rootFeature.hpp>
 #include <BabelWiresLib/Maps/Helpers/enumValueAdapters.hpp>
-#include <BabelWiresLib/Maps/Helpers/unorderedMapApplicator.hpp>
+#include <BabelWiresLib/Maps/Helpers/enumSourceMapApplicator.hpp>
 #include <BabelWiresLib/Project/projectContext.hpp>
 #include <BabelWiresLib/TypeSystem/typeSystem.hpp>
 
@@ -50,9 +50,9 @@ void seqwires::ChordMapProcessor::processEntry(babelwires::UserLogger& userLogge
     const ChordType& chordType =
         context.m_typeSystem.getEntryByIdentifier(seqwires::ChordType::getThisIdentifier())->is<ChordType>();
 
-    const babelwires::EnumToIndexValueAdapter adapter{chordType};
+    const babelwires::EnumToValueValueAdapter<ChordType> targetAdapter{chordType};
 
-    babelwires::UnorderedMapApplicator<unsigned int, unsigned int> applicator(mapData, adapter, adapter);
+    babelwires::EnumSourceMapApplicator<ChordType, ChordType::Value> applicator(mapData, chordType, targetAdapter);
 
     const Track& trackIn = input.get();
     Track trackOut;
@@ -61,7 +61,7 @@ void seqwires::ChordMapProcessor::processEntry(babelwires::UserLogger& userLogge
         if (it->as<ChordOnEvent>()) {
             TrackEventHolder holder(*it);
             ChordType::Value& type = holder->is<ChordOnEvent>().m_chord.m_chordType;
-            type = static_cast<ChordType::Value>(applicator[static_cast<unsigned int>(type)]);
+            type = applicator[type];
             trackOut.addEvent(holder.release());
         } else {
             trackOut.addEvent(*it);
