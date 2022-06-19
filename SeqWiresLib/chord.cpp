@@ -7,6 +7,8 @@
  **/
 #include "SeqWiresLib/chord.hpp"
 
+#include <Common/Identifiers/identifierRegistry.hpp>
+
 ENUM_DEFINE_ENUM_VALUE_SOURCE(CHORD_TYPE_VALUES);
 
 babelwires::LongIdentifier seqwires::ChordType::getThisIdentifier() {
@@ -14,4 +16,4 @@ babelwires::LongIdentifier seqwires::ChordType::getThisIdentifier() {
 }
 
 seqwires::ChordType::ChordType()
-: Enum(getThisIdentifier(), 1, ENUM_IDENTIFIER_VECTOR(CHORD_TYPE_VALUES), 0) {}
+    : Enum(getThisIdentifier(), 1, ENUM_IDENTIFIER_VECTOR(CHORD_TYPE_VALUES), 0) {}

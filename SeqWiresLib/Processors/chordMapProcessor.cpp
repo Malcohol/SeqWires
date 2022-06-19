@@ -23,8 +23,7 @@
 namespace {
     struct ChordTypeMap : babelwires::MapFeature {
         ChordTypeMap()
-            : babelwires::MapFeature(babelwires::TypeIdSet{seqwires::ChordType::getThisIdentifier()},
-                                     babelwires::TypeIdSet{seqwires::ChordType::getThisIdentifier()}) {}
+            : babelwires::MapFeature(seqwires::ChordType::getThisIdentifier(), seqwires::ChordType::getThisIdentifier()) {}
     };
 } // namespace
 
