@@ -42,7 +42,7 @@ void seqwires::ChordMapProcessor::processEntry(babelwires::UserLogger& userLogge
                                                seqwires::TrackFeature& output) const {
     const babelwires::MapData& mapData = m_chordTypeMapFeature->get();
     const babelwires::ProjectContext& context = babelwires::RootFeature::getProjectContextAt(*m_chordTypeMapFeature);
-    if (!mapData.isValid(context)) {
+    if (!mapData.isValid(context.m_typeSystem)) {
         throw babelwires::ModelException() << "The Map is not valid.";
     }
 
