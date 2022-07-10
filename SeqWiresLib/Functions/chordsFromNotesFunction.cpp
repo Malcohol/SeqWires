@@ -105,7 +105,7 @@ namespace {
         if ((it != recognizedIntervals.end()) && (it->m_intervals == intervals)) {
             return it->m_chordType;
         }
-        return seqwires::ChordType::Value::NotAChord;
+        return seqwires::ChordType::Value::NotAValue;
     }
 
     /// The pitches of the set of currently playing notes.
@@ -148,7 +148,7 @@ namespace {
             // Try each inversion.
             for (unsigned int i = 0; i < numPitches; ++i) {
                 const seqwires::ChordType::Value chordType = getMatchingChordTypeFromIntervals(interval);
-                if (chordType != seqwires::ChordType::Value::NotAChord) {
+                if (chordType != seqwires::ChordType::Value::NotAValue) {
                     return seqwires::Chord{seqwires::pitchToPitchClass(m_pitches[i]), chordType};
                 }
                 if (i < numPitches - 1) {
@@ -178,12 +178,12 @@ seqwires::Track seqwires::chordsFromNotesFunction(const Track& sourceTrack) {
         if (event.getTimeSinceLastEvent() > 0) {
             const Chord bestChord = activePitches.getBestMatchChord();
             if (currentChord != bestChord) {
-                if (currentChord.m_chordType != ChordType::Value::NotAChord) {
+                if (currentChord.m_chordType != ChordType::Value::NotAValue) {
                     trackOut.addEvent(ChordOffEvent(timeSinceLastChordEvent));
-                    currentChord.m_chordType = ChordType::Value::NotAChord;
+                    currentChord.m_chordType = ChordType::Value::NotAValue;
                     timeSinceLastChordEvent = 0;
                 }
-                if (bestChord.m_chordType != ChordType::Value::NotAChord) {
+                if (bestChord.m_chordType != ChordType::Value::NotAValue) {
                     trackOut.addEvent(
                         ChordOnEvent(timeSinceLastChordEvent, bestChord));
                     currentChord = bestChord;
@@ -200,7 +200,7 @@ seqwires::Track seqwires::chordsFromNotesFunction(const Track& sourceTrack) {
             activePitches.removePitch(noteOffEvent->m_pitch);
         }
     }
-    if (currentChord.m_chordType != ChordType::Value::NotAChord) {
+    if (currentChord.m_chordType != ChordType::Value::NotAValue) {
         trackOut.addEvent(ChordOffEvent(timeSinceLastChordEvent));
     }
     trackOut.setDuration(sourceTrack.getDuration());

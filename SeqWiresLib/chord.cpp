@@ -7,15 +7,13 @@
  **/
 #include "SeqWiresLib/chord.hpp"
 
-namespace {
+#include <Common/Identifiers/identifierRegistry.hpp>
 
-#define CHORD_TYPE_SELECT_SECOND_ARGUMENT(A, B, C) B,
-    const char* s_chordTypeNames[static_cast<std::uint8_t>(seqwires::ChordType::Value::NUM_CHORD_TYPES)] = {
-        CHORD_TYPE_VALUES(CHORD_TYPE_SELECT_SECOND_ARGUMENT)
-    };
-} // namespace
+ENUM_DEFINE_ENUM_VALUE_SOURCE(CHORD_TYPE_VALUES);
 
-
-std::string seqwires::chordTypeToString(ChordType::Value t) {
-    return s_chordTypeNames[static_cast<std::uint8_t>(t)];
+babelwires::LongIdentifier seqwires::ChordType::getThisIdentifier() {
+    return REGISTERED_LONGID("ChordType", "Chord Type", "c63ea174-1562-4cb5-a456-d6c0bd89e335");
 }
+
+seqwires::ChordType::ChordType()
+    : Enum(getThisIdentifier(), 1, ENUM_IDENTIFIER_VECTOR(CHORD_TYPE_VALUES), 0) {}

@@ -7,12 +7,13 @@
  **/
 #pragma once
 
-#include "BabelWiresLib/Enums/enumWithCppEnum.hpp"
+#include <SeqWiresLib/pitchClass.hpp>
+
 #include "Common/Math/rational.hpp"
 #include "Common/types.hpp"
 
-#include <string>
 #include <cstdint>
+#include <string>
 
 namespace seqwires {
 
@@ -20,27 +21,7 @@ namespace seqwires {
     typedef babelwires::Byte Pitch;
     typedef babelwires::Byte Velocity;
 
-    /// Note: Not trying to match the representation from XF, because I don't currently know how to transpose those
-    /// values.
-    enum PitchClass : std::uint8_t {
-        PITCH_CLASS_C,
-        PITCH_CLASS_C_SHARP,
-        PITCH_CLASS_D,
-        PITCH_CLASS_D_SHARP,
-        PITCH_CLASS_E,
-        PITCH_CLASS_F,
-        PITCH_CLASS_F_SHARP,
-        PITCH_CLASS_G,
-        PITCH_CLASS_G_SHARP,
-        PITCH_CLASS_A,
-        PITCH_CLASS_A_SHARP,
-        PITCH_CLASS_B,
-
-        NUM_PITCH_CLASSES
-    };
-
-    std::string pitchClassToString(PitchClass p);
-    PitchClass pitchToPitchClass(Pitch p);
+    PitchClass::Value pitchToPitchClass(Pitch p);
 
     std::string pitchToString(Pitch p);
     Pitch stringToPitch(std::string_view s);

@@ -3,6 +3,7 @@ SET( SEQWIRESLIB_SRCS
 	Features/trackFeature.cpp
 	Features/pitchFeature.cpp
 	Processors/chordsFromNotesProcessor.cpp
+	Processors/chordMapProcessor.cpp
 	Processors/concatenateProcessor.cpp
 	Processors/excerptProcessor.cpp
 	Processors/mergeProcessor.cpp
@@ -13,6 +14,7 @@ SET( SEQWIRESLIB_SRCS
 	Processors/transposeProcessor.cpp
 	Functions/appendTrackFunction.cpp
 	Functions/chordsFromNotesFunction.cpp
+	Functions/mapChordsFunction.cpp
 	Functions/excerptFunction.cpp
 	Functions/repeatFunction.cpp
 	Functions/mergeFunction.cpp
@@ -25,6 +27,7 @@ SET( SEQWIRESLIB_SRCS
 	Tracks/track.cpp
 	chord.cpp
 	musicTypes.cpp
+	pitchClass.cpp
 	Utilities/monophonicNoteIterator.cpp
 	libRegistration.cpp
    )
