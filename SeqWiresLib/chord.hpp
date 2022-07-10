@@ -11,7 +11,6 @@
 
 #include "BabelWiresLib/Enums/enumWithCppEnum.hpp"
 
-/// Use uuids, etc, as for Enums, since it is very likely I will add an Enum for this.
 /// These match the "Chord type" values from the XF Format Specifications v2.01
 // TODO Consider using \u266d (flat) and \u266f (sharp) in names.
 // TODO Not in XF spec v2.01 but available on more recent keyboards: b5, M7b5, mM7b5
@@ -73,7 +72,7 @@ namespace seqwires {
     /// Defines the state of a chord event.
     // Note: This does not currently include all the data in a XF chord event.
     struct Chord {
-        PitchClass m_root = seqwires::PITCH_CLASS_C;
+        PitchClass::Value m_root = seqwires::PitchClass::Value::C;
         ChordType::Value m_chordType = seqwires::ChordType::Value::NotAValue;
 
         bool operator==(Chord other) const { return (m_root == other.m_root) && (m_chordType == other.m_chordType); }

@@ -5,7 +5,7 @@
 #include "Common/exceptions.hpp"
 
 TEST(SeqWiresLib, enumNames) {
-    EXPECT_EQ(seqwires::pitchClassToString(seqwires::PITCH_CLASS_C), "C");
+    EXPECT_EQ(seqwires::PitchClass::valueToString(seqwires::PitchClass::Value::C), "C");
 
     EXPECT_EQ(seqwires::pitchToString(0), "C-1");
     EXPECT_EQ(seqwires::pitchToString(1), "C#-1");

@@ -2,6 +2,9 @@ Also see [TODO.md in BabelWires](https://github.com/Malcohol/BabelWires/blob/mai
 
 SeqWires:
 * Support other formats
+* Improved handling of event truncation: 
+  - Use new group events to denote truncated end and start. 
+  - When truncated end meets truncated start, act as though event was not truncated.
 
 Seq2tape:
 * Proper plugin initialization for Seq2tape

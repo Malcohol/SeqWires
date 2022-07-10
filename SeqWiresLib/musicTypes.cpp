@@ -14,19 +14,12 @@
 #include <charconv>
 #include <cassert>
 
-
-namespace {
-    const char* s_pitchClassNames[seqwires::NUM_PITCH_CLASSES] = {"C",  "C#", "D",  "D#", "E",  "F",
-                                                                  "F#", "G",  "G#", "A",  "A#", "B"};
-} // namespace
-
-
 std::string seqwires::pitchToString(Pitch p) {
     const int pitchClass = p % 12;
     const int octave = (p / 12) - 1;
 
     std::ostringstream stringOut;
-    stringOut << s_pitchClassNames[pitchClass] << octave;
+    stringOut << PitchClass::valueToString(static_cast<PitchClass::Value>(pitchClass)) << octave;
 
     return stringOut.str();
 }
@@ -114,10 +107,6 @@ std::string seqwires::durationToString(ModelDuration d) {
     return stringOut.str();
 }
 
-std::string seqwires::pitchClassToString(PitchClass p) {
-    return s_pitchClassNames[p];
-}
-
-seqwires::PitchClass seqwires::pitchToPitchClass(seqwires::Pitch p) {
-    return static_cast<seqwires::PitchClass>(p % 12);
+seqwires::PitchClass::Value seqwires::pitchToPitchClass(seqwires::Pitch p) {
+    return static_cast<seqwires::PitchClass::Value>(p % 12);
 }
