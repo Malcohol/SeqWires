@@ -1,5 +1,6 @@
 SET( SEQUENCELIB_TESTS_SRCS
       seqWiresLibTests.cpp
+      chordMapProcessorTest.cpp
       chordsFromNotesProcessorTest.cpp
       concatenateProcessorTest.cpp
       excerptProcessorTest.cpp
