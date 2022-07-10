@@ -25,11 +25,19 @@ namespace {
     struct ChordTypeMap : babelwires::MapFeature {
         ChordTypeMap()
             : babelwires::MapFeature(seqwires::ChordType::getThisIdentifier(), seqwires::ChordType::getThisIdentifier()) {}
+
+        babelwires::MapData getDefaultMapData() const override {
+            return getStandardDefaultMapData(babelwires::MapEntryData::Kind::AllToSame);
+        }
     };
 
     struct PitchClassMap : babelwires::MapFeature {
         PitchClassMap()
             : babelwires::MapFeature(seqwires::PitchClass::getThisIdentifier(), seqwires::PitchClass::getThisIdentifier()) {}
+
+        babelwires::MapData getDefaultMapData() const override {
+            return getStandardDefaultMapData(babelwires::MapEntryData::Kind::AllToSame);
+        }
     };
 } // namespace
 
