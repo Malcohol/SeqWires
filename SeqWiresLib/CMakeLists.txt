@@ -14,6 +14,7 @@ SET( SEQWIRESLIB_SRCS
 	Processors/transposeProcessor.cpp
 	Functions/appendTrackFunction.cpp
 	Functions/chordsFromNotesFunction.cpp
+	Functions/mapChordsFunction.cpp
 	Functions/excerptFunction.cpp
 	Functions/repeatFunction.cpp
 	Functions/mergeFunction.cpp
