@@ -10,6 +10,7 @@
 #include <SeqWiresLib/Tracks/chordEvents.hpp>
 #include <SeqWiresLib/Tracks/trackEventHolder.hpp>
 #include <SeqWiresLib/chord.hpp>
+#include <SeqWiresLib/pitchClass.hpp>
 
 #include <BabelWiresLib/Features/mapFeature.hpp>
 #include <BabelWiresLib/Features/rootFeature.hpp>
@@ -25,12 +26,19 @@ namespace {
         ChordTypeMap()
             : babelwires::MapFeature(seqwires::ChordType::getThisIdentifier(), seqwires::ChordType::getThisIdentifier()) {}
     };
+
+    struct PitchClassMap : babelwires::MapFeature {
+        PitchClassMap()
+            : babelwires::MapFeature(seqwires::PitchClass::getThisIdentifier(), seqwires::PitchClass::getThisIdentifier()) {}
+    };
 } // namespace
 
 seqwires::ChordMapProcessor::ChordMapProcessor(const babelwires::ProjectContext& context)
     : babelwires::ParallelProcessor<seqwires::TrackFeature, seqwires::TrackFeature>(context) {
     m_chordTypeMapFeature = m_inputFeature->addField(
         std::make_unique<ChordTypeMap>(), REGISTERED_ID("TypMap", "Type map", "6054b8e9-5f48-4e9f-8807-b6377d36d6aa"));
+    m_pitchClassMapFeature = m_inputFeature->addField(
+        std::make_unique<PitchClassMap>(), REGISTERED_ID("RtMap", "Root map", "4df92989-554b-426a-aa0c-2c0c7ca2dfd6"));
     addArrayFeature(REGISTERED_ID("Tracks", "Tracks", "24e56b0d-eb1e-4c93-97fd-ba4d639e112a"));
 }
 
@@ -40,18 +48,27 @@ seqwires::ChordMapProcessor::Factory::Factory()
 
 void seqwires::ChordMapProcessor::processEntry(babelwires::UserLogger& userLogger, const seqwires::TrackFeature& input,
                                                seqwires::TrackFeature& output) const {
-    const babelwires::MapData& mapData = m_chordTypeMapFeature->get();
     const babelwires::ProjectContext& context = babelwires::RootFeature::getProjectContextAt(*m_chordTypeMapFeature);
-    if (!mapData.isValid(context.m_typeSystem)) {
-        throw babelwires::ModelException() << "The Map is not valid.";
+
+    const babelwires::MapData& chordTypeMapData = m_chordTypeMapFeature->get();
+    if (!chordTypeMapData.isValid(context.m_typeSystem)) {
+        throw babelwires::ModelException() << "The Chord Type Map is not valid.";
     }
 
     const ChordType& chordType =
         context.m_typeSystem.getEntryByIdentifier(seqwires::ChordType::getThisIdentifier())->is<ChordType>();
+    const babelwires::EnumToValueValueAdapter<ChordType> chordTypeTargetAdapter{chordType};
+    babelwires::EnumSourceMapApplicator<ChordType, ChordType::Value> chordTypeApplicator(chordTypeMapData, chordType, chordTypeTargetAdapter);
 
-    const babelwires::EnumToValueValueAdapter<ChordType> targetAdapter{chordType};
+    const babelwires::MapData& pitchClassMapData = m_pitchClassMapFeature->get();
+    if (!pitchClassMapData.isValid(context.m_typeSystem)) {
+        throw babelwires::ModelException() << "The Pitch Class Map is not valid.";
+    }
 
-    babelwires::EnumSourceMapApplicator<ChordType, ChordType::Value> applicator(mapData, chordType, targetAdapter);
+    const PitchClass& pitchClass =
+        context.m_typeSystem.getEntryByIdentifier(seqwires::PitchClass::getThisIdentifier())->is<PitchClass>();
+    const babelwires::EnumToValueValueAdapter<PitchClass> pitchClassTargetAdapter{pitchClass};
+    babelwires::EnumSourceMapApplicator<PitchClass, PitchClass::Value> pitchClassApplicator(pitchClassMapData, pitchClass, pitchClassTargetAdapter);
 
     const Track& trackIn = input.get();
     Track trackOut;
@@ -59,8 +76,9 @@ void seqwires::ChordMapProcessor::processEntry(babelwires::UserLogger& userLogge
     for (auto it = trackIn.begin(); it != trackIn.end(); ++it) {
         if (it->as<ChordOnEvent>()) {
             TrackEventHolder holder(*it);
-            ChordType::Value& type = holder->is<ChordOnEvent>().m_chord.m_chordType;
-            type = applicator[type];
+            Chord& chord = holder->is<ChordOnEvent>().m_chord;
+            chord.m_chordType = chordTypeApplicator[chord.m_chordType];
+            //chord.m_root = pitchClassApplicator[chord.m_root];
             trackOut.addEvent(holder.release());
         } else {
             trackOut.addEvent(*it);

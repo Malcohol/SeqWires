@@ -27,5 +27,6 @@ namespace seqwires {
 
       private:
         babelwires::MapFeature* m_chordTypeMapFeature;
+        babelwires::MapFeature* m_pitchClassMapFeature;
     };
 } // namespace seqwires
