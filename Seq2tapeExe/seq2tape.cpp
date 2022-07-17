@@ -5,16 +5,18 @@
  * 
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
-#include "Common/Audio/audioInterface.hpp"
-#include "Common/Audio/fileAudioDest.hpp"
-#include "Common/Audio/fileAudioSource.hpp"
-#include "Common/IO/fileDataSource.hpp"
-#include "Common/IO/outFileStream.hpp"
-#include "Seq2tapeExe/seq2tapeOptions.hpp"
-#include "Seq2tapeLib/tapeFile.hpp"
-#include "Seq2tapeLib/tapeFileFormat.hpp"
+#include <Seq2tapeExe/seq2tapeOptions.hpp>
 
-#include "BabelWiresAudio/Common/audioInit.hpp"
+#include <Seq2tapeLib/tapeFile.hpp>
+#include <Seq2tapeLib/tapeFileFormat.hpp>
+
+#include <BabelWiresAudio/Common/audioInit.hpp>
+
+#include <Common/Audio/audioInterface.hpp>
+#include <Common/Audio/fileAudioDest.hpp>
+#include <Common/Audio/fileAudioSource.hpp>
+#include <Common/IO/fileDataSource.hpp>
+#include <Common/IO/outFileStream.hpp>
 
 #include <cassert>
 #include <fstream>

@@ -5,7 +5,7 @@
  * 
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
-#include "Seq2tapeLib/tapeFileFormat.hpp"
+#include <Seq2tapeLib/tapeFileFormat.hpp>
 
 seq2tape::TapeFileFormat::TapeFileFormat(babelwires::LongIdentifier identifier, babelwires::VersionNumber version,
                                          Extensions extensions)

@@ -5,12 +5,12 @@
  *
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
-#include "SeqWiresLib/Functions/mergeFunction.hpp"
+#include <SeqWiresLib/Functions/mergeFunction.hpp>
 
-#include "SeqWiresLib/Tracks/trackEventHolder.hpp"
-#include "SeqWiresLib/Utilities/trackTraverser.hpp"
+#include <SeqWiresLib/Tracks/trackEventHolder.hpp>
+#include <SeqWiresLib/Utilities/trackTraverser.hpp>
 
-#include "BabelWiresLib/Features/modelExceptions.hpp"
+#include <BabelWiresLib/Features/modelExceptions.hpp>
 
 seqwires::Track seqwires::mergeTracks(const std::vector<const Track*>& sourceTracks) {
     Track trackOut;

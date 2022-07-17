@@ -6,9 +6,9 @@
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
 #define _USE_MATH_DEFINES
-#include "Seq2tapeLib/waveReader.hpp"
+#include <Seq2tapeLib/waveReader.hpp>
 
-#include "Common/Audio/audioSource.hpp"
+#include <Common/Audio/audioSource.hpp>
 
 #include <algorithm>
 #include <assert.h>

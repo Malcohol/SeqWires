@@ -5,9 +5,9 @@
  * 
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
-#include "SeqWiresLib/Functions/excerptFunction.hpp"
+#include <SeqWiresLib/Functions/excerptFunction.hpp>
 
-#include "SeqWiresLib/Tracks/trackEventHolder.hpp"
+#include <SeqWiresLib/Tracks/trackEventHolder.hpp>
 
 #include <set>
 

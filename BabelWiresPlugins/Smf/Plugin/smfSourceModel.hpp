@@ -7,14 +7,14 @@
  **/
 #pragma once
 
-#include "BabelWiresLib/Features/arrayFeature.hpp"
-#include "BabelWiresLib/Features/stringFeature.hpp"
-#include "BabelWiresLib/FileFormat/fileFeature.hpp"
-#include "BabelWiresLib/Features/recordWithOptionalsFeature.hpp"
+#include <BabelWiresLib/Features/arrayFeature.hpp>
+#include <BabelWiresLib/Features/stringFeature.hpp>
+#include <BabelWiresLib/FileFormat/fileFeature.hpp>
+#include <BabelWiresLib/Features/recordWithOptionalsFeature.hpp>
 
-#include "SeqWiresLib/Features/tempoFeature.hpp"
+#include <SeqWiresLib/Features/tempoFeature.hpp>
 
-#include "BabelWiresPlugins/Smf/Plugin/smfModelCommon.hpp"
+#include <BabelWiresPlugins/Smf/Plugin/smfModelCommon.hpp>
 
 namespace seqwires {
     class TrackFeature;

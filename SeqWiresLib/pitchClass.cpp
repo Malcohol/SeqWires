@@ -5,7 +5,7 @@
  *
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
-#include "SeqWiresLib/pitchClass.hpp"
+#include <SeqWiresLib/pitchClass.hpp>
 
 #include <Common/Identifiers/identifierRegistry.hpp>
 

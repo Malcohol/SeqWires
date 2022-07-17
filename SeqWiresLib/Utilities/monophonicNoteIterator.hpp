@@ -7,8 +7,8 @@
  **/
 #pragma once
 
-#include "SeqWiresLib/Tracks/noteEvents.hpp"
-#include "SeqWiresLib/Utilities/filteredTrackIterator.hpp"
+#include <SeqWiresLib/Tracks/noteEvents.hpp>
+#include <SeqWiresLib/Utilities/filteredTrackIterator.hpp>
 
 namespace seqwires {
     /// This returns note events which never overlap.

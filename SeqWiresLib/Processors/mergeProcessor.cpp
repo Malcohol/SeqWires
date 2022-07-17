@@ -5,16 +5,16 @@
  *
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
-#include "SeqWiresLib/Processors/mergeProcessor.hpp"
+#include <SeqWiresLib/Processors/mergeProcessor.hpp>
 
-#include "SeqWiresLib/Features/trackFeature.hpp"
-#include "SeqWiresLib/Functions/mergeFunction.hpp"
+#include <SeqWiresLib/Features/trackFeature.hpp>
+#include <SeqWiresLib/Functions/mergeFunction.hpp>
 
-#include "BabelWiresLib/Features/arrayFeature.hpp"
-#include "BabelWiresLib/Features/featureMixins.hpp"
-#include "BabelWiresLib/Features/rootFeature.hpp"
+#include <BabelWiresLib/Features/arrayFeature.hpp>
+#include <BabelWiresLib/Features/featureMixins.hpp>
+#include <BabelWiresLib/Features/rootFeature.hpp>
 
-#include "Common/Identifiers/registeredIdentifier.hpp"
+#include <Common/Identifiers/registeredIdentifier.hpp>
 
 #include <set>
 

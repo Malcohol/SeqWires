@@ -5,12 +5,12 @@
  *
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
-#include "SeqWiresLib/Functions/repeatFunction.hpp"
+#include <SeqWiresLib/Functions/repeatFunction.hpp>
 
-#include "SeqWiresLib/Functions/appendTrackFunction.hpp"
-#include "SeqWiresLib/Tracks/trackEventHolder.hpp"
+#include <SeqWiresLib/Functions/appendTrackFunction.hpp>
+#include <SeqWiresLib/Tracks/trackEventHolder.hpp>
 
-#include "BabelWiresLib/Features/modelExceptions.hpp"
+#include <BabelWiresLib/Features/modelExceptions.hpp>
 
 seqwires::Track seqwires::repeatTrack(const Track& trackIn, int count) {
     if (count < 0) {

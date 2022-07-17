@@ -5,9 +5,9 @@
  *
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
-#include "SeqWiresLibUi/RowModels/trackRowModel.hpp"
+#include <SeqWiresLibUi/RowModels/trackRowModel.hpp>
 
-#include "SeqWiresLib/Features/trackFeature.hpp"
+#include <SeqWiresLib/Features/trackFeature.hpp>
 
 #include <QString>
 

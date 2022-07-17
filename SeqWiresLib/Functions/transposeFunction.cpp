@@ -5,11 +5,11 @@
  *
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
-#include "SeqWiresLib/Functions/transposeFunction.hpp"
+#include <SeqWiresLib/Functions/transposeFunction.hpp>
 
-#include "SeqWiresLib/Tracks/trackEventHolder.hpp"
+#include <SeqWiresLib/Tracks/trackEventHolder.hpp>
 
-#include "BabelWiresLib/Features/modelExceptions.hpp"
+#include <BabelWiresLib/Features/modelExceptions.hpp>
 
 seqwires::Track seqwires::transposeTrack(const Track& trackIn, int pitchOffset) {
     assert(pitchOffset >= -127 && "pitchOffset too low");

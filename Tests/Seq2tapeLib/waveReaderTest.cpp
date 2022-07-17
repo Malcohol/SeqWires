@@ -1,9 +1,9 @@
 #include <gtest/gtest.h>
 
-#include "Common/Audio/audioSource.hpp"
-#include "Common/Audio/fileAudioDest.hpp"
+#include <Common/Audio/audioSource.hpp>
+#include <Common/Audio/fileAudioDest.hpp>
 
-#include "Seq2tapeLib/waveReader.hpp"
+#include <Seq2tapeLib/waveReader.hpp>
 
 #include <algorithm>
 #include <filesystem>

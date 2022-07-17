@@ -7,11 +7,11 @@
  **/
 #pragma once
 
-#include "BabelWiresLib/FileFormat/fileFeature.hpp"
-#include "BabelWiresPlugins/Smf/Plugin/smfSourceModel.hpp"
-#include "Common/IO/dataSource.hpp"
-#include "SeqWiresLib/musicTypes.hpp"
-#include "Common/Log/userLogger.hpp"
+#include <BabelWiresLib/FileFormat/fileFeature.hpp>
+#include <BabelWiresPlugins/Smf/Plugin/smfSourceModel.hpp>
+#include <Common/IO/dataSource.hpp>
+#include <SeqWiresLib/musicTypes.hpp>
+#include <Common/Log/userLogger.hpp>
 
 #include <cstdint>
 #include <memory>

@@ -5,7 +5,7 @@
  * 
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
-#include "SeqWiresLib/Utilities/monophonicNoteIterator.hpp"
+#include <SeqWiresLib/Utilities/monophonicNoteIterator.hpp>
 
 bool seqwires::MonophonicNoteIterator::isEventOfInterest(const TrackEvent& event) {
     if (const NoteOnEvent* noteOn = event.as<NoteOnEvent>()) {

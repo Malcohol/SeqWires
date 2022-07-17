@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "SeqWiresLib/Tracks/track.hpp"
+#include <SeqWiresLib/Tracks/track.hpp>
 
 TEST(Track, Simple) {
     seqwires::Track track;

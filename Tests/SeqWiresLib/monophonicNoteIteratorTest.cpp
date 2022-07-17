@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "SeqWiresLib/Utilities/monophonicNoteIterator.hpp"
+#include <SeqWiresLib/Utilities/monophonicNoteIterator.hpp>
 
 namespace {
     /// A non-note event.

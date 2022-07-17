@@ -7,9 +7,9 @@
  **/
 #pragma once
 
-#include "Common/types.hpp"
-#include "SeqWiresLib/Tracks/trackEvent.hpp"
-#include "SeqWiresLib/musicTypes.hpp"
+#include <Common/types.hpp>
+#include <SeqWiresLib/Tracks/trackEvent.hpp>
+#include <SeqWiresLib/musicTypes.hpp>
 
 #include <cassert>
 #include <unordered_map>

@@ -5,12 +5,12 @@
  * 
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
-#include "BabelWiresPlugins/Smf/Plugin/smfWriter.hpp"
+#include <BabelWiresPlugins/Smf/Plugin/smfWriter.hpp>
 
-#include "SeqWiresLib/Features/trackFeature.hpp"
-#include "SeqWiresLib/Utilities/filteredTrackIterator.hpp"
-#include "SeqWiresLib/Utilities/musicUtilities.hpp"
-#include "SeqWiresLib/Utilities/trackTraverser.hpp"
+#include <SeqWiresLib/Features/trackFeature.hpp>
+#include <SeqWiresLib/Utilities/filteredTrackIterator.hpp>
+#include <SeqWiresLib/Utilities/musicUtilities.hpp>
+#include <SeqWiresLib/Utilities/trackTraverser.hpp>
 
 #include <algorithm>
 #include <sstream>

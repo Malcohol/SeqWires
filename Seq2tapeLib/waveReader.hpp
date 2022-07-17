@@ -7,7 +7,7 @@
  **/
 #pragma once
 
-#include "Seq2tapeLib/sampleReader.hpp"
+#include <Seq2tapeLib/sampleReader.hpp>
 
 namespace seq2tape {
     /// Try to read waves of specific lengths from an audio file.

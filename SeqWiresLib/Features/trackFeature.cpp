@@ -5,7 +5,7 @@
  * 
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
-#include "SeqWiresLib/Features/trackFeature.hpp"
+#include <SeqWiresLib/Features/trackFeature.hpp>
 
 std::string seqwires::TrackFeature::doGetValueType() const {
     return "trk";

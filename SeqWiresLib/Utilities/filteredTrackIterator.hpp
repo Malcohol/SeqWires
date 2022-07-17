@@ -7,11 +7,11 @@
  **/
 #pragma once
 
-#include "SeqWiresLib/Tracks/noteEvents.hpp"
-#include "SeqWiresLib/Tracks/track.hpp"
+#include <SeqWiresLib/Tracks/noteEvents.hpp>
+#include <SeqWiresLib/Tracks/track.hpp>
 
-#include "Common/BlockStream/streamEventHolder.hpp"
-#include "Common/types.hpp"
+#include <Common/BlockStream/streamEventHolder.hpp>
+#include <Common/types.hpp>
 
 namespace seqwires {
     /// Iterate over a track, skipping events that are not of interest.
@@ -60,4 +60,4 @@ namespace seqwires {
     template <typename EVENT> babelwires::Span<FilteredTrackIterator<EVENT>> iterateOver(const Track& track);
 } // namespace seqwires
 
-#include "SeqWiresLib/Utilities/filteredTrackIterator_inl.hpp"
+#include <SeqWiresLib/Utilities/filteredTrackIterator_inl.hpp>

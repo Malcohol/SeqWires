@@ -5,7 +5,7 @@
  *
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
-#include "SeqWiresLib/Functions/mapChordsFunction.hpp"
+#include <SeqWiresLib/Functions/mapChordsFunction.hpp>
 
 #include <SeqWiresLib/Tracks/chordEvents.hpp>
 #include <SeqWiresLib/Tracks/trackEventHolder.hpp>

@@ -7,9 +7,9 @@
  **/
 #pragma once
 
-#include "BabelWiresLib/Features/arrayFeature.hpp"
-#include "BabelWiresLib/FileFormat/fileFeature.hpp"
-#include "BabelWiresPlugins/Smf/Plugin/smfModelCommon.hpp"
+#include <BabelWiresLib/Features/arrayFeature.hpp>
+#include <BabelWiresLib/FileFormat/fileFeature.hpp>
+#include <BabelWiresPlugins/Smf/Plugin/smfModelCommon.hpp>
 
 namespace seqwires {
     class TrackFeature;

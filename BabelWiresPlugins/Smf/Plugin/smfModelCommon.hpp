@@ -7,9 +7,9 @@
  **/
 #pragma once
 
-#include "BabelWiresLib/Features/stringFeature.hpp"
-#include "SeqWiresLib/Features/tempoFeature.hpp"
-#include "BabelWiresLib/Features/recordWithOptionalsFeature.hpp"
+#include <BabelWiresLib/Features/stringFeature.hpp>
+#include <SeqWiresLib/Features/tempoFeature.hpp>
+#include <BabelWiresLib/Features/recordWithOptionalsFeature.hpp>
 
 namespace seqwires {
     class TrackFeature;

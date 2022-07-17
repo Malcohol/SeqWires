@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
-#include "SeqWiresLib/Utilities/filteredTrackIterator.hpp"
-#include "SeqWiresLib/Utilities/trackTraverser.hpp"
+#include <SeqWiresLib/Utilities/filteredTrackIterator.hpp>
+#include <SeqWiresLib/Utilities/trackTraverser.hpp>
 
 namespace {
     struct TestEvent : seqwires::TrackEvent {

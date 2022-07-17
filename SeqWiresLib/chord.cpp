@@ -5,7 +5,7 @@
  *
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
-#include "SeqWiresLib/chord.hpp"
+#include <SeqWiresLib/chord.hpp>
 
 #include <Common/Identifiers/identifierRegistry.hpp>
 

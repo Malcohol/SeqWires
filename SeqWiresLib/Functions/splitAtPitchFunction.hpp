@@ -7,7 +7,7 @@
  **/
 #pragma once
 
-#include "SeqWiresLib/Tracks/track.hpp"
+#include <SeqWiresLib/Tracks/track.hpp>
 
 #include <tuple>
 

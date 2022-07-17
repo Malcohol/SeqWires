@@ -5,11 +5,13 @@
  *
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
-#include "BabelWiresPlugins/Smf/Plugin/smfParser.hpp"
-#include "Common/Log/debugLogger.hpp"
-#include "Common/exceptions.hpp"
-#include "SeqWiresLib/Features/trackFeature.hpp"
-#include "SeqWiresLib/Tracks/noteEvents.hpp"
+#include <BabelWiresPlugins/Smf/Plugin/smfParser.hpp>
+
+#include <SeqWiresLib/Features/trackFeature.hpp>
+#include <SeqWiresLib/Tracks/noteEvents.hpp>
+
+#include <Common/Log/debugLogger.hpp>
+#include <Common/exceptions.hpp>
 
 #include <cassert>
 #include <cmath>

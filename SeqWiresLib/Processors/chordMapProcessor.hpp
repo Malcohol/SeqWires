@@ -7,9 +7,9 @@
  **/
 #pragma once
 
-#include "SeqWiresLib/Features/trackFeature.hpp"
+#include <SeqWiresLib/Features/trackFeature.hpp>
 
-#include "BabelWiresLib/Processors/parallelProcessor.hpp"
+#include <BabelWiresLib/Processors/parallelProcessor.hpp>
 
 namespace babelwires { class MapFeature; }
 

@@ -5,8 +5,9 @@
  * 
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
-#include "SeqWiresLib/Utilities/musicUtilities.hpp"
-#include "SeqWiresLib/Tracks/track.hpp"
+#include <SeqWiresLib/Utilities/musicUtilities.hpp>
+
+#include <SeqWiresLib/Tracks/track.hpp>
 
 int seqwires::getMinimumDenominator(const Track& track) {
     int denominator = 1;

@@ -5,7 +5,7 @@
  *
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
-#include "SeqWiresLib/Tracks/track.hpp"
+#include <SeqWiresLib/Tracks/track.hpp>
 
 namespace babelwires {
     class MapData;

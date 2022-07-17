@@ -5,39 +5,37 @@
  *
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
-#include "Common/Audio/fileAudioDest.hpp"
-#include "Common/Audio/fileAudioSource.hpp"
 
-#include "SeqWiresExe/seqWiresOptions.hpp"
+#include <SeqWiresExe/seqWiresOptions.hpp>
 
-#include "BabelWiresQtUi/ModelBridge/RowModels/rowModelRegistry.hpp"
-#include "BabelWiresQtUi/uiProjectContext.hpp"
-#include "BabelWiresQtUi/uiMain.hpp"
+#include <BabelWiresQtUi/ModelBridge/RowModels/rowModelRegistry.hpp>
+#include <BabelWiresQtUi/uiProjectContext.hpp>
+#include <BabelWiresQtUi/uiMain.hpp>
 
-#include "BabelWiresLib/Features/Utilities/featureXml.hpp"
+#include <BabelWiresLib/Features/Utilities/featureXml.hpp>
+#include <BabelWiresLib/TypeSystem/typeSystem.hpp>
+#include <BabelWiresLib/FileFormat/fileFeature.hpp>
+#include <BabelWiresLib/FileFormat/sourceFileFormat.hpp>
+#include <BabelWiresLib/FileFormat/targetFileFormat.hpp>
+#include <BabelWiresLib/Processors/processorFactory.hpp>
+#include <BabelWiresLib/Processors/processorFactoryRegistry.hpp>
+#include <BabelWiresLib/Project/Modifiers/modifierData.hpp>
+#include <BabelWiresLib/Project/project.hpp>
+#include <BabelWiresLib/Project/projectData.hpp>
+#include <BabelWiresLib/Serialization/projectSerialization.hpp>
+#include <BabelWiresLib/libRegistration.hpp>
 
-#include "BabelWiresLib/TypeSystem/typeSystem.hpp"
-#include "BabelWiresLib/FileFormat/fileFeature.hpp"
-#include "BabelWiresLib/FileFormat/sourceFileFormat.hpp"
-#include "BabelWiresLib/FileFormat/targetFileFormat.hpp"
-#include "BabelWiresLib/Processors/processorFactory.hpp"
-#include "BabelWiresLib/Processors/processorFactoryRegistry.hpp"
-#include "BabelWiresLib/Project/Modifiers/modifierData.hpp"
-#include "BabelWiresLib/Project/project.hpp"
-#include "BabelWiresLib/Project/projectData.hpp"
-#include "BabelWiresLib/Serialization/projectSerialization.hpp"
-#include "BabelWiresLib/libRegistration.hpp"
-
-#include "Common/Identifiers/identifierRegistry.hpp"
-#include "Common/IO/fileDataSource.hpp"
-#include "Common/Log/ostreamLogListener.hpp"
-#include "Common/Log/unifiedLog.hpp"
-#include "Common/Serialization/deserializationRegistry.hpp"
-
+#include <Common/Audio/fileAudioDest.hpp>
+#include <Common/Audio/fileAudioSource.hpp>
+#include <Common/Identifiers/identifierRegistry.hpp>
+#include <Common/IO/fileDataSource.hpp>
+#include <Common/Log/ostreamLogListener.hpp>
+#include <Common/Log/unifiedLog.hpp>
+#include <Common/Serialization/deserializationRegistry.hpp>
 // "plugins"
-#include "BabelWiresPlugins/Smf/Plugin/libRegistration.hpp"
-#include "SeqWiresLib/libRegistration.hpp"
-#include "SeqWiresLibUi/libRegistration.hpp"
+#include <BabelWiresPlugins/Smf/Plugin/libRegistration.hpp>
+#include <SeqWiresLib/libRegistration.hpp>
+#include <SeqWiresLibUi/libRegistration.hpp>
 
 #include <cassert>
 #include <chrono>

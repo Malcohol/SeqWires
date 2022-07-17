@@ -9,8 +9,8 @@
 
 #include <SeqWiresLib/pitchClass.hpp>
 
-#include "Common/Math/rational.hpp"
-#include "Common/types.hpp"
+#include <Common/Math/rational.hpp>
+#include <Common/types.hpp>
 
 #include <cstdint>
 #include <string>

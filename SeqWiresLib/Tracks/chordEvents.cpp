@@ -5,9 +5,9 @@
  * 
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
-#include "SeqWiresLib/Tracks/chordEvents.hpp"
+#include <SeqWiresLib/Tracks/chordEvents.hpp>
 
-#include "Common/Utilities/hash.hpp"
+#include <Common/Utilities/hash.hpp>
 
 #include <sstream>
 #include <typeinfo>

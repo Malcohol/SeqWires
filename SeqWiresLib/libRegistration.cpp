@@ -5,27 +5,27 @@
  * 
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
-#include "SeqWiresLib/libRegistration.hpp"
+#include <SeqWiresLib/libRegistration.hpp>
 
-#include "BabelWiresLib/Processors/processorFactory.hpp"
-#include "BabelWiresLib/Processors/processorFactoryRegistry.hpp"
-#include "BabelWiresLib/Project/projectContext.hpp"
-#include "BabelWiresLib/TypeSystem/typeSystem.hpp"
+#include <BabelWiresLib/Processors/processorFactory.hpp>
+#include <BabelWiresLib/Processors/processorFactoryRegistry.hpp>
+#include <BabelWiresLib/Project/projectContext.hpp>
+#include <BabelWiresLib/TypeSystem/typeSystem.hpp>
 
-#include "SeqWiresLib/Processors/excerptProcessor.hpp"
-#include "SeqWiresLib/Processors/concatenateProcessor.hpp"
-#include "SeqWiresLib/Processors/mergeProcessor.hpp"
-#include "SeqWiresLib/Processors/monophonicSubtracksProcessor.hpp"
-#include "SeqWiresLib/Processors/repeatProcessor.hpp"
-#include "SeqWiresLib/Processors/silenceProcessor.hpp"
-#include "SeqWiresLib/Processors/splitAtPitchProcessor.hpp"
-#include "SeqWiresLib/Processors/transposeProcessor.hpp"
-#include "SeqWiresLib/Processors/chordsFromNotesProcessor.hpp"
-#include "SeqWiresLib/Processors/chordMapProcessor.hpp"
+#include <SeqWiresLib/Processors/excerptProcessor.hpp>
+#include <SeqWiresLib/Processors/concatenateProcessor.hpp>
+#include <SeqWiresLib/Processors/mergeProcessor.hpp>
+#include <SeqWiresLib/Processors/monophonicSubtracksProcessor.hpp>
+#include <SeqWiresLib/Processors/repeatProcessor.hpp>
+#include <SeqWiresLib/Processors/silenceProcessor.hpp>
+#include <SeqWiresLib/Processors/splitAtPitchProcessor.hpp>
+#include <SeqWiresLib/Processors/transposeProcessor.hpp>
+#include <SeqWiresLib/Processors/chordsFromNotesProcessor.hpp>
+#include <SeqWiresLib/Processors/chordMapProcessor.hpp>
 
-#include "SeqWiresLib/Functions/monophonicSubtracksFunction.hpp"
-#include "SeqWiresLib/chord.hpp"
-#include "SeqWiresLib/pitchClass.hpp"
+#include <SeqWiresLib/Functions/monophonicSubtracksFunction.hpp>
+#include <SeqWiresLib/chord.hpp>
+#include <SeqWiresLib/pitchClass.hpp>
 
 void seqwires::registerLib(babelwires::ProjectContext& context) {
     context.m_typeSystem.addEntry(std::make_unique<MonophonicSubtracksPolicyEnum>());

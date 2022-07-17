@@ -5,11 +5,11 @@
  * 
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
-#include "BabelWiresPlugins/Smf/Plugin/libRegistration.hpp"
+#include <BabelWiresPlugins/Smf/Plugin/libRegistration.hpp>
 
-#include "BabelWiresLib/Project/projectContext.hpp"
+#include <BabelWiresLib/Project/projectContext.hpp>
 
-#include "BabelWiresPlugins/Smf/Plugin/smfFormat.hpp"
+#include <BabelWiresPlugins/Smf/Plugin/smfFormat.hpp>
 
 void smf::registerLib(babelwires::ProjectContext& context) {
     context.m_sourceFileFormatReg.addEntry(std::make_unique<smf::SmfSourceFormat>());

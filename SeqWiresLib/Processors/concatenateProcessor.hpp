@@ -7,7 +7,7 @@
  **/
 #pragma once
 
-#include "BabelWiresLib/Processors/commonProcessor.hpp"
+#include <BabelWiresLib/Processors/commonProcessor.hpp>
 
 namespace babelwires {
     class ArrayFeature;

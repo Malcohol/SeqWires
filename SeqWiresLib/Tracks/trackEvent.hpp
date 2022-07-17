@@ -7,10 +7,10 @@
  **/
 #pragma once
 
-#include "Common/BlockStream/blockStream.hpp"
-#include "Common/Cloning/cloneable.hpp"
-#include "Common/Utilities/enumFlags.hpp"
-#include "SeqWiresLib/musicTypes.hpp"
+#include <Common/BlockStream/blockStream.hpp>
+#include <Common/Cloning/cloneable.hpp>
+#include <Common/Utilities/enumFlags.hpp>
+#include <SeqWiresLib/musicTypes.hpp>
 
 namespace seqwires {
 

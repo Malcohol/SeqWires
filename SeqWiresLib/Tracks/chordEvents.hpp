@@ -7,8 +7,8 @@
  **/
 #pragma once
 
-#include "SeqWiresLib/Tracks/trackEvent.hpp"
-#include "SeqWiresLib/chord.hpp"
+#include <SeqWiresLib/Tracks/trackEvent.hpp>
+#include <SeqWiresLib/chord.hpp>
 
 namespace seqwires {
 

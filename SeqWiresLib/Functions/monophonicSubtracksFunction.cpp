@@ -5,11 +5,12 @@
  *
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
-#include "SeqWiresLib/Functions/monophonicSubtracksFunction.hpp"
+#include <SeqWiresLib/Functions/monophonicSubtracksFunction.hpp>
 
-#include "SeqWiresLib/Tracks/noteEvents.hpp"
-#include "SeqWiresLib/Tracks/trackEventHolder.hpp"
-#include "Common/Identifiers/registeredIdentifier.hpp"
+#include <SeqWiresLib/Tracks/noteEvents.hpp>
+#include <SeqWiresLib/Tracks/trackEventHolder.hpp>
+
+#include <Common/Identifiers/registeredIdentifier.hpp>
 
 #include <algorithm>
 #include <set>

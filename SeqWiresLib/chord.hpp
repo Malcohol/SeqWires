@@ -7,9 +7,9 @@
  **/
 #pragma once
 
-#include "SeqWiresLib/musicTypes.hpp"
+#include <SeqWiresLib/musicTypes.hpp>
 
-#include "BabelWiresLib/Enums/enumWithCppEnum.hpp"
+#include <BabelWiresLib/Enums/enumWithCppEnum.hpp>
 
 /// These match the "Chord type" values from the XF Format Specifications v2.01
 // TODO Consider using \u266d (flat) and \u266f (sharp) in names.

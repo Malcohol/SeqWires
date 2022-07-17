@@ -5,11 +5,11 @@
  *
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
-#include "Seq2tapeLib/tapeFile.hpp"
+#include <Seq2tapeLib/tapeFile.hpp>
 
-#include "Common/IO/dataSource.hpp"
-#include "Common/exceptions.hpp"
-#include "Common/types.hpp"
+#include <Common/IO/dataSource.hpp>
+#include <Common/exceptions.hpp>
+#include <Common/types.hpp>
 
 #include <cassert>
 #include <cstring>

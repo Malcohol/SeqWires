@@ -7,7 +7,7 @@
  **/
 #pragma once
 
-#include "Common/types.hpp"
+#include <Common/types.hpp>
 
 namespace babelwires {
     struct AudioSource;

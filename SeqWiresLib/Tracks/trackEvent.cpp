@@ -5,9 +5,9 @@
  * 
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
-#include "SeqWiresLib/Tracks/trackEvent.hpp"
+#include <SeqWiresLib/Tracks/trackEvent.hpp>
 
-#include "Common/Utilities/hash.hpp"
+#include <Common/Utilities/hash.hpp>
 
 const char* seqwires::TrackEvent::GroupingInfo::s_genericCategory = "Generic";
 

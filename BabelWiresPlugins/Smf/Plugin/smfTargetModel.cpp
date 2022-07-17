@@ -5,13 +5,15 @@
  * 
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
-#include "BabelWiresPlugins/Smf/Plugin/smfTargetModel.hpp"
+#include <BabelWiresPlugins/Smf/Plugin/smfTargetModel.hpp>
 
-#include "BabelWiresLib/Features/featureMixins.hpp"
-#include "BabelWiresPlugins/Smf/Plugin/smfFormat.hpp"
-#include "SeqWiresLib/Features/trackFeature.hpp"
+#include <BabelWiresPlugins/Smf/Plugin/smfFormat.hpp>
 
-#include "Common/Identifiers/registeredIdentifier.hpp"
+#include <BabelWiresLib/Features/featureMixins.hpp>
+
+#include <SeqWiresLib/Features/trackFeature.hpp>
+
+#include <Common/Identifiers/registeredIdentifier.hpp>
 
 smf::target::ChannelTrackFeature::ChannelTrackFeature() {
     m_channelNum = addField(std::make_unique<babelwires::HasStaticRange<babelwires::IntFeature, 0, 15>>(),

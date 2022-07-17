@@ -5,17 +5,18 @@
  *
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
-#include "SeqWiresLib/Processors/monophonicSubtracksProcessor.hpp"
-#include "SeqWiresLib/Features/trackFeature.hpp"
-#include "SeqWiresLib/Functions/monophonicSubtracksFunction.hpp"
+#include <SeqWiresLib/Processors/monophonicSubtracksProcessor.hpp>
 
-#include "BabelWiresLib/Features/arrayFeature.hpp"
-#include "BabelWiresLib/Features/enumFeature.hpp"
-#include "BabelWiresLib/Features/featureMixins.hpp"
-#include "BabelWiresLib/Features/numericFeature.hpp"
-#include "BabelWiresLib/Features/rootFeature.hpp"
+#include <SeqWiresLib/Features/trackFeature.hpp>
+#include <SeqWiresLib/Functions/monophonicSubtracksFunction.hpp>
 
-#include "Common/Identifiers/registeredIdentifier.hpp"
+#include <BabelWiresLib/Features/arrayFeature.hpp>
+#include <BabelWiresLib/Features/enumFeature.hpp>
+#include <BabelWiresLib/Features/featureMixins.hpp>
+#include <BabelWiresLib/Features/numericFeature.hpp>
+#include <BabelWiresLib/Features/rootFeature.hpp>
+
+#include <Common/Identifiers/registeredIdentifier.hpp>
 
 #include <set>
 

@@ -7,8 +7,8 @@
  **/
 #pragma once
 
-#include "Common/BlockStream/streamEventHolder.hpp"
-#include "SeqWiresLib/Tracks/trackEvent.hpp"
+#include <Common/BlockStream/streamEventHolder.hpp>
+#include <SeqWiresLib/Tracks/trackEvent.hpp>
 
 namespace seqwires {
     /// A TrackEventHolder is a container for a single mutable TrackEvent.

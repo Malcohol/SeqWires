@@ -5,7 +5,7 @@
  *
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
-#include "BabelWiresLib/Processors/commonProcessor.hpp"
+#include <BabelWiresLib/Processors/commonProcessor.hpp>
 
 namespace seqwires {
     class TrackFeature;

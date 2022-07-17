@@ -7,7 +7,7 @@
  **/
 #pragma once
 
-#include "BabelWiresQtUi/ModelBridge/RowModels/rowModelWithRichText.hpp"
+#include <BabelWiresQtUi/ModelBridge/RowModels/rowModelWithRichText.hpp>
 
 namespace seqwires {
     class TrackFeature;

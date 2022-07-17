@@ -5,13 +5,15 @@
  *
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
-#include "BabelWiresPlugins/Smf/Plugin/smfModelCommon.hpp"
+#include <BabelWiresPlugins/Smf/Plugin/smfModelCommon.hpp>
 
-#include "BabelWiresLib/Features/featureMixins.hpp"
-#include "BabelWiresPlugins/Smf/Plugin/smfFormat.hpp"
-#include "SeqWiresLib/Features/trackFeature.hpp"
+#include <BabelWiresPlugins/Smf/Plugin/smfFormat.hpp>
 
-#include "Common/Identifiers/registeredIdentifier.hpp"
+#include <BabelWiresLib/Features/featureMixins.hpp>
+
+#include <SeqWiresLib/Features/trackFeature.hpp>
+
+#include <Common/Identifiers/registeredIdentifier.hpp>
 
 
 namespace {

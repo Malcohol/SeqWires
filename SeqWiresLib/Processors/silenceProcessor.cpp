@@ -5,18 +5,18 @@
  * 
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
-#include "SeqWiresLib/Processors/silenceProcessor.hpp"
+#include <SeqWiresLib/Processors/silenceProcessor.hpp>
 
-#include "SeqWiresLib/Features/trackFeature.hpp"
-#include "SeqWiresLib/Features/durationFeature.hpp"
-#include "SeqWiresLib/Functions/appendTrackFunction.hpp"
+#include <SeqWiresLib/Features/trackFeature.hpp>
+#include <SeqWiresLib/Features/durationFeature.hpp>
+#include <SeqWiresLib/Functions/appendTrackFunction.hpp>
 
-#include "BabelWiresLib/Features/arrayFeature.hpp"
-#include "BabelWiresLib/Features/featureMixins.hpp"
-#include "BabelWiresLib/Features/numericFeature.hpp"
-#include "BabelWiresLib/Features/rootFeature.hpp"
+#include <BabelWiresLib/Features/arrayFeature.hpp>
+#include <BabelWiresLib/Features/featureMixins.hpp>
+#include <BabelWiresLib/Features/numericFeature.hpp>
+#include <BabelWiresLib/Features/rootFeature.hpp>
 
-#include "Common/Identifiers/registeredIdentifier.hpp"
+#include <Common/Identifiers/registeredIdentifier.hpp>
 
 seqwires::SilenceProcessor::SilenceProcessor(const babelwires::ProjectContext& projectContext)
 : CommonProcessor(projectContext) {

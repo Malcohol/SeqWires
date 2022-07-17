@@ -5,9 +5,9 @@
  * 
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
-#include "SeqWiresLib/Tracks/track.hpp"
+#include <SeqWiresLib/Tracks/track.hpp>
 
-#include "Common/Utilities/hash.hpp"
+#include <Common/Utilities/hash.hpp>
 
 int seqwires::Track::getNumEvents() const {
     return m_blockStream.getNumEvents();

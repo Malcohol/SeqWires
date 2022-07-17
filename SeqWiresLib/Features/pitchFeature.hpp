@@ -7,8 +7,8 @@
  **/
 #pragma once
 
-#include "BabelWiresLib/Features/numericFeature.hpp"
-#include "BabelWiresLib/Features/featureMixins.hpp"
+#include <BabelWiresLib/Features/numericFeature.hpp>
+#include <BabelWiresLib/Features/featureMixins.hpp>
 
 namespace seqwires {
 

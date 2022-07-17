@@ -1,8 +1,8 @@
-#include "SeqWiresLib/Processors/chordsFromNotesProcessor.hpp"
-#include "SeqWiresLib/Features/trackFeature.hpp"
-#include "SeqWiresLib/Functions/chordsFromNotesFunction.hpp"
+#include <SeqWiresLib/Processors/chordsFromNotesProcessor.hpp>
+#include <SeqWiresLib/Features/trackFeature.hpp>
+#include <SeqWiresLib/Functions/chordsFromNotesFunction.hpp>
 
-#include "BabelWiresLib/Features/rootFeature.hpp"
+#include <BabelWiresLib/Features/rootFeature.hpp>
 
 seqwires::ChordsFromNotesProcessor::ChordsFromNotesProcessor(const babelwires::ProjectContext& projectContext)
 : babelwires::CommonProcessor(projectContext) {

@@ -5,9 +5,9 @@
  * 
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
-#include "SeqWiresLib/Tracks/noteEvents.hpp"
+#include <SeqWiresLib/Tracks/noteEvents.hpp>
 
-#include "Common/Utilities/hash.hpp"
+#include <Common/Utilities/hash.hpp>
 
 #include <sstream>
 #include <typeinfo>

@@ -5,11 +5,11 @@
  *
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
-#include "SeqWiresLib/Functions/appendTrackFunction.hpp"
+#include <SeqWiresLib/Functions/appendTrackFunction.hpp>
 
-#include "SeqWiresLib/Tracks/trackEventHolder.hpp"
+#include <SeqWiresLib/Tracks/trackEventHolder.hpp>
 
-#include "BabelWiresLib/Features/modelExceptions.hpp"
+#include <BabelWiresLib/Features/modelExceptions.hpp>
 
 void seqwires::appendTrack(Track& targetTrack, const Track& sourceTrack) {
     assert((&targetTrack != &sourceTrack) && "You cannot have source and target track being the same");

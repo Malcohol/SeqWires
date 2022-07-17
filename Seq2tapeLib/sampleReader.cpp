@@ -5,9 +5,9 @@
  * 
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
-#include "Seq2tapeLib/sampleReader.hpp"
+#include <Seq2tapeLib/sampleReader.hpp>
 
-#include "Common/Audio/audioSource.hpp"
+#include <Common/Audio/audioSource.hpp>
 
 #include <cassert>
 

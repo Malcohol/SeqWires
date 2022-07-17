@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
 
-#include "SeqWiresLib/musicTypes.hpp"
+#include <SeqWiresLib/musicTypes.hpp>
 
-#include "Common/exceptions.hpp"
+#include <Common/exceptions.hpp>
 
 TEST(SeqWiresLib, enumNames) {
     EXPECT_EQ(seqwires::PitchClass::valueToString(seqwires::PitchClass::Value::C), "C");

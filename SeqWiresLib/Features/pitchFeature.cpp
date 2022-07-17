@@ -5,11 +5,11 @@
  *
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
-#include "SeqWiresLib/Features/pitchFeature.hpp"
+#include <SeqWiresLib/Features/pitchFeature.hpp>
 
-#include "SeqWiresLib/musicTypes.hpp"
+#include <SeqWiresLib/musicTypes.hpp>
 
-#include "BabelWiresLib/ValueNames/valueNames.hpp"
+#include <BabelWiresLib/ValueNames/valueNames.hpp>
 
 namespace {
     struct NoteValueNames : babelwires::ValueNames {

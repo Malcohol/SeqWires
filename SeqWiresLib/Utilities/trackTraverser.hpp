@@ -7,8 +7,8 @@
  **/
 #pragma once
 
-#include "Common/BlockStream/streamEventHolder.hpp"
-#include "SeqWiresLib/Tracks/track.hpp"
+#include <Common/BlockStream/streamEventHolder.hpp>
+#include <SeqWiresLib/Tracks/track.hpp>
 
 #include <functional>
 
@@ -71,4 +71,4 @@ namespace seqwires {
 
 } // namespace seqwires
 
-#include "SeqWiresLib/Utilities/trackTraverser_inl.hpp"
+#include <SeqWiresLib/Utilities/trackTraverser_inl.hpp>
