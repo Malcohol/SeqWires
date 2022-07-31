@@ -53,6 +53,8 @@ namespace smf {
         template<typename STREAMLIKE>
         void logByteSequence(STREAMLIKE log, int length);
 
+        void readSequencerSpecificEvent(int length);
+
         ///
         std::uint16_t readU16();
         std::uint32_t readU24();

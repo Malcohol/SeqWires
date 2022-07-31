@@ -15,6 +15,7 @@
 
 #include <cassert>
 #include <cmath>
+#include <iomanip>
 
 smf::SmfParser::SmfParser(babelwires::DataSource& dataSource, const babelwires::ProjectContext& projectContext,
                           babelwires::UserLogger& userLogger)
@@ -228,9 +229,106 @@ namespace {
 } // namespace
 
 template <typename STREAMLIKE> void smf::SmfParser::logByteSequence(STREAMLIKE log, int length) {
-    log << std::hex << static_cast<int>(getNext());
+    log << std::hex << std::setfill('0') << std::setw(2) << static_cast<int>(getNext());
     for (auto i = 0; i < length - 1; ++i) {
-        log << ", " << static_cast<int>(getNext());
+        log << ", " << std::setfill('0') << std::setw(2) << static_cast<int>(getNext());
+    }
+}
+
+void smf::SmfParser::readSequencerSpecificEvent(int length) {
+    if (length <= 1) {
+        logByteSequence(m_userLogger.logWarning() << "Skipping sequencer specific event with invalid length: ", length);
+        return;
+    }
+    assert(length <= 255 && "Length was expected to be held in one byte");
+    std::array<babelwires::Byte, 255> eventBytes;
+    for (int i = 0; i < length; ++i) {
+        eventBytes[i] = getNext();
+    }
+    auto log = babelwires::logDebug();
+    int byteIndex = 0;
+    if (eventBytes[0] == 0x43) {
+        if ((length >= 3) && (eventBytes[1] == 0x7B)) {
+            // XF Events
+            byteIndex = 3;
+            switch (eventBytes[2]) {
+                case 0x00:
+                    log << "Ignored XF Version ID: ";
+                    break;
+                case 0x01:
+                    log << "Ignored XF Chord Event: ";
+                    break;
+                case 0x02:
+                    log << "Ignored XF Rehearsal Mark: ";
+                    break;
+                case 0x03:
+                    log << "Ignored XF Phrase Mark: ";
+                    break;
+                case 0x04:
+                    log << "Ignored XF Max Phrase Mark: ";
+                    break;
+                case 0x05:
+                    log << "Ignored XF Fingered Number: ";
+                    break;
+                case 0x0C:
+                    log << "Ignored XF Guide Track Flag: ";
+                    break;
+                case 0x10:
+                    log << "Ignored XF Information Flag for Guitar: ";
+                    break;
+                case 0x12:
+                    log << "Ignored XF Chord Voicing for Guitar: ";
+                    break;
+                case 0x7F:
+                    log << "Ignored XF Song Data Number: ";
+                    break;
+                default:
+                    log << "Ignored unrecognized XF event: ";
+                    byteIndex = 2;
+                    break;
+            }
+        } else if ((length >= 5) && (eventBytes[1] == 0x73)) {
+            // Yamaha META event: See CVP900 Data List manual.
+            byteIndex = 5;
+            if (eventBytes[2] == 0x0A) {
+                switch (static_cast<unsigned int>(eventBytes[3] << 8) + eventBytes[4]) {
+                    case 0x0004:
+                        log << "Ignored Yamaha Meta-event Start Measure Number: ";
+                        break;
+                    case 0x0005:
+                        log << "Ignored Yamaha Meta-event Track Information: ";
+                        break;
+                    case 0x0006:
+                        log << "Ignored Yamaha Meta-event Offset Volume: ";
+                        break;
+                    case 0x0007:
+                        log << "Ignored Yamaha Meta-event Song Offset Measure: ";
+                        break;
+                    default:
+                        log << "Ignored Yamaha Meta-event XF event: ";
+                        byteIndex = 2;
+                        break;
+                }                
+            } else if (eventBytes[2] == 0x0C) {
+                log << "Ignored Yamaha Meta-event Style Name: ";
+                byteIndex = 3;
+            } else if (eventBytes[2] == 0x0D) {
+                log << "Ignored Yamaha Meta-event Song OTS: ";
+                byteIndex = 3;
+            } else {
+                byteIndex = 2;
+                log << "Ignored unrecognized Yamaha Meta-event: ";
+            }
+        } else {
+            log << "Ignored Yamaha sequencer specific meta-event: ";
+            byteIndex = 2;
+        }
+    } else {
+        log << "Ignored sequencer specific meta-event: ";
+    }
+    log << std::hex << std::setfill('0') << std::setw(2) << static_cast<int>(eventBytes[byteIndex]);
+    for (auto i = byteIndex + 1; i < length; ++i) {
+        log << ", " << std::setfill('0') << std::setw(2) << static_cast<int>(eventBytes[i]);
     }
 }
 
@@ -401,8 +499,7 @@ void smf::SmfParser::readTrack(int i, source::ChannelGroup& channels, MidiMetada
                         }
                         case 0x7F: // Sequence specific event
                         {
-                            logByteSequence(babelwires::logDebug() << "Ignored meta-event! Sequencer specific event: ",
-                                            length);
+                            readSequencerSpecificEvent(length);
                             break;
                         }
                         default: // Unknown meta-event type
