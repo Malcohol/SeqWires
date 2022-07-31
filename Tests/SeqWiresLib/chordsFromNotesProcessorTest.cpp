@@ -191,12 +191,10 @@ TEST(ChordsFromNotesTest, schemeY) {
     { 60, 64, 66, 67, 71 },
     // CM7(#11)
     { 60, 62, 64, 66, 67, 71 },
-/* TODO
     // C(b5)
     { 60, 64, 66 },
     // CM7(b5)
     { 60, 64, 66, 71 },
-*/
     // Csus4
     { 60, 65, 67 },
     // Caug
@@ -237,10 +235,8 @@ TEST(ChordsFromNotesTest, schemeY) {
     { 60, 62, 63, 67, 71 },
     // Cm7b5
     { 60, 63, 66, 70 },
-/* TODO
     // CmM7b5
     { 60, 63, 66, 71 },
-*/
     // Cdim
     { 60, 63, 66 },
     // Cdim7
@@ -313,8 +309,8 @@ TEST(ChordsFromNotesTest, schemeY) {
         ChordType::Value::M7_9,
         ChordType::Value::M7s11,
         ChordType::Value::M7s11,
-        // C(b5)
-        // CM7(b5)
+        ChordType::Value::b5,
+        ChordType::Value::M7b5,
         ChordType::Value::sus4,
         ChordType::Value::aug,
         ChordType::Value::Mj7aug,
@@ -335,7 +331,7 @@ TEST(ChordsFromNotesTest, schemeY) {
         ChordType::Value::mM7_9,
         ChordType::Value::mM7_9,
         ChordType::Value::m7b5,
-        // mM7b5,
+        ChordType::Value::mM7b5,
         ChordType::Value::dim,
         ChordType::Value::dim7,
         ChordType::Value::_7,
@@ -384,7 +380,8 @@ TEST(ChordsFromNotesTest, schemeR) {
     // CM7
     { 60, 64, 67, 71 },
     // CM7(#11)
-    { 60, 64, 66, 71 },
+    // Ambiguous and has alternatives.
+    // { 60, 64, 66, 71 },
     // CM7(#11)
     { 60, 62, 64, 66, 71 },
     // CM7(#11)
@@ -509,7 +506,6 @@ TEST(ChordsFromNotesTest, schemeR) {
         ChordType::Value::M6,
         ChordType::Value::M7,
         ChordType::Value::M7,
-        ChordType::Value::M7s11,
         ChordType::Value::M7s11,
         ChordType::Value::M7s11,
         ChordType::Value::M7s11,

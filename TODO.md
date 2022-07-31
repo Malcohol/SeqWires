@@ -5,6 +5,9 @@ SeqWires:
 * Improved handling of event truncation: 
   - Use new group events to denote truncated end and start. 
   - When truncated end meets truncated start, act as though event was not truncated.
+* Chords:
+  - Have a "sustain until CancelChord" as an optional policy in the chordsFromNotes processor.
+
 
 Seq2tape:
 * Proper plugin initialization for Seq2tape

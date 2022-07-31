@@ -27,15 +27,15 @@ namespace {
 
     /// Represent a chord type by intervals from the root note, which is in the unit position.
     // The "fingered chords" of many arranger-style keyboards are supported, although the root note is always required.
-    // Not in XF spec: {0b0000000001010001} b5
-    // Not in XF spec: {0b0000100001010001} M7b5
-    // Not in XF spec: {0b0000100001001001} mM7b5
-    const std::array<IntervalSetToChordType, 60> recognizedIntervals = {{
+    // The fingering 0b0000100001010001 is ambiguous between M7b5 and M7s11. The latter has a few alternatives, so the former
+    // is used.
+    const std::array<IntervalSetToChordType, 62> recognizedIntervals = {{
         // clang-format off
         // This must be sorted (the alphabetic sort of a typical editor will work to keep this sorted).
         {0b0000000000001101, seqwires::ChordType::Value::m9},
         {0b0000000000010101, seqwires::ChordType::Value::M9},
         {0b0000000001001001, seqwires::ChordType::Value::dim},
+        {0b0000000001010001, seqwires::ChordType::Value::b5},
         {0b0000000010000001, seqwires::ChordType::Value::_1p5},
         {0b0000000010000101, seqwires::ChordType::Value::_1p2p5},
         {0b0000000010001001, seqwires::ChordType::Value::m},
@@ -81,7 +81,8 @@ namespace {
         {0b0000100000001101, seqwires::ChordType::Value::mM7_9},
         {0b0000100000010001, seqwires::ChordType::Value::M7},
         {0b0000100000010101, seqwires::ChordType::Value::M7_9},
-        {0b0000100001010001, seqwires::ChordType::Value::M7s11},
+        {0b0000100001001001, seqwires::ChordType::Value::mM7b5},
+        {0b0000100001010001, seqwires::ChordType::Value::M7b5},
         {0b0000100001010101, seqwires::ChordType::Value::M7s11},
         {0b0000100010001001, seqwires::ChordType::Value::mM7},
         {0b0000100010001101, seqwires::ChordType::Value::mM7_9},
@@ -95,7 +96,7 @@ namespace {
         {0b0001000000000001, seqwires::ChordType::Value::_1p8},
         // clang-format on
     }};
-    
+
     /// Try to identify a chord type which matches the interval.
     seqwires::ChordType::Value getMatchingChordTypeFromIntervals(IntervalSet intervals) {
         // Sortedness is asserted at the beginning of chordsFromNotesFunction.
@@ -112,7 +113,8 @@ namespace {
     struct ActivePitches {
         void addPitch(seqwires::Pitch pitch) {
             const auto it = std::upper_bound(m_pitches.begin(), m_pitches.end(), pitch);
-            assert(((it == m_pitches.end()) || (*it > pitch)) && "NoteOnEvent for same pitch as currently playing note");
+            assert(((it == m_pitches.end()) || (*it > pitch)) &&
+                   "NoteOnEvent for same pitch as currently playing note");
             m_pitches.insert(it, pitch);
         }
 
@@ -132,7 +134,7 @@ namespace {
                 return seqwires::Chord();
             }
             // The intervals between neighbouring pitches as integers.
-            unsigned int pitchDiffs[maxNumPitches - 1] = { 0 };
+            unsigned int pitchDiffs[maxNumPitches - 1] = {0};
 
             IntervalSet interval = 1;
             {
@@ -184,8 +186,7 @@ seqwires::Track seqwires::chordsFromNotesFunction(const Track& sourceTrack) {
                     timeSinceLastChordEvent = 0;
                 }
                 if (bestChord.m_chordType != ChordType::Value::NotAValue) {
-                    trackOut.addEvent(
-                        ChordOnEvent(timeSinceLastChordEvent, bestChord));
+                    trackOut.addEvent(ChordOnEvent(timeSinceLastChordEvent, bestChord));
                     currentChord = bestChord;
                     timeSinceLastChordEvent = 0;
                 }
