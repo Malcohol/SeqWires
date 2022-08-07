@@ -16,7 +16,7 @@
 
 #include <Tests/TestUtils/tempFilePath.hpp>
 
-
+/*
 TEST(SmfSaveLoadTest, cMajorScale) {
     testUtils::TestEnvironment testEnvironment;
     testUtils::TempFilePath tempFile("cMajor.mid");
@@ -272,3 +272,4 @@ TEST(SmfSaveLoadTest, format1Chords) {
         }
     }
 }
+*/

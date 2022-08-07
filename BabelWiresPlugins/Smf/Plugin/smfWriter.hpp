@@ -23,7 +23,7 @@ namespace smf {
       public:
         SmfWriter(std::ostream& output);
 
-        void writeHeaderChunk(const target::SmfFeature& sequence);
+        void writeHeaderChunk(const target::SmfFormatFeature& sequence);
 
         /// Tempo feature can be null.
         void writeTrack(const target::ChannelGroup* track, const MidiMetadata& metadata);
@@ -48,7 +48,6 @@ namespace smf {
         int m_division;
     };
 
-    void writeToSmfFormat0(std::ostream& output, const target::Format0SmfFeature& sequence);
-    void writeToSmfFormat1(std::ostream& output, const target::Format1SmfFeature& sequence);
+    void writeToSmf(std::ostream& output, const target::SmfFeature& sequence);
 
 } // namespace smf

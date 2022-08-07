@@ -84,14 +84,14 @@ void smf::SmfWriter::writeTextMetaEvent(int type, std::string text) {
     *m_os << text;
 }
 
-void smf::SmfWriter::writeHeaderChunk(const target::SmfFeature& sequence) {
+void smf::SmfWriter::writeHeaderChunk(const target::SmfFormatFeature& sequence) {
     const int numTracks = sequence.getNumMidiTracks();
 
     assert((m_division < (2 << 15)) && "division is too large");
 
     m_os->write("MThd", 4);
     writeUint32(6);
-    writeUint16(int(sequence.getFormat()));
+    writeUint16(sequence.getSelectedTagIndex());
     writeUint16(numTracks);
     
     {
@@ -228,20 +228,19 @@ void smf::SmfWriter::writeTrack(const target::ChannelGroup* channelGroup, const 
     m_os->write(tempStream.str().data(), tempStream.tellp());
 }
 
-void smf::writeToSmfFormat0(std::ostream& output, const smf::target::Format0SmfFeature& sequence) {
-    const int numTracks = sequence.getNumMidiTracks();
+void smf::writeToSmf(std::ostream& output, const smf::target::SmfFeature& sequence) {
+    const smf::target::SmfFormatFeature& smfFormatFeature = sequence.getFormatFeature();
+    const int numTracks = smfFormatFeature.getNumMidiTracks();
     smf::SmfWriter writer(output);
-    writer.writeHeaderChunk(sequence);
-    writer.writeTrack(&sequence.getMidiTrack(0), sequence.getMidiMetadata());
-}
-
-void smf::writeToSmfFormat1(std::ostream& output, const smf::target::Format1SmfFeature& sequence) {
-    const int numTracks = sequence.getNumMidiTracks();
-    smf::SmfWriter writer(output);
-    writer.writeHeaderChunk(sequence);
-    writer.writeTrack(&sequence.getMidiTrack(0), sequence.getMidiMetadata());
-    for (int i = 1; i < numTracks; ++i) {
-        MidiMetadata dummyMetadata;
-        writer.writeTrack(&sequence.getMidiTrack(i), dummyMetadata);
+    writer.writeHeaderChunk(smfFormatFeature);
+    if (smfFormatFeature.getSelectedTagIndex() == 0) {
+        writer.writeTrack(&smfFormatFeature.getMidiTrack(0), smfFormatFeature.getMidiMetadata());
+    } else {
+        writer.writeTrack(&smfFormatFeature.getMidiTrack(0), smfFormatFeature.getMidiMetadata());
+        for (int i = 1; i < numTracks; ++i) {
+            MidiMetadata dummyMetadata;
+            writer.writeTrack(&smfFormatFeature.getMidiTrack(i), dummyMetadata);
+        }
     }
 }
+
