@@ -13,6 +13,5 @@
 
 void smf::registerLib(babelwires::ProjectContext& context) {
     context.m_sourceFileFormatReg.addEntry(std::make_unique<smf::SmfSourceFormat>());
-    context.m_targetFileFormatReg.addEntry(std::make_unique<smf::SmfFormat0TargetFormat>());
-    context.m_targetFileFormatReg.addEntry(std::make_unique<smf::SmfFormat1TargetFormat>());
+    context.m_targetFileFormatReg.addEntry(std::make_unique<smf::SmfTargetFormat>());
 }
