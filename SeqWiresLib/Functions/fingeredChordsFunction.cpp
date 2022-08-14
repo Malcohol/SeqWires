@@ -16,7 +16,7 @@
 ENUM_DEFINE_ENUM_VALUE_SOURCE(FINGERED_CHORDS_SUSTAIN_POLICY);
 
 babelwires::LongIdentifier seqwires::FingeredChordsSustainPolicyEnum::getThisIdentifier() {
-    return REGISTERED_LONGID("ChordFromNotesPolicy", "Chord From Notes Policy", "64bb3fa9-1b77-4629-b691-431713fe2eee");
+    return REGISTERED_LONGID("FingeredChordsPolicy", "Fingered Chords Sustain Policy", "64bb3fa9-1b77-4629-b691-431713fe2eee");
 }
 
 seqwires::FingeredChordsSustainPolicyEnum::FingeredChordsSustainPolicyEnum()
