@@ -12,10 +12,10 @@
 #include <BabelWiresLib/Project/projectContext.hpp>
 #include <BabelWiresLib/TypeSystem/typeSystem.hpp>
 
-#include <SeqWiresLib/Functions/chordsFromNotesFunction.hpp>
+#include <SeqWiresLib/Functions/fingeredChordsFunction.hpp>
 #include <SeqWiresLib/Functions/monophonicSubtracksFunction.hpp>
 #include <SeqWiresLib/Processors/chordMapProcessor.hpp>
-#include <SeqWiresLib/Processors/chordsFromNotesProcessor.hpp>
+#include <SeqWiresLib/Processors/fingeredChordsProcessor.hpp>
 #include <SeqWiresLib/Processors/concatenateProcessor.hpp>
 #include <SeqWiresLib/Processors/excerptProcessor.hpp>
 #include <SeqWiresLib/Processors/mergeProcessor.hpp>

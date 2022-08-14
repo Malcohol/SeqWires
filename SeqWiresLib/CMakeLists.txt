@@ -2,7 +2,7 @@ SET( SEQWIRESLIB_SRCS
 	Utilities/musicUtilities.cpp
 	Features/trackFeature.cpp
 	Features/pitchFeature.cpp
-	Processors/chordsFromNotesProcessor.cpp
+	Processors/fingeredChordsProcessor.cpp
 	Processors/chordMapProcessor.cpp
 	Processors/concatenateProcessor.cpp
 	Processors/excerptProcessor.cpp
@@ -13,7 +13,7 @@ SET( SEQWIRESLIB_SRCS
 	Processors/splitAtPitchProcessor.cpp
 	Processors/transposeProcessor.cpp
 	Functions/appendTrackFunction.cpp
-	Functions/chordsFromNotesFunction.cpp
+	Functions/fingeredChordsFunction.cpp
 	Functions/mapChordsFunction.cpp
 	Functions/excerptFunction.cpp
 	Functions/repeatFunction.cpp

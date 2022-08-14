@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
 
 #include <SeqWiresLib/Features/trackFeature.hpp>
-#include <SeqWiresLib/Functions/chordsFromNotesFunction.hpp>
-#include <SeqWiresLib/Processors/chordsFromNotesProcessor.hpp>
+#include <SeqWiresLib/Functions/fingeredChordsFunction.hpp>
+#include <SeqWiresLib/Processors/fingeredChordsProcessor.hpp>
 #include <SeqWiresLib/Tracks/noteEvents.hpp>
 #include <SeqWiresLib/libRegistration.hpp>
 

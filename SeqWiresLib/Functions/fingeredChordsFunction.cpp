@@ -5,7 +5,7 @@
  *
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
-#include <SeqWiresLib/Functions/chordsFromNotesFunction.hpp>
+#include <SeqWiresLib/Functions/fingeredChordsFunction.hpp>
 
 #include <SeqWiresLib/Tracks/chordEvents.hpp>
 #include <SeqWiresLib/Utilities/filteredTrackIterator.hpp>
