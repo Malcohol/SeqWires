@@ -12,7 +12,7 @@
 #include <Tests/BabelWiresLib/TestUtils/testEnvironment.hpp>
 #include <Tests/TestUtils/seqTestUtils.hpp>
 
-TEST(ChordsFromNotesTest, functionBasicNotesPolicy) {
+TEST(FingeredChordsTest, functionBasicNotesPolicy) {
     seqwires::Track track;
     track.addEvent(seqwires::NoteOnEvent(0, 60));
     track.addEvent(seqwires::NoteOnEvent(0, 64));
@@ -40,7 +40,7 @@ TEST(ChordsFromNotesTest, functionBasicNotesPolicy) {
     track.addEvent(seqwires::NoteOffEvent(0, 63));
 
     seqwires::Track chordTrack =
-        seqwires::chordsFromNotesFunction(track, seqwires::ChordFromNotesSustainPolicyEnum::Value::Notes);
+        seqwires::fingeredChordsFunction(track, seqwires::FingeredChordsSustainPolicyEnum::Value::Notes);
     EXPECT_EQ(chordTrack.getDuration(), 5);
 
     std::vector<testUtils::ChordInfo> expectedChords = {
@@ -50,7 +50,7 @@ TEST(ChordsFromNotesTest, functionBasicNotesPolicy) {
     testUtils::testChords(expectedChords, chordTrack);
 }
 
-TEST(ChordsFromNotesTest, functionBasicHoldPolicy) {
+TEST(FingeredChordsTest, functionBasicHoldPolicy) {
     seqwires::Track track;
     track.addEvent(seqwires::NoteOnEvent(0, 60));
     track.addEvent(seqwires::NoteOnEvent(0, 64));
@@ -78,7 +78,7 @@ TEST(ChordsFromNotesTest, functionBasicHoldPolicy) {
     track.addEvent(seqwires::NoteOffEvent(0, 63));
 
     seqwires::Track chordTrack =
-        seqwires::chordsFromNotesFunction(track, seqwires::ChordFromNotesSustainPolicyEnum::Value::Hold);
+        seqwires::fingeredChordsFunction(track, seqwires::FingeredChordsSustainPolicyEnum::Value::Hold);
     EXPECT_EQ(chordTrack.getDuration(), 5);
 
     std::vector<testUtils::ChordInfo> expectedChords = {
@@ -88,7 +88,7 @@ TEST(ChordsFromNotesTest, functionBasicHoldPolicy) {
     testUtils::testChords(expectedChords, chordTrack);
 }
 
-TEST(ChordsFromNotesTest, rootPitchClass) {
+TEST(FingeredChordsTest, rootPitchClass) {
     seqwires::Track track;
 
     for (int i = 0; i < 12 * 10; ++i) {
@@ -101,7 +101,7 @@ TEST(ChordsFromNotesTest, rootPitchClass) {
     }
 
     seqwires::Track chordTrack =
-        seqwires::chordsFromNotesFunction(track, seqwires::ChordFromNotesSustainPolicyEnum::Value::Notes);
+        seqwires::fingeredChordsFunction(track, seqwires::FingeredChordsSustainPolicyEnum::Value::Notes);
 
     std::vector<testUtils::ChordInfo> expectedChords;
     for (int o = 0; o < 10; ++o) {
@@ -114,7 +114,7 @@ TEST(ChordsFromNotesTest, rootPitchClass) {
     testUtils::testChords(expectedChords, chordTrack);
 }
 
-TEST(ChordsFromNotesTest, functionChordToChord) {
+TEST(FingeredChordsTest, functionChordToChord) {
     seqwires::Track track;
     track.addEvent(seqwires::NoteOnEvent(0, 60));
     track.addEvent(seqwires::NoteOnEvent(0, 64));
@@ -129,7 +129,7 @@ TEST(ChordsFromNotesTest, functionChordToChord) {
     track.addEvent(seqwires::NoteOffEvent(0, 67));
 
     seqwires::Track chordTrack =
-        seqwires::chordsFromNotesFunction(track, seqwires::ChordFromNotesSustainPolicyEnum::Value::Notes);
+        seqwires::fingeredChordsFunction(track, seqwires::FingeredChordsSustainPolicyEnum::Value::Notes);
     EXPECT_EQ(chordTrack.getDuration(), 2);
 
     std::vector<testUtils::ChordInfo> expectedChords = {
@@ -140,7 +140,7 @@ TEST(ChordsFromNotesTest, functionChordToChord) {
 }
 
 // Only major and minor inversions are guaranteed to be recognized.
-TEST(ChordsFromNotesTest, majorInversions) {
+TEST(FingeredChordsTest, majorInversions) {
     seqwires::Track track;
     track.addEvent(seqwires::NoteOnEvent(0, 60));
     track.addEvent(seqwires::NoteOnEvent(0, 64));
@@ -167,7 +167,7 @@ TEST(ChordsFromNotesTest, majorInversions) {
     track.addEvent(seqwires::NoteOffEvent(0, 76));
 
     seqwires::Track chordTrack =
-        seqwires::chordsFromNotesFunction(track, seqwires::ChordFromNotesSustainPolicyEnum::Value::Notes);
+        seqwires::fingeredChordsFunction(track, seqwires::FingeredChordsSustainPolicyEnum::Value::Notes);
     EXPECT_EQ(chordTrack.getDuration(), 5);
 
     std::vector<testUtils::ChordInfo> expectedChords = {
@@ -179,7 +179,7 @@ TEST(ChordsFromNotesTest, majorInversions) {
 }
 
 // Only major and minor inversions are guaranteed to be recognized.
-TEST(ChordsFromNotesTest, minorInversions) {
+TEST(FingeredChordsTest, minorInversions) {
     seqwires::Track track;
     track.addEvent(seqwires::NoteOnEvent(0, 60));
     track.addEvent(seqwires::NoteOnEvent(0, 63));
@@ -206,7 +206,7 @@ TEST(ChordsFromNotesTest, minorInversions) {
     track.addEvent(seqwires::NoteOffEvent(0, 75));
 
     seqwires::Track chordTrack =
-        seqwires::chordsFromNotesFunction(track, seqwires::ChordFromNotesSustainPolicyEnum::Value::Notes);
+        seqwires::fingeredChordsFunction(track, seqwires::FingeredChordsSustainPolicyEnum::Value::Notes);
     EXPECT_EQ(chordTrack.getDuration(), 5);
 
     std::vector<testUtils::ChordInfo> expectedChords = {
@@ -218,7 +218,7 @@ TEST(ChordsFromNotesTest, minorInversions) {
 }
 
 // Yamaha-style fingered chords.
-TEST(ChordsFromNotesTest, schemeY) {
+TEST(FingeredChordsTest, schemeY) {
     using namespace seqwires;
 
     std::vector<std::vector<seqwires::Pitch>> pitches = {// C1+8
@@ -351,7 +351,7 @@ TEST(ChordsFromNotesTest, schemeY) {
     }
 
     seqwires::Track chordTrack =
-        seqwires::chordsFromNotesFunction(track, seqwires::ChordFromNotesSustainPolicyEnum::Value::Notes);
+        seqwires::fingeredChordsFunction(track, seqwires::FingeredChordsSustainPolicyEnum::Value::Notes);
 
     std::vector<ChordType::Value> expectedChordType = {
         ChordType::Value::_1p8,  ChordType::Value::_1p5,  ChordType::Value::M,      ChordType::Value::M9,
@@ -381,7 +381,7 @@ TEST(ChordsFromNotesTest, schemeY) {
 }
 
 // Roland-style fingered chords.
-TEST(ChordsFromNotesTest, schemeR) {
+TEST(FingeredChordsTest, schemeR) {
     using namespace seqwires;
 
     std::vector<std::vector<seqwires::Pitch>> pitches = {// C
@@ -514,7 +514,7 @@ TEST(ChordsFromNotesTest, schemeR) {
     }
 
     seqwires::Track chordTrack =
-        seqwires::chordsFromNotesFunction(track, seqwires::ChordFromNotesSustainPolicyEnum::Value::Notes);
+        seqwires::fingeredChordsFunction(track, seqwires::FingeredChordsSustainPolicyEnum::Value::Notes);
 
     std::vector<ChordType::Value> expectedChordType = {
         ChordType::Value::M,
@@ -587,7 +587,7 @@ TEST(ChordsFromNotesTest, schemeR) {
 }
 
 // Casio-style fingered chords.
-TEST(ChordsFromNotesTest, schemeC) {
+TEST(FingeredChordsTest, schemeC) {
     using namespace seqwires;
 
     std::vector<std::vector<seqwires::Pitch>> pitches = {// C
@@ -648,7 +648,7 @@ TEST(ChordsFromNotesTest, schemeC) {
     }
 
     seqwires::Track chordTrack =
-        seqwires::chordsFromNotesFunction(track, seqwires::ChordFromNotesSustainPolicyEnum::Value::Notes);
+        seqwires::fingeredChordsFunction(track, seqwires::FingeredChordsSustainPolicyEnum::Value::Notes);
 
     std::vector<ChordType::Value> expectedChordType = {
         ChordType::Value::M,    ChordType::Value::m,      ChordType::Value::dim, ChordType::Value::aug,
@@ -668,11 +668,11 @@ TEST(ChordsFromNotesTest, schemeC) {
     testUtils::testChords(expectedChords, chordTrack);
 }
 
-TEST(ChordsFromNotesTest, processor) {
+TEST(FingeredChordsTest, processor) {
     testUtils::TestEnvironment testEnvironment;
     seqwires::registerLib(testEnvironment.m_projectContext);
 
-    seqwires::ChordsFromNotesProcessor processor(testEnvironment.m_projectContext);
+    seqwires::FingeredChordsProcessor processor(testEnvironment.m_projectContext);
 
     processor.getInputFeature()->setToDefault();
     processor.getOutputFeature()->setToDefault();

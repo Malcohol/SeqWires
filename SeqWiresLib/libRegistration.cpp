@@ -31,14 +31,14 @@ void seqwires::registerLib(babelwires::ProjectContext& context) {
     context.m_typeSystem.addEntry(std::make_unique<MonophonicSubtracksPolicyEnum>());
     context.m_typeSystem.addEntry(std::make_unique<ChordType>());
     context.m_typeSystem.addEntry(std::make_unique<PitchClass>());
-    context.m_typeSystem.addEntry(std::make_unique<ChordFromNotesSustainPolicyEnum>());
+    context.m_typeSystem.addEntry(std::make_unique<FingeredChordsSustainPolicyEnum>());
 
     context.m_processorReg.addEntry(std::make_unique<ChordMapProcessor::Factory>());
     context.m_processorReg.addEntry(std::make_unique<ConcatenateProcessor::Factory>());
     context.m_processorReg.addEntry(std::make_unique<ExcerptProcessor::Factory>());
     context.m_processorReg.addEntry(std::make_unique<MergeProcessor::Factory>());
     context.m_processorReg.addEntry(std::make_unique<MonophonicSubtracksProcessor::Factory>());
-    context.m_processorReg.addEntry(std::make_unique<ChordsFromNotesProcessor::Factory>());
+    context.m_processorReg.addEntry(std::make_unique<FingeredChordsProcessor::Factory>());
     context.m_processorReg.addEntry(std::make_unique<RepeatProcessor::Factory>());
     context.m_processorReg.addEntry(std::make_unique<SilenceProcessor::Factory>());
     context.m_processorReg.addEntry(std::make_unique<SplitAtPitchProcessor::Factory>());

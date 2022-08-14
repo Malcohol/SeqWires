@@ -13,14 +13,14 @@
 #include <algorithm>
 #include <array>
 
-ENUM_DEFINE_ENUM_VALUE_SOURCE(CHORD_FROM_NOTES_SUSTAIN_POLICY);
+ENUM_DEFINE_ENUM_VALUE_SOURCE(FINGERED_CHORDS_SUSTAIN_POLICY);
 
-babelwires::LongIdentifier seqwires::ChordFromNotesSustainPolicyEnum::getThisIdentifier() {
+babelwires::LongIdentifier seqwires::FingeredChordsSustainPolicyEnum::getThisIdentifier() {
     return REGISTERED_LONGID("ChordFromNotesPolicy", "Chord From Notes Policy", "64bb3fa9-1b77-4629-b691-431713fe2eee");
 }
 
-seqwires::ChordFromNotesSustainPolicyEnum::ChordFromNotesSustainPolicyEnum()
-    : babelwires::Enum(getThisIdentifier(), 1, ENUM_IDENTIFIER_VECTOR(CHORD_FROM_NOTES_SUSTAIN_POLICY), 0) {}
+seqwires::FingeredChordsSustainPolicyEnum::FingeredChordsSustainPolicyEnum()
+    : babelwires::Enum(getThisIdentifier(), 1, ENUM_IDENTIFIER_VECTOR(FINGERED_CHORDS_SUSTAIN_POLICY), 0) {}
 
 
 namespace {
@@ -125,7 +125,7 @@ namespace {
     /// Try to identify a chord type which matches the interval.
     /// Returns a ChordType::Value or -1 for cancel chord.
     int getMatchingChordTypeFromIntervals(IntervalSet intervals) {
-        // Sortedness is asserted at the beginning of chordsFromNotesFunction.
+        // Sortedness is asserted at the beginning of fingeredChordsFunction.
         // For such a small array size, I guessed that binary search would be a good approach,
         // but I didn't do any timings.
         const auto it = std::lower_bound(recognizedIntervals.begin(), recognizedIntervals.end(), intervals);
@@ -199,7 +199,7 @@ namespace {
     };
 } // namespace
 
-seqwires::Track seqwires::chordsFromNotesFunction(const Track& sourceTrack, ChordFromNotesSustainPolicyEnum::Value sustainPolicy) {
+seqwires::Track seqwires::fingeredChordsFunction(const Track& sourceTrack, FingeredChordsSustainPolicyEnum::Value sustainPolicy) {
     // Required for getMatchingChordType::ValueFromIntervals
     assert(std::is_sorted(recognizedIntervals.begin(), recognizedIntervals.end()));
 
@@ -215,8 +215,8 @@ seqwires::Track seqwires::chordsFromNotesFunction(const Track& sourceTrack, Chor
             const ActivePitches::ChordMatch chordMatch = activePitches.getBestMatchChord(chordFound);
             if (currentChord.m_chordType != ChordType::Value::NotAValue) {
                 if (((chordMatch == ActivePitches::ChordMatch::matchedChord) && (currentChord != chordFound))
-                || ((chordMatch == ActivePitches::ChordMatch::cancelChord) && (sustainPolicy == ChordFromNotesSustainPolicyEnum::Value::Hold))
-                || ((chordMatch == ActivePitches::ChordMatch::noChord) && (sustainPolicy == ChordFromNotesSustainPolicyEnum::Value::Notes))) {
+                || ((chordMatch == ActivePitches::ChordMatch::cancelChord) && (sustainPolicy == FingeredChordsSustainPolicyEnum::Value::Hold))
+                || ((chordMatch == ActivePitches::ChordMatch::noChord) && (sustainPolicy == FingeredChordsSustainPolicyEnum::Value::Notes))) {
                     trackOut.addEvent(ChordOffEvent(timeSinceLastChordEvent));
                     currentChord.m_chordType = ChordType::Value::NotAValue;
                     timeSinceLastChordEvent = 0;

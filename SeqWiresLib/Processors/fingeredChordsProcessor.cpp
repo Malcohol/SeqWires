@@ -5,11 +5,11 @@
 #include <BabelWiresLib/Features/rootFeature.hpp>
 
 namespace {
-    using PolicyFeature = babelwires::EnumWithCppEnumFeature<seqwires::ChordFromNotesSustainPolicyEnum>;
+    using PolicyFeature = babelwires::EnumWithCppEnumFeature<seqwires::FingeredChordsSustainPolicyEnum>;
 }
 
 
-seqwires::ChordsFromNotesProcessor::ChordsFromNotesProcessor(const babelwires::ProjectContext& projectContext)
+seqwires::FingeredChordsProcessor::FingeredChordsProcessor(const babelwires::ProjectContext& projectContext)
 : babelwires::CommonProcessor(projectContext) {
     m_sustainPolicy = m_inputFeature->addField(std::make_unique<PolicyFeature>(),
                                         REGISTERED_ID("Policy", "Policy", "a1dd2ae0-e91e-40fe-af4a-c74f2c7d978a"));
@@ -19,13 +19,13 @@ seqwires::ChordsFromNotesProcessor::ChordsFromNotesProcessor(const babelwires::P
                                               REGISTERED_ID("Chords", "Chords", "e9edb860-33fb-4c99-bcdc-d746b6bf244e"));
 }
 
-seqwires::ChordsFromNotesProcessor::Factory::Factory()
-    : CommonProcessorFactory(REGISTERED_LONGID("ChordsFromNotes", "Chords from Notes", "9980627f-22b5-48d1-b26f-911038750568"), 1) {}
+seqwires::FingeredChordsProcessor::Factory::Factory()
+    : CommonProcessorFactory(REGISTERED_LONGID("FingeredChords", "Fingered Chords", "9980627f-22b5-48d1-b26f-911038750568"), 1) {}
 
-void seqwires::ChordsFromNotesProcessor::process(babelwires::UserLogger& userLogger) {
+void seqwires::FingeredChordsProcessor::process(babelwires::UserLogger& userLogger) {
     if (m_trackIn->isChanged(babelwires::Feature::Changes::SomethingChanged) || m_sustainPolicy->isChanged(babelwires::Feature::Changes::SomethingChanged)) {
         const auto sustainPolicy = static_cast<const PolicyFeature*>(m_sustainPolicy)->getAsValue();
-        m_trackOut->set(std::make_unique<Track>(chordsFromNotesFunction(m_trackIn->get(), sustainPolicy)));
+        m_trackOut->set(std::make_unique<Track>(fingeredChordsFunction(m_trackIn->get(), sustainPolicy)));
     }
 }
 
