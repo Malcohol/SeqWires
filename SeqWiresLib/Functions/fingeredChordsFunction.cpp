@@ -5,7 +5,7 @@
  *
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
-#include <SeqWiresLib/Functions/chordsFromNotesFunction.hpp>
+#include <SeqWiresLib/Functions/fingeredChordsFunction.hpp>
 
 #include <SeqWiresLib/Tracks/chordEvents.hpp>
 #include <SeqWiresLib/Utilities/filteredTrackIterator.hpp>
@@ -13,25 +13,50 @@
 #include <algorithm>
 #include <array>
 
+ENUM_DEFINE_ENUM_VALUE_SOURCE(FINGERED_CHORDS_SUSTAIN_POLICY);
+
+babelwires::LongIdentifier seqwires::FingeredChordsSustainPolicyEnum::getThisIdentifier() {
+    return REGISTERED_LONGID("FingeredChordsPolicy", "Fingered Chords Sustain Policy", "64bb3fa9-1b77-4629-b691-431713fe2eee");
+}
+
+seqwires::FingeredChordsSustainPolicyEnum::FingeredChordsSustainPolicyEnum()
+    : babelwires::Enum(getThisIdentifier(), 1, ENUM_IDENTIFIER_VECTOR(FINGERED_CHORDS_SUSTAIN_POLICY), 0) {}
+
+
 namespace {
     using IntervalSet = std::uint16_t;
 
     struct IntervalSetToChordType {
         IntervalSet m_intervals;
-        seqwires::ChordType::Value m_chordType;
+        int m_chordType;
+        
+        IntervalSetToChordType(IntervalSet intervals, seqwires::ChordType::Value chordType) 
+            : m_intervals(intervals)
+            , m_chordType(static_cast<int>(chordType))
+        {
+        }
+
+        IntervalSetToChordType(IntervalSet intervals, int extraChordValue) 
+            : m_intervals(intervals)
+            , m_chordType(extraChordValue)
+        {
+        }
 
         bool operator<(IntervalSet otherIntervals) const { return m_intervals < otherIntervals; }
 
         bool operator<(const IntervalSetToChordType& other) const { return m_intervals < other.m_intervals; }
     };
 
+    static constexpr int s_cancelChord = -1;
+
     /// Represent a chord type by intervals from the root note, which is in the unit position.
     // The "fingered chords" of many arranger-style keyboards are supported, although the root note is always required.
     // The fingering 0b0000100001010001 is ambiguous between M7b5 and M7s11. The latter has a few alternatives, so the former
     // is used.
-    const std::array<IntervalSetToChordType, 62> recognizedIntervals = {{
+    const std::array<IntervalSetToChordType, 63> recognizedIntervals = {{
         // clang-format off
         // This must be sorted (the alphabetic sort of a typical editor will work to keep this sorted).
+        {0b0000000000000111, s_cancelChord},
         {0b0000000000001101, seqwires::ChordType::Value::m9},
         {0b0000000000010101, seqwires::ChordType::Value::M9},
         {0b0000000001001001, seqwires::ChordType::Value::dim},
@@ -98,15 +123,16 @@ namespace {
     }};
 
     /// Try to identify a chord type which matches the interval.
-    seqwires::ChordType::Value getMatchingChordTypeFromIntervals(IntervalSet intervals) {
-        // Sortedness is asserted at the beginning of chordsFromNotesFunction.
+    /// Returns a ChordType::Value or -1 for cancel chord.
+    int getMatchingChordTypeFromIntervals(IntervalSet intervals) {
+        // Sortedness is asserted at the beginning of fingeredChordsFunction.
         // For such a small array size, I guessed that binary search would be a good approach,
         // but I didn't do any timings.
         const auto it = std::lower_bound(recognizedIntervals.begin(), recognizedIntervals.end(), intervals);
         if ((it != recognizedIntervals.end()) && (it->m_intervals == intervals)) {
             return it->m_chordType;
         }
-        return seqwires::ChordType::Value::NotAValue;
+        return static_cast<int>(seqwires::ChordType::Value::NotAValue);
     }
 
     /// The pitches of the set of currently playing notes.
@@ -124,14 +150,16 @@ namespace {
             m_pitches.erase(it);
         }
 
+        enum class ChordMatch { noChord, matchedChord, cancelChord };
+
         /// Check whether the currently active pitches match an known IntervalSet or inversion of that IntervalSet.
-        seqwires::Chord getBestMatchChord() const {
+        ChordMatch getBestMatchChord(seqwires::Chord& bestChordOut) const {
             const unsigned int numPitches = m_pitches.size();
             // TODO Assert min and max match the recognized chords.
             constexpr unsigned int minNumPitches = 2;
             constexpr unsigned int maxNumPitches = 6;
             if ((numPitches < minNumPitches) || (numPitches > maxNumPitches)) {
-                return seqwires::Chord();
+                return ChordMatch::noChord;
             }
             // The intervals between neighbouring pitches as integers.
             unsigned int pitchDiffs[maxNumPitches - 1] = {0};
@@ -149,16 +177,21 @@ namespace {
 
             // Try each inversion.
             for (unsigned int i = 0; i < numPitches; ++i) {
-                const seqwires::ChordType::Value chordType = getMatchingChordTypeFromIntervals(interval);
+                const int chordTypeOrCancel = getMatchingChordTypeFromIntervals(interval);
+                if (chordTypeOrCancel == s_cancelChord) {
+                    return ChordMatch::cancelChord;
+                }
+                const seqwires::ChordType::Value chordType = static_cast<seqwires::ChordType::Value>(chordTypeOrCancel);
                 if (chordType != seqwires::ChordType::Value::NotAValue) {
-                    return seqwires::Chord{seqwires::pitchToPitchClass(m_pitches[i]), chordType};
+                    bestChordOut = seqwires::Chord{seqwires::pitchToPitchClass(m_pitches[i]), chordType};
+                    return ChordMatch::matchedChord;
                 }
                 if (i < numPitches - 1) {
                     // Add the old root raised by an octave.
                     interval = (interval + (1 << 12)) >> pitchDiffs[i];
                 }
             }
-            return seqwires::Chord();
+            return ChordMatch::noChord;
         }
 
         /// The pitches of the current active set, in lowest-to-highest order.
@@ -166,7 +199,7 @@ namespace {
     };
 } // namespace
 
-seqwires::Track seqwires::chordsFromNotesFunction(const Track& sourceTrack) {
+seqwires::Track seqwires::fingeredChordsFunction(const Track& sourceTrack, FingeredChordsSustainPolicyEnum::Value sustainPolicy) {
     // Required for getMatchingChordType::ValueFromIntervals
     assert(std::is_sorted(recognizedIntervals.begin(), recognizedIntervals.end()));
 
@@ -178,18 +211,22 @@ seqwires::Track seqwires::chordsFromNotesFunction(const Track& sourceTrack) {
 
     for (const auto& event : iterateOver<NoteEvent>(sourceTrack)) {
         if (event.getTimeSinceLastEvent() > 0) {
-            const Chord bestChord = activePitches.getBestMatchChord();
-            if (currentChord != bestChord) {
-                if (currentChord.m_chordType != ChordType::Value::NotAValue) {
+            Chord chordFound;
+            const ActivePitches::ChordMatch chordMatch = activePitches.getBestMatchChord(chordFound);
+            if (currentChord.m_chordType != ChordType::Value::NotAValue) {
+                if (((chordMatch == ActivePitches::ChordMatch::matchedChord) && (currentChord != chordFound))
+                || ((chordMatch == ActivePitches::ChordMatch::cancelChord) && (sustainPolicy == FingeredChordsSustainPolicyEnum::Value::Hold))
+                || ((chordMatch == ActivePitches::ChordMatch::noChord) && (sustainPolicy == FingeredChordsSustainPolicyEnum::Value::Notes))) {
                     trackOut.addEvent(ChordOffEvent(timeSinceLastChordEvent));
                     currentChord.m_chordType = ChordType::Value::NotAValue;
                     timeSinceLastChordEvent = 0;
                 }
-                if (bestChord.m_chordType != ChordType::Value::NotAValue) {
-                    trackOut.addEvent(ChordOnEvent(timeSinceLastChordEvent, bestChord));
-                    currentChord = bestChord;
-                    timeSinceLastChordEvent = 0;
-                }
+            }
+            if ((chordMatch == ActivePitches::ChordMatch::matchedChord) && (currentChord != chordFound)) 
+            {
+                trackOut.addEvent(ChordOnEvent(timeSinceLastChordEvent, chordFound));
+                currentChord = chordFound;
+                timeSinceLastChordEvent = 0;
             }
         }
 

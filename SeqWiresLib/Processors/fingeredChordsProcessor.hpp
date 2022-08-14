@@ -7,21 +7,26 @@
  **/
 #include <BabelWiresLib/Processors/commonProcessor.hpp>
 
+namespace babelwires {
+    class EnumFeature;
+} // namespace babelwires
+
 namespace seqwires {
     class TrackFeature;
 
-    class ChordsFromNotesProcessor : public babelwires::CommonProcessor {
+    class FingeredChordsProcessor : public babelwires::CommonProcessor {
       public:
-        ChordsFromNotesProcessor(const babelwires::ProjectContext& projectContext);
+        FingeredChordsProcessor(const babelwires::ProjectContext& projectContext);
 
         virtual void process(babelwires::UserLogger& userLogger) override;
 
-        struct Factory : public babelwires::CommonProcessorFactory<ChordsFromNotesProcessor> {
+        struct Factory : public babelwires::CommonProcessorFactory<FingeredChordsProcessor> {
             Factory();
         };
 
       private:
+        babelwires::EnumFeature* m_sustainPolicy;
         TrackFeature* m_trackIn;
         TrackFeature* m_trackOut;
     };
-}
+} // namespace seqwires
