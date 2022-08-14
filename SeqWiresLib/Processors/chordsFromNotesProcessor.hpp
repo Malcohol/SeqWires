@@ -7,6 +7,10 @@
  **/
 #include <BabelWiresLib/Processors/commonProcessor.hpp>
 
+namespace babelwires {
+    class EnumFeature;
+} // namespace babelwires
+
 namespace seqwires {
     class TrackFeature;
 
@@ -21,7 +25,8 @@ namespace seqwires {
         };
 
       private:
+        babelwires::EnumFeature* m_sustainPolicy;
         TrackFeature* m_trackIn;
         TrackFeature* m_trackOut;
     };
-}
+} // namespace seqwires

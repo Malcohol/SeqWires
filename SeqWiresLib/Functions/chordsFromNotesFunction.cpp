@@ -13,6 +13,16 @@
 #include <algorithm>
 #include <array>
 
+ENUM_DEFINE_ENUM_VALUE_SOURCE(CHORD_FROM_NOTES_SUSTAIN_POLICY);
+
+babelwires::LongIdentifier seqwires::ChordFromNotesSustainPolicyEnum::getThisIdentifier() {
+    return REGISTERED_LONGID("ChordFromNotesPolicy", "Chord From Notes Policy", "64bb3fa9-1b77-4629-b691-431713fe2eee");
+}
+
+seqwires::ChordFromNotesSustainPolicyEnum::ChordFromNotesSustainPolicyEnum()
+    : babelwires::Enum(getThisIdentifier(), 1, ENUM_IDENTIFIER_VECTOR(CHORD_FROM_NOTES_SUSTAIN_POLICY), 0) {}
+
+
 namespace {
     using IntervalSet = std::uint16_t;
 
@@ -166,7 +176,7 @@ namespace {
     };
 } // namespace
 
-seqwires::Track seqwires::chordsFromNotesFunction(const Track& sourceTrack) {
+seqwires::Track seqwires::chordsFromNotesFunction(const Track& sourceTrack, ChordFromNotesSustainPolicyEnum::Value sustainPolicy) {
     // Required for getMatchingChordType::ValueFromIntervals
     assert(std::is_sorted(recognizedIntervals.begin(), recognizedIntervals.end()));
 

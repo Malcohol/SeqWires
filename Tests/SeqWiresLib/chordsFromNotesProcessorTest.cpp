@@ -28,7 +28,7 @@ TEST(ChordsFromNotesTest, functionBasic) {
     track.addEvent(seqwires::NoteOffEvent(0, 65));
     track.addEvent(seqwires::NoteOffEvent(0, 69));
 
-    seqwires::Track chordTrack = seqwires::chordsFromNotesFunction(track);
+    seqwires::Track chordTrack = seqwires::chordsFromNotesFunction(track, seqwires::ChordFromNotesSustainPolicyEnum::Value::Notes);
     EXPECT_EQ(chordTrack.getDuration(), 2);
 
     std::vector<testUtils::ChordInfo> expectedChords = {{seqwires::PitchClass::Value::C, seqwires::ChordType::Value::M, 1},
@@ -49,7 +49,7 @@ TEST(ChordsFromNotesTest, rootPitchClass) {
         track.addEvent(seqwires::NoteOffEvent(0, i + 7));
     }
 
-    seqwires::Track chordTrack = seqwires::chordsFromNotesFunction(track);
+    seqwires::Track chordTrack = seqwires::chordsFromNotesFunction(track, seqwires::ChordFromNotesSustainPolicyEnum::Value::Notes);
 
     std::vector<testUtils::ChordInfo> expectedChords;
     for (int o = 0; o < 10; ++o) {
@@ -75,7 +75,7 @@ TEST(ChordsFromNotesTest, functionChordToChord) {
     track.addEvent(seqwires::NoteOffEvent(0, 63));
     track.addEvent(seqwires::NoteOffEvent(0, 67));
 
-    seqwires::Track chordTrack = seqwires::chordsFromNotesFunction(track);
+    seqwires::Track chordTrack = seqwires::chordsFromNotesFunction(track, seqwires::ChordFromNotesSustainPolicyEnum::Value::Notes);
     EXPECT_EQ(chordTrack.getDuration(), 2);
 
     std::vector<testUtils::ChordInfo> expectedChords = {{seqwires::PitchClass::Value::C, seqwires::ChordType::Value::M, 1},
@@ -111,7 +111,7 @@ TEST(ChordsFromNotesTest, majorInversions) {
     track.addEvent(seqwires::NoteOffEvent(0, 72));
     track.addEvent(seqwires::NoteOffEvent(0, 76));
 
-    seqwires::Track chordTrack = seqwires::chordsFromNotesFunction(track);
+    seqwires::Track chordTrack = seqwires::chordsFromNotesFunction(track, seqwires::ChordFromNotesSustainPolicyEnum::Value::Notes);
     EXPECT_EQ(chordTrack.getDuration(), 5);
 
     std::vector<testUtils::ChordInfo> expectedChords = {{seqwires::PitchClass::Value::C, seqwires::ChordType::Value::M, 1, 0},
@@ -148,7 +148,7 @@ TEST(ChordsFromNotesTest, minorInversions) {
     track.addEvent(seqwires::NoteOffEvent(0, 72));
     track.addEvent(seqwires::NoteOffEvent(0, 75));
 
-    seqwires::Track chordTrack = seqwires::chordsFromNotesFunction(track);
+    seqwires::Track chordTrack = seqwires::chordsFromNotesFunction(track, seqwires::ChordFromNotesSustainPolicyEnum::Value::Notes);
     EXPECT_EQ(chordTrack.getDuration(), 5);
 
     std::vector<testUtils::ChordInfo> expectedChords = {{seqwires::PitchClass::Value::C, seqwires::ChordType::Value::m, 1, 0},
@@ -292,7 +292,7 @@ TEST(ChordsFromNotesTest, schemeY) {
         }
     }
 
-    seqwires::Track chordTrack = seqwires::chordsFromNotesFunction(track);
+    seqwires::Track chordTrack = seqwires::chordsFromNotesFunction(track, seqwires::ChordFromNotesSustainPolicyEnum::Value::Notes);
 
     std::vector<ChordType::Value> expectedChordType = {
         ChordType::Value::_1p8,
@@ -498,7 +498,7 @@ TEST(ChordsFromNotesTest, schemeR) {
         }
     }
 
-    seqwires::Track chordTrack = seqwires::chordsFromNotesFunction(track);
+    seqwires::Track chordTrack = seqwires::chordsFromNotesFunction(track, seqwires::ChordFromNotesSustainPolicyEnum::Value::Notes);
 
     std::vector<ChordType::Value> expectedChordType = {
         ChordType::Value::M,
@@ -632,7 +632,7 @@ TEST(ChordsFromNotesTest, schemeC) {
         }
     }
 
-    seqwires::Track chordTrack = seqwires::chordsFromNotesFunction(track);
+    seqwires::Track chordTrack = seqwires::chordsFromNotesFunction(track, seqwires::ChordFromNotesSustainPolicyEnum::Value::Notes);
 
     std::vector<ChordType::Value> expectedChordType = {
         ChordType::Value::M,
