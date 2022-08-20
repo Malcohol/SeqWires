@@ -24,7 +24,6 @@ seqwires::Track seqwires::quantize(const Track& trackIn, ModelDuration beat) {
 
     // This is used to identify groups which have collapsed to zero duration, and so should be removed.
     std::set<Group> groupsStartingAtCurrentTime;
-    std::set<Group> collapsedGroupsAtCurrentTime;
     std::vector<TrackEventHolder> eventsAtCurrentTime;
     ModelDuration currentTimeSinceLastEvent;
 
@@ -34,17 +33,15 @@ seqwires::Track seqwires::quantize(const Track& trackIn, ModelDuration beat) {
     ModelDuration trackInAbsoluteTime;
     ModelDuration trackOutAbsoluteTime;
 
-    auto processEventsAtCurrentTime = [&trackOut, &eventsAtCurrentTime, &collapsedGroupsAtCurrentTime,
-                                       &currentTimeSinceLastEvent, &trackOutAbsoluteTime]() {
+    auto processEventsAtCurrentTime = [&trackOut, &eventsAtCurrentTime, &currentTimeSinceLastEvent,
+                                       &trackOutAbsoluteTime]() {
         for (auto& event : eventsAtCurrentTime) {
             const TrackEvent::GroupingInfo info = event->getGroupingInfo();
             const Group group = {info.m_category, info.m_groupValue};
-            if (collapsedGroupsAtCurrentTime.find(group) != collapsedGroupsAtCurrentTime.end()) {
-                event->setTimeSinceLastEvent(currentTimeSinceLastEvent);
-                trackOut.addEvent(event.release());
-                trackOutAbsoluteTime += currentTimeSinceLastEvent;
-                currentTimeSinceLastEvent = 0;
-            }
+            event->setTimeSinceLastEvent(currentTimeSinceLastEvent);
+            trackOut.addEvent(event.release());
+            trackOutAbsoluteTime += currentTimeSinceLastEvent;
+            currentTimeSinceLastEvent = 0;
         }
     };
 
@@ -61,9 +58,8 @@ seqwires::Track seqwires::quantize(const Track& trackIn, ModelDuration beat) {
         if (newTimeSinceLastEvent > 0) {
             processEventsAtCurrentTime();
             groupsStartingAtCurrentTime.clear();
-            collapsedGroupsAtCurrentTime.clear();
             eventsAtCurrentTime.clear();
-            // It's possible that all events were removed, so carry forward the currentTimeSinceLastEvent.
+            // It's possible that eventsAtCurrentTime was empty, so carry forward the currentTimeSinceLastEvent.
             currentTimeSinceLastEvent += newTimeSinceLastEvent;
         }
 
@@ -74,8 +70,19 @@ seqwires::Track seqwires::quantize(const Track& trackIn, ModelDuration beat) {
         } else if (info.m_grouping == TrackEvent::GroupingInfo::Grouping::EndOfGroup) {
             const auto git = groupsStartingAtCurrentTime.find(group);
             if (git != groupsStartingAtCurrentTime.end()) {
-                collapsedGroupsAtCurrentTime.insert(*git);
-                groupsStartingAtCurrentTime.erase(git);
+                // Remove the collapsed group backwards from the end.
+                for (int i = eventsAtCurrentTime.size() - 1; i >= 0; --i) {
+                    TrackEventHolder& event = eventsAtCurrentTime[i];
+                    const TrackEvent::GroupingInfo info = event->getGroupingInfo();
+                    const Group eventGroup = {info.m_category, info.m_groupValue};
+                    if (eventGroup == group) {
+                        eventsAtCurrentTime.erase(eventsAtCurrentTime.begin() + i);
+                        if (info.m_grouping == TrackEvent::GroupingInfo::Grouping::StartOfGroup) {
+                            // Don't remove proceeding events which happen to have the same group.
+                            break;
+                        }
+                    }
+                }
             }
         }
         eventsAtCurrentTime.emplace_back(*it);
