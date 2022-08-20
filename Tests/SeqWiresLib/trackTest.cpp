@@ -73,8 +73,6 @@ TEST(Track, BlocksAndAlignment) {
     EXPECT_EQ(count, 200);
 }
 
-#include <iostream>
-
 namespace {
     struct Payload {
         Payload(int& payloadDestructionCounter)

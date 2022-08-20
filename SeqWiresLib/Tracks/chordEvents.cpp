@@ -15,7 +15,7 @@
 seqwires::TrackEvent::GroupingInfo::Category seqwires::ChordEvent::s_chordEventCategory = "Chords";
 
 bool seqwires::ChordOnEvent::operator==(const TrackEvent& other) const {
-    if (typeid(other) != typeid(this)) {
+    if (typeid(other) != typeid(*this)) {
         return false;
     }
     auto otherOn = static_cast<const ChordOnEvent&>(other);
@@ -39,7 +39,7 @@ void seqwires::ChordOnEvent::transpose(int pitchOffset) {
 }
 
 bool seqwires::ChordOffEvent::operator==(const TrackEvent& other) const {
-    if (typeid(other) != typeid(this)) {
+    if (typeid(other) != typeid(*this)) {
         return false;
     }
     auto otherOn = static_cast<const ChordOffEvent&>(other);
