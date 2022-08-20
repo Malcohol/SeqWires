@@ -39,8 +39,6 @@ seqwires::Track seqwires::quantize(const Track& trackIn, ModelDuration beat) {
     auto processEventsAtCurrentTime = [&trackOut, &eventsAtCurrentTime, &currentTimeSinceLastEvent,
                                        &trackOutAbsoluteTime]() {
         for (auto& event : eventsAtCurrentTime) {
-            const TrackEvent::GroupingInfo info = event->getGroupingInfo();
-            const Group group = {info.m_category, info.m_groupValue};
             event->setTimeSinceLastEvent(currentTimeSinceLastEvent);
             trackOut.addEvent(event.release());
             trackOutAbsoluteTime += currentTimeSinceLastEvent;
@@ -55,7 +53,7 @@ seqwires::Track seqwires::quantize(const Track& trackIn, ModelDuration beat) {
         if (timeSinceLastEvent > 0) {
             trackInAbsoluteTime += timeSinceLastEvent;
             const ModelDuration idealTime = getIdealTime(trackInAbsoluteTime, beat);
-            newTimeSinceLastEvent = idealTime - trackOutAbsoluteTime;
+            newTimeSinceLastEvent = idealTime - currentTimeSinceLastEvent - trackOutAbsoluteTime;
         }
 
         if (newTimeSinceLastEvent > 0) {
@@ -63,6 +61,7 @@ seqwires::Track seqwires::quantize(const Track& trackIn, ModelDuration beat) {
             groupsStartingAtCurrentTime.clear();
             eventsAtCurrentTime.clear();
             // It's possible that eventsAtCurrentTime was empty, so carry forward the currentTimeSinceLastEvent.
+            trackOutAbsoluteTime += currentTimeSinceLastEvent;
             currentTimeSinceLastEvent += newTimeSinceLastEvent;
         }
 

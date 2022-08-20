@@ -9,6 +9,7 @@ SET( SEQUENCELIB_TESTS_SRCS
       monophonicNoteIteratorTest.cpp
       monophonicSubtracksProcessorTest.cpp
       musicTypesTest.cpp
+      quantizeProcessorTest.cpp
       repeatProcessorTest.cpp
       splitAtPitchProcessorTest.cpp
       trackTest.cpp
