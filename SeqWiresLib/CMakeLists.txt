@@ -19,6 +19,7 @@ SET( SEQWIRESLIB_SRCS
 	Functions/repeatFunction.cpp
 	Functions/mergeFunction.cpp
 	Functions/monophonicSubtracksFunction.cpp
+	Functions/quantizeFunction.cpp
 	Functions/splitAtPitchFunction.cpp
 	Functions/transposeFunction.cpp
 	Tracks/trackEvent.cpp
