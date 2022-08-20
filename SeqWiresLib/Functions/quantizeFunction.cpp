@@ -13,8 +13,11 @@
 
 namespace {
     seqwires::ModelDuration getIdealTime(seqwires::ModelDuration time, seqwires::ModelDuration beat) {
-        // TODO
-        return 0;
+        auto [div, mod] = time.divmod(beat);
+        if (mod >= beat / 2) {
+            ++div;
+        }
+        return beat * div;
     }
 } // namespace
 
