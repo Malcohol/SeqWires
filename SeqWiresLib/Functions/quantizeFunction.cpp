@@ -76,11 +76,11 @@ seqwires::Track seqwires::quantize(const Track& trackIn, ModelDuration beat) {
                 // Remove the collapsed group backwards from the end.
                 for (int i = eventsAtCurrentTime.size() - 1; i >= 0; --i) {
                     TrackEventHolder& event = eventsAtCurrentTime[i];
-                    const TrackEvent::GroupingInfo info = event->getGroupingInfo();
-                    const Group eventGroup = {info.m_category, info.m_groupValue};
+                    const TrackEvent::GroupingInfo eventInfo = event->getGroupingInfo();
+                    const Group eventGroup = {eventInfo.m_category, eventInfo.m_groupValue};
                     if (eventGroup == group) {
                         eventsAtCurrentTime.erase(eventsAtCurrentTime.begin() + i);
-                        if (info.m_grouping == TrackEvent::GroupingInfo::Grouping::StartOfGroup) {
+                        if (eventInfo.m_grouping == TrackEvent::GroupingInfo::Grouping::StartOfGroup) {
                             // Don't remove proceeding events which happen to have the same group.
                             break;
                         }
