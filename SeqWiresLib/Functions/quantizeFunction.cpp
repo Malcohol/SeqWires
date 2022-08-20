@@ -64,7 +64,7 @@ seqwires::Track seqwires::quantize(const Track& trackIn, ModelDuration beat) {
             trackOutAbsoluteTime += currentTimeSinceLastEvent;
             currentTimeSinceLastEvent += newTimeSinceLastEvent;
         }
-
+        bool doAddEvent = true;
         const TrackEvent::GroupingInfo info = it->getGroupingInfo();
         const Group group = {info.m_category, info.m_groupValue};
         if (info.m_grouping == TrackEvent::GroupingInfo::Grouping::StartOfGroup) {
@@ -72,6 +72,7 @@ seqwires::Track seqwires::quantize(const Track& trackIn, ModelDuration beat) {
         } else if (info.m_grouping == TrackEvent::GroupingInfo::Grouping::EndOfGroup) {
             const auto git = groupsStartingAtCurrentTime.find(group);
             if (git != groupsStartingAtCurrentTime.end()) {
+                doAddEvent = false;
                 // Remove the collapsed group backwards from the end.
                 for (int i = eventsAtCurrentTime.size() - 1; i >= 0; --i) {
                     TrackEventHolder& event = eventsAtCurrentTime[i];
@@ -87,7 +88,9 @@ seqwires::Track seqwires::quantize(const Track& trackIn, ModelDuration beat) {
                 }
             }
         }
-        eventsAtCurrentTime.emplace_back(*it);
+        if (doAddEvent) {
+            eventsAtCurrentTime.emplace_back(*it);
+        }
     }
     processEventsAtCurrentTime();
     const ModelDuration idealDuration = getIdealTime(trackIn.getDuration(), beat);
