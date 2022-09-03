@@ -11,6 +11,7 @@ SET( SEQUENCELIB_TESTS_SRCS
       musicTypesTest.cpp
       quantizeProcessorTest.cpp
       repeatProcessorTest.cpp
+      sanitizingFunctionsTest.cpp
       splitAtPitchProcessorTest.cpp
       trackTest.cpp
       trackTraverserTest.cpp

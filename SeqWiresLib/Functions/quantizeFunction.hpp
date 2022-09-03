@@ -14,6 +14,6 @@ namespace babelwires {
 }
 
 namespace seqwires {
-    /// 
+    /// Move the time at which events occur to the nearest beat.
     Track quantize(const Track& trackIn, ModelDuration beat);
 }
