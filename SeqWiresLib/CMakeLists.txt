@@ -20,6 +20,7 @@ SET( SEQWIRESLIB_SRCS
 	Functions/mergeFunction.cpp
 	Functions/monophonicSubtracksFunction.cpp
 	Functions/quantizeFunction.cpp
+	Functions/sanitizingFunctions.cpp
 	Functions/splitAtPitchFunction.cpp
 	Functions/transposeFunction.cpp
 	Tracks/trackEvent.cpp
