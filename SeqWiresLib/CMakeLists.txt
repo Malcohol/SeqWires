@@ -8,6 +8,7 @@ SET( SEQWIRESLIB_SRCS
 	Processors/excerptProcessor.cpp
 	Processors/mergeProcessor.cpp
 	Processors/monophonicSubtracksProcessor.cpp
+	Processors/quantizeProcessor.cpp
 	Processors/repeatProcessor.cpp
 	Processors/silenceProcessor.cpp
 	Processors/splitAtPitchProcessor.cpp
@@ -19,6 +20,8 @@ SET( SEQWIRESLIB_SRCS
 	Functions/repeatFunction.cpp
 	Functions/mergeFunction.cpp
 	Functions/monophonicSubtracksFunction.cpp
+	Functions/quantizeFunction.cpp
+	Functions/sanitizingFunctions.cpp
 	Functions/splitAtPitchFunction.cpp
 	Functions/transposeFunction.cpp
 	Tracks/trackEvent.cpp
