@@ -1,6 +1,9 @@
 #include <gtest/gtest.h>
 
+#include <SeqWiresLib/Tracks/noteEvents.hpp>
 #include <SeqWiresLib/Tracks/track.hpp>
+
+#include <Tests/TestUtils/seqTestUtils.hpp>
 
 TEST(Track, Simple) {
     seqwires::Track track;
@@ -123,4 +126,32 @@ TEST(Track, PayloadTest) {
     }
 
     EXPECT_EQ(counter, 100);
+}
+
+TEST(Track, equality) {
+    seqwires::Track emptyTrack0;
+    seqwires::Track emptyTrack1;
+    seqwires::Track emptyTrackWithPositiveDuration;
+    seqwires::Track trackWithNotes;
+    seqwires::Track trackWithSameNotes;
+    seqwires::Track trackWithMoreNotes;
+    seqwires::Track trackWithDifferentNotes;
+    seqwires::Track trackWithSameNotesLongerDuration;
+    
+    emptyTrackWithPositiveDuration.setDuration(1);
+    testUtils::addSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65}, trackWithNotes);
+    testUtils::addSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65}, trackWithSameNotes);
+    testUtils::addSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65, 67}, trackWithMoreNotes);
+    testUtils::addSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 63, 65}, trackWithDifferentNotes);
+    testUtils::addSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65}, trackWithSameNotesLongerDuration);
+    trackWithSameNotesLongerDuration.setDuration(16);
+
+    EXPECT_EQ(emptyTrack0, emptyTrack0);
+    EXPECT_EQ(emptyTrack0, emptyTrack1);
+    EXPECT_NE(emptyTrack0, emptyTrackWithPositiveDuration);
+    EXPECT_NE(emptyTrack0, trackWithNotes);
+    EXPECT_EQ(trackWithNotes, trackWithSameNotes);
+    EXPECT_NE(trackWithDifferentNotes, trackWithNotes);
+    EXPECT_NE(trackWithNotes, trackWithMoreNotes);
+    EXPECT_NE(trackWithNotes, trackWithSameNotesLongerDuration);
 }
