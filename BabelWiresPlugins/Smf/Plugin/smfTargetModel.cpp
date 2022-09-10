@@ -90,5 +90,6 @@ const smf::target::SmfFormatFeature& smf::target::SmfFeature::getFormatFeature()
 }
 
 babelwires::Feature::Style smf::target::SmfFormatFeature::getStyle() const {
-    return babelwires::Feature::Style(0);
+    // Not collapsable and inlined.
+    return babelwires::Feature::Style::isInlined;
 }
