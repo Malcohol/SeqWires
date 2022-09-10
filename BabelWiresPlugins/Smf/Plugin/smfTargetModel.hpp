@@ -63,6 +63,8 @@ namespace smf {
             int getNumMidiTracks() const;
             const ChannelGroup& getMidiTrack(int i) const;
 
+            Style getStyle() const override;
+
           protected:
             MidiMetadata* m_metadata;
             babelwires::StringFeature* m_sequenceName;
