@@ -88,3 +88,8 @@ const smf::target::ChannelGroup& smf::target::SmfFormatFeature::getMidiTrack(int
 const smf::target::SmfFormatFeature& smf::target::SmfFeature::getFormatFeature() const {
     return *m_formatFeature;
 }
+
+babelwires::Feature::Style smf::target::SmfFormatFeature::getStyle() const {
+    // Not collapsable and inlined.
+    return babelwires::Feature::Style::isInlined;
+}
