@@ -74,6 +74,8 @@ bool seqwires::Track::operator==(const Track& other) const {
         if (*thisIt != *otherIt) {
             return false;
         }
+        ++thisIt;
+        ++otherIt;
     }
     assert(otherIt == other.end());
     return true;

@@ -20,7 +20,7 @@ void seqwires::NoteEvent::transpose(int pitchOffset) {
 }
 
 bool seqwires::NoteOnEvent::operator==(const TrackEvent& other) const {
-    if (typeid(other) != typeid(this)) {
+    if (typeid(other) != typeid(*this)) {
         return false;
     }
     auto otherOn = static_cast<const NoteOnEvent&>(other);
@@ -37,7 +37,7 @@ seqwires::TrackEvent::GroupingInfo seqwires::NoteOnEvent::getGroupingInfo() cons
 }
 
 bool seqwires::NoteOffEvent::operator==(const TrackEvent& other) const {
-    if (typeid(other) != typeid(this)) {
+    if (typeid(other) != typeid(*this)) {
         return false;
     }
     auto otherOff = static_cast<const NoteOffEvent&>(other);
