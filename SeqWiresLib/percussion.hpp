@@ -43,7 +43,7 @@
     X(RideBl, "Ride Bell", "b0fa8c86-df41-4e4b-b9ce-e04a935f1db4")                                                     \
     X(Tamb, "Tambourine", "1c7b945f-d6c8-4213-a6c2-e15667399f9f")                                                      \
     X(SplCym, "Splash Cymbal", "3a630d65-0fb0-4272-ac30-ede579203e6d")                                                 \
-    X(Cowbl, "Cowbell", "513e999a-40bf-4a3f-8164-c4b881300e4f")                                                        \
+    X(Cowbll, "Cowbell", "513e999a-40bf-4a3f-8164-c4b881300e4f")                                                        \
     X(Crash2, "Crash Cymbal 2", "b8604a23-c381-4cc5-aed4-fafa243a96f9")                                                \
     X(VibraS, "Vibraslap", "8948c9eb-31a1-4eb4-8b75-9b4a23c3b900")                                                     \
     X(Ride2, "Ride Cymbal 2", "266e41ce-c70c-4d51-8387-04025bf1b58d")                                                  \
@@ -78,9 +78,9 @@
     X(OSurdo, "Open Surdo", "16a9961e-26a2-4e85-bb8c-32b139713694")
 
 namespace seqwires {
-    // TODO GS, XG, GM2 percussion, with appropriate subtyping.
+    // TODO GS, XG percussion, with appropriate subtyping.
 
-    /// An enum corresponding to the instruments of GM percussion set.
+    /// An enum corresponding to the instruments of GM2 standard percussion set.
     class GM2Percussion : public babelwires::Enum {
       public:
         GM2Percussion();
@@ -96,6 +96,7 @@ namespace seqwires {
         bool tryGetValueFromPitch(Pitch pitch, Value& indexOut) const;
     };
 
+    /// An enum corresponding to the original General MIDI percussion set.
     struct GMPercussion : babelwires::Enum {
         GMPercussion();
 

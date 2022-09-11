@@ -36,7 +36,7 @@ seqwires::GMPercussion::GMPercussion()
           getThisIdentifier(), 1,
           babelwires::Enum::EnumValues{"AcBass", "Bass1",  "SStick", "AcSnr",  "Clap",   "ElSnr",  "LFlTom", "ClHHat",
                                        "HFlTom", "PdHHat", "LwTom",  "OpHHat", "LMTom",  "HMTom",  "Crash1", "HTom",
-                                       "Ride1",  "ChnCym", "RideBl", "Tamb",   "SplCym", "Cowbl",  "Crash2", "VibraS",
+                                       "Ride1",  "ChnCym", "RideBl", "Tamb",   "SplCym", "Cowbll",  "Crash2", "VibraS",
                                        "Ride2",  "HBongo", "LBongo", "MHCnga", "OHCnga", "LConga", "HTimbl", "LTimbl",
                                        "HAgogo", "LAgogo", "Cabasa", "Maracs", "SWhisl", "LWhisl", "SGuiro", "LGuiro",
                                        "Claves", "HWoodB", "LWoodB", "MCuica", "OCuica", "MTrian", "OTrian"},
