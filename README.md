@@ -13,9 +13,9 @@ The result is like a simple [musical round](https://en.wikipedia.org/wiki/Round_
 
 ![Screenshot showing several nodes wired together](https://raw.githubusercontent.com/Malcohol/BabelWires/main/Docs/screenshot.png "An example SeqWires project")
 
-Here's a screenshot of the MapEditor defining a map between chord types:
+Here's a screenshot of the MapEditor defining a map between percussion instruments:
 
-![Screenshot showing the MapEditor](https://raw.githubusercontent.com/Malcohol/BabelWires/main/Docs/mapEditor.png "Screenshot of the MapEditor defining a map between chordTypes")
+![Screenshot showing the MapEditor](https://raw.githubusercontent.com/Malcohol/BabelWires/main/Docs/mapEditor.png "Screenshot of the MapEditor defining a map between percussion instruments")
 
 Right now, the supported formats are:
 * SMF (standard MIDI file)
