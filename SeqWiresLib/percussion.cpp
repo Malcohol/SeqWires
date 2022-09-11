@@ -18,7 +18,8 @@ babelwires::LongIdentifier seqwires::GM2Percussion::getThisIdentifier() {
 seqwires::GM2Percussion::GM2Percussion()
     : Enum(getThisIdentifier(), 1, ENUM_IDENTIFIER_VECTOR(GM2_STANDARD_PERCUSSION_VALUES), 0) {}
 
-seqwires::Pitch seqwires::GM2Percussion::getPitchFromIndex(unsigned int index) {
+seqwires::Pitch seqwires::GM2Percussion::getPitchFromValue(Value value) {
+    const unsigned int index = static_cast<unsigned int>(value);
     return index + 27;
 }
 

@@ -18,25 +18,15 @@
 #include <BabelWiresLib/TypeSystem/typeSystem.hpp>
 
 namespace {
-    struct PercussionToPitchValueAdapter {
-        babelwires::Enum m_percussionEnum;
-
-        seqwires::Pitch operator()(const babelwires::Value& value) const {
-            const auto& enumValue = value.is<babelwires::EnumValue>();
-            const unsigned int index = m_percussionEnum.getIndexFromIdentifier(enumValue.get());
-            const seqwires::Pitch pitch = seqwires::GM2Percussion::getPitchFromIndex(index);
-            return pitch;
-        }
-    };
-
-    using MapType = babelwires::EnumSourceMapApplicator<seqwires::GM2Percussion, seqwires::Pitch>;
+    using MapType = babelwires::EnumSourceMapApplicator<seqwires::GM2Percussion, seqwires::GM2Percussion::Value>;
 
     bool mapPercussionEvent(const seqwires::GM2Percussion& percussionType, MapType& mapApplicator,
                             seqwires::NoteEvent& noteEvent) {
         const seqwires::Pitch originalPitch = noteEvent.getPitch();
-        seqwires::GM2Percussion::Value value;
-        if (percussionType.tryGetValueFromPitch(originalPitch, value)) {
-            const seqwires::Pitch newPitch = mapApplicator[value];
+        seqwires::GM2Percussion::Value originalValue;
+        if (percussionType.tryGetValueFromPitch(originalPitch, originalValue)) {
+            const seqwires::GM2Percussion::Value newValue = mapApplicator[originalValue];
+            const seqwires::Pitch newPitch = seqwires::GM2Percussion::getPitchFromValue(newValue);
             noteEvent.setPitch(newPitch);
             return true;
         }
@@ -55,7 +45,7 @@ seqwires::Track seqwires::mapPercussionFunction(const babelwires::TypeSystem& ty
     const GM2Percussion& percussionType =
         typeSystem.getEntryByIdentifier(seqwires::GM2Percussion::getThisIdentifier())->is<GM2Percussion>();
 
-    PercussionToPitchValueAdapter targetAdapter{percussionType};
+    const babelwires::EnumToValueValueAdapter<GM2Percussion> targetAdapter{percussionType};
     MapType mapApplicator(percussionMapData, percussionType, targetAdapter);
 
     Track trackOut;

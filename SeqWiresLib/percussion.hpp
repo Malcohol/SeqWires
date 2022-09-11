@@ -89,8 +89,8 @@ namespace seqwires {
 
         ENUM_DEFINE_CPP_ENUM(GM2_STANDARD_PERCUSSION_VALUES);
 
-        /// Returns a pitch in the range 35..81.
-        static Pitch getPitchFromIndex(unsigned int index);
+        /// Returns a pitch in the range 27..87.
+        static Pitch getPitchFromValue(Value value);
 
         /// If the pitch is in range, set indexOut and return true.
         bool tryGetValueFromPitch(Pitch pitch, Value& indexOut) const;

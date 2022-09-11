@@ -8,6 +8,7 @@ SET( SEQWIRESLIB_SRCS
 	Processors/excerptProcessor.cpp
 	Processors/mergeProcessor.cpp
 	Processors/monophonicSubtracksProcessor.cpp
+	Processors/percussionMapProcessor.cpp
 	Processors/quantizeProcessor.cpp
 	Processors/repeatProcessor.cpp
 	Processors/silenceProcessor.cpp
