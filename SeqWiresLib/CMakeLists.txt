@@ -8,6 +8,7 @@ SET( SEQWIRESLIB_SRCS
 	Processors/excerptProcessor.cpp
 	Processors/mergeProcessor.cpp
 	Processors/monophonicSubtracksProcessor.cpp
+	Processors/percussionMapProcessor.cpp
 	Processors/quantizeProcessor.cpp
 	Processors/repeatProcessor.cpp
 	Processors/silenceProcessor.cpp
@@ -18,6 +19,7 @@ SET( SEQWIRESLIB_SRCS
 	Functions/mapChordsFunction.cpp
 	Functions/excerptFunction.cpp
 	Functions/repeatFunction.cpp
+	Functions/percussionMapFunction.cpp
 	Functions/mergeFunction.cpp
 	Functions/monophonicSubtracksFunction.cpp
 	Functions/quantizeFunction.cpp
@@ -30,6 +32,7 @@ SET( SEQWIRESLIB_SRCS
 	Tracks/track.cpp
 	chord.cpp
 	musicTypes.cpp
+	percussion.cpp
 	pitchClass.cpp
 	Utilities/monophonicNoteIterator.cpp
 	libRegistration.cpp
