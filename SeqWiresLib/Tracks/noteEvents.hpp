@@ -24,6 +24,12 @@ namespace seqwires {
 
         static GroupingInfo::Category s_noteEventCategory;
 
+        void setPitch(Pitch pitch) { m_pitch = pitch; }
+        Pitch getPitch() const { return m_pitch; }
+
+        void setVelocity(Velocity velocity) { m_velocity = velocity; }
+        Velocity getVelocity() const { return m_velocity; }
+
         Pitch m_pitch;
         Velocity m_velocity;
     };

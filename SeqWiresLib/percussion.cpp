@@ -19,14 +19,14 @@ seqwires::GM2Percussion::GM2Percussion()
     : Enum(getThisIdentifier(), 1, ENUM_IDENTIFIER_VECTOR(GM2_STANDARD_PERCUSSION_VALUES), 0) {}
 
 seqwires::Pitch seqwires::GM2Percussion::getPitchFromIndex(unsigned int index) {
-    return index + 35;
+    return index + 27;
 }
 
-bool seqwires::GM2Percussion::tryGetIndexFromPitch(Pitch pitch, unsigned int& index) {
-    if ((pitch < 35) || (pitch > 81)) {
+bool seqwires::GM2Percussion::tryGetValueFromPitch(Pitch pitch, Value& valueOut) const {
+    if ((pitch < 27) || (pitch > 87)) {
         return false;
     }
-    index = pitch - 35;
+    valueOut = static_cast<Value>(pitch - 27);
     return true;
 }
 

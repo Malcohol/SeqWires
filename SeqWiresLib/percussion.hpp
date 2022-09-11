@@ -93,7 +93,7 @@ namespace seqwires {
         static Pitch getPitchFromIndex(unsigned int index);
 
         /// If the pitch is in range, set indexOut and return true.
-        bool tryGetIndexFromPitch(Pitch pitch, unsigned int& indexOut);
+        bool tryGetValueFromPitch(Pitch pitch, Value& indexOut) const;
     };
 
     struct GMPercussion : babelwires::Enum {

@@ -18,6 +18,7 @@ SET( SEQWIRESLIB_SRCS
 	Functions/mapChordsFunction.cpp
 	Functions/excerptFunction.cpp
 	Functions/repeatFunction.cpp
+	Functions/percussionMapFunction.cpp
 	Functions/mergeFunction.cpp
 	Functions/monophonicSubtracksFunction.cpp
 	Functions/quantizeFunction.cpp
