@@ -25,13 +25,17 @@
 #include <SeqWiresLib/Processors/silenceProcessor.hpp>
 #include <SeqWiresLib/Processors/splitAtPitchProcessor.hpp>
 #include <SeqWiresLib/Processors/transposeProcessor.hpp>
+#include <SeqWiresLib/percussion.hpp>
 #include <SeqWiresLib/chord.hpp>
 #include <SeqWiresLib/pitchClass.hpp>
 
 void seqwires::registerLib(babelwires::ProjectContext& context) {
-    context.m_typeSystem.addEntry(std::make_unique<MonophonicSubtracksPolicyEnum>());
     context.m_typeSystem.addEntry(std::make_unique<ChordType>());
     context.m_typeSystem.addEntry(std::make_unique<PitchClass>());
+    context.m_typeSystem.addEntry(std::make_unique<GM2Percussion>());
+    context.m_typeSystem.addEntry(std::make_unique<GMPercussion>());
+
+    context.m_typeSystem.addEntry(std::make_unique<MonophonicSubtracksPolicyEnum>());
     context.m_typeSystem.addEntry(std::make_unique<FingeredChordsSustainPolicyEnum>());
 
     context.m_processorReg.addEntry(std::make_unique<ChordMapProcessor::Factory>());

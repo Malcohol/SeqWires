@@ -30,6 +30,7 @@ SET( SEQWIRESLIB_SRCS
 	Tracks/track.cpp
 	chord.cpp
 	musicTypes.cpp
+	percussion.cpp
 	pitchClass.cpp
 	Utilities/monophonicNoteIterator.cpp
 	libRegistration.cpp
