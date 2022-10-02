@@ -23,7 +23,7 @@ seqwires::Pitch seqwires::GM2Percussion::getPitchFromValue(Value value) {
     return index + 27;
 }
 
-bool seqwires::GM2Percussion::tryGetValueFromPitch(Pitch pitch, Value& valueOut) const {
+bool seqwires::GM2Percussion::tryGetValueFromPitch(Pitch pitch, Value& valueOut) {
     if ((pitch < 27) || (pitch > 87)) {
         return false;
     }

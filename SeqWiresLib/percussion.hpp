@@ -93,7 +93,7 @@ namespace seqwires {
         static Pitch getPitchFromValue(Value value);
 
         /// If the pitch is in range, set indexOut and return true.
-        bool tryGetValueFromPitch(Pitch pitch, Value& indexOut) const;
+        static bool tryGetValueFromPitch(Pitch pitch, Value& indexOut);
     };
 
     /// An enum corresponding to the original General MIDI percussion set.

@@ -27,14 +27,5 @@ namespace seqwires {
     Pitch stringToPitch(std::string_view s);
     std::string durationToString(ModelDuration d);
 
-    /// The percussion map from GM spec.
-    enum PercussionInstrumentMap {
-        PERCUSSION_BASS_DRUM_1 = 36,
-        PERCUSSION_ELECTRIC_SNARE = 40,
-        PERCUSSION_HIGH_MID_TOM = 48,
-        PERCUSSION_RIDE_CYMBAL_1 = 51,
-        PERCUSSION_CLOSED_HI_HAT = 42
-    };
-
     static constexpr ModelDuration s_maxDuration = std::numeric_limits<seqwires::ModelDuration>::max();
 } // namespace seqwires
