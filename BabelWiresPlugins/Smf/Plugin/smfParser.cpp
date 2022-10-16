@@ -287,12 +287,14 @@ void smf::SmfParser::readSysExEvent() {
             // General MIDI message
             if (subId2 == 0x01) {
                 // General MIDI On
+                setGMSpec(GMSpecType::Value::GM);
                 babelwires::logDebug() << "General MIDI On";
             } else if (subId2 == 0x02) {
                 // General MIDI Off
                 babelwires::logDebug() << "General MIDI Off";
             } else if (subId2 == 0x03) {
                 // General MIDI 2 On
+                setGMSpec(GMSpecType::Value::GM2);
                 babelwires::logDebug() << "General MIDI 2 On";
             } else {
                 babelwires::logDebug() << "Ignoring unrecognized General MIDI SysEx message";
@@ -305,12 +307,14 @@ void smf::SmfParser::readSysExEvent() {
     } else if (headerId == 0x41) {
         // Roland SysEx
         if (isMessageBufferMessage(std::array<std::int16_t, 10>{0x41, -1, 0x42, 0x12, 0x40, 0x00, 0x7F, 0x00, 0x41, 0xF7})) {
+            setGMSpec(GMSpecType::Value::GS);
             babelwires::logDebug() << "Roland GS Reset";
             return;
         }
     } else if (headerId == 0x43) {
         // Yamaha SysEx
         if (isMessageBufferMessage(std::array<std::int16_t, 8>{0x43, -1, 0x4C, 0x00, 0x00, 0x7E, 0x00, 0xF7})) {
+            setGMSpec(GMSpecType::Value::XG);
             babelwires::logDebug() << "Yamaha XG Reset";
             return;
         }
@@ -666,6 +670,10 @@ void smf::SmfParser::readFormat1Sequence(source::Format1SmfFeature& sequence) {
         MidiMetadata dummyMetadata;
         readTrack(i, *midiTrack, dummyMetadata);
     }
+}
+
+void smf::SmfParser::setGMSpec(GMSpecType::Value spec) {
+    m_gmSpec = spec;
 }
 
 std::unique_ptr<babelwires::FileFeature> smf::parseSmfSequence(babelwires::DataSource& dataSource,

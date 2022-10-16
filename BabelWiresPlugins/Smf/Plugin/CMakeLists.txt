@@ -6,6 +6,7 @@ SET( SMFLIB_SRCS
 	smfWriter.cpp
 	smfParser.cpp
 	smfFormat.cpp
+	gmSpec.cpp
    )
 
 ADD_LIBRARY( SmfLib ${SMFLIB_SRCS} )

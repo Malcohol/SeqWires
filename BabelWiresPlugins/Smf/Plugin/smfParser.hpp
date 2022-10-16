@@ -7,10 +7,14 @@
  **/
 #pragma once
 
-#include <BabelWiresLib/FileFormat/fileFeature.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/smfSourceModel.hpp>
-#include <Common/IO/dataSource.hpp>
+#include <BabelWiresPlugins/Smf/Plugin/gmSpec.hpp>
+
 #include <SeqWiresLib/musicTypes.hpp>
+
+#include <BabelWiresLib/FileFormat/fileFeature.hpp>
+
+#include <Common/IO/dataSource.hpp>
 #include <Common/Log/userLogger.hpp>
 
 #include <cstdint>
@@ -30,6 +34,8 @@ namespace smf {
       protected:
         babelwires::Byte getNext();
         babelwires::Byte peekNext();
+
+        void setGMSpec(GMSpecType::Value spec);
 
         /// Read the expected byte sequence.
         void readByteSequence(const char* seq);
@@ -83,6 +89,9 @@ namespace smf {
         source::SmfFeature::Format m_sequenceType;
         int m_numTracks;
         int m_division;
+
+        // The specification which applies to the data.
+        GMSpecType::Value m_gmSpec;
     };
 
     std::unique_ptr<babelwires::FileFeature> parseSmfSequence(babelwires::DataSource& dataSource, const babelwires::ProjectContext& projectContext, babelwires::UserLogger& userLogger);
