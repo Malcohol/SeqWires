@@ -53,6 +53,8 @@ namespace smf {
         template<typename STREAMLIKE>
         void logByteSequence(STREAMLIKE log, int length);
 
+        void readSysExEvent();
+        void readSysExEventContinuation();
         void readSequencerSpecificEvent(int length);
 
         ///
@@ -61,11 +63,22 @@ namespace smf {
         std::uint32_t readU32();
         std::uint32_t readVariableLengthQuantity();
 
+        /// Try to read length bytes into the buffer.
+        void readFullMessageIntoBuffer(std::uint32_t length);
+
+        /// A -1 in the message is allowed to be anything.
+        template<std::size_t N>
+        bool isMessageBufferMessage(const std::array<std::int16_t, N>& message) const;
+
+        template<typename STREAMLIKE>
+        void logMessageBuffer(STREAMLIKE log) const;
+
       private:
         const babelwires::ProjectContext& m_projectContext;
         babelwires::DataSource& m_dataSource;
         babelwires::UserLogger& m_userLogger;
         std::unique_ptr<babelwires::FileFeature> m_result;
+        std::vector<babelwires::Byte> m_messageBuffer;
 
         source::SmfFeature::Format m_sequenceType;
         int m_numTracks;

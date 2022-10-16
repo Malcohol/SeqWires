@@ -235,6 +235,94 @@ template <typename STREAMLIKE> void smf::SmfParser::logByteSequence(STREAMLIKE l
     }
 }
 
+void smf::SmfParser::readFullMessageIntoBuffer(std::uint32_t length) {
+    m_messageBuffer.resize(length);
+    for (int i = 0; i < length; ++i) {
+        m_messageBuffer[i] = getNext();
+    }
+}
+
+template<std::size_t N>
+bool smf::SmfParser::isMessageBufferMessage(const std::array<std::int16_t, N>& message) const {
+    if (m_messageBuffer.size() != message.size()) {
+        return false;
+    }
+    for (int i = 0; i < message.size(); ++i) {
+        if (message[i] != -1) {
+            if (m_messageBuffer[i] != message[i]) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+template <typename STREAMLIKE> void smf::SmfParser::logMessageBuffer(STREAMLIKE log) const {
+    log << std::hex << std::setfill('0') << std::setw(2) << static_cast<int>(m_messageBuffer[0]);
+    for (auto i = 1; i < m_messageBuffer.size(); ++i) {
+        log << ", " << std::setfill('0') << std::setw(2) << static_cast<int>(m_messageBuffer[i]);
+    }
+}
+
+void smf::SmfParser::readSysExEvent() {
+    auto length = readVariableLengthQuantity();
+    if (length < 1) {
+        logByteSequence(m_userLogger.logWarning() << "Skipping SysEx message with invalid length: ", length);
+        return;
+    }
+    readFullMessageIntoBuffer(length);
+    const babelwires::Byte headerId = m_messageBuffer[0];
+    if (headerId == 0x7E) {
+        // Universal SysEx
+        if (length < 4) {
+            logByteSequence(m_userLogger.logWarning() << "Skipping Universal SysEx message with invalid length: ",
+                            length);
+            return;
+        }
+        // Universal Non-Real Time SysEx
+        /*const babelwires::Byte deviceId = m_messageBuffer[1]*/
+        const babelwires::Byte subId1 = m_messageBuffer[2];
+        const babelwires::Byte subId2 = m_messageBuffer[3];
+        if (subId1 == 0x09) {
+            // General MIDI message
+            if (subId2 == 0x01) {
+                // General MIDI On
+                babelwires::logDebug() << "General MIDI On";
+            } else if (subId2 == 0x02) {
+                // General MIDI Off
+                babelwires::logDebug() << "General MIDI Off";
+            } else if (subId2 == 0x03) {
+                // General MIDI 2 On
+                babelwires::logDebug() << "General MIDI 2 On";
+            } else {
+                babelwires::logDebug() << "Ignoring unrecognized General MIDI SysEx message";
+            }
+            if (m_messageBuffer[4] != 0xF7) {
+                m_userLogger.logWarning() << "Improperly terminated General MIDI SysEx message";
+            }
+            return;
+        }
+    } else if (headerId == 0x41) {
+        // Roland SysEx
+        if (isMessageBufferMessage(std::array<std::int16_t, 10>{0x41, -1, 0x42, 0x12, 0x40, 0x00, 0x7F, 0x00, 0x41, 0xF7})) {
+            babelwires::logDebug() << "Roland GS Reset";
+            return;
+        }
+    } else if (headerId == 0x43) {
+        // Yamaha SysEx
+        if (isMessageBufferMessage(std::array<std::int16_t, 8>{0x43, -1, 0x4C, 0x00, 0x00, 0x7E, 0x00, 0xF7})) {
+            babelwires::logDebug() << "Yamaha XG Reset";
+            return;
+        }
+    }
+    logMessageBuffer(babelwires::logDebug() << "Ignoring unrecognized SysEx event! ");
+}
+
+void smf::SmfParser::readSysExEventContinuation() {
+    auto length = readVariableLengthQuantity();
+    logByteSequence(babelwires::logDebug() << "Ignoring continued SysEx message", length);
+}
+
 void smf::SmfParser::readSequencerSpecificEvent(int length) {
     if (length <= 1) {
         logByteSequence(m_userLogger.logWarning() << "Skipping sequencer specific event with invalid length: ", length);
@@ -308,7 +396,7 @@ void smf::SmfParser::readSequencerSpecificEvent(int length) {
                         log << "Ignored Yamaha Meta-event XF event: ";
                         byteIndex = 2;
                         break;
-                }                
+                }
             } else if (eventBytes[2] == 0x0C) {
                 log << "Ignored Yamaha Meta-event Style Name: ";
                 byteIndex = 3;
@@ -365,11 +453,11 @@ void smf::SmfParser::readTrack(int i, source::ChannelGroup& channels, MidiMetada
             case 0b1111: {
                 // No running status allowed.
                 lastStatusByte = 0;
-                if ((statusLo == 0) || (statusLo == 7)) {
-                    // SysEx event.
-                    auto length = readVariableLengthQuantity();
-                    logByteSequence(babelwires::logDebug() << "Ignored sysex event! ", length);
-                } else if (statusLo == 0xf) {
+                if (statusLo == 0x00) {
+                    readSysExEvent();
+                } else if (statusLo == 0x07) {
+                    readSysExEventContinuation();
+                } else if (statusLo == 0x0f) {
                     // Meta-event.
                     const babelwires::Byte type = getNext();
                     const std::uint32_t length = readVariableLengthQuantity();

@@ -7,12 +7,6 @@
  **/
 #include <SeqWiresLib/Tracks/track.hpp>
 
-namespace babelwires {
-    class MapData;
-    class TypeSystem;
-    class Rational;
-}
-
 namespace seqwires {
     /// Move the time at which events occur to the nearest beat.
     Track quantize(const Track& trackIn, ModelDuration beat);
