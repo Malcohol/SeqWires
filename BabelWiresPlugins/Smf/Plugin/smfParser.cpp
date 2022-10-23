@@ -181,15 +181,14 @@ class smf::SmfParser::TrackSplitter {
         : m_channels{}
         , m_channelSetup(channelSetup) {}
 
-    template <typename EVENT_TYPE>
-    void addToChannel(unsigned int channelNumber, seqwires::ModelDuration timeSinceLastTrackEvent, EVENT_TYPE&& event) {
-        PerChannelInfo* channel = getChannel(channelNumber);
+    void addNoteOn(unsigned int channelNumber, seqwires::ModelDuration timeSinceLastTrackEvent, seqwires::Pitch pitch, seqwires::Velocity velocity) {
+        //if (m_channelSetup[channelNumber].m_kitIfPercussion) { TODO }
+        addToChannel<seqwires::NoteOnEvent>(channelNumber, timeSinceLastTrackEvent, pitch, velocity);
+    }
 
-        m_timeSinceStart += timeSinceLastTrackEvent;
-        event.setTimeSinceLastEvent(m_timeSinceStart - channel->m_timeOfLastEvent);
-        channel->m_timeOfLastEvent = m_timeSinceStart;
-
-        channel->m_track.addEvent(event);
+    void addNoteOff(unsigned int channelNumber, seqwires::ModelDuration timeSinceLastTrackEvent, seqwires::Pitch pitch, seqwires::Velocity velocity) {
+        //if (m_channelSetup[channelNumber].m_kitIfPercussion) { TODO }
+        addToChannel<seqwires::NoteOffEvent>(channelNumber, timeSinceLastTrackEvent, pitch, velocity);
     }
 
     /// All channels share the duration of the MIDI track.
@@ -241,6 +240,14 @@ class smf::SmfParser::TrackSplitter {
         return channel.get();
     }
 
+    template <typename EVENT_TYPE, typename... ARGS>
+    void addToChannel(unsigned int channelNumber, seqwires::ModelDuration timeSinceLastTrackEvent, ARGS&&... args) {
+        PerChannelInfo* channel = getChannel(channelNumber);
+
+        m_timeSinceStart += timeSinceLastTrackEvent;
+        channel->m_track.addEvent(EVENT_TYPE{m_timeSinceStart - channel->m_timeOfLastEvent, std::forward<ARGS>(args)...});
+        channel->m_timeOfLastEvent = m_timeSinceStart;
+    }
   private:
     static const int MAX_CHANNELS = 16;
 
@@ -688,8 +695,7 @@ void smf::SmfParser::readTrack(int trackIndex, source::ChannelGroup& channels, M
             {
                 const seqwires::Pitch pitch = getNext();
                 const seqwires::Velocity velocity = getNext();
-                tracks.addToChannel(statusLo, timeSinceLastNoteEvent,
-                                              seqwires::NoteOffEvent{0, pitch, velocity});
+                tracks.addNoteOff(statusLo, timeSinceLastNoteEvent, pitch, velocity);
                 timeSinceLastNoteEvent = 0;
                 break;
             }
@@ -698,10 +704,9 @@ void smf::SmfParser::readTrack(int trackIndex, source::ChannelGroup& channels, M
                 const seqwires::Pitch pitch = getNext();
                 const seqwires::Velocity velocity = getNext();
                 if (velocity != 0) {
-                    tracks.addToChannel(statusLo, timeSinceLastNoteEvent,
-                                                  seqwires::NoteOnEvent{0, pitch, velocity});
+                    tracks.addNoteOn(statusLo, timeSinceLastNoteEvent, pitch, velocity);
                 } else {
-                    tracks.addToChannel(statusLo, timeSinceLastNoteEvent, seqwires::NoteOffEvent{0, pitch});
+                    tracks.addNoteOff(statusLo, timeSinceLastNoteEvent, pitch, velocity);
                 }
                 timeSinceLastNoteEvent = 0;
                 break;

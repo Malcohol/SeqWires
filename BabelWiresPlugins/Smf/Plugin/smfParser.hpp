@@ -93,7 +93,6 @@ namespace smf {
         
         void onChangeProgram(unsigned int channelNumber);
 
-
         enum KnownPercussionKits { GM_PERCUSSION_KIT, GM2_STANDARD_PERCUSSION_KIT, NUM_KNOWN_PERCUSSION_KITS };
 
       private:
