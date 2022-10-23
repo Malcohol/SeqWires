@@ -177,31 +177,9 @@ void smf::SmfParser::readTempoEvent(seqwires::TempoFeature& tempo) {
 
 class smf::SmfParser::TrackSplitter {
   public:
-    TrackSplitter(GMSpecType::Value gmSpec,
-                  std::array<const seqwires::PercussionKit*, NUM_KNOWN_PERCUSSION_KITS> knownKits)
+    TrackSplitter(const std::array<ChannelSetup, 16>& channelSetup)
         : m_channels{}
-        , m_knownKits(knownKits)
-        , m_gmSpec(gmSpec) {}
-
-    void setGMSpec(GMSpecType::Value gmSpec) { m_gmSpec = gmSpec; }
-
-    void setBankMSB(unsigned int channelNumber, const babelwires::Byte msbValue) {
-        PerChannelInfo* channel = getChannel(channelNumber);
-        channel->m_bankSelectMSB = msbValue;
-        onChangeProgram(channelNumber);
-    }
-
-    void setBankLSB(unsigned int channelNumber, const babelwires::Byte lsbValue) {
-        PerChannelInfo* channel = getChannel(channelNumber);
-        channel->m_bankSelectLSB = lsbValue;
-        onChangeProgram(channelNumber);
-    }
-
-    void setProgram(unsigned int channelNumber, const babelwires::Byte value) {
-        PerChannelInfo* channel = getChannel(channelNumber);
-        channel->m_program = value;
-        onChangeProgram(channelNumber);
-    }
+        , m_channelSetup(channelSetup) {}
 
     template <typename EVENT_TYPE>
     void addToChannel(unsigned int channelNumber, seqwires::ModelDuration timeSinceLastTrackEvent, EVENT_TYPE&& event) {
@@ -250,11 +228,6 @@ class smf::SmfParser::TrackSplitter {
     struct PerChannelInfo {
         seqwires::ModelDuration m_timeOfLastEvent;
         seqwires::Track m_track;
-        babelwires::Byte m_bankSelectMSB = 0;
-        babelwires::Byte m_bankSelectLSB = 0;
-        babelwires::Byte m_program = 0;
-        // This is non-null when the pitches in the data should be interpreted as percussion events from the given kit.
-        const seqwires::PercussionKit* m_kitIfPercussion = nullptr;
     };
 
     PerChannelInfo* getChannel(unsigned int channelNumber) {
@@ -264,52 +237,8 @@ class smf::SmfParser::TrackSplitter {
 
         if (channel == nullptr) {
             channel = std::make_unique<PerChannelInfo>();
-            // Channel 9 (in zero indexing) defaults to percussion
-            if (channelNumber == 9) {
-                switch(m_gmSpec) {
-                    case GMSpecType::Value::GM:
-                        channel->m_kitIfPercussion = m_knownKits[GM_PERCUSSION_KIT];
-                        break;
-                    case GMSpecType::Value::GM2:
-                        channel->m_kitIfPercussion = m_knownKits[GM2_STANDARD_PERCUSSION_KIT];
-                        break;
-                }
-            }
         }
         return channel.get();
-    }
-
-    /// Right now, just trying to determine which percussionKit is in use if any.
-    void onChangeProgram(unsigned int channelNumber) {
-        PerChannelInfo* channel = getChannel(channelNumber);
-        const babelwires::Byte bankMSB = channel->m_bankSelectMSB;
-        const babelwires::Byte bankLSB = channel->m_bankSelectLSB;
-        const babelwires::Byte program = channel->m_program;
-        
-        if (m_gmSpec == GMSpecType::Value::GM2) {
-            if (bankMSB == 0x78) {
-                // Percussion
-                channel->m_kitIfPercussion = m_knownKits[GM2_STANDARD_PERCUSSION_KIT];
-            } else if (bankMSB == 0x79) {
-                // Melody
-                channel->m_kitIfPercussion = nullptr;
-            } else {
-                // Not specified by GM2
-            }
-        } else if (m_gmSpec == GMSpecType::Value::XG) {
-            if (bankMSB == 0x7f) {
-                // Percussion
-            } else if (bankMSB == 0x00) {
-                // Voice
-            } else if (bankMSB == 0x40) {
-                // SFX
-            } else {
-                // Not specified by XG
-            }
-        }
-        else if (m_gmSpec == GMSpecType::Value::GS) {
-            // TODO
-        }
     }
 
   private:
@@ -321,6 +250,8 @@ class smf::SmfParser::TrackSplitter {
     seqwires::ModelDuration m_timeSinceStart;
 
     std::array<std::unique_ptr<PerChannelInfo>, MAX_CHANNELS> m_channels;
+
+    const std::array<ChannelSetup, 16>& m_channelSetup;
 };
 
 template <typename STREAMLIKE> void smf::SmfParser::logByteSequence(STREAMLIKE log, int length) {
@@ -400,10 +331,37 @@ void smf::SmfParser::readSysExEvent() {
         }
     } else if (headerId == 0x41) {
         // Roland SysEx
+        const unsigned int messageSize = m_messageBuffer.size();
+        if (m_messageBuffer[messageSize - 1] != 0xF7) {
+            m_userLogger.logWarning() << "Improperly terminated Roland SysEx message";
+        }
+        // Checksum
+        babelwires::Byte checkSum = 0;
+        for (int i = 4; i < messageSize - 2; ++i) {
+            // This can overflow without problems.
+            checkSum += m_messageBuffer[i];
+        }
+        if (m_messageBuffer[messageSize - 2] != (0x80 - (checkSum % 0x80) % 0x80)) {
+            m_userLogger.logWarning() << "Ignoring Roland SysEx message with invalid checksum";
+            return;
+        }
         if (isMessageBufferMessage(
                 std::array<std::int16_t, 10>{0x41, -1, 0x42, 0x12, 0x40, 0x00, 0x7F, 0x00, 0x41, 0xF7})) {
             setGMSpec(GMSpecType::Value::GS);
             babelwires::logDebug() << "Roland GS Reset";
+            return;
+        }
+        if (isMessageBufferMessage(std::array<std::int16_t, 10>{0x41, -1, 0x42, 0x12, 0x40, -1, 0x15, -1, -1, 0xF7}) &&
+            ((m_messageBuffer[5] & 0xf0) == 0x10)) {
+            // Use for rhythm part.
+            const babelwires::Byte channelNumber = m_messageBuffer[5] & 0x0f;
+            const babelwires::Byte value = m_messageBuffer[7];
+            if (value > 2) {
+                m_userLogger.logWarning()
+                    << "Ignoring Roland SysEx use for rhythm part message with out of range value";
+            } else {
+                setGsPartMode(channelNumber, value);
+            }
             return;
         }
     } else if (headerId == 0x43) {
@@ -525,11 +483,11 @@ void smf::SmfParser::readControlChange(unsigned int channelNumber) {
     switch (controllerNumber) {
         case 0x00:
             // bank select MSB
-            m_currentTracks->setBankMSB(channelNumber, value);
+            setBankMSB(channelNumber, value);
             break;
         case 0x20:
             // bank select LSB
-            m_currentTracks->setBankLSB(channelNumber, value);
+            setBankLSB(channelNumber, value);
             break;
         default:
             break;
@@ -538,7 +496,7 @@ void smf::SmfParser::readControlChange(unsigned int channelNumber) {
 
 void smf::SmfParser::readProgramChange(unsigned int channelNumber) {
     const babelwires::Byte newProgram = getNext();
-    m_currentTracks->setProgram(channelNumber, newProgram);
+    setProgram(channelNumber, newProgram);
 }
 
 void smf::SmfParser::readTrack(int trackIndex, source::ChannelGroup& channels, MidiMetadata& metadata) {
@@ -546,7 +504,7 @@ void smf::SmfParser::readTrack(int trackIndex, source::ChannelGroup& channels, M
     const std::uint32_t trackLength = readU32();
     const int currentIndex = m_dataSource.getAbsolutePosition();
 
-    m_currentTracks = std::make_unique<TrackSplitter>(m_gmSpec, m_knownKits);
+    m_currentTracks = std::make_unique<TrackSplitter>(m_channelSetup);
 
     seqwires::ModelDuration timeSinceLastNoteEvent = 0;
     babelwires::Byte lastStatusByte = 0;
@@ -730,7 +688,8 @@ void smf::SmfParser::readTrack(int trackIndex, source::ChannelGroup& channels, M
             {
                 const seqwires::Pitch pitch = getNext();
                 const seqwires::Velocity velocity = getNext();
-                m_currentTracks->addToChannel(statusLo, timeSinceLastNoteEvent, seqwires::NoteOffEvent{0, pitch, velocity});
+                m_currentTracks->addToChannel(statusLo, timeSinceLastNoteEvent,
+                                              seqwires::NoteOffEvent{0, pitch, velocity});
                 timeSinceLastNoteEvent = 0;
                 break;
             }
@@ -739,7 +698,8 @@ void smf::SmfParser::readTrack(int trackIndex, source::ChannelGroup& channels, M
                 const seqwires::Pitch pitch = getNext();
                 const seqwires::Velocity velocity = getNext();
                 if (velocity != 0) {
-                    m_currentTracks->addToChannel(statusLo, timeSinceLastNoteEvent, seqwires::NoteOnEvent{0, pitch, velocity});
+                    m_currentTracks->addToChannel(statusLo, timeSinceLastNoteEvent,
+                                                  seqwires::NoteOnEvent{0, pitch, velocity});
                 } else {
                     m_currentTracks->addToChannel(statusLo, timeSinceLastNoteEvent, seqwires::NoteOffEvent{0, pitch});
                 }
@@ -803,9 +763,92 @@ void smf::SmfParser::readFormat1Sequence(source::Format1SmfFeature& sequence) {
 }
 
 void smf::SmfParser::setGMSpec(GMSpecType::Value spec) {
+    switch (spec) {
+        case GMSpecType::Value::GM:
+        case GMSpecType::Value::GS:
+        case GMSpecType::Value::XG:
+            m_channelSetup[9].m_kitIfPercussion = m_knownKits[GM_PERCUSSION_KIT];
+            break;
+        case GMSpecType::Value::GM2:
+            m_channelSetup[9].m_kitIfPercussion = m_knownKits[GM2_STANDARD_PERCUSSION_KIT];
+            break;
+        case GMSpecType::Value::NONE:
+        default:
+            break;
+    }
     m_gmSpec = spec;
-    if (m_currentTracks != nullptr) {
-        m_currentTracks->setGMSpec(spec);
+}
+
+void smf::SmfParser::setBankMSB(unsigned int channelNumber, const babelwires::Byte msbValue) {
+    m_channelSetup[channelNumber].m_bankMSB = msbValue;
+    onChangeProgram(channelNumber);
+}
+
+void smf::SmfParser::setBankLSB(unsigned int channelNumber, const babelwires::Byte lsbValue) {
+    m_channelSetup[channelNumber].m_bankLSB = lsbValue;
+    onChangeProgram(channelNumber);
+}
+
+void smf::SmfParser::setProgram(unsigned int channelNumber, const babelwires::Byte value) {
+    m_channelSetup[channelNumber].m_program = value;
+    onChangeProgram(channelNumber);
+}
+
+void smf::SmfParser::setGsPartMode(unsigned int channelNumber, babelwires::Byte value) {
+    m_channelSetup[channelNumber].m_gsPartMode = value;
+    onChangeProgram(channelNumber);
+}
+
+/// Right now, just trying to determine which percussionKit is in use if any.
+void smf::SmfParser::onChangeProgram(unsigned int channelNumber) {
+    ChannelSetup& channelSetup = m_channelSetup[channelNumber];
+
+    if (m_gmSpec == GMSpecType::Value::GM2) {
+        if (channelSetup.m_bankMSB == 0x78) {
+            // Percussion
+            // LSB not used
+            // (program == 1) Standard
+            // (program == 9) Room
+            // (program == 17) Power
+            // (program == 25) Electronic
+            // (program == 26) Analog
+            // (program == 25) Jazz
+            // (program == 41) Brush
+            // (program == 49) Orchestra
+            // (program == 57) SFX
+            channelSetup.m_kitIfPercussion = m_knownKits[GM2_STANDARD_PERCUSSION_KIT];
+        } else if (channelSetup.m_bankMSB == 0x79) {
+            // Melody
+            channelSetup.m_kitIfPercussion = nullptr;
+        } else {
+            // Not specified by GM2
+        }
+    } else if (m_gmSpec == GMSpecType::Value::XG) {
+        if (channelSetup.m_bankMSB == 0x7f) {
+            // Percussion
+            channelSetup.m_kitIfPercussion = m_knownKits[GM_PERCUSSION_KIT];
+        } else if (channelSetup.m_bankMSB == 0x7e) {
+            // SFX Percussion
+        } else if (channelSetup.m_bankMSB == 0x00) {
+            // Voice
+            channelSetup.m_kitIfPercussion = nullptr;
+        } else if (channelSetup.m_bankMSB == 0x40) {
+            // SFX
+            channelSetup.m_kitIfPercussion = nullptr;
+        } else {
+            // Not specified by XG
+        }
+    } else if (m_gmSpec == GMSpecType::Value::GS) {
+        if (channelSetup.m_gsPartMode == 1) {
+            // Percussion mode 1
+            channelSetup.m_kitIfPercussion = m_knownKits[GM_PERCUSSION_KIT];
+        } else if (channelSetup.m_gsPartMode == 2) {
+            // Percussion mode 2
+            channelSetup.m_kitIfPercussion = m_knownKits[GM_PERCUSSION_KIT];
+        } else {
+            // Not a percussion voice
+            channelSetup.m_kitIfPercussion = nullptr;
+        }
     }
 }
 
