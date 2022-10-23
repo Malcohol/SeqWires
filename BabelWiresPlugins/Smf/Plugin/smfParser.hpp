@@ -22,11 +22,16 @@
 #include <sstream>
 #include <vector>
 
+namespace seqwires {
+  class PercussionKit;
+}
+
 namespace smf {
 
     class SmfParser {
       public:
         SmfParser(babelwires::DataSource& dataSource, const babelwires::ProjectContext& projectContext, babelwires::UserLogger& log);
+        virtual ~SmfParser();
 
         void parse();
         std::unique_ptr<babelwires::FileFeature> getResult() { return std::move(m_result); }
@@ -46,7 +51,7 @@ namespace smf {
         void readFormat0Sequence(source::Format0SmfFeature& sequence);
         void readFormat1Sequence(source::Format1SmfFeature& sequence);
 
-        void readTrack(int i, source::ChannelGroup& tracks, MidiMetadata& metadata);
+        void readTrack(int trackIndex, source::ChannelGroup& tracks, MidiMetadata& metadata);
 
         seqwires::ModelDuration readModelDuration();
 
@@ -79,6 +84,17 @@ namespace smf {
         template<typename STREAMLIKE>
         void logMessageBuffer(STREAMLIKE log) const;
 
+        class TrackSplitter;
+
+        void readControlChange(unsigned int channelNumber);
+        void readProgramChange(unsigned int channelNumber);
+
+        enum KnownPercussionKits {
+          GM_PERCUSSION_KIT,
+          GM2_STANDARD_PERCUSSION_KIT,
+          NUM_KNOWN_PERCUSSION_KITS  
+        };
+
       private:
         const babelwires::ProjectContext& m_projectContext;
         babelwires::DataSource& m_dataSource;
@@ -90,8 +106,12 @@ namespace smf {
         int m_numTracks;
         int m_division;
 
-        // The specification which applies to the data.
+        // The specification provides additional semantics when interpreting the data.
         GMSpecType::Value m_gmSpec;
+
+        std::array<const seqwires::PercussionKit*, NUM_KNOWN_PERCUSSION_KITS> m_knownKits;
+
+        std::unique_ptr<TrackSplitter> m_currentTracks;
     };
 
     std::unique_ptr<babelwires::FileFeature> parseSmfSequence(babelwires::DataSource& dataSource, const babelwires::ProjectContext& projectContext, babelwires::UserLogger& userLogger);

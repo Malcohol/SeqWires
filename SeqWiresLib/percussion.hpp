@@ -80,8 +80,16 @@
 namespace seqwires {
     // TODO GS, XG percussion, with appropriate subtyping.
 
+    class PercussionKit : public babelwires::Enum {
+      public:
+        PercussionKit(babelwires::LongIdentifier identifier, babelwires::VersionNumber version, EnumValues values,
+             unsigned int indexOfDefaultValue, std::optional<babelwires::LongIdentifier> parentTypeId = {});
+
+        // TODO - mappings between pitch and identifiers.
+    };
+
     /// An enum corresponding to the instruments of GM2 standard percussion set.
-    class GM2Percussion : public babelwires::Enum {
+    class GM2Percussion : public PercussionKit {
       public:
         GM2Percussion();
 
@@ -97,7 +105,8 @@ namespace seqwires {
     };
 
     /// An enum corresponding to the original General MIDI percussion set.
-    struct GMPercussion : babelwires::Enum {
+    class GMPercussion : public PercussionKit {
+      public:
         GMPercussion();
 
         static babelwires::LongIdentifier getThisIdentifier();
