@@ -361,13 +361,13 @@ void smf::SmfParser::readSysExEvent() {
         if (isMessageBufferMessage(std::array<std::int16_t, 10>{0x41, -1, 0x42, 0x12, 0x40, -1, 0x15, -1, -1, 0xF7}) &&
             ((m_messageBuffer[5] & 0xf0) == 0x10)) {
             // Use for rhythm part.
-            const babelwires::Byte channelNumber = m_messageBuffer[5] & 0x0f;
+            const babelwires::Byte blockNumber = m_messageBuffer[5] & 0x0f;
             const babelwires::Byte value = m_messageBuffer[7];
             if (value > 2) {
                 m_userLogger.logWarning()
                     << "Ignoring Roland SysEx use for rhythm part message with out of range value";
             } else {
-                setGsPartMode(channelNumber, value);
+                setGsPartMode(blockNumber, value);
             }
             return;
         }
@@ -799,7 +799,12 @@ void smf::SmfParser::setProgram(unsigned int channelNumber, const babelwires::By
     onChangeProgram(channelNumber);
 }
 
-void smf::SmfParser::setGsPartMode(unsigned int channelNumber, babelwires::Byte value) {
+void smf::SmfParser::setGsPartMode(unsigned int blockNumber, babelwires::Byte value) {
+    // See page 197 of the SC-88 Pro manual
+    const std::array<unsigned int, 16> blockToPartMapping{10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 14, 15, 16};
+    // For now, assume the midi channels for each part are unchanged.
+    // I'm indexing midi channels from 0.
+    const unsigned int channelNumber = blockToPartMapping[blockNumber] - 1;
     m_channelSetup[channelNumber].m_gsPartMode = value;
     onChangeProgram(channelNumber);
 }

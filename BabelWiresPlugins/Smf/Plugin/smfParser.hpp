@@ -89,7 +89,9 @@ namespace smf {
         void setBankMSB(unsigned int channelNumber, const babelwires::Byte msbValue);
         void setBankLSB(unsigned int channelNumber, const babelwires::Byte lsbValue);
         void setProgram(unsigned int channelNumber, const babelwires::Byte value);
-        void setGsPartMode(unsigned int channelNumber, babelwires::Byte value);
+
+        // Note: blockNumber is not the same as channel number.
+        void setGsPartMode(unsigned int blockNumber, babelwires::Byte value);
         
         void onChangeProgram(unsigned int channelNumber);
 
@@ -116,6 +118,7 @@ namespace smf {
             babelwires::Byte m_bankMSB = 0;
             babelwires::Byte m_bankLSB = 0;
             babelwires::Byte m_program = 0;
+            // This is the part corresponding to this channel, irrespective of the part mapping.
             babelwires::Byte m_gsPartMode = 0;
             // This is non-null when the pitches in the data should be interpreted as percussion events from the given
             // kit.
