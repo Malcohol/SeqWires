@@ -504,7 +504,7 @@ void smf::SmfParser::readTrack(int trackIndex, source::ChannelGroup& channels, M
     const std::uint32_t trackLength = readU32();
     const int currentIndex = m_dataSource.getAbsolutePosition();
 
-    m_currentTracks = std::make_unique<TrackSplitter>(m_channelSetup);
+    TrackSplitter tracks(m_channelSetup);
 
     seqwires::ModelDuration timeSinceLastNoteEvent = 0;
     babelwires::Byte lastStatusByte = 0;
@@ -614,8 +614,8 @@ void smf::SmfParser::readTrack(int trackIndex, source::ChannelGroup& channels, M
                                         << "End of Track meta-event has incorrect length. Will try use it anyway.",
                                     length);
                             }
-                            m_currentTracks->setDurationsForAllChannels(timeSinceLastNoteEvent);
-                            m_currentTracks->assignChannelsToChannelGroup(channels);
+                            tracks.setDurationsForAllChannels(timeSinceLastNoteEvent);
+                            tracks.assignChannelsToChannelGroup(channels);
                             return;
                         }
                         case 0x51: // Set tempo
@@ -688,7 +688,7 @@ void smf::SmfParser::readTrack(int trackIndex, source::ChannelGroup& channels, M
             {
                 const seqwires::Pitch pitch = getNext();
                 const seqwires::Velocity velocity = getNext();
-                m_currentTracks->addToChannel(statusLo, timeSinceLastNoteEvent,
+                tracks.addToChannel(statusLo, timeSinceLastNoteEvent,
                                               seqwires::NoteOffEvent{0, pitch, velocity});
                 timeSinceLastNoteEvent = 0;
                 break;
@@ -698,10 +698,10 @@ void smf::SmfParser::readTrack(int trackIndex, source::ChannelGroup& channels, M
                 const seqwires::Pitch pitch = getNext();
                 const seqwires::Velocity velocity = getNext();
                 if (velocity != 0) {
-                    m_currentTracks->addToChannel(statusLo, timeSinceLastNoteEvent,
+                    tracks.addToChannel(statusLo, timeSinceLastNoteEvent,
                                                   seqwires::NoteOnEvent{0, pitch, velocity});
                 } else {
-                    m_currentTracks->addToChannel(statusLo, timeSinceLastNoteEvent, seqwires::NoteOffEvent{0, pitch});
+                    tracks.addToChannel(statusLo, timeSinceLastNoteEvent, seqwires::NoteOffEvent{0, pitch});
                 }
                 timeSinceLastNoteEvent = 0;
                 break;

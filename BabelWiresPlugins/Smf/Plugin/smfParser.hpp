@@ -124,8 +124,6 @@ namespace smf {
         };
 
         std::array<ChannelSetup, 16> m_channelSetup;
-
-        std::unique_ptr<TrackSplitter> m_currentTracks;
     };
 
     std::unique_ptr<babelwires::FileFeature> parseSmfSequence(babelwires::DataSource& dataSource,
