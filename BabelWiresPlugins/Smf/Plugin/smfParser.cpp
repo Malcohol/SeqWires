@@ -21,6 +21,11 @@
 #include <cmath>
 #include <iomanip>
 
+namespace {
+    // See page 197 of the SC-88 Pro manual
+    const std::array<unsigned int, 16> s_blockToPartMapping{10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 14, 15, 16};
+}
+
 smf::SmfParser::SmfParser(babelwires::DataSource& dataSource, const babelwires::ProjectContext& projectContext,
                           babelwires::UserLogger& userLogger)
     : m_projectContext(projectContext)
@@ -800,11 +805,9 @@ void smf::SmfParser::setProgram(unsigned int channelNumber, const babelwires::By
 }
 
 void smf::SmfParser::setGsPartMode(unsigned int blockNumber, babelwires::Byte value) {
-    // See page 197 of the SC-88 Pro manual
-    const std::array<unsigned int, 16> blockToPartMapping{10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 14, 15, 16};
     // For now, assume the midi channels for each part are unchanged.
     // I'm indexing midi channels from 0.
-    const unsigned int channelNumber = blockToPartMapping[blockNumber] - 1;
+    const unsigned int channelNumber = s_blockToPartMapping[blockNumber] - 1;
     m_channelSetup[channelNumber].m_gsPartMode = value;
     onChangeProgram(channelNumber);
 }
