@@ -84,8 +84,8 @@ TEST(PercussionMapProcessorTest, funcSimple) {
     testUtils::TestLog log;
 
     babelwires::TypeSystem typeSystem;
-    typeSystem.addEntry(std::make_unique<seqwires::GM2StandardPercussionKit>());
-    typeSystem.addEntry(std::make_unique<seqwires::GMPercussionKit>());
+    const seqwires::GMPercussionKit *const gmPercussionKit = typeSystem.addEntry(std::make_unique<seqwires::GMPercussionKit>());
+    const seqwires::GM2StandardPercussionKit *const gm2StandardPercussionKit = typeSystem.addEntry(std::make_unique<seqwires::GM2StandardPercussionKit>(*gmPercussionKit));
 
     babelwires::MapData mapData = getTestPercussionMap(typeSystem);
 
@@ -99,8 +99,8 @@ TEST(PercussionMapProcessorTest, funcSimple) {
 
 TEST(PercussionMapProcessorTest, processor) {
     testUtils::TestEnvironment testEnvironment;
-    testEnvironment.m_typeSystem.addEntry(std::make_unique<seqwires::GM2StandardPercussionKit>());
-    testEnvironment.m_typeSystem.addEntry(std::make_unique<seqwires::GMPercussionKit>());
+    const seqwires::GMPercussionKit *const gmPercussionKit = testEnvironment.m_typeSystem.addEntry(std::make_unique<seqwires::GMPercussionKit>());
+    const seqwires::GM2StandardPercussionKit *const gm2StandardPercussionKit = testEnvironment.m_typeSystem.addEntry(std::make_unique<seqwires::GM2StandardPercussionKit>(*gmPercussionKit));
 
     const seqwires::GM2StandardPercussionKit& percussionType =
         testEnvironment.m_typeSystem.getRegisteredEntry(seqwires::GM2StandardPercussionKit::getThisIdentifier())
