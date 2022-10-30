@@ -89,9 +89,9 @@ namespace seqwires {
     };
 
     /// An enum corresponding to the instruments of GM2 standard percussion set.
-    class GM2Percussion : public PercussionKit {
+    class GM2StandardPercussionKit : public PercussionKit {
       public:
-        GM2Percussion();
+        GM2StandardPercussionKit();
 
         static babelwires::LongIdentifier getThisIdentifier();
 
@@ -105,9 +105,9 @@ namespace seqwires {
     };
 
     /// An enum corresponding to the original General MIDI percussion set.
-    class GMPercussion : public PercussionKit {
+    class GMPercussionKit : public PercussionKit {
       public:
-        GMPercussion();
+        GMPercussionKit();
 
         static babelwires::LongIdentifier getThisIdentifier();
     };

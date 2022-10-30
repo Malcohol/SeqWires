@@ -18,15 +18,15 @@
 #include <BabelWiresLib/TypeSystem/typeSystem.hpp>
 
 namespace {
-    using MapType = babelwires::EnumSourceMapApplicator<seqwires::GM2Percussion, seqwires::GM2Percussion::Value>;
+    using MapType = babelwires::EnumSourceMapApplicator<seqwires::GM2StandardPercussionKit, seqwires::GM2StandardPercussionKit::Value>;
 
-    bool mapPercussionEvent(const seqwires::GM2Percussion& percussionType, MapType& mapApplicator,
+    bool mapPercussionEvent(const seqwires::GM2StandardPercussionKit& percussionType, MapType& mapApplicator,
                             seqwires::NoteEvent& noteEvent) {
         const seqwires::Pitch originalPitch = noteEvent.getPitch();
-        seqwires::GM2Percussion::Value originalValue;
+        seqwires::GM2StandardPercussionKit::Value originalValue;
         if (percussionType.tryGetValueFromPitch(originalPitch, originalValue)) {
-            const seqwires::GM2Percussion::Value newValue = mapApplicator[originalValue];
-            const seqwires::Pitch newPitch = seqwires::GM2Percussion::getPitchFromValue(newValue);
+            const seqwires::GM2StandardPercussionKit::Value newValue = mapApplicator[originalValue];
+            const seqwires::Pitch newPitch = seqwires::GM2StandardPercussionKit::getPitchFromValue(newValue);
             noteEvent.setPitch(newPitch);
             return true;
         }
@@ -42,10 +42,10 @@ seqwires::Track seqwires::mapPercussionFunction(const babelwires::TypeSystem& ty
     if (!percussionMapData.isValid(typeSystem)) {
         throw babelwires::ModelException() << "The Percussion Map is not valid.";
     }
-    const GM2Percussion& percussionType =
-        typeSystem.getEntryByIdentifier(seqwires::GM2Percussion::getThisIdentifier())->is<GM2Percussion>();
+    const GM2StandardPercussionKit& percussionType =
+        typeSystem.getEntryByIdentifier(seqwires::GM2StandardPercussionKit::getThisIdentifier())->is<GM2StandardPercussionKit>();
 
-    const babelwires::EnumToValueValueAdapter<GM2Percussion> targetAdapter{percussionType};
+    const babelwires::EnumToValueValueAdapter<GM2StandardPercussionKit> targetAdapter{percussionType};
     MapType mapApplicator(percussionMapData, percussionType, targetAdapter);
 
     Track trackOut;

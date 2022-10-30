@@ -18,27 +18,27 @@
 
 namespace {
     babelwires::MapData getTestPercussionMap(const babelwires::TypeSystem& typeSystem) {
-        const seqwires::GM2Percussion& percussionType =
-            typeSystem.getRegisteredEntry(seqwires::GM2Percussion::getThisIdentifier()).is<seqwires::GM2Percussion>();
+        const seqwires::GM2StandardPercussionKit& percussionType =
+            typeSystem.getRegisteredEntry(seqwires::GM2StandardPercussionKit::getThisIdentifier()).is<seqwires::GM2StandardPercussionKit>();
 
         babelwires::MapData percussionMap;
-        percussionMap.setSourceTypeId(seqwires::GMPercussion::getThisIdentifier());
-        percussionMap.setTargetTypeId(seqwires::GMPercussion::getThisIdentifier());
+        percussionMap.setSourceTypeId(seqwires::GMPercussionKit::getThisIdentifier());
+        percussionMap.setTargetTypeId(seqwires::GMPercussionKit::getThisIdentifier());
 
-        babelwires::OneToOneMapEntryData maplet(typeSystem, seqwires::GM2Percussion::getThisIdentifier(),
-                                                seqwires::GM2Percussion::getThisIdentifier());
+        babelwires::OneToOneMapEntryData maplet(typeSystem, seqwires::GM2StandardPercussionKit::getThisIdentifier(),
+                                                seqwires::GM2StandardPercussionKit::getThisIdentifier());
 
         babelwires::EnumValue sourceValue;
         babelwires::EnumValue targetValue;
 
-        sourceValue.set(percussionType.getIdentifierFromValue(seqwires::GM2Percussion::Value::Clap));
-        targetValue.set(percussionType.getIdentifierFromValue(seqwires::GM2Percussion::Value::Cowbll));
+        sourceValue.set(percussionType.getIdentifierFromValue(seqwires::GM2StandardPercussionKit::Value::Clap));
+        targetValue.set(percussionType.getIdentifierFromValue(seqwires::GM2StandardPercussionKit::Value::Cowbll));
         maplet.setSourceValue(sourceValue.clone());
         maplet.setTargetValue(targetValue.clone());
         percussionMap.emplaceBack(maplet.clone());
 
-        sourceValue.set(percussionType.getIdentifierFromValue(seqwires::GM2Percussion::Value::Crash1));
-        targetValue.set(percussionType.getIdentifierFromValue(seqwires::GM2Percussion::Value::Crash2));
+        sourceValue.set(percussionType.getIdentifierFromValue(seqwires::GM2StandardPercussionKit::Value::Crash1));
+        targetValue.set(percussionType.getIdentifierFromValue(seqwires::GM2StandardPercussionKit::Value::Crash2));
         maplet.setSourceValue(sourceValue.clone());
         maplet.setTargetValue(targetValue.clone());
         percussionMap.emplaceBack(maplet.clone());
@@ -52,12 +52,12 @@ namespace {
 
         testUtils::addNotes(
             {
-                {seqwires::GM2Percussion::getPitchFromValue(seqwires::GM2Percussion::Value::AcBass), 0,
+                {seqwires::GM2StandardPercussionKit::getPitchFromValue(seqwires::GM2StandardPercussionKit::Value::AcBass), 0,
                  babelwires::Rational(1, 2)},
-                {seqwires::GM2Percussion::getPitchFromValue(seqwires::GM2Percussion::Value::Clap), 0,
+                {seqwires::GM2StandardPercussionKit::getPitchFromValue(seqwires::GM2StandardPercussionKit::Value::Clap), 0,
                  babelwires::Rational(1, 2)},
                 {12, 0, babelwires::Rational(1, 2)},
-                {seqwires::GM2Percussion::getPitchFromValue(seqwires::GM2Percussion::Value::Crash1), 0,
+                {seqwires::GM2StandardPercussionKit::getPitchFromValue(seqwires::GM2StandardPercussionKit::Value::Crash1), 0,
                  babelwires::Rational(1, 2)},
             },
             track);
@@ -68,12 +68,12 @@ namespace {
     void testOutputTrack(const seqwires::Track& outputTrack) {
         testUtils::testNotes(
             {
-                {seqwires::GM2Percussion::getPitchFromValue(seqwires::GM2Percussion::Value::AcBass), 0,
+                {seqwires::GM2StandardPercussionKit::getPitchFromValue(seqwires::GM2StandardPercussionKit::Value::AcBass), 0,
                  babelwires::Rational(1, 2)},
-                {seqwires::GM2Percussion::getPitchFromValue(seqwires::GM2Percussion::Value::Cowbll), 0,
+                {seqwires::GM2StandardPercussionKit::getPitchFromValue(seqwires::GM2StandardPercussionKit::Value::Cowbll), 0,
                  babelwires::Rational(1, 2)},
                 // The out of range note gets dropped here.
-                {seqwires::GM2Percussion::getPitchFromValue(seqwires::GM2Percussion::Value::Crash2),
+                {seqwires::GM2StandardPercussionKit::getPitchFromValue(seqwires::GM2StandardPercussionKit::Value::Crash2),
                  babelwires::Rational(1, 2), babelwires::Rational(1, 2)},
             },
             outputTrack);
@@ -84,8 +84,8 @@ TEST(PercussionMapProcessorTest, funcSimple) {
     testUtils::TestLog log;
 
     babelwires::TypeSystem typeSystem;
-    typeSystem.addEntry(std::make_unique<seqwires::GM2Percussion>());
-    typeSystem.addEntry(std::make_unique<seqwires::GMPercussion>());
+    typeSystem.addEntry(std::make_unique<seqwires::GM2StandardPercussionKit>());
+    typeSystem.addEntry(std::make_unique<seqwires::GMPercussionKit>());
 
     babelwires::MapData mapData = getTestPercussionMap(typeSystem);
 
@@ -99,12 +99,12 @@ TEST(PercussionMapProcessorTest, funcSimple) {
 
 TEST(PercussionMapProcessorTest, processor) {
     testUtils::TestEnvironment testEnvironment;
-    testEnvironment.m_typeSystem.addEntry(std::make_unique<seqwires::GM2Percussion>());
-    testEnvironment.m_typeSystem.addEntry(std::make_unique<seqwires::GMPercussion>());
+    testEnvironment.m_typeSystem.addEntry(std::make_unique<seqwires::GM2StandardPercussionKit>());
+    testEnvironment.m_typeSystem.addEntry(std::make_unique<seqwires::GMPercussionKit>());
 
-    const seqwires::GM2Percussion& percussionType =
-        testEnvironment.m_typeSystem.getRegisteredEntry(seqwires::GM2Percussion::getThisIdentifier())
-            .is<seqwires::GM2Percussion>();
+    const seqwires::GM2StandardPercussionKit& percussionType =
+        testEnvironment.m_typeSystem.getRegisteredEntry(seqwires::GM2StandardPercussionKit::getThisIdentifier())
+            .is<seqwires::GM2StandardPercussionKit>();
 
     seqwires::PercussionMapProcessor processor(testEnvironment.m_projectContext);
 

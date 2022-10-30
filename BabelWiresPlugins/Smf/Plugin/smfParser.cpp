@@ -35,11 +35,11 @@ smf::SmfParser::SmfParser(babelwires::DataSource& dataSource, const babelwires::
     , m_numTracks(-1)
     , m_division(-1) {
     const seqwires::PercussionKit& gmKit =
-        projectContext.m_typeSystem.getRegisteredEntry(seqwires::GMPercussion::getThisIdentifier())
-            .is<seqwires::GMPercussion>();
+        projectContext.m_typeSystem.getRegisteredEntry(seqwires::GMPercussionKit::getThisIdentifier())
+            .is<seqwires::GMPercussionKit>();
     const seqwires::PercussionKit& gm2StandardKit =
-        projectContext.m_typeSystem.getRegisteredEntry(seqwires::GM2Percussion::getThisIdentifier())
-            .is<seqwires::GM2Percussion>();
+        projectContext.m_typeSystem.getRegisteredEntry(seqwires::GM2StandardPercussionKit::getThisIdentifier())
+            .is<seqwires::GM2StandardPercussionKit>();
     m_knownKits[GM_PERCUSSION_KIT] = &gmKit;
     m_knownKits[GM2_STANDARD_PERCUSSION_KIT] = &gm2StandardKit;
 }
