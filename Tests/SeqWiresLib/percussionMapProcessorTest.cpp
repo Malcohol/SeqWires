@@ -101,6 +101,7 @@ TEST(PercussionMapProcessorTest, processor) {
     testUtils::TestEnvironment testEnvironment;
     const seqwires::GMPercussionKit *const gmPercussionKit = testEnvironment.m_typeSystem.addEntry(std::make_unique<seqwires::GMPercussionKit>());
     const seqwires::GM2StandardPercussionKit *const gm2StandardPercussionKit = testEnvironment.m_typeSystem.addEntry(std::make_unique<seqwires::GM2StandardPercussionKit>(*gmPercussionKit));
+    testEnvironment.m_typeSystem.addRelatedTypes(seqwires::GMPercussionKit::getThisIdentifier(), {{seqwires::GM2StandardPercussionKit::getThisIdentifier()}, {}});
 
     const seqwires::GM2StandardPercussionKit& percussionType =
         testEnvironment.m_typeSystem.getRegisteredEntry(seqwires::GM2StandardPercussionKit::getThisIdentifier())
