@@ -1,24 +1,42 @@
 /**
  * Write a Standard MIDI File based on the contents of a tree of Features.
- * 
+ *
  * (C) 2021 Malcolm Tyrrell
- * 
+ *
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
 #include <BabelWiresPlugins/Smf/Plugin/smfWriter.hpp>
+
+#include <BabelWiresPlugins/Smf/Plugin/gmSpec.hpp>
 
 #include <SeqWiresLib/Features/trackFeature.hpp>
 #include <SeqWiresLib/Utilities/filteredTrackIterator.hpp>
 #include <SeqWiresLib/Utilities/musicUtilities.hpp>
 #include <SeqWiresLib/Utilities/trackTraverser.hpp>
+#include <SeqWiresLib/Tracks/percussionEvents.hpp>
+
+#include <BabelWiresLib/Project/projectContext.hpp>
+#include <BabelWiresLib/TypeSystem/typeSystem.hpp>
 
 #include <algorithm>
 #include <sstream>
 
-smf::SmfWriter::SmfWriter(std::ostream& ostream)
-    : m_ostream(ostream)
+smf::SmfWriter::SmfWriter(const babelwires::ProjectContext& projectContext, babelwires::UserLogger& userLogger,
+                          const target::SmfFormatFeature& sequence, std::ostream& ostream)
+    : m_projectContext(projectContext)
+    , m_smfFormatFeature(sequence)
+    , m_ostream(ostream)
     , m_os(&m_ostream)
-    , m_division(256) {}
+    , m_division(256) {
+    const seqwires::PercussionKit& gmKit =
+        projectContext.m_typeSystem.getRegisteredEntry(seqwires::GMPercussionKit::getThisIdentifier())
+            .is<seqwires::GMPercussionKit>();
+    const seqwires::PercussionKit& gm2StandardKit =
+        projectContext.m_typeSystem.getRegisteredEntry(seqwires::GM2StandardPercussionKit::getThisIdentifier())
+            .is<seqwires::GM2StandardPercussionKit>();
+    m_knownKits[GM_PERCUSSION_KIT] = &gmKit;
+    m_knownKits[GM2_STANDARD_PERCUSSION_KIT] = &gm2StandardKit;
+}
 
 void smf::SmfWriter::writeUint16(std::uint16_t i) {
     m_os->put(i >> 8);
@@ -84,20 +102,20 @@ void smf::SmfWriter::writeTextMetaEvent(int type, std::string text) {
     *m_os << text;
 }
 
-void smf::SmfWriter::writeHeaderChunk(const target::SmfFormatFeature& sequence) {
-    const int numTracks = sequence.getNumMidiTracks();
+void smf::SmfWriter::writeHeaderChunk() {
+    const int numTracks = m_smfFormatFeature.getNumMidiTracks();
 
     assert((m_division < (2 << 15)) && "division is too large");
 
     m_os->write("MThd", 4);
     writeUint32(6);
-    writeUint16(sequence.getSelectedTagIndex());
+    writeUint16(m_smfFormatFeature.getSelectedTagIndex());
     writeUint16(numTracks);
-    
+
     {
         int division = 1;
         for (int i = 0; i < numTracks; ++i) {
-            const target::ChannelGroup& channelGroup = sequence.getMidiTrack(i);
+            const target::ChannelGroup& channelGroup = m_smfFormatFeature.getMidiTrack(i);
             for (int j = 0; j < channelGroup.getNumTracks(); ++j) {
                 const target::ChannelTrackFeature& entry = channelGroup.getTrack(j);
                 division = babelwires::lcm(division, seqwires::getMinimumDenominator(entry.m_trackFeature->get()));
@@ -131,17 +149,13 @@ void smf::SmfWriter::writeNoteEvent(int channel, seqwires::ModelDuration timeSin
 }
 
 namespace {
+    struct NoteTrackIterator : seqwires::FilteredTrackIterator<> {
+        bool isEventOfInterest(const seqwires::TrackEvent& event) const { return event.as<seqwires::NoteEvent>(); }
+    };
 
-    /// Only noteOn and noteOff events are understood.
-    bool noteOnOffFilter(const seqwires::TrackEvent& event) {
-        if (event.as<seqwires::NoteOnEvent>()) {
-            return true;
-        } else if (event.as<seqwires::NoteOffEvent>()) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+    struct PercussionTrackIterator : seqwires::FilteredTrackIterator<> {
+        bool isEventOfInterest(const seqwires::TrackEvent& event) const { return event.as<seqwires::PercussionEvent>(); }
+    };
 
 } // namespace
 
@@ -151,13 +165,14 @@ void smf::SmfWriter::writeNotes(const target::ChannelGroup& channelGroup) {
     seqwires::ModelDuration trackDuration = 0;
 
     // TODO Use the mergeFunction to multiplex the channels.
-    
-    std::vector<seqwires::TrackTraverser<seqwires::FilteredTrackIterator<seqwires::NoteEvent>>> traversers;
+
+    std::vector<seqwires::TrackTraverser<seqwires::FilteredTrackIterator<seqwires::TrackEvent>>> traversers;
 
     for (int i = 0; i < channelGroup.getNumTracks(); ++i) {
         const smf::target::ChannelTrackFeature& channelTrack = channelGroup.getTrack(i);
         const seqwires::Track& track = channelTrack.m_trackFeature->get();
-        traversers.emplace_back(track, seqwires::iterateOver<seqwires::NoteEvent>(track));
+        const int channelNumber = channelTrack.m_channelNum->get();
+        traversers.emplace_back(track, seqwires::iterateOver<seqwires::TrackEvent>(track));
         traversers.back().leastUpperBoundDuration(trackDuration);
     }
 
@@ -173,7 +188,7 @@ void smf::SmfWriter::writeNotes(const target::ChannelGroup& channelGroup) {
         for (int i = 0; i < channelGroup.getNumTracks(); ++i) {
             const smf::target::ChannelTrackFeature& channelTrack = channelGroup.getTrack(i);
             traversers[i].advance(timeToNextEvent, [this, &isFirstEvent, &timeToNextEvent, &timeOfLastEvent,
-                                                    &timeSinceStart, &channelTrack](const seqwires::NoteEvent& event) {
+                                                    &timeSinceStart, &channelTrack](const seqwires::TrackEvent& event) {
                 seqwires::ModelDuration timeToThisEvent = 0;
                 if (isFirstEvent) {
                     timeToThisEvent = timeToNextEvent;
@@ -228,11 +243,32 @@ void smf::SmfWriter::writeTrack(const target::ChannelGroup* channelGroup, const 
     m_os->write(tempStream.str().data(), tempStream.tellp());
 }
 
-void smf::writeToSmf(std::ostream& output, const smf::target::SmfFeature& sequence) {
-    const smf::target::SmfFormatFeature& smfFormatFeature = sequence.getFormatFeature();
+smf::SmfWriter::KnownPercussionKits smf::SmfWriter::getPercussionKit(int channel) {
+    const GMSpecType::Value spec = m_smfFormatFeature.getMidiMetadata().getSpecFeature()->getAsValue();
+    switch (spec)
+    {
+    case GMSpecType::Value::GM:
+        if (channel == 9) {
+            return GM_PERCUSSION_KIT;
+        }
+        break;
+    case GMSpecType::Value::GM2:
+        if (channel == 9) {
+            return GM2_STANDARD_PERCUSSION_KIT;
+        }
+        break;
+    case GMSpecType::Value::NONE:
+    default:
+        break;
+    }
+    return NOT_PERCUSSION;
+}
+
+void smf::writeToSmf(const babelwires::ProjectContext& projectContext, babelwires::UserLogger& userLogger,
+                     const target::SmfFormatFeature& smfFormatFeature, std::ostream& output) {
     const int numTracks = smfFormatFeature.getNumMidiTracks();
-    smf::SmfWriter writer(output);
-    writer.writeHeaderChunk(smfFormatFeature);
+    smf::SmfWriter writer(projectContext, userLogger, smfFormatFeature, output);
+    writer.writeHeaderChunk();
     if (smfFormatFeature.getSelectedTagIndex() == 0) {
         writer.writeTrack(&smfFormatFeature.getMidiTrack(0), smfFormatFeature.getMidiMetadata());
     } else {
@@ -243,4 +279,3 @@ void smf::writeToSmf(std::ostream& output, const smf::target::SmfFeature& sequen
         }
     }
 }
-

@@ -1,17 +1,23 @@
 /**
  * Write a Standard MIDI File based on the contents of a tree of Features.
- * 
+ *
  * (C) 2021 Malcolm Tyrrell
- * 
+ *
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
 #pragma once
 
 #include <BabelWiresPlugins/Smf/Plugin/smfTargetModel.hpp>
+
 #include <SeqWiresLib/musicTypes.hpp>
+#include <SeqWiresLib/percussion.hpp>
 
 #include <cstdint>
 #include <ostream>
+
+namespace babelwires {
+  class UserLogger;
+}
 
 namespace seqwires {
     class TrackEvent;
@@ -21,9 +27,10 @@ namespace smf {
 
     class SmfWriter {
       public:
-        SmfWriter(std::ostream& output);
+        SmfWriter(const babelwires::ProjectContext& projectContext, babelwires::UserLogger& userLogger, const target::SmfFormatFeature& sequence,
+                  std::ostream& output);
 
-        void writeHeaderChunk(const target::SmfFormatFeature& sequence);
+        void writeHeaderChunk();
 
         /// Tempo feature can be null.
         void writeTrack(const target::ChannelGroup* track, const MidiMetadata& metadata);
@@ -39,15 +46,31 @@ namespace smf {
         void writeTempoEvent(int bpm);
         /// type is the integer 0..15 which defines which type of text meta-event should be issued.
         void writeTextMetaEvent(int type, std::string text);
+
         void writeNotes(const target::ChannelGroup& track);
 
+        // TODO Unity with parser code
+        enum KnownPercussionKits {
+            GM_PERCUSSION_KIT,
+            GM2_STANDARD_PERCUSSION_KIT,
+            NUM_KNOWN_PERCUSSION_KITS,
+            NOT_PERCUSSION = NUM_KNOWN_PERCUSSION_KITS
+        };
+
+        KnownPercussionKits getPercussionKit(int channel);
+
       private:
+        const babelwires::ProjectContext& m_projectContext;
+        const target::SmfFormatFeature& m_smfFormatFeature;
         std::ostream& m_ostream;
         std::ostream* m_os;
         /// Always use metrical time. Quater-note division.
         int m_division;
+
+        std::array<const seqwires::PercussionKit*, NUM_KNOWN_PERCUSSION_KITS> m_knownKits;
     };
 
-    void writeToSmf(std::ostream& output, const target::SmfFeature& sequence);
+    void writeToSmf(const babelwires::ProjectContext& projectContext, babelwires::UserLogger& userLogger, const target::SmfFormatFeature& smfFormatFeature,
+                    std::ostream& output);
 
 } // namespace smf
