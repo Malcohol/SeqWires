@@ -29,9 +29,8 @@ namespace {
 }
 
 seqwires::PercussionKit::PercussionKit(babelwires::LongIdentifier identifier, babelwires::VersionNumber version,
-                                       EnumValues values, unsigned int indexOfDefaultValue,
-                                       std::optional<babelwires::LongIdentifier> parentTypeId)
-    : Enum(identifier, version, values, indexOfDefaultValue, parentTypeId) {}
+                                       EnumValues values, unsigned int indexOfDefaultValue)
+    : Enum(identifier, version, values, indexOfDefaultValue) {}
 
 
 seqwires::GMPercussionKit::GMPercussionKit()

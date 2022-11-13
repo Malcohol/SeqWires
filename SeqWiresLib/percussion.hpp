@@ -85,7 +85,7 @@ namespace seqwires {
     class PercussionKit : public babelwires::Enum {
       public:
         PercussionKit(babelwires::LongIdentifier identifier, babelwires::VersionNumber version, EnumValues values,
-                      unsigned int indexOfDefaultValue, std::optional<babelwires::LongIdentifier> parentTypeId = {});
+                      unsigned int indexOfDefaultValue);
 
         // TODO - mappings between pitch and identifiers.
     };
