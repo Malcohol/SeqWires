@@ -2,6 +2,7 @@
 
 #include <BabelWiresPlugins/Smf/Plugin/smfParser.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/smfSourceModel.hpp>
+#include <BabelWiresPlugins/Smf/Plugin/libRegistration.hpp>
 
 #include <SeqWiresLib/Features/trackFeature.hpp>
 #include <SeqWiresLib/Tracks/noteEvents.hpp>
@@ -16,6 +17,7 @@
 TEST(SmfTestSuiteTest, loadAllTestFilesWithoutCrashing) {
     testUtils::TestEnvironment testEnvironment;
     seqwires::registerLib(testEnvironment.m_projectContext);
+    smf::registerLib(testEnvironment.m_projectContext);
 
     int numFilesTested = 0;
 
@@ -43,6 +45,7 @@ namespace {
 TEST(SmfTestSuiteTest, cMajorScale) {
     testUtils::TestEnvironment testEnvironment;
     seqwires::registerLib(testEnvironment.m_projectContext);
+    smf::registerLib(testEnvironment.m_projectContext);
 
     babelwires::FileDataSource midiFile("test-c-major-scale.mid");
 
@@ -76,6 +79,7 @@ TEST(SmfTestSuiteTest, cMajorScale) {
 TEST(SmfTestSuiteTest, multichannelChords0) {
     testUtils::TestEnvironment testEnvironment;
     seqwires::registerLib(testEnvironment.m_projectContext);
+    smf::registerLib(testEnvironment.m_projectContext);
 
     babelwires::FileDataSource midiFile("test-multichannel-chords-0.mid");
 
@@ -110,6 +114,7 @@ TEST(SmfTestSuiteTest, multichannelChords0) {
 TEST(SmfTestSuiteTest, multichannelChords1) {
     testUtils::TestEnvironment testEnvironment;
     seqwires::registerLib(testEnvironment.m_projectContext);
+    smf::registerLib(testEnvironment.m_projectContext);
 
     babelwires::FileDataSource midiFile("test-multichannel-chords-1.mid");
 
@@ -152,6 +157,7 @@ TEST(SmfTestSuiteTest, multichannelChords1) {
 TEST(SmfTestSuiteTest, multichannelChords2) {
     testUtils::TestEnvironment testEnvironment;
     seqwires::registerLib(testEnvironment.m_projectContext);
+    smf::registerLib(testEnvironment.m_projectContext);
 
     babelwires::FileDataSource midiFile("test-multichannel-chords-2.mid");
 
@@ -209,6 +215,7 @@ TEST(SmfTestSuiteTest, multichannelChords2) {
 TEST(SmfTestSuiteTest, multichannelChords3) {
     testUtils::TestEnvironment testEnvironment;
     seqwires::registerLib(testEnvironment.m_projectContext);
+    smf::registerLib(testEnvironment.m_projectContext);
 
     babelwires::FileDataSource midiFile("test-multichannel-chords-3.mid");
 
@@ -253,6 +260,7 @@ TEST(SmfTestSuiteTest, multichannelChords3) {
 TEST(SmfTestSuiteTest, trackLength) {
     testUtils::TestEnvironment testEnvironment;
     seqwires::registerLib(testEnvironment.m_projectContext);
+    smf::registerLib(testEnvironment.m_projectContext);
 
     babelwires::FileDataSource midiFile("test-track-length.mid");
 
@@ -274,6 +282,7 @@ TEST(SmfTestSuiteTest, trackLength) {
 TEST(SmfTestSuiteTest, tempoTest) {
     testUtils::TestEnvironment testEnvironment;
     seqwires::registerLib(testEnvironment.m_projectContext);
+    smf::registerLib(testEnvironment.m_projectContext);
 
     babelwires::FileDataSource midiFile("test-karaoke-kar.mid");
 
@@ -293,6 +302,7 @@ TEST(SmfTestSuiteTest, tempoTest) {
 TEST(SmfTestSuiteTest, corruptFiles) {
     testUtils::TestEnvironment testEnvironment;
     seqwires::registerLib(testEnvironment.m_projectContext);
+    smf::registerLib(testEnvironment.m_projectContext);
 
     {
         babelwires::FileDataSource midiFile("test-corrupt-file-extra-byte.mid");

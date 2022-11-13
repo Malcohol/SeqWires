@@ -154,6 +154,7 @@ void smf::SmfParser::parse() {
         case source::SmfFeature::SMF_FORMAT_0: {
             auto seqPtr = std::make_unique<source::Format0SmfFeature>(m_projectContext);
             source::Format0SmfFeature& seq = *seqPtr;
+            seq.setToDefault();
             m_result = std::move(seqPtr);
             readFormat0Sequence(seq);
             break;
@@ -161,6 +162,7 @@ void smf::SmfParser::parse() {
         case source::SmfFeature::SMF_FORMAT_1: {
             auto seqPtr = std::make_unique<source::Format1SmfFeature>(m_projectContext);
             source::Format1SmfFeature& seq = *seqPtr;
+            seq.setToDefault();
             m_result = std::move(seqPtr);
             readFormat1Sequence(seq);
             break;
