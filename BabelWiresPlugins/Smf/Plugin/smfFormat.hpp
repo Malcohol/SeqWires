@@ -1,8 +1,8 @@
 /**
  * Formats which support Standard MIDI Files.
- * 
+ *
  * (C) 2021 Malcolm Tyrrell
- * 
+ *
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
 #pragma once
@@ -21,7 +21,8 @@ namespace smf {
         virtual std::string getManufacturerName() const override;
         virtual std::string getProductName() const override;
         virtual std::unique_ptr<babelwires::FileFeature>
-        loadFromFile(babelwires::DataSource& dataSource, const babelwires::ProjectContext& projectContext, babelwires::UserLogger& userLogger) const override;
+        loadFromFile(babelwires::DataSource& dataSource, const babelwires::ProjectContext& projectContext,
+                     babelwires::UserLogger& userLogger) const override;
     };
 
     /// Format for creating Standard MIDI Files.
@@ -31,8 +32,9 @@ namespace smf {
 
         virtual std::string getManufacturerName() const override;
         virtual std::string getProductName() const override;
-        virtual std::unique_ptr<babelwires::FileFeature> createNewFeature(const babelwires::ProjectContext& projectContext) const override;
-        virtual void writeToFile(const babelwires::FileFeature& sequence, std::ostream& os,
-                                 babelwires::UserLogger& userLogger) const override;
+        virtual std::unique_ptr<babelwires::FileFeature>
+        createNewFeature(const babelwires::ProjectContext& projectContext) const override;
+        virtual void writeToFile(const babelwires::ProjectContext& projectContext, babelwires::UserLogger& userLogger,
+                                 const babelwires::FileFeature& sequence, std::ostream& os) const override;
     };
 } // namespace smf
