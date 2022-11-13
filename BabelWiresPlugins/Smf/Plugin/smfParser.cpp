@@ -9,6 +9,7 @@
 
 #include <SeqWiresLib/Features/trackFeature.hpp>
 #include <SeqWiresLib/Tracks/noteEvents.hpp>
+#include <SeqWiresLib/Tracks/percussionEvents.hpp>
 #include <SeqWiresLib/percussion.hpp>
 
 #include <BabelWiresLib/Project/projectContext.hpp>
@@ -187,13 +188,19 @@ class smf::SmfParser::TrackSplitter {
         , m_channelSetup(channelSetup) {}
 
     void addNoteOn(unsigned int channelNumber, seqwires::ModelDuration timeSinceLastTrackEvent, seqwires::Pitch pitch, seqwires::Velocity velocity) {
-        //if (m_channelSetup[channelNumber].m_kitIfPercussion) { TODO }
-        addToChannel<seqwires::NoteOnEvent>(channelNumber, timeSinceLastTrackEvent, pitch, velocity);
+        if (m_channelSetup[channelNumber].m_kitIfPercussion) { 
+            addToChannel<seqwires::PercussionOnEvent>(channelNumber, timeSinceLastTrackEvent, pitch, velocity);
+        } else {
+            addToChannel<seqwires::NoteOnEvent>(channelNumber, timeSinceLastTrackEvent, pitch, velocity);
+        }
     }
 
     void addNoteOff(unsigned int channelNumber, seqwires::ModelDuration timeSinceLastTrackEvent, seqwires::Pitch pitch, seqwires::Velocity velocity) {
-        //if (m_channelSetup[channelNumber].m_kitIfPercussion) { TODO }
-        addToChannel<seqwires::NoteOffEvent>(channelNumber, timeSinceLastTrackEvent, pitch, velocity);
+        if (m_channelSetup[channelNumber].m_kitIfPercussion) { 
+            addToChannel<seqwires::PercussionOffEvent>(channelNumber, timeSinceLastTrackEvent, pitch, velocity);
+        } else {
+            addToChannel<seqwires::NoteOffEvent>(channelNumber, timeSinceLastTrackEvent, pitch, velocity);
+        }
     }
 
     /// All channels share the duration of the MIDI track.
@@ -257,7 +264,6 @@ class smf::SmfParser::TrackSplitter {
     static const int MAX_CHANNELS = 16;
 
     std::array<const seqwires::PercussionKit*, NUM_KNOWN_PERCUSSION_KITS> m_knownKits;
-    GMSpecType::Value m_gmSpec;
 
     seqwires::ModelDuration m_timeSinceStart;
 
@@ -772,6 +778,10 @@ void smf::SmfParser::readFormat1Sequence(source::Format1SmfFeature& sequence) {
     }
 }
 
+smf::GMSpecType::Value smf::SmfParser::getGMSpec() const {
+    return m_result->getMidiMetadata().getSpecFeature()->getAsValue();
+}
+
 void smf::SmfParser::setGMSpec(GMSpecType::Value spec) {
     switch (spec) {
         case GMSpecType::Value::GM:
@@ -786,7 +796,7 @@ void smf::SmfParser::setGMSpec(GMSpecType::Value spec) {
         default:
             break;
     }
-    m_gmSpec = spec;
+    m_result->getMidiMetadata().getSpecFeature()->setFromValue(spec);
 }
 
 void smf::SmfParser::setBankMSB(unsigned int channelNumber, const babelwires::Byte msbValue) {
@@ -815,8 +825,8 @@ void smf::SmfParser::setGsPartMode(unsigned int blockNumber, babelwires::Byte va
 /// Right now, just trying to determine which percussionKit is in use if any.
 void smf::SmfParser::onChangeProgram(unsigned int channelNumber) {
     ChannelSetup& channelSetup = m_channelSetup[channelNumber];
-
-    if (m_gmSpec == GMSpecType::Value::GM2) {
+    const GMSpecType::Value gmSpec = getGMSpec();
+    if (gmSpec == GMSpecType::Value::GM2) {
         if (channelSetup.m_bankMSB == 0x78) {
             // Percussion
             // LSB not used
@@ -836,7 +846,7 @@ void smf::SmfParser::onChangeProgram(unsigned int channelNumber) {
         } else {
             // Not specified by GM2
         }
-    } else if (m_gmSpec == GMSpecType::Value::XG) {
+    } else if (gmSpec == GMSpecType::Value::XG) {
         if (channelSetup.m_bankMSB == 0x7f) {
             // Percussion
             channelSetup.m_kitIfPercussion = m_knownKits[GM_PERCUSSION_KIT];
@@ -851,7 +861,7 @@ void smf::SmfParser::onChangeProgram(unsigned int channelNumber) {
         } else {
             // Not specified by XG
         }
-    } else if (m_gmSpec == GMSpecType::Value::GS) {
+    } else if (gmSpec == GMSpecType::Value::GS) {
         if (channelSetup.m_gsPartMode == 1) {
             // Percussion mode 1
             channelSetup.m_kitIfPercussion = m_knownKits[GM_PERCUSSION_KIT];

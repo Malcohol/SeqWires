@@ -41,6 +41,7 @@ namespace smf {
         babelwires::Byte getNext();
         babelwires::Byte peekNext();
 
+        GMSpecType::Value getGMSpec() const;
         void setGMSpec(GMSpecType::Value spec);
 
         /// Read the expected byte sequence.
@@ -101,7 +102,7 @@ namespace smf {
         const babelwires::ProjectContext& m_projectContext;
         babelwires::DataSource& m_dataSource;
         babelwires::UserLogger& m_userLogger;
-        std::unique_ptr<babelwires::FileFeature> m_result;
+        std::unique_ptr<source::SmfFeature> m_result;
         std::vector<babelwires::Byte> m_messageBuffer;
 
         source::SmfFeature::Format m_sequenceType;

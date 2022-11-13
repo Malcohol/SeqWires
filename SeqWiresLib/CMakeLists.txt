@@ -26,9 +26,10 @@ SET( SEQWIRESLIB_SRCS
 	Functions/sanitizingFunctions.cpp
 	Functions/splitAtPitchFunction.cpp
 	Functions/transposeFunction.cpp
-	Tracks/trackEvent.cpp
-	Tracks/noteEvents.cpp
 	Tracks/chordEvents.cpp
+	Tracks/noteEvents.cpp
+	Tracks/percussionEvents.cpp
+	Tracks/trackEvent.cpp
 	Tracks/track.cpp
 	chord.cpp
 	musicTypes.cpp
