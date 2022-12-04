@@ -30,6 +30,15 @@ const smf::target::ChannelTrackFeature& smf::target::ChannelTrackFeature::getTra
     return *this;
 }
 
+int smf::target::ChannelTrackFeature::getChannelNumber() const {
+    return m_channelNum->get();
+}
+
+const seqwires::Track& smf::target::ChannelTrackFeature::getTrack() const {
+    return m_trackFeature->get();
+}
+
+
 int smf::target::ArrayChannelGroup::getNumTracks() const {
     return getNumFeatures();
 }

@@ -16,24 +16,22 @@
 #include <ostream>
 
 namespace babelwires {
-  class UserLogger;
+    class UserLogger;
 }
 
 namespace seqwires {
+    class Track;
     class TrackEvent;
-}
+} // namespace seqwires
 
 namespace smf {
 
     class SmfWriter {
       public:
-        SmfWriter(const babelwires::ProjectContext& projectContext, babelwires::UserLogger& userLogger, const target::SmfFormatFeature& sequence,
-                  std::ostream& output);
+        SmfWriter(const babelwires::ProjectContext& projectContext, babelwires::UserLogger& userLogger,
+                  const target::SmfFormatFeature& sequence, std::ostream& output);
 
-        void writeHeaderChunk();
-
-        /// Tempo feature can be null.
-        void writeTrack(const target::ChannelGroup* track, const MidiMetadata& metadata);
+        void write();
 
       protected:
         void writeUint16(std::uint16_t i);
@@ -42,14 +40,22 @@ namespace smf {
         void writeVariableLengthQuantity(std::uint32_t i);
         void writeModelDuration(const seqwires::ModelDuration& d);
 
-        void writeNoteEvent(int channel, seqwires::ModelDuration timeSinceLastEvent, const seqwires::TrackEvent& e);
+        /// Returns true if the event was written.
+        bool writeTrackEvent(int channelNumber, seqwires::ModelDuration timeSinceLastEvent, const seqwires::TrackEvent& e);
+
         void writeTempoEvent(int bpm);
+
         /// type is the integer 0..15 which defines which type of text meta-event should be issued.
         void writeTextMetaEvent(int type, std::string text);
 
         void writeNotes(const target::ChannelGroup& track);
 
-        // TODO Unity with parser code
+        void writeHeaderChunk();
+
+        /// Tempo feature can be null.
+        void writeTrack(const target::ChannelGroup* track, const MidiMetadata& metadata);
+
+        // TODO Unify with parser code
         enum KnownPercussionKits {
             GM_PERCUSSION_KIT,
             GM2_STANDARD_PERCUSSION_KIT,
@@ -57,10 +63,14 @@ namespace smf {
             NOT_PERCUSSION = NUM_KNOWN_PERCUSSION_KITS
         };
 
-        KnownPercussionKits getPercussionKit(int channel);
+        /// Determine from the events in the tracks what percussion kit (allowed for the channelNumber) includes the largest number of the events.
+        void setUpPercussionKit(std::vector<const seqwires::Track*> tracks, int channelNumber);
+
+        void setUpPercussionKits();
 
       private:
         const babelwires::ProjectContext& m_projectContext;
+        babelwires::UserLogger& m_userLogger;
         const target::SmfFormatFeature& m_smfFormatFeature;
         std::ostream& m_ostream;
         std::ostream* m_os;
@@ -68,9 +78,23 @@ namespace smf {
         int m_division;
 
         std::array<const seqwires::PercussionKit*, NUM_KNOWN_PERCUSSION_KITS> m_knownKits;
+
+                /// Currently just used to determine which tracks are percussion tracks.
+        struct ChannelSetup {
+            //babelwires::Byte m_bankMSB = 0;
+            //babelwires::Byte m_bankLSB = 0;
+            //babelwires::Byte m_program = 0;
+            // This is the part corresponding to this channel, irrespective of the part mapping.
+            //babelwires::Byte m_gsPartMode = 0;
+            // This is non-null when the pitches in the data should be interpreted as percussion events from the given
+            // kit.
+            const seqwires::PercussionKit* m_kitIfPercussion = nullptr;
+        };
+
+        std::array<ChannelSetup, 16> m_channelSetup;
     };
 
-    void writeToSmf(const babelwires::ProjectContext& projectContext, babelwires::UserLogger& userLogger, const target::SmfFormatFeature& smfFormatFeature,
-                    std::ostream& output);
+    void writeToSmf(const babelwires::ProjectContext& projectContext, babelwires::UserLogger& userLogger,
+                    const target::SmfFormatFeature& smfFormatFeature, std::ostream& output);
 
 } // namespace smf

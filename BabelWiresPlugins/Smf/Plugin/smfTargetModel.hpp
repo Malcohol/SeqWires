@@ -13,6 +13,7 @@
 #include <BabelWiresPlugins/Smf/Plugin/smfModelCommon.hpp>
 
 namespace seqwires {
+    class Track;
     class TrackFeature;
 }
 
@@ -34,6 +35,9 @@ namespace smf {
         class ChannelTrackFeature : public babelwires::RecordFeature, public ChannelGroup {
           public:
             ChannelTrackFeature();
+
+            int getChannelNumber() const;
+            const seqwires::Track& getTrack() const;
 
           public:
             virtual int getNumTracks() const override;
