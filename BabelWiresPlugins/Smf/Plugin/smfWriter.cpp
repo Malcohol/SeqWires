@@ -132,7 +132,7 @@ void smf::SmfWriter::writeHeaderChunk() {
     writeUint16(m_division);
 }
 
-bool smf::SmfWriter::writeTrackEvent(int channelNumber, seqwires::ModelDuration timeSinceLastEvent,
+smf::SmfWriter::WriteTrackEventResult smf::SmfWriter::writeTrackEvent(int channelNumber, seqwires::ModelDuration timeSinceLastEvent,
                                      const seqwires::TrackEvent& e) {
     assert(channelNumber >= 0);
     assert(channelNumber <= 15);
@@ -143,13 +143,13 @@ bool smf::SmfWriter::writeTrackEvent(int channelNumber, seqwires::ModelDuration 
             m_os->put(0b10010000 | channelNumber);
             m_os->put(percussionOn->getPitch());
             m_os->put(percussionOn->getVelocity());
-            return true;
+            return WriteTrackEventResult::Written;
         } else if (const seqwires::PercussionOffEvent* percussionOff = e.as<seqwires::PercussionOffEvent>()) {
             writeModelDuration(timeSinceLastEvent);
             m_os->put(0b10000000 | channelNumber);
             m_os->put(percussionOff->getPitch());
             m_os->put(percussionOff->getVelocity());
-            return true;
+            return WriteTrackEventResult::Written;
         } 
     } else {
         if (const seqwires::NoteOnEvent* noteOn = e.as<seqwires::NoteOnEvent>()) {
@@ -157,16 +157,16 @@ bool smf::SmfWriter::writeTrackEvent(int channelNumber, seqwires::ModelDuration 
             m_os->put(0b10010000 | channelNumber);
             m_os->put(noteOn->m_pitch);
             m_os->put(noteOn->m_velocity);
-            return true;
+            return WriteTrackEventResult::Written;
         } else if (const seqwires::NoteOffEvent* noteOff = e.as<seqwires::NoteOffEvent>()) {
             writeModelDuration(timeSinceLastEvent);
             m_os->put(0b10000000 | channelNumber);
             m_os->put(noteOff->m_pitch);
             m_os->put(noteOff->m_velocity);
-            return true;
+            return WriteTrackEventResult::Written;
         }
     }
-    return false;
+    return WriteTrackEventResult::WrongCategory;
 }
 
 namespace {
@@ -213,7 +213,8 @@ void smf::SmfWriter::writeNotes(const target::ChannelGroup& channelGroup) {
             traversers[i].advance(timeToNextEvent, [this, &isFirstEventAtThisTime, &timeToNextEvent, &timeOfLastEvent,
                                                     &timeSinceStart, &channelTrack](const seqwires::TrackEvent& event) {
                 const seqwires::ModelDuration timeToThisEvent = isFirstEventAtThisTime ? timeToNextEvent : 0;
-                if (writeTrackEvent(channelTrack.m_channelNum->get(), timeToThisEvent, event)) {
+                const WriteTrackEventResult result = writeTrackEvent(channelTrack.m_channelNum->get(), timeToThisEvent, event);
+                if (result == WriteTrackEventResult::Written) {
                     timeOfLastEvent = timeSinceStart + timeToNextEvent;
                     isFirstEventAtThisTime = false;
                 } else {

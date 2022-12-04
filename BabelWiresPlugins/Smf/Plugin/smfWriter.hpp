@@ -41,7 +41,12 @@ namespace smf {
         void writeModelDuration(const seqwires::ModelDuration& d);
 
         /// Returns true if the event was written.
-        bool writeTrackEvent(int channelNumber, seqwires::ModelDuration timeSinceLastEvent, const seqwires::TrackEvent& e);
+        enum class WriteTrackEventResult {
+          Written,
+          WrongCategory,
+          NotInPercussionKit
+        };
+        WriteTrackEventResult writeTrackEvent(int channelNumber, seqwires::ModelDuration timeSinceLastEvent, const seqwires::TrackEvent& e);
 
         void writeTempoEvent(int bpm);
 
