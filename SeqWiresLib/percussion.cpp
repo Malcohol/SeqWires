@@ -40,7 +40,7 @@ babelwires::LongIdentifier seqwires::GMPercussionKit::getThisIdentifier() {
     return REGISTERED_LONGID("GMPercussion", "General MIDI Percussion", "9f6dec59-4d75-4a4b-9cba-e7ff76390c5f");
 }
 
-std::optional<seqwires::Pitch> seqwires::GMPercussionKit::tryGetPitchFromInstrument(babelwires::Identifier identifier) {
+std::optional<seqwires::Pitch> seqwires::GMPercussionKit::tryGetPitchFromInstrument(babelwires::Identifier identifier) const {
     const int index = tryGetIndexFromIdentifier(identifier);
     if (index != -1) {
         return index + 35;
@@ -48,7 +48,7 @@ std::optional<seqwires::Pitch> seqwires::GMPercussionKit::tryGetPitchFromInstrum
     return {};
 }
 
-std::optional<babelwires::Identifier> seqwires::GMPercussionKit::tryGetInstrumentFromPitch(Pitch pitch) {
+std::optional<babelwires::Identifier> seqwires::GMPercussionKit::tryGetInstrumentFromPitch(Pitch pitch) const {
     if ((pitch >= 35) && (pitch <= 81)) {
         return getEnumValues()[pitch - 35];
     }
@@ -75,7 +75,7 @@ bool seqwires::GM2StandardPercussionKit::tryGetValueFromPitch(Pitch pitch, Value
     return true;
 }
 
-std::optional<seqwires::Pitch> seqwires::GM2StandardPercussionKit::tryGetPitchFromInstrument(babelwires::Identifier identifier) {
+std::optional<seqwires::Pitch> seqwires::GM2StandardPercussionKit::tryGetPitchFromInstrument(babelwires::Identifier identifier) const {
     const int index = tryGetIndexFromIdentifier(identifier);
     if (index != -1) {
         return index + 27;
@@ -83,7 +83,7 @@ std::optional<seqwires::Pitch> seqwires::GM2StandardPercussionKit::tryGetPitchFr
     return {};
 }
 
-std::optional<babelwires::Identifier> seqwires::GM2StandardPercussionKit::tryGetInstrumentFromPitch(Pitch pitch) {
+std::optional<babelwires::Identifier> seqwires::GM2StandardPercussionKit::tryGetInstrumentFromPitch(Pitch pitch) const {
     if ((pitch >= 27) && (pitch <= 87)) {
         return getEnumValues()[pitch - 35];
     }

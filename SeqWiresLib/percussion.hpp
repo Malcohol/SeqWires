@@ -89,10 +89,10 @@ namespace seqwires {
         PercussionKit(babelwires::LongIdentifier identifier, babelwires::VersionNumber version, EnumValues values,
                       unsigned int indexOfDefaultValue);
 
-        virtual std::optional<Pitch> tryGetPitchFromInstrument(babelwires::Identifier identifier) = 0;
+        virtual std::optional<Pitch> tryGetPitchFromInstrument(babelwires::Identifier identifier) const = 0;
 
         /// If the pitch is in range, set indexOut and return true.
-        virtual std::optional<babelwires::Identifier> tryGetInstrumentFromPitch(Pitch pitch) = 0;
+        virtual std::optional<babelwires::Identifier> tryGetInstrumentFromPitch(Pitch pitch) const = 0;
     };
 
     /// An enum corresponding to the original General MIDI percussion set.
@@ -104,9 +104,9 @@ namespace seqwires {
 
         ENUM_DEFINE_CPP_ENUM(GM_PERCUSSION_VALUES);
 
-        std::optional<Pitch> tryGetPitchFromInstrument(babelwires::Identifier identifier) override;
+        std::optional<Pitch> tryGetPitchFromInstrument(babelwires::Identifier identifier) const override;
 
-        std::optional<babelwires::Identifier> tryGetInstrumentFromPitch(Pitch pitch) override;
+        std::optional<babelwires::Identifier> tryGetInstrumentFromPitch(Pitch pitch) const override;
     };
 
     /// An enum corresponding to the instruments of GM2 standard percussion set.
@@ -133,9 +133,9 @@ namespace seqwires {
         /// If the pitch is in range, set indexOut and return true.
         static bool tryGetValueFromPitch(Pitch pitch, Value& indexOut);
 
-        std::optional<Pitch> tryGetPitchFromInstrument(babelwires::Identifier identifier) override;
+        std::optional<Pitch> tryGetPitchFromInstrument(babelwires::Identifier identifier) const override;
 
-        std::optional<babelwires::Identifier> tryGetInstrumentFromPitch(Pitch pitch) override;
+        std::optional<babelwires::Identifier> tryGetInstrumentFromPitch(Pitch pitch) const override;
     };
 
 } // namespace seqwires

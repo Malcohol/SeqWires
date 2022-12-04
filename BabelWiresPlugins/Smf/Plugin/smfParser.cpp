@@ -189,19 +189,29 @@ class smf::SmfParser::TrackSplitter {
         : m_channels{}
         , m_channelSetup(channelSetup) {}
 
-    void addNoteOn(unsigned int channelNumber, seqwires::ModelDuration timeSinceLastTrackEvent, seqwires::Pitch pitch, seqwires::Velocity velocity) {
-        if (m_channelSetup[channelNumber].m_kitIfPercussion) { 
-            addToChannel<seqwires::PercussionOnEvent>(channelNumber, timeSinceLastTrackEvent, pitch, velocity);
+    bool addNoteOn(unsigned int channelNumber, seqwires::ModelDuration timeSinceLastTrackEvent, seqwires::Pitch pitch, seqwires::Velocity velocity) {
+        if (const seqwires::PercussionKit *const percussionKit = m_channelSetup[channelNumber].m_kitIfPercussion) { 
+            if (auto maybeInstrument = percussionKit->tryGetInstrumentFromPitch(pitch)) {
+                addToChannel<seqwires::PercussionOnEvent>(channelNumber, timeSinceLastTrackEvent, *maybeInstrument, pitch, velocity);
+                return true;
+            }
+            return false;
         } else {
             addToChannel<seqwires::NoteOnEvent>(channelNumber, timeSinceLastTrackEvent, pitch, velocity);
+            return true;
         }
     }
 
-    void addNoteOff(unsigned int channelNumber, seqwires::ModelDuration timeSinceLastTrackEvent, seqwires::Pitch pitch, seqwires::Velocity velocity) {
-        if (m_channelSetup[channelNumber].m_kitIfPercussion) { 
-            addToChannel<seqwires::PercussionOffEvent>(channelNumber, timeSinceLastTrackEvent, pitch, velocity);
+    bool addNoteOff(unsigned int channelNumber, seqwires::ModelDuration timeSinceLastTrackEvent, seqwires::Pitch pitch, seqwires::Velocity velocity) {
+        if (const seqwires::PercussionKit *const percussionKit = m_channelSetup[channelNumber].m_kitIfPercussion) { 
+            if (auto maybeInstrument = percussionKit->tryGetInstrumentFromPitch(pitch)) {
+                addToChannel<seqwires::PercussionOffEvent>(channelNumber, timeSinceLastTrackEvent, *maybeInstrument, pitch, velocity);
+                return true;
+            }
+            return false;
         } else {
             addToChannel<seqwires::NoteOffEvent>(channelNumber, timeSinceLastTrackEvent, pitch, velocity);
+            return true;
         }
     }
 
@@ -708,8 +718,10 @@ void smf::SmfParser::readTrack(int trackIndex, source::ChannelGroup& channels, M
             {
                 const seqwires::Pitch pitch = getNext();
                 const seqwires::Velocity velocity = getNext();
-                tracks.addNoteOff(statusLo, timeSinceLastNoteEvent, pitch, velocity);
-                timeSinceLastNoteEvent = 0;
+                // TODO If a NoteOn was skipped, we would need to skip the corresponding note off.
+                if (tracks.addNoteOff(statusLo, timeSinceLastNoteEvent, pitch, velocity)) {
+                    timeSinceLastNoteEvent = 0;
+                }
                 break;
             }
             case 0b1001: // Note on.
@@ -717,11 +729,15 @@ void smf::SmfParser::readTrack(int trackIndex, source::ChannelGroup& channels, M
                 const seqwires::Pitch pitch = getNext();
                 const seqwires::Velocity velocity = getNext();
                 if (velocity != 0) {
-                    tracks.addNoteOn(statusLo, timeSinceLastNoteEvent, pitch, velocity);
+                    if (tracks.addNoteOn(statusLo, timeSinceLastNoteEvent, pitch, velocity)) {
+                        timeSinceLastNoteEvent = 0;
+                    }
                 } else {
-                    tracks.addNoteOff(statusLo, timeSinceLastNoteEvent, pitch, velocity);
+                    // TODO This is wrong: This should just be skipped.
+                    if (tracks.addNoteOff(statusLo, timeSinceLastNoteEvent, pitch, velocity)) {
+                        timeSinceLastNoteEvent = 0;
+                    }
                 }
-                timeSinceLastNoteEvent = 0;
                 break;
             }
             case 0b1010: // Polyphonic key pressure Aftertouch.

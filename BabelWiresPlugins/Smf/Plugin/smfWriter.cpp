@@ -139,17 +139,25 @@ smf::SmfWriter::WriteTrackEventResult smf::SmfWriter::writeTrackEvent(int channe
 
     if (const seqwires::PercussionKit *const kitIfPercussion = m_channelSetup[channelNumber].m_kitIfPercussion) {
         if (const seqwires::PercussionOnEvent* percussionOn = e.as<seqwires::PercussionOnEvent>()) {
-            writeModelDuration(timeSinceLastEvent);
-            m_os->put(0b10010000 | channelNumber);
-            m_os->put(percussionOn->getPitch());
-            m_os->put(percussionOn->getVelocity());
-            return WriteTrackEventResult::Written;
+            if (auto maybePitch = kitIfPercussion->tryGetPitchFromInstrument(percussionOn->getInstrument())) {
+                writeModelDuration(timeSinceLastEvent);
+                m_os->put(0b10010000 | channelNumber);
+                m_os->put(*maybePitch);
+                m_os->put(percussionOn->getVelocity());
+                return WriteTrackEventResult::Written;
+            } else {
+                return WriteTrackEventResult::NotInPercussionKit;
+            }
         } else if (const seqwires::PercussionOffEvent* percussionOff = e.as<seqwires::PercussionOffEvent>()) {
-            writeModelDuration(timeSinceLastEvent);
-            m_os->put(0b10000000 | channelNumber);
-            m_os->put(percussionOff->getPitch());
-            m_os->put(percussionOff->getVelocity());
-            return WriteTrackEventResult::Written;
+            if (auto maybePitch = kitIfPercussion->tryGetPitchFromInstrument(percussionOn->getInstrument())) {
+                writeModelDuration(timeSinceLastEvent);
+                m_os->put(0b10000000 | channelNumber);
+                m_os->put(*maybePitch);
+                m_os->put(percussionOff->getVelocity());
+                return WriteTrackEventResult::Written;
+            } else {
+                return WriteTrackEventResult::NotInPercussionKit;
+            }
         } 
     } else {
         if (const seqwires::NoteOnEvent* noteOn = e.as<seqwires::NoteOnEvent>()) {
