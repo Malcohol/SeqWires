@@ -25,13 +25,8 @@ seqwires::Track seqwires::mapPercussionFunction(const babelwires::TypeSystem& ty
         throw babelwires::ModelException() << "The Percussion Map is not valid.";
     }
 
-    //const PercussionKit& sourceType = typeSystem.getEntryByIdentifier(percussionMapData.getSourceTypeId())->is<PercussionKit>();
-    //const PercussionKit& targetType = typeSystem.getEntryByIdentifier(percussionMapData.getTargetTypeId())->is<PercussionKit>();
-
-    const babelwires::EnumToIdentifierValueAdapter sourceAdapter;
-    const babelwires::EnumToIdentifierValueAdapter targetAdapter;
-
-    babelwires::UnorderedMapApplicator<babelwires::Identifier, babelwires::Identifier> mapApplicator{ percussionMapData, sourceAdapter, targetAdapter };
+    const babelwires::EnumToIdentifierValueAdapter enumToIdentifierAdapter;
+    babelwires::UnorderedMapApplicator<babelwires::Identifier, babelwires::Identifier> mapApplicator{ percussionMapData, enumToIdentifierAdapter, enumToIdentifierAdapter };
 
     Track trackOut;
     // If an event is dropped, then we need to carry its time forward for the next event.
