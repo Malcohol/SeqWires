@@ -8,7 +8,7 @@
 #pragma once
 
 #include <BabelWiresPlugins/Smf/Plugin/smfTargetModel.hpp>
-#include <BabelWiresPlugins/Smf/Plugin/Percussion/smfPercussion.hpp>
+#include <BabelWiresPlugins/Smf/Plugin/Percussion/percussionKit.hpp>
 
 #include <SeqWiresLib/musicTypes.hpp>
 

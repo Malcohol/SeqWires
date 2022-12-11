@@ -7,6 +7,8 @@
  **/
 #include <BabelWiresPlugins/Smf/Plugin/smfWriter.hpp>
 
+#include <BabelWiresPlugins/Smf/Plugin/Percussion/gm2StandardPercussionKit.hpp>
+#include <BabelWiresPlugins/Smf/Plugin/Percussion/gmPercussionKit.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/gmSpec.hpp>
 
 #include <SeqWiresLib/Features/trackFeature.hpp>
@@ -21,8 +23,8 @@
 #include <Common/Log/userLogger.hpp>
 
 #include <algorithm>
-#include <sstream>
 #include <set>
+#include <sstream>
 
 smf::SmfWriter::SmfWriter(const babelwires::ProjectContext& projectContext, babelwires::UserLogger& userLogger,
                           const target::SmfFormatFeature& sequence, std::ostream& ostream)
@@ -132,12 +134,13 @@ void smf::SmfWriter::writeHeaderChunk() {
     writeUint16(m_division);
 }
 
-smf::SmfWriter::WriteTrackEventResult smf::SmfWriter::writeTrackEvent(int channelNumber, seqwires::ModelDuration timeSinceLastEvent,
-                                     const seqwires::TrackEvent& e) {
+smf::SmfWriter::WriteTrackEventResult smf::SmfWriter::writeTrackEvent(int channelNumber,
+                                                                      seqwires::ModelDuration timeSinceLastEvent,
+                                                                      const seqwires::TrackEvent& e) {
     assert(channelNumber >= 0);
     assert(channelNumber <= 15);
 
-    if (const smf::PercussionKit *const kitIfPercussion = m_channelSetup[channelNumber].m_kitIfPercussion) {
+    if (const smf::PercussionKit* const kitIfPercussion = m_channelSetup[channelNumber].m_kitIfPercussion) {
         if (const seqwires::PercussionOnEvent* percussionOn = e.as<seqwires::PercussionOnEvent>()) {
             if (auto maybePitch = kitIfPercussion->tryGetPitchFromInstrument(percussionOn->getInstrument())) {
                 writeModelDuration(timeSinceLastEvent);
@@ -158,7 +161,7 @@ smf::SmfWriter::WriteTrackEventResult smf::SmfWriter::writeTrackEvent(int channe
             } else {
                 return WriteTrackEventResult::NotInPercussionKit;
             }
-        } 
+        }
     } else {
         if (const seqwires::NoteOnEvent* noteOn = e.as<seqwires::NoteOnEvent>()) {
             writeModelDuration(timeSinceLastEvent);
@@ -221,7 +224,8 @@ void smf::SmfWriter::writeNotes(const target::ChannelGroup& channelGroup) {
             traversers[i].advance(timeToNextEvent, [this, &isFirstEventAtThisTime, &timeToNextEvent, &timeOfLastEvent,
                                                     &timeSinceStart, &channelTrack](const seqwires::TrackEvent& event) {
                 const seqwires::ModelDuration timeToThisEvent = isFirstEventAtThisTime ? timeToNextEvent : 0;
-                const WriteTrackEventResult result = writeTrackEvent(channelTrack.m_channelNum->get(), timeToThisEvent, event);
+                const WriteTrackEventResult result =
+                    writeTrackEvent(channelTrack.m_channelNum->get(), timeToThisEvent, event);
                 if (result == WriteTrackEventResult::Written) {
                     timeOfLastEvent = timeSinceStart + timeToNextEvent;
                     isFirstEventAtThisTime = false;

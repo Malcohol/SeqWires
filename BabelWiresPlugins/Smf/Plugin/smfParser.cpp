@@ -7,6 +7,9 @@
  **/
 #include <BabelWiresPlugins/Smf/Plugin/smfParser.hpp>
 
+#include <BabelWiresPlugins/Smf/Plugin/Percussion/gmPercussionKit.hpp>
+#include <BabelWiresPlugins/Smf/Plugin/Percussion/gm2StandardPercussionKit.hpp>
+
 #include <SeqWiresLib/Features/trackFeature.hpp>
 #include <SeqWiresLib/Tracks/noteEvents.hpp>
 #include <SeqWiresLib/Tracks/percussionEvents.hpp>

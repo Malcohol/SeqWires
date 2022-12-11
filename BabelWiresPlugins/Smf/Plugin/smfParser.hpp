@@ -9,7 +9,7 @@
 
 #include <BabelWiresPlugins/Smf/Plugin/gmSpec.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/smfSourceModel.hpp>
-#include <BabelWiresPlugins/Smf/Plugin/Percussion/smfPercussion.hpp>
+#include <BabelWiresPlugins/Smf/Plugin/Percussion/percussionKit.hpp>
 
 #include <SeqWiresLib/musicTypes.hpp>
 
