@@ -62,19 +62,6 @@ babelwires::LongIdentifier seqwires::GM2StandardPercussionKit::getThisIdentifier
     return REGISTERED_LONGID("GM2Percussion", "General MIDI 2 Percussion", "9fc0c107-f76c-432a-af58-c794f01df455");
 }
 
-seqwires::Pitch seqwires::GM2StandardPercussionKit::getPitchFromValue(Value value) {
-    const unsigned int index = static_cast<unsigned int>(value);
-    return index + 27;
-}
-
-bool seqwires::GM2StandardPercussionKit::tryGetValueFromPitch(Pitch pitch, Value& valueOut) {
-    if ((pitch < 27) || (pitch > 87)) {
-        return false;
-    }
-    valueOut = static_cast<Value>(pitch - 27);
-    return true;
-}
-
 std::optional<seqwires::Pitch> seqwires::GM2StandardPercussionKit::tryGetPitchFromInstrument(babelwires::Identifier identifier) const {
     const int index = tryGetIndexFromIdentifier(identifier);
     if (index != -1) {

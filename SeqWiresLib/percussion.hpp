@@ -127,12 +127,6 @@ namespace seqwires {
         ENUM_DEFINE_CPP_METHODS
         // clang-format on
 
-        /// Returns a pitch in the range 27..87.
-        static Pitch getPitchFromValue(Value value);
-
-        /// If the pitch is in range, set indexOut and return true.
-        static bool tryGetValueFromPitch(Pitch pitch, Value& indexOut);
-
         std::optional<Pitch> tryGetPitchFromInstrument(babelwires::Identifier identifier) const override;
 
         std::optional<babelwires::Identifier> tryGetInstrumentFromPitch(Pitch pitch) const override;
