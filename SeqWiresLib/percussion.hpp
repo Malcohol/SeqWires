@@ -19,6 +19,7 @@
 /// defined by this set.
 /// * These sets of instruments are not required to map to a unique pitch value.
 #define BUILT_IN_PERCUSSION_INSTRUMENTS(X)                                                                             \
+    /* Instruments of the GM2 Standard Kit */                                                                          \
     X(HighQ, "High Q", "22074fd9-40ed-4716-8e5b-4e174daa03b3")                                                         \
     X(Slap, "Slap", "3aedf5de-904b-46e2-bc87-445c9f065868")                                                            \
     X(ScrPsh, "Scratch Push", "3087699b-94bd-4612-b1bd-b5acf037c325")                                                  \
@@ -27,6 +28,7 @@
     X(SqClck, "Square Click", "4d887ce2-c748-4127-b3ed-f8430237a82f")                                                  \
     X(MtrClk, "Metronome Click", "a012ad55-b894-4687-8754-6574f492f90e")                                               \
     X(MtrBll, "Metronome Bell", "876abe67-81a4-41dd-9d7b-dbc3652c47a1")                                                \
+    /* Instruments of the GM kit */                                                                                    \
     X(AcBass, "Acoustic Bass Drum", "6ce9c1ac-3439-41eb-9776-dac41184255c")                                            \
     X(Bass1, "Bass Drum 1", "1c39fd51-ed6b-439e-ac8e-3c0fc7cb0d3b")                                                    \
     X(SStick, "Side Stick", "7762bf9b-ee64-4af2-9397-f6a55751f845")                                                    \
@@ -74,12 +76,20 @@
     X(OCuica, "Open Cuica", "2e523d69-fea3-4145-96b7-1402f61472d5")                                                    \
     X(MTrian, "Mute Triangle", "8d72a586-72ee-48fe-9bbd-c1a3500ab648")                                                 \
     X(OTrian, "Open Triangle", "8ffa30b4-287f-4dcf-8d18-92def658e0d6")                                                 \
+    /* Instruments of the GM2 Standard Kit */                                                                          \
     X(Shaker, "Shaker", "ee9c029a-98af-4679-adc4-3c5185ca2e95")                                                        \
     X(JngBll, "Jingle Bell", "4a3da07d-a820-44f0-98fc-8c409768f7c2")                                                   \
     X(BlTree, "Bell Tree", "770dd65c-6dd1-43ba-89f8-c4507c158709")                                                     \
     X(Cstnts, "Castanets", "f742bbe3-3679-4cbd-9727-5252fd1bfff1")                                                     \
     X(MSurdo, "Mute Surdo", "79286a74-fd6d-4918-8f4c-f79606e48d4e")                                                    \
-    X(OSurdo, "Open Surdo", "16a9961e-26a2-4e85-bb8c-32b139713694")
+    X(OSurdo, "Open Surdo", "16a9961e-26a2-4e85-bb8c-32b139713694")                                                    \
+    /* Instruments from the GM2 Room kit */                                                                            \
+    X(RLwTm2, "Room Low Tom 2", "d2c5e125-7853-46f8-bfd3-7dc707e62141")                                                \
+    X(RLwTm1, "Room Low Tom 1", "e6b25f32-4a7e-4203-9aa3-76f0c6085ced")                                                \
+    X(RMdTm2, "Room Mid Tom 2", "371bd6eb-33cb-40c8-ba57-3c18eac00787")                                                \
+    X(RMdTm1, "Room Mid Tom 1", "58339244-fb5d-49d1-9403-8cf812388ab7")                                                \
+    X(RHTm2, "Room Hi Tom 2", "46d6b67b-9e66-46fb-ae5e-24b1296c856c")                                                  \
+    X(RHTm1, "Room Hi Tom 1", "a4b7fc45-3e90-4da4-b3b8-1e437d9a1e00")
 
 namespace seqwires {
     /// All percussion instruments built into SeqWires.
