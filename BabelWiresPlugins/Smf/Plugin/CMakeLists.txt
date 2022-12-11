@@ -5,7 +5,7 @@ SET( SMFLIB_SRCS
 	smfModelCommon.cpp
 	smfWriter.cpp
 	smfParser.cpp
-	smfPercussion.cpp
+	Percussion/smfPercussion.cpp
 	smfFormat.cpp
 	gmSpec.cpp
    )

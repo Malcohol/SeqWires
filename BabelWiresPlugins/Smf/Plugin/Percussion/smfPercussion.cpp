@@ -5,7 +5,7 @@
  *
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
-#include <BabelWiresPlugins/Smf/Plugin/smfPercussion.hpp>
+#include <BabelWiresPlugins/Smf/Plugin/Percussion/smfPercussion.hpp>
 
 smf::PercussionKit::PercussionKit(babelwires::LongIdentifier identifier, babelwires::VersionNumber version,
                                   EnumValues values, unsigned int indexOfDefaultValue)

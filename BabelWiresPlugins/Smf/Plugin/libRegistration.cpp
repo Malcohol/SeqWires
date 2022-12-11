@@ -13,7 +13,7 @@
 #include <BabelWiresLib/TypeSystem/typeSystem.hpp>
 
 #include <BabelWiresPlugins/Smf/Plugin/gmSpec.hpp>
-#include <BabelWiresPlugins/Smf/Plugin/smfPercussion.hpp>
+#include <BabelWiresPlugins/Smf/Plugin/Percussion/smfPercussion.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/smfFormat.hpp>
 
 void smf::registerLib(babelwires::ProjectContext& context) {
