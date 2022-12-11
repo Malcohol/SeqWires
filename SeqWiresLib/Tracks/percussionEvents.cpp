@@ -20,16 +20,16 @@ bool seqwires::PercussionOnEvent::operator==(const TrackEvent& other) const {
         return false;
     }
     auto otherOn = static_cast<const PercussionOnEvent&>(other);
-    return (m_timeSinceLastEvent == otherOn.m_timeSinceLastEvent) && (m_pitch == otherOn.m_pitch) &&
+    return (m_timeSinceLastEvent == otherOn.m_timeSinceLastEvent) && (m_instrument == otherOn.m_instrument) &&
            (m_velocity == otherOn.m_velocity);
 }
 
 std::size_t seqwires::PercussionOnEvent::getHash() const {
-    return babelwires::hash::mixtureOf(static_cast<const char*>("PercOn"), m_timeSinceLastEvent, m_pitch, m_velocity);
+    return babelwires::hash::mixtureOf(static_cast<const char*>("PercOn"), m_timeSinceLastEvent, m_instrument, m_velocity);
 }
 
 seqwires::TrackEvent::GroupingInfo seqwires::PercussionOnEvent::getGroupingInfo() const {
-    return {s_percussionEventCategory, m_pitch, GroupingInfo::Grouping::StartOfGroup};
+    return {s_percussionEventCategory, m_instrument.toCode(), GroupingInfo::Grouping::StartOfGroup};
 }
 
 bool seqwires::PercussionOffEvent::operator==(const TrackEvent& other) const {
@@ -37,14 +37,14 @@ bool seqwires::PercussionOffEvent::operator==(const TrackEvent& other) const {
         return false;
     }
     auto otherOff = static_cast<const PercussionOffEvent&>(other);
-    return (m_timeSinceLastEvent == otherOff.m_timeSinceLastEvent) && (m_pitch == otherOff.m_pitch) &&
+    return (m_timeSinceLastEvent == otherOff.m_timeSinceLastEvent) && (m_instrument == otherOff.m_instrument) &&
            (m_velocity == otherOff.m_velocity);
 }
 
 std::size_t seqwires::PercussionOffEvent::getHash() const {
-    return babelwires::hash::mixtureOf(static_cast<const char*>("PercOff"), m_timeSinceLastEvent, m_pitch, m_velocity);
+    return babelwires::hash::mixtureOf(static_cast<const char*>("PercOff"), m_timeSinceLastEvent, m_instrument, m_velocity);
 }
 
 seqwires::TrackEvent::GroupingInfo seqwires::PercussionOffEvent::getGroupingInfo() const {
-    return {s_percussionEventCategory, m_pitch, GroupingInfo::Grouping::EndOfGroup};
+    return {s_percussionEventCategory, m_instrument.toCode(), GroupingInfo::Grouping::EndOfGroup};
 }

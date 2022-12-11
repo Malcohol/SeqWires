@@ -191,8 +191,8 @@ class smf::SmfParser::TrackSplitter {
 
     bool addNoteOn(unsigned int channelNumber, seqwires::ModelDuration timeSinceLastTrackEvent, seqwires::Pitch pitch, seqwires::Velocity velocity) {
         if (const seqwires::PercussionKit *const percussionKit = m_channelSetup[channelNumber].m_kitIfPercussion) { 
-            if (auto maybeInstrument = percussionKit->tryGetInstrumentFromPitch(pitch)) {
-                addToChannel<seqwires::PercussionOnEvent>(channelNumber, timeSinceLastTrackEvent, *maybeInstrument, pitch, velocity);
+            if (auto instrument = percussionKit->tryGetInstrumentFromPitch(pitch)) {
+                addToChannel<seqwires::PercussionOnEvent>(channelNumber, timeSinceLastTrackEvent, *instrument, velocity);
                 return true;
             }
             return false;
@@ -204,8 +204,8 @@ class smf::SmfParser::TrackSplitter {
 
     bool addNoteOff(unsigned int channelNumber, seqwires::ModelDuration timeSinceLastTrackEvent, seqwires::Pitch pitch, seqwires::Velocity velocity) {
         if (const seqwires::PercussionKit *const percussionKit = m_channelSetup[channelNumber].m_kitIfPercussion) { 
-            if (auto maybeInstrument = percussionKit->tryGetInstrumentFromPitch(pitch)) {
-                addToChannel<seqwires::PercussionOffEvent>(channelNumber, timeSinceLastTrackEvent, *maybeInstrument, pitch, velocity);
+            if (auto instrument = percussionKit->tryGetInstrumentFromPitch(pitch)) {
+                addToChannel<seqwires::PercussionOffEvent>(channelNumber, timeSinceLastTrackEvent, *instrument, velocity);
                 return true;
             }
             return false;

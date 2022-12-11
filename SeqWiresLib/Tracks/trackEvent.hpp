@@ -59,7 +59,7 @@ namespace seqwires {
             Category m_category = s_genericCategory;
 
             /// A value which is expected to agree for all events in the same group.
-            using GroupValue = std::uint32_t;
+            using GroupValue = std::uint64_t;
             constexpr static GroupValue c_notAValue = -1;
             GroupValue m_groupValue = c_notAValue;
 
