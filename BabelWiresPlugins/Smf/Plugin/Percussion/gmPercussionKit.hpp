@@ -13,7 +13,7 @@ namespace smf {
     // TODO GS, XG percussion, with appropriate subtyping.
 
     /// A PercussionKit corresponding to the original General MIDI percussion set.
-    class GMPercussionKit : public ContiguousPercussionKit {
+    class GMPercussionKit : public PercussionKit {
       public:
         GMPercussionKit(const seqwires::BuiltInPercussionInstruments& builtInInstruments);
 

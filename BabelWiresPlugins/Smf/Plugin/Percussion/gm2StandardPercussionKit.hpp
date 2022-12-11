@@ -11,7 +11,7 @@
 
 namespace smf {
     /// A PercussionKit corresponding to the instruments of GM2 standard percussion set.
-    class GM2StandardPercussionKit : public ContiguousPercussionKit {
+    class GM2StandardPercussionKit : public PercussionKit {
       public:
         GM2StandardPercussionKit(const seqwires::BuiltInPercussionInstruments& builtInInstruments);
 

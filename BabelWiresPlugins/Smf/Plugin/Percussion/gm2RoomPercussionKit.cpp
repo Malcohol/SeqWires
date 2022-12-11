@@ -9,7 +9,7 @@
 
 smf::GM2RoomPercussionKit::GM2RoomPercussionKit(
     const seqwires::BuiltInPercussionInstruments& builtInInstruments)
-    : ContiguousPercussionKit(getThisIdentifier(), 1,
+    : PercussionKit(getThisIdentifier(), 1,
                     builtInInstruments.convertToIdentifiers({seqwires::BuiltInPercussionInstruments::Value::HighQ,
                                                              seqwires::BuiltInPercussionInstruments::Value::Slap,
                                                              seqwires::BuiltInPercussionInstruments::Value::ScrPsh,

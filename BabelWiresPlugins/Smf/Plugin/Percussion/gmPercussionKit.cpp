@@ -8,7 +8,7 @@
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/gmPercussionKit.hpp>
 
 smf::GMPercussionKit::GMPercussionKit(const seqwires::BuiltInPercussionInstruments& builtInInstruments)
-    : ContiguousPercussionKit(getThisIdentifier(), 1,
+    : PercussionKit(getThisIdentifier(), 1,
                     builtInInstruments.convertToIdentifiers({seqwires::BuiltInPercussionInstruments::Value::AcBass,
                                                              seqwires::BuiltInPercussionInstruments::Value::Bass1,
                                                              seqwires::BuiltInPercussionInstruments::Value::SStick,
