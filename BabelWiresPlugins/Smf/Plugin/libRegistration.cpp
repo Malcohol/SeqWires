@@ -13,6 +13,8 @@
 #include <BabelWiresLib/TypeSystem/typeSystem.hpp>
 
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/gm2StandardPercussionKit.hpp>
+#include <BabelWiresPlugins/Smf/Plugin/Percussion/gm2RoomPercussionKit.hpp>
+#include <BabelWiresPlugins/Smf/Plugin/Percussion/gm2PowerPercussionKit.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/gmPercussionKit.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/gmSpec.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/smfFormat.hpp>
@@ -31,9 +33,15 @@ void smf::registerLib(babelwires::ProjectContext& context) {
             .is<seqwires::BuiltInPercussionInstruments>();
     context.m_typeSystem.addEntry(std::make_unique<GMPercussionKit>(builtInPercussion));
     context.m_typeSystem.addEntry(std::make_unique<GM2StandardPercussionKit>(builtInPercussion));
+    context.m_typeSystem.addEntry(std::make_unique<GM2RoomPercussionKit>(builtInPercussion));
+    context.m_typeSystem.addEntry(std::make_unique<GM2PowerPercussionKit>(builtInPercussion));
 
     // Subtype relationships.
     context.m_typeSystem.addRelatedTypes(GM2StandardPercussionKit::getThisIdentifier(),
+                                         {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}, {}});
+    context.m_typeSystem.addRelatedTypes(GM2RoomPercussionKit::getThisIdentifier(),
+                                         {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}, {}});
+    context.m_typeSystem.addRelatedTypes(GM2PowerPercussionKit::getThisIdentifier(),
                                          {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}, {}});
     context.m_typeSystem.addRelatedTypes(GMPercussionKit::getThisIdentifier(),
                                          {{GM2StandardPercussionKit::getThisIdentifier()}, {}});

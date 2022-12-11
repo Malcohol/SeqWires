@@ -1,5 +1,5 @@
 /**
- * An enum which defines the available MIDI specifications.
+ * A PercussionKit corresponding to the instruments of GM2 Room percussion set.
  *
  * (C) 2021 Malcolm Tyrrell
  *
@@ -74,5 +74,5 @@ smf::GM2RoomPercussionKit::GM2RoomPercussionKit(
                     0, 27) {}
 
 babelwires::LongIdentifier smf::GM2RoomPercussionKit::getThisIdentifier() {
-    return REGISTERED_LONGID("GM2Percussion", "General MIDI 2 Percussion", "9fc0c107-f76c-432a-af58-c794f01df455");
+    return REGISTERED_LONGID("GM2RoomPercussion", "General MIDI 2 Room Percussion", "2192afce-6dea-4ca0-a5d9-551f9e852e5e");
 }

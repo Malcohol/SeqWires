@@ -1,5 +1,5 @@
 /**
- * Defines enums for standard percussion sets.
+ * Defines an enum for the built-in percussion instruments.
  *
  * (C) 2021 Malcolm Tyrrell
  *
@@ -13,11 +13,10 @@
 
 #include <optional>
 
-/// A master list of all the built-in percussion instruments, taken from the General MIDI standard v2.
-/// Note:
-/// * The concept of a percussion instruments is extensible: it is not required that a percussion event have a value
-/// defined by this set.
-/// * These sets of instruments are not required to map to a unique pitch value.
+/// A master list of all the built-in percussion instruments.
+/// We assume the General MIDI standard v2 gives good coverage of percussion instruments, so we use the instruments
+/// found there. Note that the notion of a percussion instrument is extensible: it is not required that a percussion
+/// event have a value defined by this set.
 #define BUILT_IN_PERCUSSION_INSTRUMENTS(X)                                                                             \
     /* Instruments of the GM2 Standard Kit */                                                                          \
     X(HighQ, "High Q", "22074fd9-40ed-4716-8e5b-4e174daa03b3")                                                         \
@@ -89,7 +88,16 @@
     X(RMdTm2, "Room Mid Tom 2", "371bd6eb-33cb-40c8-ba57-3c18eac00787")                                                \
     X(RMdTm1, "Room Mid Tom 1", "58339244-fb5d-49d1-9403-8cf812388ab7")                                                \
     X(RHTm2, "Room Hi Tom 2", "46d6b67b-9e66-46fb-ae5e-24b1296c856c")                                                  \
-    X(RHTm1, "Room Hi Tom 1", "a4b7fc45-3e90-4da4-b3b8-1e437d9a1e00")
+    X(RHTm1, "Room Hi Tom 1", "a4b7fc45-3e90-4da4-b3b8-1e437d9a1e00")                                                  \
+    /* Instruments from the GM2 Power kit */                                                                           \
+    X(PKick, "Power Kick Drum", "326850a1-707f-4b6d-9940-0a9ca28d5a8b")                                                \
+    X(PSnare, "Power Snare Drum", "26b107dc-8ad3-4875-a6ea-c7aff1d852ce")                                              \
+    X(PLwTm2, "Power Low Tom 2", "90dddc4a-18d3-45ca-a942-f667a80a5963")                                               \
+    X(PLwTm1, "Power Low Tom 1", "d8038c6c-5a57-404a-a819-f1f9aa152288")                                               \
+    X(PMdTm2, "Power Mid Tom 2", "ad05c742-99a9-4ac1-98c3-163ba57458a4")                                               \
+    X(PMdTm1, "Power Mid Tom 1", "a117afa9-9efa-4940-a856-f1f65352e25f")                                               \
+    X(PHTm2, "Power Hi Tom 2", "c0c794da-5353-46bb-9b65-a695ee8deae7")                                                 \
+    X(PHTm1, "Power Hi Tom 1", "b18634b2-bdba-44be-8259-822b4b96be8a")
 
 namespace seqwires {
     /// All percussion instruments built into SeqWires.

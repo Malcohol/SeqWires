@@ -59,5 +59,5 @@ smf::GMPercussionKit::GMPercussionKit(const seqwires::BuiltInPercussionInstrumen
                     0, 35) {}
 
 babelwires::LongIdentifier smf::GMPercussionKit::getThisIdentifier() {
-    return REGISTERED_LONGID("GMPercussion", "General MIDI Percussion", "9f6dec59-4d75-4a4b-9cba-e7ff76390c5f");
+    return REGISTERED_LONGID("GMPercussion", "General MIDI Percussion", "7571c9ca-1c7f-4547-9218-391a339bae7d");
 }
