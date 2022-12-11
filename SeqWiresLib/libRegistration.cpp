@@ -33,8 +33,11 @@
 void seqwires::registerLib(babelwires::ProjectContext& context) {
     context.m_typeSystem.addEntry(std::make_unique<ChordType>());
     context.m_typeSystem.addEntry(std::make_unique<PitchClass>());
-    const GMPercussionKit *const gmPercussionKit = context.m_typeSystem.addEntry(std::make_unique<GMPercussionKit>());
-    context.m_typeSystem.addEntry(std::make_unique<GM2StandardPercussionKit>(*gmPercussionKit));
+
+    const BuiltInPercussionInstruments *const builtInPercussion = context.m_typeSystem.addEntry(std::make_unique<BuiltInPercussionInstruments>());
+    context.m_typeSystem.addEntry(std::make_unique<GMPercussionKit>(*builtInPercussion));
+    context.m_typeSystem.addEntry(std::make_unique<GM2StandardPercussionKit>(*builtInPercussion));
+
     context.m_typeSystem.addRelatedTypes(GMPercussionKit::getThisIdentifier(), {{GM2StandardPercussionKit::getThisIdentifier()}, {}});
 
     context.m_typeSystem.addEntry(std::make_unique<MonophonicSubtracksPolicyEnum>());

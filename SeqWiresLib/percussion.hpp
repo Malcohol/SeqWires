@@ -13,8 +13,16 @@
 
 #include <optional>
 
-#define GM_PERCUSSION_VALUES(X)                                                                                        \
-    /* GM Percussion Set - common to GM2, GS and XG sets */                                                            \
+/// A master list of all the built-in percussion instruments.
+#define BUILT_IN_PERCUSSION_INSTRUMENTS(X)                                                                             \
+    X(HighQ, "High Q", "22074fd9-40ed-4716-8e5b-4e174daa03b3")                                                         \
+    X(Slap, "Slap", "3aedf5de-904b-46e2-bc87-445c9f065868")                                                            \
+    X(ScrPsh, "Scratch Push", "3087699b-94bd-4612-b1bd-b5acf037c325")                                                  \
+    X(ScrPll, "Scratch Pull", "8a74f73e-691d-445f-bd2e-fd75bc91a8ef")                                                  \
+    X(Stcks, "Sticks", "c61880f7-2ed2-431b-b23a-14a5457bacfd")                                                         \
+    X(SqClck, "Square Click", "4d887ce2-c748-4127-b3ed-f8430237a82f")                                                  \
+    X(MtrClk, "Metronome Click", "a012ad55-b894-4687-8754-6574f492f90e")                                               \
+    X(MtrBll, "Metronome Bell", "876abe67-81a4-41dd-9d7b-dbc3652c47a1")                                                \
     X(AcBass, "Acoustic Bass Drum", "6ce9c1ac-3439-41eb-9776-dac41184255c")                                            \
     X(Bass1, "Bass Drum 1", "1c39fd51-ed6b-439e-ac8e-3c0fc7cb0d3b")                                                    \
     X(SStick, "Side Stick", "7762bf9b-ee64-4af2-9397-f6a55751f845")                                                    \
@@ -61,19 +69,7 @@
     X(MCuica, "Mute Cuica", "419d9a21-3b53-45f5-bf5a-fcdc72837708")                                                    \
     X(OCuica, "Open Cuica", "2e523d69-fea3-4145-96b7-1402f61472d5")                                                    \
     X(MTrian, "Mute Triangle", "8d72a586-72ee-48fe-9bbd-c1a3500ab648")                                                 \
-    X(OTrian, "Open Triangle", "8ffa30b4-287f-4dcf-8d18-92def658e0d6")
-
-#define GM2_STANDARD_PERCUSSION_VALUES_LO(X)                                                                           \
-    X(HighQ, "High Q", "22074fd9-40ed-4716-8e5b-4e174daa03b3")                                                         \
-    X(Slap, "Slap", "3aedf5de-904b-46e2-bc87-445c9f065868")                                                            \
-    X(ScrPsh, "Scratch Push", "3087699b-94bd-4612-b1bd-b5acf037c325")                                                  \
-    X(ScrPll, "Scratch Pull", "8a74f73e-691d-445f-bd2e-fd75bc91a8ef")                                                  \
-    X(Stcks, "Sticks", "c61880f7-2ed2-431b-b23a-14a5457bacfd")                                                         \
-    X(SqClck, "Square Click", "4d887ce2-c748-4127-b3ed-f8430237a82f")                                                  \
-    X(MtrClk, "Metronome Click", "a012ad55-b894-4687-8754-6574f492f90e")                                               \
-    X(MtrBll, "Metronome Bell", "876abe67-81a4-41dd-9d7b-dbc3652c47a1")
-
-#define GM2_STANDARD_PERCUSSION_VALUES_HI(X)                                                                           \
+    X(OTrian, "Open Triangle", "8ffa30b4-287f-4dcf-8d18-92def658e0d6")                                                 \
     X(Shaker, "Shaker", "ee9c029a-98af-4679-adc4-3c5185ca2e95")                                                        \
     X(JngBll, "Jingle Bell", "4a3da07d-a820-44f0-98fc-8c409768f7c2")                                                   \
     X(BlTree, "Bell Tree", "770dd65c-6dd1-43ba-89f8-c4507c158709")                                                     \
@@ -82,8 +78,23 @@
     X(OSurdo, "Open Surdo", "16a9961e-26a2-4e85-bb8c-32b139713694")
 
 namespace seqwires {
+    /// All percussion instruments built into SeqWires.
+    /// This is just a holder of instruments. It cannot be used as a PercussionKit because the values do not have a 1-1 mapping to pitch values.
+    class BuiltInPercussionInstruments : public babelwires::Enum {
+      public:
+        BuiltInPercussionInstruments();
+
+        ENUM_DEFINE_CPP_ENUM(BUILT_IN_PERCUSSION_INSTRUMENTS);
+
+        static babelwires::LongIdentifier getThisIdentifier();
+
+        /// Convert a vector of selected percussion instruments to a vector of identifiers.
+        babelwires::Enum::EnumValues convertToIdentifiers(const std::vector<Value>& values) const;
+    };
+
     // TODO GS, XG percussion, with appropriate subtyping.
 
+    /// An enum of percussion instruments which has a 1-1 mapping to pitch values.
     class PercussionKit : public babelwires::Enum {
       public:
         PercussionKit(babelwires::LongIdentifier identifier, babelwires::VersionNumber version, EnumValues values,
@@ -95,37 +106,24 @@ namespace seqwires {
         virtual std::optional<babelwires::Identifier> tryGetInstrumentFromPitch(Pitch pitch) const = 0;
     };
 
-    /// An enum corresponding to the original General MIDI percussion set.
+    /// A PercussionKit corresponding to the original General MIDI percussion set.
     class GMPercussionKit : public PercussionKit {
       public:
-        GMPercussionKit();
+        GMPercussionKit(const BuiltInPercussionInstruments& builtInInstruments);
 
         static babelwires::LongIdentifier getThisIdentifier();
-
-        ENUM_DEFINE_CPP_ENUM(GM_PERCUSSION_VALUES);
 
         std::optional<Pitch> tryGetPitchFromInstrument(babelwires::Identifier identifier) const override;
 
         std::optional<babelwires::Identifier> tryGetInstrumentFromPitch(Pitch pitch) const override;
     };
 
-    /// An enum corresponding to the instruments of GM2 standard percussion set.
+    /// A PercussionKit corresponding to the instruments of GM2 standard percussion set.
     class GM2StandardPercussionKit : public PercussionKit {
       public:
-        GM2StandardPercussionKit(const GMPercussionKit& gmPercussionKit);
+        GM2StandardPercussionKit(const BuiltInPercussionInstruments& builtInInstruments);
 
         static babelwires::LongIdentifier getThisIdentifier();
-
-        // clang-format off
-        enum class Value {
-            GM2_STANDARD_PERCUSSION_VALUES_LO(ENUM_SELECT_FIRST_ARGUMENT)
-            GM_PERCUSSION_VALUES(ENUM_SELECT_FIRST_ARGUMENT)
-            GM2_STANDARD_PERCUSSION_VALUES_HI(ENUM_SELECT_FIRST_ARGUMENT) 
-            NUM_VALUES,
-            NotAValue = NUM_VALUES
-        };
-        ENUM_DEFINE_CPP_METHODS
-        // clang-format on
 
         std::optional<Pitch> tryGetPitchFromInstrument(babelwires::Identifier identifier) const override;
 
