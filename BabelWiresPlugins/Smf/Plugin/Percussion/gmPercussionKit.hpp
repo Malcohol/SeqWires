@@ -1,5 +1,5 @@
 /**
- * An enum which defines the available MIDI specifications.
+ * A PercussionKit corresponding to the original General MIDI percussion set.
  *
  * (C) 2021 Malcolm Tyrrell
  *
@@ -13,14 +13,10 @@ namespace smf {
     // TODO GS, XG percussion, with appropriate subtyping.
 
     /// A PercussionKit corresponding to the original General MIDI percussion set.
-    class GMPercussionKit : public PercussionKit {
+    class GMPercussionKit : public ContiguousPercussionKit {
       public:
         GMPercussionKit(const seqwires::BuiltInPercussionInstruments& builtInInstruments);
 
         static babelwires::LongIdentifier getThisIdentifier();
-
-        std::optional<seqwires::Pitch> tryGetPitchFromInstrument(babelwires::Identifier identifier) const override;
-
-        std::optional<babelwires::Identifier> tryGetInstrumentFromPitch(seqwires::Pitch pitch) const override;
     };
 } // namespace smf

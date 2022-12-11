@@ -1,5 +1,5 @@
 /**
- * An enum which defines the available MIDI specifications.
+ * A PercussionKit corresponding to the instruments of GM2 standard percussion set.
  *
  * (C) 2021 Malcolm Tyrrell
  *
@@ -11,14 +11,10 @@
 
 namespace smf {
     /// A PercussionKit corresponding to the instruments of GM2 standard percussion set.
-    class GM2StandardPercussionKit : public PercussionKit {
+    class GM2StandardPercussionKit : public ContiguousPercussionKit {
       public:
         GM2StandardPercussionKit(const seqwires::BuiltInPercussionInstruments& builtInInstruments);
 
         static babelwires::LongIdentifier getThisIdentifier();
-
-        std::optional<seqwires::Pitch> tryGetPitchFromInstrument(babelwires::Identifier identifier) const override;
-
-        std::optional<babelwires::Identifier> tryGetInstrumentFromPitch(seqwires::Pitch pitch) const override;
     };
 } // namespace smf

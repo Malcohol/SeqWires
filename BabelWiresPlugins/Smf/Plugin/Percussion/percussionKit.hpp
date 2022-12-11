@@ -1,5 +1,5 @@
 /**
- * An enum which defines the available MIDI specifications.
+ * An abstraction for Enums of percussion instruments which can map to pitch values.
  *
  * (C) 2021 Malcolm Tyrrell
  *
@@ -20,7 +20,19 @@ namespace smf {
 
         virtual std::optional<seqwires::Pitch> tryGetPitchFromInstrument(babelwires::Identifier identifier) const = 0;
 
-        /// If the pitch is in range, set indexOut and return true.
         virtual std::optional<babelwires::Identifier> tryGetInstrumentFromPitch(seqwires::Pitch pitch) const = 0;
+    };
+
+    /// An enum of percussion instruments whose pitches occur in a contiguous block.
+    class ContiguousPercussionKit : public PercussionKit {
+      public:
+        ContiguousPercussionKit(babelwires::LongIdentifier identifier, babelwires::VersionNumber version, EnumValues values,
+                      unsigned int indexOfDefaultValue, seqwires::Pitch pitchOfLowestInstrument);
+
+        std::optional<seqwires::Pitch> tryGetPitchFromInstrument(babelwires::Identifier identifier) const override;
+
+        std::optional<babelwires::Identifier> tryGetInstrumentFromPitch(seqwires::Pitch pitch) const override;
+      private:
+        seqwires::Pitch m_pitchOfLowestInstrument;
     };
 }

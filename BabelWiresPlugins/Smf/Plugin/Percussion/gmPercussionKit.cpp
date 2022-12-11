@@ -7,12 +7,8 @@
  **/
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/gmPercussionKit.hpp>
 
-smf::PercussionKit::PercussionKit(babelwires::LongIdentifier identifier, babelwires::VersionNumber version,
-                                  EnumValues values, unsigned int indexOfDefaultValue)
-    : Enum(identifier, version, values, indexOfDefaultValue) {}
-
 smf::GMPercussionKit::GMPercussionKit(const seqwires::BuiltInPercussionInstruments& builtInInstruments)
-    : PercussionKit(getThisIdentifier(), 1,
+    : ContiguousPercussionKit(getThisIdentifier(), 1,
                     builtInInstruments.convertToIdentifiers({seqwires::BuiltInPercussionInstruments::Value::AcBass,
                                                              seqwires::BuiltInPercussionInstruments::Value::Bass1,
                                                              seqwires::BuiltInPercussionInstruments::Value::SStick,
@@ -60,24 +56,8 @@ smf::GMPercussionKit::GMPercussionKit(const seqwires::BuiltInPercussionInstrumen
                                                              seqwires::BuiltInPercussionInstruments::Value::OCuica,
                                                              seqwires::BuiltInPercussionInstruments::Value::MTrian,
                                                              seqwires::BuiltInPercussionInstruments::Value::OTrian}),
-                    0) {}
+                    0, 35) {}
 
 babelwires::LongIdentifier smf::GMPercussionKit::getThisIdentifier() {
     return REGISTERED_LONGID("GMPercussion", "General MIDI Percussion", "9f6dec59-4d75-4a4b-9cba-e7ff76390c5f");
-}
-
-std::optional<seqwires::Pitch>
-smf::GMPercussionKit::tryGetPitchFromInstrument(babelwires::Identifier identifier) const {
-    const int index = tryGetIndexFromIdentifier(identifier);
-    if (index != -1) {
-        return index + 35;
-    }
-    return {};
-}
-
-std::optional<babelwires::Identifier> smf::GMPercussionKit::tryGetInstrumentFromPitch(seqwires::Pitch pitch) const {
-    if ((pitch >= 35) && (pitch <= 81)) {
-        return getEnumValues()[pitch - 35];
-    }
-    return {};
 }

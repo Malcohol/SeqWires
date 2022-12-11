@@ -9,7 +9,7 @@
 
 smf::GM2StandardPercussionKit::GM2StandardPercussionKit(
     const seqwires::BuiltInPercussionInstruments& builtInInstruments)
-    : PercussionKit(getThisIdentifier(), 1,
+    : ContiguousPercussionKit(getThisIdentifier(), 1,
                     builtInInstruments.convertToIdentifiers({seqwires::BuiltInPercussionInstruments::Value::HighQ,
                                                              seqwires::BuiltInPercussionInstruments::Value::Slap,
                                                              seqwires::BuiltInPercussionInstruments::Value::ScrPsh,
@@ -71,25 +71,8 @@ smf::GM2StandardPercussionKit::GM2StandardPercussionKit(
                                                              seqwires::BuiltInPercussionInstruments::Value::Cstnts,
                                                              seqwires::BuiltInPercussionInstruments::Value::MSurdo,
                                                              seqwires::BuiltInPercussionInstruments::Value::OSurdo}),
-                    0) {}
+                    0, 27) {}
 
 babelwires::LongIdentifier smf::GM2StandardPercussionKit::getThisIdentifier() {
     return REGISTERED_LONGID("GM2Percussion", "General MIDI 2 Percussion", "9fc0c107-f76c-432a-af58-c794f01df455");
-}
-
-std::optional<seqwires::Pitch>
-smf::GM2StandardPercussionKit::tryGetPitchFromInstrument(babelwires::Identifier identifier) const {
-    const int index = tryGetIndexFromIdentifier(identifier);
-    if (index != -1) {
-        return index + 27;
-    }
-    return {};
-}
-
-std::optional<babelwires::Identifier>
-smf::GM2StandardPercussionKit::tryGetInstrumentFromPitch(seqwires::Pitch pitch) const {
-    if ((pitch >= 27) && (pitch <= 87)) {
-        return getEnumValues()[pitch - 35];
-    }
-    return {};
 }
