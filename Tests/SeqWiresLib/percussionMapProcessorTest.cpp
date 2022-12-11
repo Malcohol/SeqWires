@@ -22,16 +22,12 @@ namespace {
         const seqwires::BuiltInPercussionInstruments& builtInPercussion =
             typeSystem.getRegisteredEntry(seqwires::BuiltInPercussionInstruments::getThisIdentifier()).is<seqwires::BuiltInPercussionInstruments>();
 
-        const seqwires::GM2StandardPercussionKit& percussionType =
-            typeSystem.getRegisteredEntry(seqwires::GM2StandardPercussionKit::getThisIdentifier())
-                .is<seqwires::GM2StandardPercussionKit>();
-
         babelwires::MapData percussionMap;
-        percussionMap.setSourceTypeId(seqwires::GMPercussionKit::getThisIdentifier());
-        percussionMap.setTargetTypeId(seqwires::GMPercussionKit::getThisIdentifier());
+        percussionMap.setSourceTypeId(seqwires::BuiltInPercussionInstruments::getThisIdentifier());
+        percussionMap.setTargetTypeId(seqwires::BuiltInPercussionInstruments::getThisIdentifier());
 
-        babelwires::OneToOneMapEntryData maplet(typeSystem, seqwires::GM2StandardPercussionKit::getThisIdentifier(),
-                                                seqwires::GM2StandardPercussionKit::getThisIdentifier());
+        babelwires::OneToOneMapEntryData maplet(typeSystem, seqwires::BuiltInPercussionInstruments::getThisIdentifier(),
+                                                seqwires::BuiltInPercussionInstruments::getThisIdentifier());
 
         babelwires::EnumValue sourceValue;
         babelwires::EnumValue targetValue;
@@ -87,10 +83,6 @@ TEST(PercussionMapProcessorTest, funcSimple) {
     babelwires::TypeSystem typeSystem;
 
     const seqwires::BuiltInPercussionInstruments *const builtInPercussion = typeSystem.addEntry(std::make_unique<seqwires::BuiltInPercussionInstruments>());
-    const seqwires::GMPercussionKit* const gmPercussionKit =
-        typeSystem.addEntry(std::make_unique<seqwires::GMPercussionKit>(*builtInPercussion));
-    const seqwires::GM2StandardPercussionKit* const gm2StandardPercussionKit =
-        typeSystem.addEntry(std::make_unique<seqwires::GM2StandardPercussionKit>(*builtInPercussion));
 
     const babelwires::MapData mapData = getTestPercussionMap(typeSystem);
     const seqwires::Track inputTrack = getTestInputTrack();
@@ -103,16 +95,6 @@ TEST(PercussionMapProcessorTest, funcSimple) {
 TEST(PercussionMapProcessorTest, processor) {
     testUtils::TestEnvironment testEnvironment;
     const seqwires::BuiltInPercussionInstruments *const builtInPercussion = testEnvironment.m_typeSystem.addEntry(std::make_unique<seqwires::BuiltInPercussionInstruments>());
-    const seqwires::GMPercussionKit* const gmPercussionKit =
-        testEnvironment.m_typeSystem.addEntry(std::make_unique<seqwires::GMPercussionKit>(*builtInPercussion));
-    const seqwires::GM2StandardPercussionKit* const gm2StandardPercussionKit =
-        testEnvironment.m_typeSystem.addEntry(std::make_unique<seqwires::GM2StandardPercussionKit>(*builtInPercussion));
-    testEnvironment.m_typeSystem.addRelatedTypes(seqwires::GMPercussionKit::getThisIdentifier(),
-                                                 {{seqwires::GM2StandardPercussionKit::getThisIdentifier()}, {}});
-
-    const seqwires::GM2StandardPercussionKit& percussionType =
-        testEnvironment.m_typeSystem.getRegisteredEntry(seqwires::GM2StandardPercussionKit::getThisIdentifier())
-            .is<seqwires::GM2StandardPercussionKit>();
 
     seqwires::PercussionMapProcessor processor(testEnvironment.m_projectContext);
 

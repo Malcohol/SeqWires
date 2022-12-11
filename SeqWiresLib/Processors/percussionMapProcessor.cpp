@@ -20,8 +20,8 @@
 namespace {
     struct PercussionTypeMap : babelwires::MapFeature {
         PercussionTypeMap()
-            : babelwires::MapFeature(seqwires::GM2StandardPercussionKit::getThisIdentifier(),
-                                     seqwires::GM2StandardPercussionKit::getThisIdentifier()) {}
+            : babelwires::MapFeature(seqwires::BuiltInPercussionInstruments::getThisIdentifier(),
+                                     seqwires::BuiltInPercussionInstruments::getThisIdentifier()) {}
 
         babelwires::MapData getDefaultMapData() const override {
             return getStandardDefaultMapData(babelwires::MapEntryData::Kind::AllToSame);
