@@ -32,12 +32,12 @@ smf::SmfWriter::SmfWriter(const babelwires::ProjectContext& projectContext, babe
     , m_ostream(ostream)
     , m_os(&m_ostream)
     , m_division(256) {
-    const seqwires::PercussionKit& gmKit =
-        projectContext.m_typeSystem.getRegisteredEntry(seqwires::GMPercussionKit::getThisIdentifier())
-            .is<seqwires::GMPercussionKit>();
-    const seqwires::PercussionKit& gm2StandardKit =
-        projectContext.m_typeSystem.getRegisteredEntry(seqwires::GM2StandardPercussionKit::getThisIdentifier())
-            .is<seqwires::GM2StandardPercussionKit>();
+    const smf::PercussionKit& gmKit =
+        projectContext.m_typeSystem.getRegisteredEntry(smf::GMPercussionKit::getThisIdentifier())
+            .is<smf::GMPercussionKit>();
+    const smf::PercussionKit& gm2StandardKit =
+        projectContext.m_typeSystem.getRegisteredEntry(smf::GM2StandardPercussionKit::getThisIdentifier())
+            .is<smf::GM2StandardPercussionKit>();
     m_knownKits[GM_PERCUSSION_KIT] = &gmKit;
     m_knownKits[GM2_STANDARD_PERCUSSION_KIT] = &gm2StandardKit;
 }
@@ -137,7 +137,7 @@ smf::SmfWriter::WriteTrackEventResult smf::SmfWriter::writeTrackEvent(int channe
     assert(channelNumber >= 0);
     assert(channelNumber <= 15);
 
-    if (const seqwires::PercussionKit *const kitIfPercussion = m_channelSetup[channelNumber].m_kitIfPercussion) {
+    if (const smf::PercussionKit *const kitIfPercussion = m_channelSetup[channelNumber].m_kitIfPercussion) {
         if (const seqwires::PercussionOnEvent* percussionOn = e.as<seqwires::PercussionOnEvent>()) {
             if (auto maybePitch = kitIfPercussion->tryGetPitchFromInstrument(percussionOn->getInstrument())) {
                 writeModelDuration(timeSinceLastEvent);

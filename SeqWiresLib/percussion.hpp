@@ -13,7 +13,11 @@
 
 #include <optional>
 
-/// A master list of all the built-in percussion instruments.
+/// A master list of all the built-in percussion instruments, taken from the General MIDI standard v2.
+/// Note:
+/// * The concept of a percussion instruments is extensible: it is not required that a percussion event have a value
+/// defined by this set.
+/// * These sets of instruments are not required to map to a unique pitch value.
 #define BUILT_IN_PERCUSSION_INSTRUMENTS(X)                                                                             \
     X(HighQ, "High Q", "22074fd9-40ed-4716-8e5b-4e174daa03b3")                                                         \
     X(Slap, "Slap", "3aedf5de-904b-46e2-bc87-445c9f065868")                                                            \
@@ -79,7 +83,8 @@
 
 namespace seqwires {
     /// All percussion instruments built into SeqWires.
-    /// This is just a holder of instruments. It cannot be used as a PercussionKit because the values do not have a 1-1 mapping to pitch values.
+    /// This is just a holder of instruments. It cannot be used as a PercussionKit because the values do not have a 1-1
+    /// mapping to pitch values.
     class BuiltInPercussionInstruments : public babelwires::Enum {
       public:
         BuiltInPercussionInstruments();
@@ -91,43 +96,4 @@ namespace seqwires {
         /// Convert a vector of selected percussion instruments to a vector of identifiers.
         babelwires::Enum::EnumValues convertToIdentifiers(const std::vector<Value>& values) const;
     };
-
-    // TODO GS, XG percussion, with appropriate subtyping.
-
-    /// An enum of percussion instruments which has a 1-1 mapping to pitch values.
-    class PercussionKit : public babelwires::Enum {
-      public:
-        PercussionKit(babelwires::LongIdentifier identifier, babelwires::VersionNumber version, EnumValues values,
-                      unsigned int indexOfDefaultValue);
-
-        virtual std::optional<Pitch> tryGetPitchFromInstrument(babelwires::Identifier identifier) const = 0;
-
-        /// If the pitch is in range, set indexOut and return true.
-        virtual std::optional<babelwires::Identifier> tryGetInstrumentFromPitch(Pitch pitch) const = 0;
-    };
-
-    /// A PercussionKit corresponding to the original General MIDI percussion set.
-    class GMPercussionKit : public PercussionKit {
-      public:
-        GMPercussionKit(const BuiltInPercussionInstruments& builtInInstruments);
-
-        static babelwires::LongIdentifier getThisIdentifier();
-
-        std::optional<Pitch> tryGetPitchFromInstrument(babelwires::Identifier identifier) const override;
-
-        std::optional<babelwires::Identifier> tryGetInstrumentFromPitch(Pitch pitch) const override;
-    };
-
-    /// A PercussionKit corresponding to the instruments of GM2 standard percussion set.
-    class GM2StandardPercussionKit : public PercussionKit {
-      public:
-        GM2StandardPercussionKit(const BuiltInPercussionInstruments& builtInInstruments);
-
-        static babelwires::LongIdentifier getThisIdentifier();
-
-        std::optional<Pitch> tryGetPitchFromInstrument(babelwires::Identifier identifier) const override;
-
-        std::optional<babelwires::Identifier> tryGetInstrumentFromPitch(Pitch pitch) const override;
-    };
-
 } // namespace seqwires

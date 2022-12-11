@@ -35,12 +35,12 @@ smf::SmfParser::SmfParser(babelwires::DataSource& dataSource, const babelwires::
     , m_sequenceType(source::SmfFeature::SMF_UNKNOWN_FORMAT)
     , m_numTracks(-1)
     , m_division(-1) {
-    const seqwires::PercussionKit& gmKit =
-        projectContext.m_typeSystem.getRegisteredEntry(seqwires::GMPercussionKit::getThisIdentifier())
-            .is<seqwires::GMPercussionKit>();
-    const seqwires::PercussionKit& gm2StandardKit =
-        projectContext.m_typeSystem.getRegisteredEntry(seqwires::GM2StandardPercussionKit::getThisIdentifier())
-            .is<seqwires::GM2StandardPercussionKit>();
+    const smf::PercussionKit& gmKit =
+        projectContext.m_typeSystem.getRegisteredEntry(smf::GMPercussionKit::getThisIdentifier())
+            .is<smf::GMPercussionKit>();
+    const smf::PercussionKit& gm2StandardKit =
+        projectContext.m_typeSystem.getRegisteredEntry(smf::GM2StandardPercussionKit::getThisIdentifier())
+            .is<smf::GM2StandardPercussionKit>();
     m_knownKits[GM_PERCUSSION_KIT] = &gmKit;
     m_knownKits[GM2_STANDARD_PERCUSSION_KIT] = &gm2StandardKit;
 }
@@ -190,7 +190,7 @@ class smf::SmfParser::TrackSplitter {
         , m_channelSetup(channelSetup) {}
 
     bool addNoteOn(unsigned int channelNumber, seqwires::ModelDuration timeSinceLastTrackEvent, seqwires::Pitch pitch, seqwires::Velocity velocity) {
-        if (const seqwires::PercussionKit *const percussionKit = m_channelSetup[channelNumber].m_kitIfPercussion) { 
+        if (const smf::PercussionKit *const percussionKit = m_channelSetup[channelNumber].m_kitIfPercussion) { 
             if (auto instrument = percussionKit->tryGetInstrumentFromPitch(pitch)) {
                 addToChannel<seqwires::PercussionOnEvent>(channelNumber, timeSinceLastTrackEvent, *instrument, velocity);
                 return true;
@@ -203,7 +203,7 @@ class smf::SmfParser::TrackSplitter {
     }
 
     bool addNoteOff(unsigned int channelNumber, seqwires::ModelDuration timeSinceLastTrackEvent, seqwires::Pitch pitch, seqwires::Velocity velocity) {
-        if (const seqwires::PercussionKit *const percussionKit = m_channelSetup[channelNumber].m_kitIfPercussion) { 
+        if (const smf::PercussionKit *const percussionKit = m_channelSetup[channelNumber].m_kitIfPercussion) { 
             if (auto instrument = percussionKit->tryGetInstrumentFromPitch(pitch)) {
                 addToChannel<seqwires::PercussionOffEvent>(channelNumber, timeSinceLastTrackEvent, *instrument, velocity);
                 return true;
@@ -275,7 +275,7 @@ class smf::SmfParser::TrackSplitter {
   private:
     static const int MAX_CHANNELS = 16;
 
-    std::array<const seqwires::PercussionKit*, NUM_KNOWN_PERCUSSION_KITS> m_knownKits;
+    std::array<const smf::PercussionKit*, NUM_KNOWN_PERCUSSION_KITS> m_knownKits;
 
     seqwires::ModelDuration m_timeSinceStart;
 

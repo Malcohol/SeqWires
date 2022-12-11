@@ -8,9 +8,9 @@
 #pragma once
 
 #include <BabelWiresPlugins/Smf/Plugin/smfTargetModel.hpp>
+#include <BabelWiresPlugins/Smf/Plugin/smfPercussion.hpp>
 
 #include <SeqWiresLib/musicTypes.hpp>
-#include <SeqWiresLib/percussion.hpp>
 
 #include <cstdint>
 #include <ostream>
@@ -82,7 +82,7 @@ namespace smf {
         /// Always use metrical time. Quater-note division.
         int m_division;
 
-        std::array<const seqwires::PercussionKit*, NUM_KNOWN_PERCUSSION_KITS> m_knownKits;
+        std::array<const smf::PercussionKit*, NUM_KNOWN_PERCUSSION_KITS> m_knownKits;
 
                 /// Currently just used to determine which tracks are percussion tracks.
         struct ChannelSetup {
@@ -93,7 +93,7 @@ namespace smf {
             //babelwires::Byte m_gsPartMode = 0;
             // This is non-null when the pitches in the data should be interpreted as percussion events from the given
             // kit.
-            const seqwires::PercussionKit* m_kitIfPercussion = nullptr;
+            const smf::PercussionKit* m_kitIfPercussion = nullptr;
         };
 
         std::array<ChannelSetup, 16> m_channelSetup;

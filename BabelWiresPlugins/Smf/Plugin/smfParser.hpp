@@ -9,6 +9,7 @@
 
 #include <BabelWiresPlugins/Smf/Plugin/gmSpec.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/smfSourceModel.hpp>
+#include <BabelWiresPlugins/Smf/Plugin/smfPercussion.hpp>
 
 #include <SeqWiresLib/musicTypes.hpp>
 
@@ -112,7 +113,7 @@ namespace smf {
         // The specification provides additional semantics when interpreting the data.
         GMSpecType::Value m_gmSpec;
 
-        std::array<const seqwires::PercussionKit*, NUM_KNOWN_PERCUSSION_KITS> m_knownKits;
+        std::array<const smf::PercussionKit*, NUM_KNOWN_PERCUSSION_KITS> m_knownKits;
 
         /// Currently just used to determine which tracks are percussion tracks.
         struct ChannelSetup {
@@ -123,7 +124,7 @@ namespace smf {
             babelwires::Byte m_gsPartMode = 0;
             // This is non-null when the pitches in the data should be interpreted as percussion events from the given
             // kit.
-            const seqwires::PercussionKit* m_kitIfPercussion = nullptr;
+            const smf::PercussionKit* m_kitIfPercussion = nullptr;
         };
 
         std::array<ChannelSetup, 16> m_channelSetup;
