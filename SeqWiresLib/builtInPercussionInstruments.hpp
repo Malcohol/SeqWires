@@ -157,7 +157,45 @@
     X(Timpf, "Timpani f", "0094a231-a4ec-49d5-b6b2-ec75cd95eeeb")                                                      \
     X(CnCym2, "Concert Cymbal 2", "ed3cb318-c5d1-44b5-808d-a7a3708883ec")                                              \
     X(CnCym1, "Concert Cymbal 1", "d1e439d2-a4aa-4155-8cca-932a18f6de53")                                              \
-    X(Aplaus, "Applause", "9c0b6fa1-9e84-4321-9e5a-c192f02f04e8")
+    X(Aplaus, "Applause", "9c0b6fa1-9e84-4321-9e5a-c192f02f04e8")                                                      \
+    /* Instruments of the GM2 SFX Set*/                                                                                \
+    X(GFret, "Guitar Fret Noise", "aa66eb2a-7a28-4e69-9c54-b82bec6e325c")                                              \
+    X(GCutUp, "Guitar Cutting Noise Up", "ec817b1d-724c-42de-95dd-157d39ea2f88")                                       \
+    X(GCutDn, "Guitar Cutting Noise Down", "73afc0e5-ada5-4612-9796-efaf5afc520e")                                     \
+    X(DBsSlp, "String Slap of Double Bass", "183b24b0-be97-461e-9938-b6eac7af8305")                                    \
+    X(FKyClk, "Fl.Key Click", "82e259d6-5b82-46a0-ae9d-af4a82bcdccc")                                                  \
+    X(Laugh, "Laughing", "ecad883e-5fc6-4354-adf2-c04420d408a2")                                                       \
+    X(Scream, "Scream", "72172cbf-a239-4348-90de-d8d3feb63883")                                                        \
+    X(Punch, "Punch", "e0405dc7-a198-46c6-a941-17e890234020")                                                          \
+    X(HeartB, "Heart Beat", "835db2bc-b537-4881-9569-e70cecd8513a")                                                    \
+    X(Foot1, "Footsteps 1", "bd261e33-5393-46b5-80df-7f5ec9def0da")                                                    \
+    X(Foot2, "Footsteps 2", "5c508ed1-1f97-4c9f-84ce-f23603298f4f")                                                    \
+    X(DoorCr, "Door Creaking", "e5954f90-e55b-42c6-a892-ba704a3c8c4a")                                                 \
+    X(Door, "Door", "f503579e-399d-4b0c-a3de-1b4ff499041d")                                                            \
+    X(Scrtch, "Scratch", "23ca7688-b3a9-4d56-8223-863ff02fb76f")                                                       \
+    X(WChime, "Wind Chimes", "0a5b3d9c-e549-4e52-a0b4-8c6263c3c68d")                                                   \
+    X(CarEng, "Car-Engine", "c67aa407-232a-421e-b9dc-e51f97f82666")                                                    \
+    X(CarStp, "Car-Stop", "f05bc125-f4cb-422d-9a81-a43299b1a5f0")                                                      \
+    X(CarPss, "Car-Pass", "06d3bfc7-ccf0-4c79-ade5-9024d1067308")                                                      \
+    X(CarCrs, "Car-Crash", "cb939c19-8e23-45a7-8cce-5df872e70fe1")                                                     \
+    X(Siren, "Siren", "6206833b-5c89-4a77-aa0e-1d6c289ceb13")                                                          \
+    X(Train, "Train", "5e99c16f-a06f-48a0-b530-b66b148918f9")                                                          \
+    X(Jetpln, "Jetplane", "71b1d167-2ad9-4ad8-9613-c0448e815dd8")                                                      \
+    X(Heli, "Helicopter", "5100a13e-4605-461e-9da8-ef757910d23c")                                                      \
+    X(Strshp, "Starship", "040b1158-eeb3-4bf9-9541-f09e217c3344")                                                      \
+    X(GunSht, "Gun Shot", "35f4a5af-66c8-4dfb-95ef-0fc18bd4a8a8")                                                      \
+    X(MGun, "Machine Gun", "7ade1725-d91a-4a48-b521-81bc315c3f41")                                                     \
+    X(Lsrgun, "Lasergun", "ce9abcc4-88d7-4fae-b19d-0e1dc3ed8855")                                                      \
+    X(Explsn, "Explosion", "a5d401d5-55b6-422c-9b5e-bc3a8fd71007")                                                     \
+    X(Dog, "Dog", "65df01c9-3cb0-4de9-989f-978b5f160d64")                                                              \
+    X(Gallop, "Horse-Gallop", "8fe8ca8c-5018-4f21-8b70-3a04ad498123")                                                  \
+    X(Birds, "Birds", "c0a50e5f-1f96-40e0-8fcd-28996605f4c9")                                                          \
+    X(Rain, "Rain", "07017f06-4109-4bea-aa7a-cf25d298bcfa")                                                            \
+    X(Thnder, "Thunder", "8337de9c-837a-4c4e-b894-529e16a424c5")                                                       \
+    X(Wind, "Wind", "c6c86918-1618-4c1b-90a5-a8a0e8527df4")                                                            \
+    X(Seashr, "Seashore", "802751a0-4cf3-4313-8e05-943432becc37")                                                      \
+    X(Stream, "Stream", "70645217-c810-4009-a186-4113797c622f")                                                        \
+    X(Bubble, "Bubble", "8b4b34a6-6cee-4777-85b6-a1568fe4c300")
 
 namespace seqwires {
     /// All percussion instruments built into SeqWires.
