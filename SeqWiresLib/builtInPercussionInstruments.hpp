@@ -135,7 +135,29 @@
     /* Instruments of the GM2 Brush Set */                                                                             \
     X(BrTap, "Brush Tap", "7cf52502-5bac-43bc-9a83-6c3e62039732")                                                      \
     X(BrSlap, "Brush Slap", "c35c576c-6b02-46f3-94bd-d76af0330adf")                                                    \
-    X(BrSwrl, "Brush Swirl", "ab6149aa-754f-43b4-acf6-2d6b8167ca0d")
+    X(BrSwrl, "Brush Swirl", "ab6149aa-754f-43b4-acf6-2d6b8167ca0d")                                                   \
+    /* Instruments of the GM2 Orchestra Set */                                                                         \
+    X(ClHH2, "Closed Hi-hat 2", "07d0de4d-0857-451d-ad7f-5f53a3320ba3")                                                \
+    X(OpHH2, "Open Hi-hat 2", "e3a28b92-3b8a-4767-8241-1d90018f1123")                                                  \
+    X(CnBD2, "Concert BD 2", "83f949aa-80e5-4950-8441-c625e7a27ee8")                                                   \
+    X(CnBD1, "Concert BD 1", "243ba465-60f4-4905-b7ee-afa08a5dca66")                                                   \
+    X(CnSD, "Concert SD", "1d155d4c-22c4-4199-87a6-d5636acd2fc7")                                                      \
+    X(TimpF, "Timpani F", "a21db818-b9c6-4924-991f-e49f80686d11")                                                      \
+    X(TimpFs, "Timpani F#", "20052958-37d3-4644-8379-65e75ff9c4a0")                                                    \
+    X(TimpG, "Timpani G", "741f70c2-99e0-4145-9390-643386c484ca")                                                      \
+    X(TimpGs, "Timpani G#", "5c51f323-3c25-45b0-b963-79add3ec4aa9")                                                    \
+    X(TimpA, "Timpani A", "dd2cfd58-4d4f-453c-b25f-5b8cfcb192e4")                                                      \
+    X(TimpAs, "Timpani A#", "9d67af57-43b3-4729-9cc6-84e4c7056639")                                                    \
+    X(TimpB, "Timpani B", "4522c95a-86db-4acc-ac5a-7634ce3d9d28")                                                      \
+    X(Timpc, "Timpani c", "3810915d-1ff8-499d-be65-d931d5add550")                                                      \
+    X(Timpcs, "Timpani c#", "f7512577-290c-4f09-bf72-9dea5a474f76")                                                    \
+    X(Timpd, "Timpani d", "61e52c7d-73b3-43c9-ae9a-fea2aed1025f")                                                      \
+    X(Timpds, "Timpani d#", "0dea9c66-bbd7-4cb9-9f4e-4f371eedb2b1")                                                    \
+    X(Timpe, "Timpani e", "dacfdb72-a758-41ee-a076-63104b536788")                                                      \
+    X(Timpf, "Timpani f", "0094a231-a4ec-49d5-b6b2-ec75cd95eeeb")                                                      \
+    X(CnCym2, "Concert Cymbal 2", "ed3cb318-c5d1-44b5-808d-a7a3708883ec")                                              \
+    X(CnCym1, "Concert Cymbal 1", "d1e439d2-a4aa-4155-8cca-932a18f6de53")                                              \
+    X(Aplaus, "Applause", "9c0b6fa1-9e84-4321-9e5a-c192f02f04e8")
 
 namespace seqwires {
     /// All percussion instruments built into SeqWires.
