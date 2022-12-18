@@ -12,10 +12,10 @@
 #include <BabelWiresLib/Project/projectContext.hpp>
 #include <BabelWiresLib/TypeSystem/typeSystem.hpp>
 
-#include <BabelWiresPlugins/Smf/Plugin/Percussion/gm2StandardPercussionKit.hpp>
-#include <BabelWiresPlugins/Smf/Plugin/Percussion/gm2RoomPercussionKit.hpp>
-#include <BabelWiresPlugins/Smf/Plugin/Percussion/gm2PowerPercussionKit.hpp>
-#include <BabelWiresPlugins/Smf/Plugin/Percussion/gmPercussionKit.hpp>
+#include <BabelWiresPlugins/Smf/Plugin/Percussion/gm2StandardPercussionSet.hpp>
+#include <BabelWiresPlugins/Smf/Plugin/Percussion/gm2RoomPercussionSet.hpp>
+#include <BabelWiresPlugins/Smf/Plugin/Percussion/gm2PowerPercussionSet.hpp>
+#include <BabelWiresPlugins/Smf/Plugin/Percussion/gmPercussionSet.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/gmSpec.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/smfFormat.hpp>
 
@@ -31,18 +31,18 @@ void smf::registerLib(babelwires::ProjectContext& context) {
     const seqwires::BuiltInPercussionInstruments& builtInPercussion =
         context.m_typeSystem.getRegisteredEntry(seqwires::BuiltInPercussionInstruments::getThisIdentifier())
             .is<seqwires::BuiltInPercussionInstruments>();
-    context.m_typeSystem.addEntry(std::make_unique<GMPercussionKit>(builtInPercussion));
-    context.m_typeSystem.addEntry(std::make_unique<GM2StandardPercussionKit>(builtInPercussion));
-    context.m_typeSystem.addEntry(std::make_unique<GM2RoomPercussionKit>(builtInPercussion));
-    context.m_typeSystem.addEntry(std::make_unique<GM2PowerPercussionKit>(builtInPercussion));
+    context.m_typeSystem.addEntry(std::make_unique<GMPercussionSet>(builtInPercussion));
+    context.m_typeSystem.addEntry(std::make_unique<GM2StandardPercussionSet>(builtInPercussion));
+    context.m_typeSystem.addEntry(std::make_unique<GM2RoomPercussionSet>(builtInPercussion));
+    context.m_typeSystem.addEntry(std::make_unique<GM2PowerPercussionSet>(builtInPercussion));
 
     // Subtype relationships.
-    context.m_typeSystem.addRelatedTypes(GM2StandardPercussionKit::getThisIdentifier(),
+    context.m_typeSystem.addRelatedTypes(GM2StandardPercussionSet::getThisIdentifier(),
                                          {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}, {}});
-    context.m_typeSystem.addRelatedTypes(GM2RoomPercussionKit::getThisIdentifier(),
+    context.m_typeSystem.addRelatedTypes(GM2RoomPercussionSet::getThisIdentifier(),
                                          {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}, {}});
-    context.m_typeSystem.addRelatedTypes(GM2PowerPercussionKit::getThisIdentifier(),
+    context.m_typeSystem.addRelatedTypes(GM2PowerPercussionSet::getThisIdentifier(),
                                          {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}, {}});
-    context.m_typeSystem.addRelatedTypes(GMPercussionKit::getThisIdentifier(),
-                                         {{GM2StandardPercussionKit::getThisIdentifier()}, {}});
+    context.m_typeSystem.addRelatedTypes(GMPercussionSet::getThisIdentifier(),
+                                         {{GM2StandardPercussionSet::getThisIdentifier()}, {}});
 }

@@ -9,7 +9,7 @@
 
 #include <BabelWiresPlugins/Smf/Plugin/gmSpec.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/smfSourceModel.hpp>
-#include <BabelWiresPlugins/Smf/Plugin/Percussion/percussionKit.hpp>
+#include <BabelWiresPlugins/Smf/Plugin/Percussion/percussionSet.hpp>
 
 #include <SeqWiresLib/musicTypes.hpp>
 
@@ -24,7 +24,7 @@
 #include <vector>
 
 namespace seqwires {
-    class PercussionKit;
+    class PercussionSet;
 }
 
 namespace smf {
@@ -97,7 +97,7 @@ namespace smf {
         
         void onChangeProgram(unsigned int channelNumber);
 
-        enum KnownPercussionKits { GM_PERCUSSION_KIT, GM2_STANDARD_PERCUSSION_KIT, NUM_KNOWN_PERCUSSION_KITS };
+        enum KnownPercussionSets { GM_PERCUSSION_KIT, GM2_STANDARD_PERCUSSION_KIT, NUM_KNOWN_PERCUSSION_KITS };
 
       private:
         const babelwires::ProjectContext& m_projectContext;
@@ -113,7 +113,7 @@ namespace smf {
         // The specification provides additional semantics when interpreting the data.
         GMSpecType::Value m_gmSpec;
 
-        std::array<const smf::PercussionKit*, NUM_KNOWN_PERCUSSION_KITS> m_knownKits;
+        std::array<const smf::PercussionSet*, NUM_KNOWN_PERCUSSION_KITS> m_knownKits;
 
         /// Currently just used to determine which tracks are percussion tracks.
         struct ChannelSetup {
@@ -124,7 +124,7 @@ namespace smf {
             babelwires::Byte m_gsPartMode = 0;
             // This is non-null when the pitches in the data should be interpreted as percussion events from the given
             // kit.
-            const smf::PercussionKit* m_kitIfPercussion = nullptr;
+            const smf::PercussionSet* m_kitIfPercussion = nullptr;
         };
 
         std::array<ChannelSetup, 16> m_channelSetup;

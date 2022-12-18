@@ -5,10 +5,10 @@
  *
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
-#include <BabelWiresPlugins/Smf/Plugin/Percussion/gmPercussionKit.hpp>
+#include <BabelWiresPlugins/Smf/Plugin/Percussion/gmPercussionSet.hpp>
 
-smf::GMPercussionKit::GMPercussionKit(const seqwires::BuiltInPercussionInstruments& builtInInstruments)
-    : PercussionKit(getThisIdentifier(), 1,
+smf::GMPercussionSet::GMPercussionSet(const seqwires::BuiltInPercussionInstruments& builtInInstruments)
+    : PercussionSet(getThisIdentifier(), 1,
                     builtInInstruments.convertToIdentifiers({seqwires::BuiltInPercussionInstruments::Value::AcBass,
                                                              seqwires::BuiltInPercussionInstruments::Value::Bass1,
                                                              seqwires::BuiltInPercussionInstruments::Value::SStick,
@@ -58,6 +58,6 @@ smf::GMPercussionKit::GMPercussionKit(const seqwires::BuiltInPercussionInstrumen
                                                              seqwires::BuiltInPercussionInstruments::Value::OTrian}),
                     0, 35) {}
 
-babelwires::LongIdentifier smf::GMPercussionKit::getThisIdentifier() {
+babelwires::LongIdentifier smf::GMPercussionSet::getThisIdentifier() {
     return REGISTERED_LONGID("GMPercussion", "General MIDI Percussion", "7571c9ca-1c7f-4547-9218-391a339bae7d");
 }

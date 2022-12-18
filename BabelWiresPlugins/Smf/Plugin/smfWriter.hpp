@@ -8,7 +8,7 @@
 #pragma once
 
 #include <BabelWiresPlugins/Smf/Plugin/smfTargetModel.hpp>
-#include <BabelWiresPlugins/Smf/Plugin/Percussion/percussionKit.hpp>
+#include <BabelWiresPlugins/Smf/Plugin/Percussion/percussionSet.hpp>
 
 #include <SeqWiresLib/musicTypes.hpp>
 
@@ -44,7 +44,7 @@ namespace smf {
         enum class WriteTrackEventResult {
           Written,
           WrongCategory,
-          NotInPercussionKit
+          NotInPercussionSet
         };
         WriteTrackEventResult writeTrackEvent(int channelNumber, seqwires::ModelDuration timeSinceLastEvent, const seqwires::TrackEvent& e);
 
@@ -61,7 +61,7 @@ namespace smf {
         void writeTrack(const target::ChannelGroup* track, const MidiMetadata& metadata);
 
         // TODO Unify with parser code
-        enum KnownPercussionKits {
+        enum KnownPercussionSets {
             GM_PERCUSSION_KIT,
             GM2_STANDARD_PERCUSSION_KIT,
             NUM_KNOWN_PERCUSSION_KITS,
@@ -69,9 +69,9 @@ namespace smf {
         };
 
         /// Determine from the events in the tracks what percussion kit (allowed for the channelNumber) includes the largest number of the events.
-        void setUpPercussionKit(std::vector<const seqwires::Track*> tracks, int channelNumber);
+        void setUpPercussionSet(std::vector<const seqwires::Track*> tracks, int channelNumber);
 
-        void setUpPercussionKits();
+        void setUpPercussionSets();
 
       private:
         const babelwires::ProjectContext& m_projectContext;
@@ -82,7 +82,7 @@ namespace smf {
         /// Always use metrical time. Quater-note division.
         int m_division;
 
-        std::array<const smf::PercussionKit*, NUM_KNOWN_PERCUSSION_KITS> m_knownKits;
+        std::array<const smf::PercussionSet*, NUM_KNOWN_PERCUSSION_KITS> m_knownKits;
 
                 /// Currently just used to determine which tracks are percussion tracks.
         struct ChannelSetup {
@@ -93,7 +93,7 @@ namespace smf {
             //babelwires::Byte m_gsPartMode = 0;
             // This is non-null when the pitches in the data should be interpreted as percussion events from the given
             // kit.
-            const smf::PercussionKit* m_kitIfPercussion = nullptr;
+            const smf::PercussionSet* m_kitIfPercussion = nullptr;
         };
 
         std::array<ChannelSetup, 16> m_channelSetup;

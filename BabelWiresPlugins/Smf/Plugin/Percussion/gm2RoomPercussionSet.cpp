@@ -1,15 +1,15 @@
 /**
- * A PercussionKit corresponding to the instruments of GM2 standard percussion set.
+ * A PercussionSet corresponding to the instruments of GM2 Room percussion set.
  *
  * (C) 2021 Malcolm Tyrrell
  *
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
-#include <BabelWiresPlugins/Smf/Plugin/Percussion/gm2StandardPercussionKit.hpp>
+#include <BabelWiresPlugins/Smf/Plugin/Percussion/gm2RoomPercussionSet.hpp>
 
-smf::GM2StandardPercussionKit::GM2StandardPercussionKit(
+smf::GM2RoomPercussionSet::GM2RoomPercussionSet(
     const seqwires::BuiltInPercussionInstruments& builtInInstruments)
-    : PercussionKit(getThisIdentifier(), 1,
+    : PercussionSet(getThisIdentifier(), 1,
                     builtInInstruments.convertToIdentifiers({seqwires::BuiltInPercussionInstruments::Value::HighQ,
                                                              seqwires::BuiltInPercussionInstruments::Value::Slap,
                                                              seqwires::BuiltInPercussionInstruments::Value::ScrPsh,
@@ -24,16 +24,16 @@ smf::GM2StandardPercussionKit::GM2StandardPercussionKit(
                                                              seqwires::BuiltInPercussionInstruments::Value::AcSnr,
                                                              seqwires::BuiltInPercussionInstruments::Value::Clap,
                                                              seqwires::BuiltInPercussionInstruments::Value::ElSnr,
-                                                             seqwires::BuiltInPercussionInstruments::Value::LFlTom,
+                                                             seqwires::BuiltInPercussionInstruments::Value::RLwTm2,
                                                              seqwires::BuiltInPercussionInstruments::Value::ClHHat,
-                                                             seqwires::BuiltInPercussionInstruments::Value::HFlTom,
+                                                             seqwires::BuiltInPercussionInstruments::Value::RLwTm1,
                                                              seqwires::BuiltInPercussionInstruments::Value::PdHHat,
-                                                             seqwires::BuiltInPercussionInstruments::Value::LwTom,
+                                                             seqwires::BuiltInPercussionInstruments::Value::RMdTm2,
                                                              seqwires::BuiltInPercussionInstruments::Value::OpHHat,
-                                                             seqwires::BuiltInPercussionInstruments::Value::LMTom,
-                                                             seqwires::BuiltInPercussionInstruments::Value::HMTom,
+                                                             seqwires::BuiltInPercussionInstruments::Value::RMdTm1,
+                                                             seqwires::BuiltInPercussionInstruments::Value::RHTm2,
                                                              seqwires::BuiltInPercussionInstruments::Value::Crash1,
-                                                             seqwires::BuiltInPercussionInstruments::Value::HTom,
+                                                             seqwires::BuiltInPercussionInstruments::Value::RHTm1,
                                                              seqwires::BuiltInPercussionInstruments::Value::Ride1,
                                                              seqwires::BuiltInPercussionInstruments::Value::ChnCym,
                                                              seqwires::BuiltInPercussionInstruments::Value::RideBl,
@@ -73,6 +73,6 @@ smf::GM2StandardPercussionKit::GM2StandardPercussionKit(
                                                              seqwires::BuiltInPercussionInstruments::Value::OSurdo}),
                     0, 27) {}
 
-babelwires::LongIdentifier smf::GM2StandardPercussionKit::getThisIdentifier() {
-    return REGISTERED_LONGID("GM2StandardPercussion", "General MIDI 2 Standard Percussion", "9fc0c107-f76c-432a-af58-c794f01df455");
+babelwires::LongIdentifier smf::GM2RoomPercussionSet::getThisIdentifier() {
+    return REGISTERED_LONGID("GM2RoomPercussion", "General MIDI 2 Room Percussion", "2192afce-6dea-4ca0-a5d9-551f9e852e5e");
 }

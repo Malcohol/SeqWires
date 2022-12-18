@@ -1,5 +1,5 @@
 /**
- * An abstraction for Enums of percussion instruments which can map to pitch values.
+ * An Enum of percussion instruments which can map to pitch values.
  *
  * (C) 2021 Malcolm Tyrrell
  *
@@ -11,10 +11,10 @@
 #include <SeqWiresLib/percussion.hpp>
 
 namespace smf {
-    /// An enum of percussion instruments which can be mapped to pitches in a contiguous block.
-    class PercussionKit : public babelwires::Enum {
+    /// An Enum of percussion instruments which can be mapped to pitches in a contiguous block.
+    class PercussionSet : public babelwires::Enum {
       public:
-        PercussionKit(babelwires::LongIdentifier identifier, babelwires::VersionNumber version, EnumValues values,
+        PercussionSet(babelwires::LongIdentifier identifier, babelwires::VersionNumber version, EnumValues values,
                       unsigned int indexOfDefaultValue, seqwires::Pitch pitchOfLowestInstrument);
 
         std::optional<seqwires::Pitch> tryGetPitchFromInstrument(babelwires::Identifier identifier) const;

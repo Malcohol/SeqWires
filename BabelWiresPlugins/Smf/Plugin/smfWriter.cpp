@@ -7,8 +7,8 @@
  **/
 #include <BabelWiresPlugins/Smf/Plugin/smfWriter.hpp>
 
-#include <BabelWiresPlugins/Smf/Plugin/Percussion/gm2StandardPercussionKit.hpp>
-#include <BabelWiresPlugins/Smf/Plugin/Percussion/gmPercussionKit.hpp>
+#include <BabelWiresPlugins/Smf/Plugin/Percussion/gm2StandardPercussionSet.hpp>
+#include <BabelWiresPlugins/Smf/Plugin/Percussion/gmPercussionSet.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/gmSpec.hpp>
 
 #include <SeqWiresLib/Features/trackFeature.hpp>
@@ -34,12 +34,12 @@ smf::SmfWriter::SmfWriter(const babelwires::ProjectContext& projectContext, babe
     , m_ostream(ostream)
     , m_os(&m_ostream)
     , m_division(256) {
-    const smf::PercussionKit& gmKit =
-        projectContext.m_typeSystem.getRegisteredEntry(smf::GMPercussionKit::getThisIdentifier())
-            .is<smf::GMPercussionKit>();
-    const smf::PercussionKit& gm2StandardKit =
-        projectContext.m_typeSystem.getRegisteredEntry(smf::GM2StandardPercussionKit::getThisIdentifier())
-            .is<smf::GM2StandardPercussionKit>();
+    const smf::PercussionSet& gmKit =
+        projectContext.m_typeSystem.getRegisteredEntry(smf::GMPercussionSet::getThisIdentifier())
+            .is<smf::GMPercussionSet>();
+    const smf::PercussionSet& gm2StandardKit =
+        projectContext.m_typeSystem.getRegisteredEntry(smf::GM2StandardPercussionSet::getThisIdentifier())
+            .is<smf::GM2StandardPercussionSet>();
     m_knownKits[GM_PERCUSSION_KIT] = &gmKit;
     m_knownKits[GM2_STANDARD_PERCUSSION_KIT] = &gm2StandardKit;
 }
@@ -140,7 +140,7 @@ smf::SmfWriter::WriteTrackEventResult smf::SmfWriter::writeTrackEvent(int channe
     assert(channelNumber >= 0);
     assert(channelNumber <= 15);
 
-    if (const smf::PercussionKit* const kitIfPercussion = m_channelSetup[channelNumber].m_kitIfPercussion) {
+    if (const smf::PercussionSet* const kitIfPercussion = m_channelSetup[channelNumber].m_kitIfPercussion) {
         if (const seqwires::PercussionOnEvent* percussionOn = e.as<seqwires::PercussionOnEvent>()) {
             if (auto maybePitch = kitIfPercussion->tryGetPitchFromInstrument(percussionOn->getInstrument())) {
                 writeModelDuration(timeSinceLastEvent);
@@ -149,7 +149,7 @@ smf::SmfWriter::WriteTrackEventResult smf::SmfWriter::writeTrackEvent(int channe
                 m_os->put(percussionOn->getVelocity());
                 return WriteTrackEventResult::Written;
             } else {
-                return WriteTrackEventResult::NotInPercussionKit;
+                return WriteTrackEventResult::NotInPercussionSet;
             }
         } else if (const seqwires::PercussionOffEvent* percussionOff = e.as<seqwires::PercussionOffEvent>()) {
             if (auto maybePitch = kitIfPercussion->tryGetPitchFromInstrument(percussionOn->getInstrument())) {
@@ -159,7 +159,7 @@ smf::SmfWriter::WriteTrackEventResult smf::SmfWriter::writeTrackEvent(int channe
                 m_os->put(percussionOff->getVelocity());
                 return WriteTrackEventResult::Written;
             } else {
-                return WriteTrackEventResult::NotInPercussionKit;
+                return WriteTrackEventResult::NotInPercussionSet;
             }
         }
     } else {
@@ -280,7 +280,7 @@ void smf::SmfWriter::writeTrack(const target::ChannelGroup* channelGroup, const 
     m_os->write(tempStream.str().data(), tempStream.tellp());
 }
 
-void smf::SmfWriter::setUpPercussionKit(std::vector<const seqwires::Track*> tracks, int channelNumber) {
+void smf::SmfWriter::setUpPercussionSet(std::vector<const seqwires::Track*> tracks, int channelNumber) {
     if (channelNumber == 9) {
         // TODO - Use track contents. Select from set of kits.
         const GMSpecType::Value spec = m_smfFormatFeature.getMidiMetadata().getSpecFeature()->getAsValue();
@@ -298,7 +298,7 @@ void smf::SmfWriter::setUpPercussionKit(std::vector<const seqwires::Track*> trac
     }
 }
 
-void smf::SmfWriter::setUpPercussionKits() {
+void smf::SmfWriter::setUpPercussionSets() {
     std::array<std::vector<const seqwires::Track*>, 16> tracksForChannel;
     const int numChannelGroups = m_smfFormatFeature.getNumMidiTracks();
     for (int i = 0; i < numChannelGroups; ++i) {
@@ -310,13 +310,13 @@ void smf::SmfWriter::setUpPercussionKits() {
         }
     }
     for (int i = 0; i < 16; ++i) {
-        setUpPercussionKit(tracksForChannel[i], i);
+        setUpPercussionSet(tracksForChannel[i], i);
     }
 }
 
 void smf::SmfWriter::write() {
     writeHeaderChunk();
-    setUpPercussionKits();
+    setUpPercussionSets();
 
     const int numTracks = m_smfFormatFeature.getNumMidiTracks();
     if (m_smfFormatFeature.getSelectedTagIndex() == 0) {

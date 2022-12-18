@@ -5,11 +5,11 @@ SET( SMFLIB_SRCS
 	smfModelCommon.cpp
 	smfWriter.cpp
 	smfParser.cpp
-	Percussion/percussionKit.cpp
-	Percussion/gmPercussionKit.cpp
-	Percussion/gm2StandardPercussionKit.cpp
-	Percussion/gm2RoomPercussionKit.cpp
-	Percussion/gm2PowerPercussionKit.cpp
+	Percussion/percussionSet.cpp
+	Percussion/gmPercussionSet.cpp
+	Percussion/gm2StandardPercussionSet.cpp
+	Percussion/gm2RoomPercussionSet.cpp
+	Percussion/gm2PowerPercussionSet.cpp
 	smfFormat.cpp
 	gmSpec.cpp
    )

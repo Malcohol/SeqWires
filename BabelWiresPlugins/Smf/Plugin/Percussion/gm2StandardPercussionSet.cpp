@@ -1,15 +1,15 @@
 /**
- * A PercussionKit corresponding to the instruments of GM2 Power percussion set.
+ * A PercussionSet corresponding to the instruments of GM2 standard percussion set.
  *
  * (C) 2021 Malcolm Tyrrell
  *
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
-#include <BabelWiresPlugins/Smf/Plugin/Percussion/gm2PowerPercussionKit.hpp>
+#include <BabelWiresPlugins/Smf/Plugin/Percussion/gm2StandardPercussionSet.hpp>
 
-smf::GM2PowerPercussionKit::GM2PowerPercussionKit(
+smf::GM2StandardPercussionSet::GM2StandardPercussionSet(
     const seqwires::BuiltInPercussionInstruments& builtInInstruments)
-    : PercussionKit(getThisIdentifier(), 1,
+    : PercussionSet(getThisIdentifier(), 1,
                     builtInInstruments.convertToIdentifiers({seqwires::BuiltInPercussionInstruments::Value::HighQ,
                                                              seqwires::BuiltInPercussionInstruments::Value::Slap,
                                                              seqwires::BuiltInPercussionInstruments::Value::ScrPsh,
@@ -19,21 +19,21 @@ smf::GM2PowerPercussionKit::GM2PowerPercussionKit(
                                                              seqwires::BuiltInPercussionInstruments::Value::MtrClk,
                                                              seqwires::BuiltInPercussionInstruments::Value::MtrBll,
                                                              seqwires::BuiltInPercussionInstruments::Value::AcBass,
-                                                             seqwires::BuiltInPercussionInstruments::Value::PKick,
+                                                             seqwires::BuiltInPercussionInstruments::Value::Bass1,
                                                              seqwires::BuiltInPercussionInstruments::Value::SStick,
-                                                             seqwires::BuiltInPercussionInstruments::Value::PSnare,
+                                                             seqwires::BuiltInPercussionInstruments::Value::AcSnr,
                                                              seqwires::BuiltInPercussionInstruments::Value::Clap,
                                                              seqwires::BuiltInPercussionInstruments::Value::ElSnr,
-                                                             seqwires::BuiltInPercussionInstruments::Value::PLwTm2,
+                                                             seqwires::BuiltInPercussionInstruments::Value::LFlTom,
                                                              seqwires::BuiltInPercussionInstruments::Value::ClHHat,
-                                                             seqwires::BuiltInPercussionInstruments::Value::PLwTm1,
+                                                             seqwires::BuiltInPercussionInstruments::Value::HFlTom,
                                                              seqwires::BuiltInPercussionInstruments::Value::PdHHat,
-                                                             seqwires::BuiltInPercussionInstruments::Value::PMdTm2,
+                                                             seqwires::BuiltInPercussionInstruments::Value::LwTom,
                                                              seqwires::BuiltInPercussionInstruments::Value::OpHHat,
-                                                             seqwires::BuiltInPercussionInstruments::Value::PMdTm1,
-                                                             seqwires::BuiltInPercussionInstruments::Value::PHTm2,
+                                                             seqwires::BuiltInPercussionInstruments::Value::LMTom,
+                                                             seqwires::BuiltInPercussionInstruments::Value::HMTom,
                                                              seqwires::BuiltInPercussionInstruments::Value::Crash1,
-                                                             seqwires::BuiltInPercussionInstruments::Value::PHTm1,
+                                                             seqwires::BuiltInPercussionInstruments::Value::HTom,
                                                              seqwires::BuiltInPercussionInstruments::Value::Ride1,
                                                              seqwires::BuiltInPercussionInstruments::Value::ChnCym,
                                                              seqwires::BuiltInPercussionInstruments::Value::RideBl,
@@ -73,6 +73,6 @@ smf::GM2PowerPercussionKit::GM2PowerPercussionKit(
                                                              seqwires::BuiltInPercussionInstruments::Value::OSurdo}),
                     0, 27) {}
 
-babelwires::LongIdentifier smf::GM2PowerPercussionKit::getThisIdentifier() {
-    return REGISTERED_LONGID("GM2PowerPercussion", "General MIDI 2 Power Percussion", "5405b858-e0e7-4aae-877a-557c1cb00826");
+babelwires::LongIdentifier smf::GM2StandardPercussionSet::getThisIdentifier() {
+    return REGISTERED_LONGID("GM2StandardPercussion", "General MIDI 2 Standard Percussion", "9fc0c107-f76c-432a-af58-c794f01df455");
 }
