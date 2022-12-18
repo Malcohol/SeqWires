@@ -7,6 +7,7 @@ SET( SMFLIB_SRCS
 	smfParser.cpp
 	Percussion/gmPercussionSet.cpp
 	Percussion/gm2AnalogPercussionSet.cpp
+	Percussion/gm2BrushPercussionSet.cpp
 	Percussion/gm2ElectronicPercussionSet.cpp
 	Percussion/gm2JazzPercussionSet.cpp
 	Percussion/gm2PowerPercussionSet.cpp

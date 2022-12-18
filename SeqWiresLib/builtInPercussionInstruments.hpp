@@ -131,7 +131,11 @@
     X(AClavs, "Analog Claves", "f4d5e1e7-f927-4021-8516-f883b4bc2222")                                                 \
     /* Instruments of the GM2 Jazz Set */                                                                              \
     X(JKick2, "Jazz Kick 2", "eb3984a9-134e-478f-abc1-b3f7853891c0")                                                   \
-    X(JKick1, "Jazz Kick 1", "11d2a1ff-e98d-4e26-954b-6f8182d811cd")
+    X(JKick1, "Jazz Kick 1", "11d2a1ff-e98d-4e26-954b-6f8182d811cd")                                                   \
+    /* Instruments of the GM2 Brush Set */                                                                             \
+    X(BrTap, "Brush Tap", "7cf52502-5bac-43bc-9a83-6c3e62039732")                                                      \
+    X(BrSlap, "Brush Slap", "c35c576c-6b02-46f3-94bd-d76af0330adf")                                                    \
+    X(BrSwrl, "Brush Swirl", "ab6149aa-754f-43b4-acf6-2d6b8167ca0d")
 
 namespace seqwires {
     /// All percussion instruments built into SeqWires.
