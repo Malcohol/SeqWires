@@ -87,8 +87,8 @@
     X(RLwTm1, "Room Low Tom 1", "e6b25f32-4a7e-4203-9aa3-76f0c6085ced")                                                \
     X(RMdTm2, "Room Mid Tom 2", "371bd6eb-33cb-40c8-ba57-3c18eac00787")                                                \
     X(RMdTm1, "Room Mid Tom 1", "58339244-fb5d-49d1-9403-8cf812388ab7")                                                \
-    X(RHTm2, "Room Hi Tom 2", "46d6b67b-9e66-46fb-ae5e-24b1296c856c")                                                  \
-    X(RHTm1, "Room Hi Tom 1", "a4b7fc45-3e90-4da4-b3b8-1e437d9a1e00")                                                  \
+    X(RHiTm2, "Room Hi Tom 2", "46d6b67b-9e66-46fb-ae5e-24b1296c856c")                                                  \
+    X(RHiTm1, "Room Hi Tom 1", "a4b7fc45-3e90-4da4-b3b8-1e437d9a1e00")                                                  \
     /* Instruments from the GM2 Power kit */                                                                           \
     X(PKick, "Power Kick Drum", "326850a1-707f-4b6d-9940-0a9ca28d5a8b")                                                \
     X(PSnare, "Power Snare Drum", "26b107dc-8ad3-4875-a6ea-c7aff1d852ce")                                              \
@@ -96,8 +96,8 @@
     X(PLwTm1, "Power Low Tom 1", "d8038c6c-5a57-404a-a819-f1f9aa152288")                                               \
     X(PMdTm2, "Power Mid Tom 2", "ad05c742-99a9-4ac1-98c3-163ba57458a4")                                               \
     X(PMdTm1, "Power Mid Tom 1", "a117afa9-9efa-4940-a856-f1f65352e25f")                                               \
-    X(PHTm2, "Power Hi Tom 2", "c0c794da-5353-46bb-9b65-a695ee8deae7")                                                 \
-    X(PHTm1, "Power Hi Tom 1", "b18634b2-bdba-44be-8259-822b4b96be8a")                                                 \
+    X(PHiTm2, "Power Hi Tom 2", "c0c794da-5353-46bb-9b65-a695ee8deae7")                                                 \
+    X(PHiTm1, "Power Hi Tom 1", "b18634b2-bdba-44be-8259-822b4b96be8a")                                                 \
     /* Instruments from the GM2 Electronic Set */                                                                      \
     X(ElBass, "Electric Bass Drum", "d978c296-2e32-46d2-b8aa-ab00b31bdf36")                                            \
     X(ElSnr1, "Electric Snare 1", "3d10dc34-0fd8-4efc-8dd0-25dde63c0232")                                              \
