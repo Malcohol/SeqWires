@@ -1,5 +1,5 @@
 /**
- * A PercussionSet corresponding to the original General MIDI percussion set.
+ * A PercussionSet corresponding to the original General MIDI Percussion Set.
  *
  * (C) 2021 Malcolm Tyrrell
  *

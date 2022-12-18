@@ -1,5 +1,5 @@
 /**
- * An enum which defines the available MIDI specifications.
+ * A PercussionSet corresponding to the original General MIDI Percussion Set.
  *
  * (C) 2021 Malcolm Tyrrell
  *

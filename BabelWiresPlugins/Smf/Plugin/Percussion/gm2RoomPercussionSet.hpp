@@ -1,5 +1,5 @@
 /**
- * A PercussionSet corresponding to the instruments of GM2 Room percussion set.
+ * A PercussionSet corresponding to the instruments of GM2 Room Percussion Set.
  *
  * (C) 2021 Malcolm Tyrrell
  *
@@ -10,7 +10,7 @@
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/percussionSet.hpp>
 
 namespace smf {
-    /// A PercussionSet corresponding to the instruments of GM2 standard percussion set.
+    /// A PercussionSet corresponding to the instruments of GM2 Standard Percussion Set.
     class GM2RoomPercussionSet : public PercussionSet {
       public:
         GM2RoomPercussionSet(const seqwires::BuiltInPercussionInstruments& builtInInstruments);

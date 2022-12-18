@@ -1,5 +1,5 @@
 /**
- * A PercussionSet corresponding to the instruments of GM2 standard percussion set.
+ * A PercussionSet corresponding to the instruments of GM2 Standard Percussion Set.
  *
  * (C) 2021 Malcolm Tyrrell
  *

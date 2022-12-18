@@ -1,5 +1,5 @@
 /**
- * A PercussionSet corresponding to the instruments of GM2 Room percussion set.
+ * A PercussionSet corresponding to the instruments of GM2 Room Percussion Set.
  *
  * (C) 2021 Malcolm Tyrrell
  *

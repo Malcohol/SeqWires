@@ -12,11 +12,12 @@
 #include <BabelWiresLib/Project/projectContext.hpp>
 #include <BabelWiresLib/TypeSystem/typeSystem.hpp>
 
-#include <BabelWiresPlugins/Smf/Plugin/Percussion/gm2StandardPercussionSet.hpp>
-#include <BabelWiresPlugins/Smf/Plugin/Percussion/gm2RoomPercussionSet.hpp>
-#include <BabelWiresPlugins/Smf/Plugin/Percussion/gm2PowerPercussionSet.hpp>
-#include <BabelWiresPlugins/Smf/Plugin/Percussion/gm2ElectronicPercussionSet.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/gm2AnalogPercussionSet.hpp>
+#include <BabelWiresPlugins/Smf/Plugin/Percussion/gm2ElectronicPercussionSet.hpp>
+#include <BabelWiresPlugins/Smf/Plugin/Percussion/gm2JazzPercussionSet.hpp>
+#include <BabelWiresPlugins/Smf/Plugin/Percussion/gm2PowerPercussionSet.hpp>
+#include <BabelWiresPlugins/Smf/Plugin/Percussion/gm2RoomPercussionSet.hpp>
+#include <BabelWiresPlugins/Smf/Plugin/Percussion/gm2StandardPercussionSet.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/gmPercussionSet.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/gmSpec.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/smfFormat.hpp>
@@ -39,6 +40,7 @@ void smf::registerLib(babelwires::ProjectContext& context) {
     context.m_typeSystem.addEntry(std::make_unique<GM2PowerPercussionSet>(builtInPercussion));
     context.m_typeSystem.addEntry(std::make_unique<GM2ElectronicPercussionSet>(builtInPercussion));
     context.m_typeSystem.addEntry(std::make_unique<GM2AnalogPercussionSet>(builtInPercussion));
+    context.m_typeSystem.addEntry(std::make_unique<GM2JazzPercussionSet>(builtInPercussion));
 
     // Subtype relationships.
     context.m_typeSystem.addRelatedTypes(GM2StandardPercussionSet::getThisIdentifier(),
@@ -50,6 +52,8 @@ void smf::registerLib(babelwires::ProjectContext& context) {
     context.m_typeSystem.addRelatedTypes(GM2ElectronicPercussionSet::getThisIdentifier(),
                                          {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}, {}});
     context.m_typeSystem.addRelatedTypes(GM2AnalogPercussionSet::getThisIdentifier(),
+                                         {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}, {}});
+    context.m_typeSystem.addRelatedTypes(GM2JazzPercussionSet::getThisIdentifier(),
                                          {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}, {}});
     context.m_typeSystem.addRelatedTypes(GMPercussionSet::getThisIdentifier(),
                                          {{GM2StandardPercussionSet::getThisIdentifier()}, {}});

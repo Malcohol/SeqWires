@@ -1,5 +1,5 @@
 /**
- * A PercussionSet corresponding to the instruments of GM2 standard percussion set.
+ * A PercussionSet corresponding to the instruments of GM2 Analog Percussion Set.
  *
  * (C) 2021 Malcolm Tyrrell
  *
@@ -10,7 +10,7 @@
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/percussionSet.hpp>
 
 namespace smf {
-    /// A PercussionSet corresponding to the instruments of GM2 standard percussion set.
+    /// A PercussionSet corresponding to the instruments of GM2 Analog Percussion Set.
     class GM2AnalogPercussionSet : public PercussionSet {
       public:
         GM2AnalogPercussionSet(const seqwires::BuiltInPercussionInstruments& builtInInstruments);

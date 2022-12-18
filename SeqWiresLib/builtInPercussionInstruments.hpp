@@ -128,7 +128,10 @@
     X(AMCnga, "Analog Mid Conga", "cc1e621a-7e3d-44cc-9b42-5820d2378e34")                                              \
     X(ALCnga, "Analog Low Conga", "3d35aaee-df50-43f5-8d3b-a42a305a3eb0")                                              \
     X(AMrcas, "Analog Maracas", "376758c3-bdcb-4fed-bfb9-d11389ffc23f")                                                \
-    X(AClavs, "Analog Claves", "f4d5e1e7-f927-4021-8516-f883b4bc2222")
+    X(AClavs, "Analog Claves", "f4d5e1e7-f927-4021-8516-f883b4bc2222")                                                 \
+    /* Instruments of the GM2 Jazz Set */                                                                              \
+    X(JKick2, "Jazz Kick 2", "eb3984a9-134e-478f-abc1-b3f7853891c0")                                                   \
+    X(JKick1, "Jazz Kick 1", "11d2a1ff-e98d-4e26-954b-6f8182d811cd")
 
 namespace seqwires {
     /// All percussion instruments built into SeqWires.
