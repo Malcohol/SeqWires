@@ -97,7 +97,18 @@
     X(PMdTm2, "Power Mid Tom 2", "ad05c742-99a9-4ac1-98c3-163ba57458a4")                                               \
     X(PMdTm1, "Power Mid Tom 1", "a117afa9-9efa-4940-a856-f1f65352e25f")                                               \
     X(PHTm2, "Power Hi Tom 2", "c0c794da-5353-46bb-9b65-a695ee8deae7")                                                 \
-    X(PHTm1, "Power Hi Tom 1", "b18634b2-bdba-44be-8259-822b4b96be8a")
+    X(PHTm1, "Power Hi Tom 1", "b18634b2-bdba-44be-8259-822b4b96be8a")                                                 \
+    /* Instruments from the GM2 Electronic Set */                                                                      \
+    X(ElBass, "Electric Bass Drum", "d978c296-2e32-46d2-b8aa-ab00b31bdf36")                                            \
+    X(ElSnr1, "Electric Snare 1", "3d10dc34-0fd8-4efc-8dd0-25dde63c0232")                                              \
+    X(ElSnr2, "Electric Snare 2", "4f7523a1-0996-4094-b5d7-c02ea5eb319a")                                              \
+    X(ELwTm2, "Electric Low Tom 2", "2944dabe-ab8b-459c-974d-44fa453824c4")                                            \
+    X(ELwTm1, "Electric Low Tom 1", "c2b2f01c-d428-46a3-8d38-fc090d6e4b7b")                                            \
+    X(EMdTm2, "Electric Mid Tom 2", "9dd67d1c-cd29-4e9d-8df1-deb2e876cd60")                                            \
+    X(EMdTm1, "Electric Mid Tom 1", "58bafd31-2bb3-4fb8-8d93-866d873279f1")                                            \
+    X(EHiTm2, "Electric Hi Tom 2", "2956c899-57e2-4917-9064-5376cf9cfdef")                                             \
+    X(EHiTm1, "Electric Hi Tom 1", "95d673c3-fdfa-4e06-bf34-997a5aeb1d2c")                                             \
+    X(RevCym, "Reverse Cymbal", "6c81460a-88f6-484b-994f-5aa44e27b098")
 
 namespace seqwires {
     /// All percussion instruments built into SeqWires.
