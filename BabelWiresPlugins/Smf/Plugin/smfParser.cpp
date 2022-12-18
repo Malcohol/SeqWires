@@ -13,7 +13,7 @@
 #include <SeqWiresLib/Features/trackFeature.hpp>
 #include <SeqWiresLib/Tracks/noteEvents.hpp>
 #include <SeqWiresLib/Tracks/percussionEvents.hpp>
-#include <SeqWiresLib/percussion.hpp>
+#include <SeqWiresLib/builtInPercussionInstruments.hpp>
 
 #include <BabelWiresLib/Project/projectContext.hpp>
 #include <BabelWiresLib/TypeSystem/typeSystem.hpp>

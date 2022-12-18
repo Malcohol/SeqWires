@@ -8,7 +8,7 @@
 #pragma once
 
 #include <SeqWiresLib/musicTypes.hpp>
-#include <SeqWiresLib/percussion.hpp>
+#include <SeqWiresLib/builtInPercussionInstruments.hpp>
 
 namespace smf {
     /// An Enum of percussion instruments which can be mapped to pitches in a contiguous block.

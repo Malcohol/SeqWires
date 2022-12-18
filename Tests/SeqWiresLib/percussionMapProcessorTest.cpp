@@ -4,7 +4,7 @@
 #include <SeqWiresLib/Processors/percussionMapProcessor.hpp>
 #include <SeqWiresLib/Tracks/percussionEvents.hpp>
 #include <SeqWiresLib/Tracks/track.hpp>
-#include <SeqWiresLib/percussion.hpp>
+#include <SeqWiresLib/builtInPercussionInstruments.hpp>
 
 #include <BabelWiresLib/Features/mapFeature.hpp>
 #include <BabelWiresLib/Maps/MapEntries/allToSameFallbackMapEntryData.hpp>
