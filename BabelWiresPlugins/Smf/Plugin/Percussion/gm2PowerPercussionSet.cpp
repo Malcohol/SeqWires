@@ -74,5 +74,5 @@ smf::GM2PowerPercussionSet::GM2PowerPercussionSet(
                     0, 27) {}
 
 babelwires::LongIdentifier smf::GM2PowerPercussionSet::getThisIdentifier() {
-    return REGISTERED_LONGID("GM2PowerPercussion", "General MIDI 2 Power Percussion", "5405b858-e0e7-4aae-877a-557c1cb00826");
+    return REGISTERED_LONGID("GM2PowerPerc", "General MIDI 2 Power Percussion", "5405b858-e0e7-4aae-877a-557c1cb00826");
 }

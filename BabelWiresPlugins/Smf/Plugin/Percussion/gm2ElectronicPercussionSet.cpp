@@ -74,5 +74,5 @@ smf::GM2ElectronicPercussionSet::GM2ElectronicPercussionSet(
                     0, 27) {}
 
 babelwires::LongIdentifier smf::GM2ElectronicPercussionSet::getThisIdentifier() {
-    return REGISTERED_LONGID("GM2StandardPercussion", "General MIDI 2 Standard Percussion", "9fc0c107-f76c-432a-af58-c794f01df455");
+    return REGISTERED_LONGID("GM2ElectronicPerc", "General MIDI 2 Electronic Percussion", "cd9a66f3-baa8-49f0-844b-c41642e945d5");
 }

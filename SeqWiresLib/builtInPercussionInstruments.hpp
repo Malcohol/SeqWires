@@ -87,8 +87,8 @@
     X(RLwTm1, "Room Low Tom 1", "e6b25f32-4a7e-4203-9aa3-76f0c6085ced")                                                \
     X(RMdTm2, "Room Mid Tom 2", "371bd6eb-33cb-40c8-ba57-3c18eac00787")                                                \
     X(RMdTm1, "Room Mid Tom 1", "58339244-fb5d-49d1-9403-8cf812388ab7")                                                \
-    X(RHiTm2, "Room Hi Tom 2", "46d6b67b-9e66-46fb-ae5e-24b1296c856c")                                                  \
-    X(RHiTm1, "Room Hi Tom 1", "a4b7fc45-3e90-4da4-b3b8-1e437d9a1e00")                                                  \
+    X(RHiTm2, "Room Hi Tom 2", "46d6b67b-9e66-46fb-ae5e-24b1296c856c")                                                 \
+    X(RHiTm1, "Room Hi Tom 1", "a4b7fc45-3e90-4da4-b3b8-1e437d9a1e00")                                                 \
     /* Instruments from the GM2 Power kit */                                                                           \
     X(PKick, "Power Kick Drum", "326850a1-707f-4b6d-9940-0a9ca28d5a8b")                                                \
     X(PSnare, "Power Snare Drum", "26b107dc-8ad3-4875-a6ea-c7aff1d852ce")                                              \
@@ -96,8 +96,8 @@
     X(PLwTm1, "Power Low Tom 1", "d8038c6c-5a57-404a-a819-f1f9aa152288")                                               \
     X(PMdTm2, "Power Mid Tom 2", "ad05c742-99a9-4ac1-98c3-163ba57458a4")                                               \
     X(PMdTm1, "Power Mid Tom 1", "a117afa9-9efa-4940-a856-f1f65352e25f")                                               \
-    X(PHiTm2, "Power Hi Tom 2", "c0c794da-5353-46bb-9b65-a695ee8deae7")                                                 \
-    X(PHiTm1, "Power Hi Tom 1", "b18634b2-bdba-44be-8259-822b4b96be8a")                                                 \
+    X(PHiTm2, "Power Hi Tom 2", "c0c794da-5353-46bb-9b65-a695ee8deae7")                                                \
+    X(PHiTm1, "Power Hi Tom 1", "b18634b2-bdba-44be-8259-822b4b96be8a")                                                \
     /* Instruments from the GM2 Electronic Set */                                                                      \
     X(ElBass, "Electric Bass Drum", "d978c296-2e32-46d2-b8aa-ab00b31bdf36")                                            \
     X(ElSnr1, "Electric Snare 1", "3d10dc34-0fd8-4efc-8dd0-25dde63c0232")                                              \
@@ -108,7 +108,27 @@
     X(EMdTm1, "Electric Mid Tom 1", "58bafd31-2bb3-4fb8-8d93-866d873279f1")                                            \
     X(EHiTm2, "Electric Hi Tom 2", "2956c899-57e2-4917-9064-5376cf9cfdef")                                             \
     X(EHiTm1, "Electric Hi Tom 1", "95d673c3-fdfa-4e06-bf34-997a5aeb1d2c")                                             \
-    X(RevCym, "Reverse Cymbal", "6c81460a-88f6-484b-994f-5aa44e27b098")
+    X(RevCym, "Reverse Cymbal", "6c81460a-88f6-484b-994f-5aa44e27b098")                                                \
+    /* Instruments from the GM2 Analog Set */                                                                          \
+    X(AnBass, "Analog Bass Drum", "edffed89-9966-49cb-af9d-d58653e2ebc0")                                              \
+    X(ARmSht, "Analog Rim Shot", "694631a7-e092-4d65-a9f1-86c858c2a1b5")                                               \
+    X(AnSnr1, "Analog Snare 1", "1c548dcc-57c3-4924-a054-51814320fb2e")                                                \
+    X(ALwTm2, "Analog Low Tom 2", "990eefbc-7110-4b6e-8230-48325b0cd79d")                                              \
+    X(ACHH1, "Analog CHH 1", "c30f2af5-053e-4169-b528-193823ff9e23")                                                   \
+    X(ALwTm1, "Analog Low Tom 1", "0295a2f3-49f7-409f-ae7a-5191d740034c")                                              \
+    X(ACHH2, "Analog CHH 2", "1f014668-0904-4307-8396-5805e21a2973")                                                   \
+    X(AMdTm2, "Analog Mid Tom 2", "9b6af2ac-b5a6-47c3-94ef-ec5983d79f4d")                                              \
+    X(AOHH, "Analog OHH", "135a0740-7f85-44d6-954f-5b04cc5134e0")                                                      \
+    X(AMdTm1, "Analog Mid Tom 1", "3e763326-69e2-4865-8b47-897f3769d02e")                                              \
+    X(AHiTm2, "Analog Hi Tom 2", "ad3b5e9d-eaca-4513-8ca8-9e0a06584a09")                                               \
+    X(AnCym, "Analog Cymbal", "4b09f4ef-fbea-4a5e-816f-d4e09a16f29a")                                                  \
+    X(AHiTm1, "Analog Hi Tom 1", "46e561fb-6017-4f67-be0e-ff5683c0b999")                                               \
+    X(ACwbll, "Analog Cowbell", "c8b52f3e-b45e-48af-8874-613e4cd7936a")                                                \
+    X(AHCnga, "Analog High Conga", "eadcb97d-767e-4c53-9b19-d86236211a9a")                                             \
+    X(AMCnga, "Analog Mid Conga", "cc1e621a-7e3d-44cc-9b42-5820d2378e34")                                              \
+    X(ALCnga, "Analog Low Conga", "3d35aaee-df50-43f5-8d3b-a42a305a3eb0")                                              \
+    X(AMrcas, "Analog Maracas", "376758c3-bdcb-4fed-bfb9-d11389ffc23f")                                                \
+    X(AClavs, "Analog Claves", "f4d5e1e7-f927-4021-8516-f883b4bc2222")
 
 namespace seqwires {
     /// All percussion instruments built into SeqWires.

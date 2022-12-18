@@ -74,5 +74,5 @@ smf::GM2RoomPercussionSet::GM2RoomPercussionSet(
                     0, 27) {}
 
 babelwires::LongIdentifier smf::GM2RoomPercussionSet::getThisIdentifier() {
-    return REGISTERED_LONGID("GM2RoomPercussion", "General MIDI 2 Room Percussion", "2192afce-6dea-4ca0-a5d9-551f9e852e5e");
+    return REGISTERED_LONGID("GM2RoomPerc", "General MIDI 2 Room Percussion", "2192afce-6dea-4ca0-a5d9-551f9e852e5e");
 }
