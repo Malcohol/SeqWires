@@ -57,13 +57,18 @@ namespace smf {
 
         void writeHeaderChunk();
 
-        /// Tempo feature can be null.
-        void writeTrack(const target::ChannelGroup* track, const MidiMetadata& metadata);
+        /// Write the events for the given track.
+        void writeTrack(const target::ChannelGroup* track, bool includeGlobalSetup);
+
+        /// Write non-channel-specific setup information.
+        void writeGlobalSetup();
 
         /// Determine from the events in the tracks what percussion kit (allowed for the channelNumber) includes the largest number of the events.
         void setUpPercussionKit(const std::unordered_set<babelwires::Identifier>& instrumentsInUse, int channelNumber);
 
         void setUpPercussionSets();
+
+        template <std::size_t N> void writeMessage(const std::array<std::uint8_t, N>& message);
 
       private:
         const babelwires::ProjectContext& m_projectContext;
@@ -78,14 +83,12 @@ namespace smf {
 
         /// Currently just used to determine which tracks are percussion tracks.
         struct ChannelSetup {
-            //babelwires::Byte m_bankMSB = 0;
-            //babelwires::Byte m_bankLSB = 0;
-            //babelwires::Byte m_program = 0;
-            // This is the part corresponding to this channel, irrespective of the part mapping.
-            //babelwires::Byte m_gsPartMode = 0;
             // This is non-null when the pitches in the data should be interpreted as percussion events from the given
             // kit.
             const smf::PercussionSet* m_kitIfPercussion = nullptr;
+            // Has channel set-up information been written for this channel yet?
+            // (Since more than one track can correspond to a channel, we only want to write this for the first track for each channel.)
+            bool m_setupWritten = false;
         };
 
         std::array<ChannelSetup, 16> m_channelSetup;

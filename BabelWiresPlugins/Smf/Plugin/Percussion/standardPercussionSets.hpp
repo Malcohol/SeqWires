@@ -44,7 +44,9 @@ namespace smf {
                                                   const std::unordered_set<babelwires::Identifier>& instrumentsInUse,
                                                   std::unordered_set<babelwires::Identifier>& excludedInstrumentsOut);
 
-        ChannelSetupInfo getChannelSetupInfoFromPercussionSet(const PercussionSet* percussionSet);
+        /// Get setup information for the given percussionSet if any is required. 
+        /// A null argument is allowed, in which case an empty optional is returned.
+        std::optional<ChannelSetupInfo> getChannelSetupInfoFromPercussionSet(const PercussionSet* percussionSet);
 
       private:
         enum KnownPercussionSets {
@@ -71,9 +73,16 @@ namespace smf {
         /// Ensure the m_instrumentSets array is populated.
         void ensureInstrumentSets();
 
+        /// From the range of known percussion, select the best percussion set.
         const PercussionSet* getBestPercussionSetInRange(int startIndex, int endIndex,
                                                   const std::unordered_set<babelwires::Identifier>& instrumentsInUse,
                                                   std::unordered_set<babelwires::Identifier>& excludedInstrumentsOut);
+
+        /// Find the percussion set in the array of known percussion sets. Asserts if not found.
+        KnownPercussionSets getKnownPercussionSetFromPercussionSet(const PercussionSet* percussionSet);
+
+
+        std::optional<ChannelSetupInfo> getChannelSetupInfoFromKnownPercussionSet(KnownPercussionSets percussionSet);
 
       private:
         std::array<const smf::PercussionSet*, NUM_KNOWN_PERCUSSION_SETS> m_knownSets;

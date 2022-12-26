@@ -21,6 +21,8 @@
 #include <BabelWiresLib/Project/projectContext.hpp>
 #include <BabelWiresLib/TypeSystem/typeSystem.hpp>
 
+#include <cassert>
+
 smf::StandardPercussionSets::StandardPercussionSets(const babelwires::ProjectContext& projectContext) {
     m_knownSets[GM_PERCUSSION_SET] =
         &projectContext.m_typeSystem.getRegisteredEntry(smf::GMPercussionSet::getThisIdentifier())
@@ -74,21 +76,31 @@ const smf::PercussionSet* smf::StandardPercussionSets::getDefaultPercussionSet(G
     return nullptr;
 }
 
-const smf::PercussionSet* smf::StandardPercussionSets::getPercussionSetFromChannelSetupInfo(GMSpecType::Value gmSpec, ChannelSetupInfo channelSetupInfo) {
+const smf::PercussionSet*
+smf::StandardPercussionSets::getPercussionSetFromChannelSetupInfo(GMSpecType::Value gmSpec,
+                                                                  ChannelSetupInfo channelSetupInfo) {
     if (gmSpec == GMSpecType::Value::GM2) {
         if (channelSetupInfo.m_bankMSB == 0x78) {
-            // TODO
-            // Percussion
-            // LSB not used
-            // (program == 1) Standard
-            // (program == 9) Room
-            // (program == 17) Power
-            // (program == 25) Electronic
-            // (program == 26) Analog
-            // (program == 25) Jazz
-            // (program == 41) Brush
-            // (program == 49) Orchestra
-            // (program == 57) SFX
+            switch (channelSetupInfo.m_program) {
+                case 1:
+                    return m_knownSets[GM2_STANDARD_PERCUSSION_SET];
+                case 9:
+                    return m_knownSets[GM2_ROOM_PERCUSSION_SET];
+                case 17:
+                    return m_knownSets[GM2_POWER_PERCUSSION_SET];
+                case 25:
+                    return m_knownSets[GM2_ELECTRONIC_PERCUSSION_SET];
+                case 26:
+                    return m_knownSets[GM2_ANALOG_PERCUSSION_SET];
+                case 33:
+                    return m_knownSets[GM2_JAZZ_PERCUSSION_SET];
+                case 41:
+                    return m_knownSets[GM2_BRUSH_PERCUSSION_SET];
+                case 49:
+                    return m_knownSets[GM2_ORCHESTRA_PERCUSSION_SET];
+                case 57:
+                    return m_knownSets[GM2_SFX_PERCUSSION_SET];
+            }
             return m_knownSets[GM2_STANDARD_PERCUSSION_SET];
         } else if (channelSetupInfo.m_bankMSB == 0x79) {
             // Melody
@@ -137,12 +149,11 @@ void smf::StandardPercussionSets::ensureInstrumentSets() {
     }
 }
 
-const smf::PercussionSet*
-smf::StandardPercussionSets::getBestPercussionSetInRange(int startIndex, int endIndex,
-                                                  const std::unordered_set<babelwires::Identifier>& instrumentsInUse,
-                                                  std::unordered_set<babelwires::Identifier>& excludedInstrumentsOut) {
+const smf::PercussionSet* smf::StandardPercussionSets::getBestPercussionSetInRange(
+    int startIndex, int endIndex, const std::unordered_set<babelwires::Identifier>& instrumentsInUse,
+    std::unordered_set<babelwires::Identifier>& excludedInstrumentsOut) {
     ensureInstrumentSets();
-    
+
     int bestFit = -1;
     std::unordered_set<babelwires::Identifier> candidateExclusions;
 
@@ -172,9 +183,56 @@ smf::StandardPercussionSets::getBestPercussionSet(GMSpecType::Value gmSpec, int 
     }
 
     if (gmSpec == GMSpecType::Value::GM) {
-        return getBestPercussionSetInRange(GM_PERCUSSION_SET, GM_PERCUSSION_SET, instrumentsInUse, excludedInstrumentsOut);
+        return getBestPercussionSetInRange(GM_PERCUSSION_SET, GM_PERCUSSION_SET, instrumentsInUse,
+                                           excludedInstrumentsOut);
     } else if (gmSpec == GMSpecType::Value::GM2) {
         return getBestPercussionSetInRange(GM2_SETS_START, GM2_SETS_END, instrumentsInUse, excludedInstrumentsOut);
     }
     return nullptr;
+}
+
+smf::StandardPercussionSets::KnownPercussionSets
+smf::StandardPercussionSets::getKnownPercussionSetFromPercussionSet(const PercussionSet* percussionSet) {
+    const auto it = std::find(m_knownSets.begin(), m_knownSets.end(), percussionSet);
+    assert((it != m_knownSets.end()) && "Percussion set not known");
+    return static_cast<KnownPercussionSets>(it - m_knownSets.begin());
+}
+
+std::optional<smf::StandardPercussionSets::ChannelSetupInfo>
+smf::StandardPercussionSets::getChannelSetupInfoFromKnownPercussionSet(KnownPercussionSets percussionSet) {
+    switch (percussionSet) {
+        case GM_PERCUSSION_SET:
+            return {};
+        case GM2_STANDARD_PERCUSSION_SET:
+            return {{0x78, 0, 1, 0}};
+        case GM2_ROOM_PERCUSSION_SET:
+            return {{0x78, 0, 9, 0}};
+        case GM2_POWER_PERCUSSION_SET:
+            return {{0x78, 0, 17, 0}};
+        case GM2_ELECTRONIC_PERCUSSION_SET:
+            return {{0x78, 0, 25, 0}};
+        case GM2_ANALOG_PERCUSSION_SET:
+            return {{0x78, 0, 26, 0}};
+        case GM2_JAZZ_PERCUSSION_SET:
+            return {{0x78, 0, 33, 0}};
+        case GM2_BRUSH_PERCUSSION_SET:
+            return {{0x78, 0, 41, 0}};
+        case GM2_ORCHESTRA_PERCUSSION_SET:
+            return {{0x78, 0, 49, 0}};
+        case GM2_SFX_PERCUSSION_SET:
+            return {{0x78, 0, 57, 0}};
+        default:
+        case NOT_PERCUSSION:
+            return {};
+    }
+}
+
+std::optional<smf::StandardPercussionSets::ChannelSetupInfo>
+smf::StandardPercussionSets::getChannelSetupInfoFromPercussionSet(const PercussionSet* percussionSet) {
+    if (percussionSet) {
+        const KnownPercussionSets knownPercussionSet = getKnownPercussionSetFromPercussionSet(percussionSet);
+        return getChannelSetupInfoFromKnownPercussionSet(knownPercussionSet);
+    } else {
+        return {};
+    }
 }
