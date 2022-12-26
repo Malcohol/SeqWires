@@ -118,11 +118,7 @@ namespace smf {
 
         /// Currently just used to determine which tracks are percussion tracks.
         struct ChannelSetup {
-            babelwires::Byte m_bankMSB = 0;
-            babelwires::Byte m_bankLSB = 0;
-            babelwires::Byte m_program = 0;
-            // This is the part corresponding to this channel, irrespective of the part mapping.
-            babelwires::Byte m_gsPartMode = 0;
+            StandardPercussionSets::ChannelSetupInfo m_channelSetupInfo;
             // This is non-null when the pitches in the data should be interpreted as percussion events from the given
             // kit.
             const smf::PercussionSet* m_kitIfPercussion = nullptr;

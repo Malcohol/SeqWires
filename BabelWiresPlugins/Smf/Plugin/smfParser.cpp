@@ -810,17 +810,17 @@ void smf::SmfParser::setGMSpec(GMSpecType::Value gmSpec) {
 }
 
 void smf::SmfParser::setBankMSB(unsigned int channelNumber, const babelwires::Byte msbValue) {
-    m_channelSetup[channelNumber].m_bankMSB = msbValue;
+    m_channelSetup[channelNumber].m_channelSetupInfo.m_bankMSB = msbValue;
     onChangeProgram(channelNumber);
 }
 
 void smf::SmfParser::setBankLSB(unsigned int channelNumber, const babelwires::Byte lsbValue) {
-    m_channelSetup[channelNumber].m_bankLSB = lsbValue;
+    m_channelSetup[channelNumber].m_channelSetupInfo.m_bankLSB = lsbValue;
     onChangeProgram(channelNumber);
 }
 
 void smf::SmfParser::setProgram(unsigned int channelNumber, const babelwires::Byte value) {
-    m_channelSetup[channelNumber].m_program = value;
+    m_channelSetup[channelNumber].m_channelSetupInfo.m_program = value;
     onChangeProgram(channelNumber);
 }
 
@@ -828,7 +828,7 @@ void smf::SmfParser::setGsPartMode(unsigned int blockNumber, babelwires::Byte va
     // For now, assume the midi channels for each part are unchanged.
     // I'm indexing midi channels from 0.
     const unsigned int channelNumber = s_blockToPartMapping[blockNumber] - 1;
-    m_channelSetup[channelNumber].m_gsPartMode = value;
+    m_channelSetup[channelNumber].m_channelSetupInfo.m_gsPartMode = value;
     onChangeProgram(channelNumber);
 }
 
@@ -836,7 +836,7 @@ void smf::SmfParser::setGsPartMode(unsigned int blockNumber, babelwires::Byte va
 void smf::SmfParser::onChangeProgram(unsigned int channelNumber) {
     ChannelSetup& channelSetup = m_channelSetup[channelNumber];
     const GMSpecType::Value gmSpec = getGMSpec();
-    channelSetup.m_kitIfPercussion = m_standardPercussionSets.getPercussionSet(getGMSpec(), channelSetup.m_bankMSB, channelSetup.m_program, channelSetup.m_gsPartMode);
+    channelSetup.m_kitIfPercussion = m_standardPercussionSets.getPercussionSetFromChannelSetupInfo(getGMSpec(), channelSetup.m_channelSetupInfo);
 }
 
 std::unique_ptr<babelwires::FileFeature> smf::parseSmfSequence(babelwires::DataSource& dataSource,

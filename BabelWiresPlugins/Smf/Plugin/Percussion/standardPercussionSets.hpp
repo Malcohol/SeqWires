@@ -26,15 +26,25 @@ namespace smf {
         /// Get the default set for each channel in the given spec.
         const PercussionSet* getDefaultPercussionSet(GMSpecType::Value gmSpec, int channelNumber);
 
+        // TODO This isn't percussion specific.
+        struct ChannelSetupInfo {
+            babelwires::Byte m_bankMSB = 0;
+            babelwires::Byte m_bankLSB = 0;
+            babelwires::Byte m_program = 0;
+            /// This is the part corresponding to this channel, irrespective of the part mapping.
+            babelwires::Byte m_gsPartMode = 0;
+        };
+
         /// Get the percussion set specified by the given parameters, or nullptr if a percussion set is not specified.
-        const PercussionSet* getPercussionSet(GMSpecType::Value gmSpec, babelwires::Byte bankMSB,
-                                              babelwires::Byte program, babelwires::Byte gsPartMode);
+        const PercussionSet* getPercussionSetFromChannelSetupInfo(GMSpecType::Value gmSpec, ChannelSetupInfo channelSetupInfo);
 
         /// Find the percussion set which contains the most instruments from the given set, and is suitable for use in
         /// the given channel.
         const PercussionSet* getBestPercussionSet(GMSpecType::Value gmSpec, int channelNumber,
                                                   const std::unordered_set<babelwires::Identifier>& instrumentsInUse,
                                                   std::unordered_set<babelwires::Identifier>& excludedInstrumentsOut);
+
+        ChannelSetupInfo getChannelSetupInfoFromPercussionSet(const PercussionSet* percussionSet);
 
       private:
         enum KnownPercussionSets {

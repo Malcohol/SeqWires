@@ -74,12 +74,10 @@ const smf::PercussionSet* smf::StandardPercussionSets::getDefaultPercussionSet(G
     return nullptr;
 }
 
-const smf::PercussionSet* smf::StandardPercussionSets::getPercussionSet(GMSpecType::Value gmSpec,
-                                                                        babelwires::Byte bankMSB,
-                                                                        babelwires::Byte program,
-                                                                        babelwires::Byte gsPartMode) {
+const smf::PercussionSet* smf::StandardPercussionSets::getPercussionSetFromChannelSetupInfo(GMSpecType::Value gmSpec, ChannelSetupInfo channelSetupInfo) {
     if (gmSpec == GMSpecType::Value::GM2) {
-        if (bankMSB == 0x78) {
+        if (channelSetupInfo.m_bankMSB == 0x78) {
+            // TODO
             // Percussion
             // LSB not used
             // (program == 1) Standard
@@ -92,32 +90,32 @@ const smf::PercussionSet* smf::StandardPercussionSets::getPercussionSet(GMSpecTy
             // (program == 49) Orchestra
             // (program == 57) SFX
             return m_knownSets[GM2_STANDARD_PERCUSSION_SET];
-        } else if (bankMSB == 0x79) {
+        } else if (channelSetupInfo.m_bankMSB == 0x79) {
             // Melody
             return nullptr;
         } else {
             // Not specified by GM2
         }
     } else if (gmSpec == GMSpecType::Value::XG) {
-        if (bankMSB == 0x7f) {
+        if (channelSetupInfo.m_bankMSB == 0x7f) {
             // Percussion
             return m_knownSets[GM_PERCUSSION_SET];
-        } else if (bankMSB == 0x7e) {
+        } else if (channelSetupInfo.m_bankMSB == 0x7e) {
             // SFX Percussion
-        } else if (bankMSB == 0x00) {
+        } else if (channelSetupInfo.m_bankMSB == 0x00) {
             // Voice
             return nullptr;
-        } else if (bankMSB == 0x40) {
+        } else if (channelSetupInfo.m_bankMSB == 0x40) {
             // SFX
             return nullptr;
         } else {
             // Not specified by XG
         }
     } else if (gmSpec == GMSpecType::Value::GS) {
-        if (gsPartMode == 1) {
+        if (channelSetupInfo.m_gsPartMode == 1) {
             // Percussion mode 1
             return m_knownSets[GM_PERCUSSION_SET];
-        } else if (gsPartMode == 2) {
+        } else if (channelSetupInfo.m_gsPartMode == 2) {
             // Percussion mode 2
             return m_knownSets[GM_PERCUSSION_SET];
         } else {
