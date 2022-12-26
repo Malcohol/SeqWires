@@ -8,7 +8,7 @@
 #pragma once
 
 #include <BabelWiresPlugins/Smf/Plugin/smfTargetModel.hpp>
-#include <BabelWiresPlugins/Smf/Plugin/Percussion/percussionSet.hpp>
+#include <BabelWiresPlugins/Smf/Plugin/Percussion/standardPercussionSets.hpp>
 
 #include <SeqWiresLib/musicTypes.hpp>
 
@@ -60,16 +60,8 @@ namespace smf {
         /// Tempo feature can be null.
         void writeTrack(const target::ChannelGroup* track, const MidiMetadata& metadata);
 
-        // TODO Unify with parser code
-        enum KnownPercussionSets {
-            GM_PERCUSSION_KIT,
-            GM2_STANDARD_PERCUSSION_KIT,
-            NUM_KNOWN_PERCUSSION_KITS,
-            NOT_PERCUSSION = NUM_KNOWN_PERCUSSION_KITS
-        };
-
         /// Determine from the events in the tracks what percussion kit (allowed for the channelNumber) includes the largest number of the events.
-        void setUpPercussionSet(std::vector<const seqwires::Track*> tracks, int channelNumber);
+        void setUpPercussionKit(const std::unordered_set<babelwires::Identifier>& instrumentsInUse, int channelNumber);
 
         void setUpPercussionSets();
 
@@ -82,9 +74,9 @@ namespace smf {
         /// Always use metrical time. Quater-note division.
         int m_division;
 
-        std::array<const smf::PercussionSet*, NUM_KNOWN_PERCUSSION_KITS> m_knownKits;
+        StandardPercussionSets m_standardPercussionSets;
 
-                /// Currently just used to determine which tracks are percussion tracks.
+        /// Currently just used to determine which tracks are percussion tracks.
         struct ChannelSetup {
             //babelwires::Byte m_bankMSB = 0;
             //babelwires::Byte m_bankLSB = 0;

@@ -33,16 +33,8 @@ smf::SmfWriter::SmfWriter(const babelwires::ProjectContext& projectContext, babe
     , m_smfFormatFeature(sequence)
     , m_ostream(ostream)
     , m_os(&m_ostream)
-    , m_division(256) {
-    const smf::PercussionSet& gmKit =
-        projectContext.m_typeSystem.getRegisteredEntry(smf::GMPercussionSet::getThisIdentifier())
-            .is<smf::GMPercussionSet>();
-    const smf::PercussionSet& gm2StandardKit =
-        projectContext.m_typeSystem.getRegisteredEntry(smf::GM2StandardPercussionSet::getThisIdentifier())
-            .is<smf::GM2StandardPercussionSet>();
-    m_knownKits[GM_PERCUSSION_KIT] = &gmKit;
-    m_knownKits[GM2_STANDARD_PERCUSSION_KIT] = &gm2StandardKit;
-}
+    , m_division(256)
+    , m_standardPercussionSets(projectContext) {}
 
 void smf::SmfWriter::writeUint16(std::uint16_t i) {
     m_os->put(i >> 8);
@@ -280,37 +272,37 @@ void smf::SmfWriter::writeTrack(const target::ChannelGroup* channelGroup, const 
     m_os->write(tempStream.str().data(), tempStream.tellp());
 }
 
-void smf::SmfWriter::setUpPercussionSet(std::vector<const seqwires::Track*> tracks, int channelNumber) {
-    if (channelNumber == 9) {
-        // TODO - Use track contents. Select from set of kits.
-        const GMSpecType::Value spec = m_smfFormatFeature.getMidiMetadata().getSpecFeature()->getAsValue();
-        switch (spec) {
-            case GMSpecType::Value::GM:
-                m_channelSetup[9].m_kitIfPercussion = m_knownKits[GM_PERCUSSION_KIT];
-                break;
-            case GMSpecType::Value::GM2:
-                m_channelSetup[9].m_kitIfPercussion = m_knownKits[GM2_STANDARD_PERCUSSION_KIT];
-                break;
-            case GMSpecType::Value::NONE:
-            default:
-                break;
-        }
+void smf::SmfWriter::setUpPercussionKit(const std::unordered_set<babelwires::Identifier>& instrumentsInUse, int channelNumber) {
+    const GMSpecType::Value spec = m_smfFormatFeature.getMidiMetadata().getSpecFeature()->getAsValue();
+    std::unordered_set<babelwires::Identifier> excludedInstruments;
+    m_channelSetup[channelNumber].m_kitIfPercussion = m_standardPercussionSets.getBestPercussionSet(spec, 9, instrumentsInUse, excludedInstruments);
+    if (!excludedInstruments.empty()) {
+        m_userLogger.logWarning() << "Percussion events for " << excludedInstruments.size() << " instruments could not be represented in channel " << channelNumber;
     }
 }
 
+namespace {
+    void getPercussionInstrumentsInUse(const seqwires::Track& track, std::unordered_set<babelwires::Identifier>& instrumentsInUse) {
+        for (auto it : seqwires::iterateOver<seqwires::PercussionEvent>(track)) {
+            instrumentsInUse.insert(it.getInstrument());
+        }
+    }
+
+} // namespace
+
 void smf::SmfWriter::setUpPercussionSets() {
-    std::array<std::vector<const seqwires::Track*>, 16> tracksForChannel;
+    std::array<std::unordered_set<babelwires::Identifier>, 16> instrumentsInUse;
     const int numChannelGroups = m_smfFormatFeature.getNumMidiTracks();
     for (int i = 0; i < numChannelGroups; ++i) {
         const smf::target::ChannelGroup& channelGroup = m_smfFormatFeature.getMidiTrack(i);
         const int numTracks = channelGroup.getNumTracks();
         for (int j = 0; j < numTracks; ++j) {
             const smf::target::ChannelTrackFeature& channelAndTrack = channelGroup.getTrack(j);
-            tracksForChannel[channelAndTrack.getChannelNumber()].emplace_back(&channelAndTrack.getTrack());
+            getPercussionInstrumentsInUse(channelAndTrack.getTrack(), instrumentsInUse[channelAndTrack.getChannelNumber()]);
         }
     }
     for (int i = 0; i < 16; ++i) {
-        setUpPercussionSet(tracksForChannel[i], i);
+        setUpPercussionKit(instrumentsInUse[i], i);
     }
 }
 

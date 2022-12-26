@@ -11,7 +11,7 @@
 #include <SeqWiresLib/builtInPercussionInstruments.hpp>
 
 namespace smf {
-    /// An Enum of percussion instruments which can be mapped to pitches in a contiguous block.
+    /// An base class for Enums of percussion instruments which can be mapped to pitches in a contiguous block.
     class PercussionSet : public babelwires::Enum {
       public:
         PercussionSet(babelwires::LongIdentifier identifier, babelwires::VersionNumber version, EnumValues values,
@@ -20,6 +20,7 @@ namespace smf {
         std::optional<seqwires::Pitch> tryGetPitchFromInstrument(babelwires::Identifier identifier) const;
 
         std::optional<babelwires::Identifier> tryGetInstrumentFromPitch(seqwires::Pitch pitch) const;
+
       private:
         seqwires::Pitch m_pitchOfLowestInstrument;
     };

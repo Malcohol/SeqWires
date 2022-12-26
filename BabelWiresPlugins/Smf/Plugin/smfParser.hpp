@@ -9,7 +9,7 @@
 
 #include <BabelWiresPlugins/Smf/Plugin/gmSpec.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/smfSourceModel.hpp>
-#include <BabelWiresPlugins/Smf/Plugin/Percussion/percussionSet.hpp>
+#include <BabelWiresPlugins/Smf/Plugin/Percussion/standardPercussionSets.hpp>
 
 #include <SeqWiresLib/musicTypes.hpp>
 
@@ -110,10 +110,11 @@ namespace smf {
         int m_numTracks;
         int m_division;
 
-        // The specification provides additional semantics when interpreting the data.
+        /// The specification provides additional semantics when interpreting the data.
         GMSpecType::Value m_gmSpec;
 
-        std::array<const smf::PercussionSet*, NUM_KNOWN_PERCUSSION_KITS> m_knownKits;
+        /// Knowledge of how pitches map to percussion instruments.
+        StandardPercussionSets m_standardPercussionSets;
 
         /// Currently just used to determine which tracks are percussion tracks.
         struct ChannelSetup {
