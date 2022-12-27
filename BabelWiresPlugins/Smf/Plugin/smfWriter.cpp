@@ -397,7 +397,7 @@ void smf::SmfWriter::write() {
     setUpPercussionSets();
 
     const int numTracks = m_smfFormatFeature.getNumMidiTracks();
-    for (int i = 1; i < numTracks; ++i) {
+    for (int i = 0; i < numTracks; ++i) {
         writeTrack(&m_smfFormatFeature.getMidiTrack(i), (i == 0));
     }
 }
