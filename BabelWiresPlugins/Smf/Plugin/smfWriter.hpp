@@ -53,12 +53,12 @@ namespace smf {
         /// type is the integer 0..15 which defines which type of text meta-event should be issued.
         void writeTextMetaEvent(int type, std::string text);
 
-        void writeNotes(const target::ChannelGroup& track);
+        void writeNotes(const std::vector<const target::ChannelTrackFeature*>& tracks);
 
         void writeHeaderChunk();
 
         /// Write the events for the given track.
-        void writeTrack(const target::ChannelGroup* track, bool includeGlobalSetup);
+        void writeTrack(const std::vector<const target::ChannelTrackFeature*>* tracks, bool includeGlobalSetup);
 
         /// Write non-channel-specific setup information.
         void writeGlobalSetup();

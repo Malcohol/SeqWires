@@ -21,18 +21,9 @@ namespace smf {
     namespace target {
         class ChannelTrackFeature;
 
-        /// An abstraction for track data for multiple midi channels.
-        /// This abstraction is useful in the writer, since the data is structured differently
-        /// in Format 0 and Format 1 files.
-        class ChannelGroup {
-          public:
-            virtual int getNumTracks() const = 0;
-            virtual const ChannelTrackFeature& getTrack(int i) const = 0;
-        };
-
         /// A track and its MIDI channel number.
         /// This can also act as a ChannelGroup containing one ChannelTrackFeature (itself).
-        class ChannelTrackFeature : public babelwires::RecordFeature, public ChannelGroup {
+        class ChannelTrackFeature : public babelwires::RecordFeature {
           public:
             ChannelTrackFeature();
 
@@ -40,19 +31,15 @@ namespace smf {
             const seqwires::Track& getTrack() const;
 
           public:
-            virtual int getNumTracks() const override;
-            virtual const ChannelTrackFeature& getTrack(int i) const override;
-
-          public:
             babelwires::IntFeature* m_channelNum;
             seqwires::TrackFeature* m_trackFeature;
         };
 
         /// An array of tracks and their MIDI channels.
-        class ArrayChannelGroup : public babelwires::ArrayFeature, public ChannelGroup {
+        class ArrayChannelGroup : public babelwires::ArrayFeature {
           public:
-            virtual int getNumTracks() const override;
-            virtual const ChannelTrackFeature& getTrack(int i) const override;
+            int getNumTracks() const;
+            const ChannelTrackFeature& getTrack(int i) const;
 
           protected:
             std::unique_ptr<Feature> createNextEntry() const override;
@@ -64,8 +51,10 @@ namespace smf {
             SmfFormatFeature();
 
             const MidiMetadata& getMidiMetadata() const;
+
+            // Convenience: Dispatches to the ArrayChannelGroup.
             int getNumMidiTracks() const;
-            const ChannelGroup& getMidiTrack(int i) const;
+            const ChannelTrackFeature& getMidiTrack(int i) const;
 
             Style getStyle() const override;
 

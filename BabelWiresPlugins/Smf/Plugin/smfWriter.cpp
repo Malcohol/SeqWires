@@ -114,16 +114,13 @@ void smf::SmfWriter::writeHeaderChunk() {
     m_os->write("MThd", 4);
     writeUint32(6);
     writeUint16(m_smfFormatFeature.getSelectedTagIndex());
-    writeUint16(numTracks);
+    writeUint16((m_smfFormatFeature.getSelectedTagIndex() == 0) ? 1 : numTracks);
 
     {
         int division = 1;
         for (int i = 0; i < numTracks; ++i) {
-            const target::ChannelGroup& channelGroup = m_smfFormatFeature.getMidiTrack(i);
-            for (int j = 0; j < channelGroup.getNumTracks(); ++j) {
-                const target::ChannelTrackFeature& entry = channelGroup.getTrack(j);
-                division = babelwires::lcm(division, seqwires::getMinimumDenominator(entry.m_trackFeature->get()));
-            }
+            const target::ChannelTrackFeature& entry = m_smfFormatFeature.getMidiTrack(i);
+            division = babelwires::lcm(division, seqwires::getMinimumDenominator(entry.m_trackFeature->get()));
         }
         m_division = division;
     }
@@ -191,8 +188,8 @@ namespace {
 
 } // namespace
 
-void smf::SmfWriter::writeNotes(const target::ChannelGroup& channelGroup) {
-    const int numChannels = channelGroup.getNumTracks();
+void smf::SmfWriter::writeNotes(const std::vector<const target::ChannelTrackFeature*>& tracks) {
+    const int numTracks = tracks.size();
 
     seqwires::ModelDuration trackDuration = 0;
 
@@ -200,8 +197,8 @@ void smf::SmfWriter::writeNotes(const target::ChannelGroup& channelGroup) {
 
     std::vector<seqwires::TrackTraverser<seqwires::FilteredTrackIterator<seqwires::TrackEvent>>> traversers;
 
-    for (int i = 0; i < channelGroup.getNumTracks(); ++i) {
-        const smf::target::ChannelTrackFeature& channelTrack = channelGroup.getTrack(i);
+    for (int i = 0; i < numTracks; ++i) {
+        const smf::target::ChannelTrackFeature& channelTrack = *tracks[i];
         const seqwires::Track& track = channelTrack.m_trackFeature->get();
         const int channelNumber = channelTrack.m_channelNum->get();
         traversers.emplace_back(track, seqwires::iterateOver<seqwires::TrackEvent>(track));
@@ -212,13 +209,13 @@ void smf::SmfWriter::writeNotes(const target::ChannelGroup& channelGroup) {
     seqwires::ModelDuration timeOfLastEvent = 0;
     while (timeSinceStart < trackDuration) {
         seqwires::ModelDuration timeToNextEvent = trackDuration - timeSinceStart;
-        for (int i = 0; i < channelGroup.getNumTracks(); ++i) {
+        for (int i = 0; i < numTracks; ++i) {
             traversers[i].greatestLowerBoundNextEvent(timeToNextEvent);
         }
 
         bool isFirstEventAtThisTime = true;
-        for (int i = 0; i < channelGroup.getNumTracks(); ++i) {
-            const smf::target::ChannelTrackFeature& channelTrack = channelGroup.getTrack(i);
+        for (int i = 0; i < numTracks; ++i) {
+                    const smf::target::ChannelTrackFeature& channelTrack = *tracks[i];
             traversers[i].advance(timeToNextEvent, [this, &isFirstEventAtThisTime, &timeToNextEvent, &timeOfLastEvent,
                                                     &timeSinceStart, &channelTrack](const seqwires::TrackEvent& event) {
                 const seqwires::ModelDuration timeToThisEvent = isFirstEventAtThisTime ? timeToNextEvent : 0;
@@ -289,7 +286,7 @@ void smf::SmfWriter::writeGlobalSetup() {
     }
 }
 
-void smf::SmfWriter::writeTrack(const target::ChannelGroup* channelGroup, bool includeGlobalSetup) {
+void smf::SmfWriter::writeTrack(const std::vector<const target::ChannelTrackFeature*>* tracks, bool includeGlobalSetup) {
     std::ostream* oldStream = m_os;
     std::ostringstream tempStream;
     m_os = &tempStream;
@@ -298,11 +295,11 @@ void smf::SmfWriter::writeTrack(const target::ChannelGroup* channelGroup, bool i
         writeGlobalSetup();
     }
 
-    if (channelGroup) {
+    if (tracks) {
         const GMSpecType::Value gmSpec = m_smfFormatFeature.getMidiMetadata().getSpecFeature()->getAsValue();
 
-        for (int i = 0; i < channelGroup->getNumTracks(); ++i) {
-            const target::ChannelTrackFeature& channelTrack = channelGroup->getTrack(i);
+        for (int i = 0; i < tracks->size(); ++i) {
+            const target::ChannelTrackFeature& channelTrack = *(*tracks)[i];
             const int channelNumber = channelTrack.getChannelNumber();
             ChannelSetup& channelSetup = m_channelSetup[channelNumber];
             if (!channelSetup.m_setupWritten) {
@@ -337,7 +334,7 @@ void smf::SmfWriter::writeTrack(const target::ChannelGroup* channelGroup, bool i
             }
         }
 
-        writeNotes(*channelGroup);
+        writeNotes(*tracks);
     } else {
         writeModelDuration(0);
     }
@@ -377,15 +374,11 @@ namespace {
 
 void smf::SmfWriter::setUpPercussionSets() {
     std::array<std::unordered_set<babelwires::Identifier>, 16> instrumentsInUse;
-    const int numChannelGroups = m_smfFormatFeature.getNumMidiTracks();
-    for (int i = 0; i < numChannelGroups; ++i) {
-        const smf::target::ChannelGroup& channelGroup = m_smfFormatFeature.getMidiTrack(i);
-        const int numTracks = channelGroup.getNumTracks();
-        for (int j = 0; j < numTracks; ++j) {
-            const smf::target::ChannelTrackFeature& channelAndTrack = channelGroup.getTrack(j);
-            getPercussionInstrumentsInUse(channelAndTrack.getTrack(),
-                                          instrumentsInUse[channelAndTrack.getChannelNumber()]);
-        }
+    const int numTracks = m_smfFormatFeature.getNumMidiTracks();
+    for (int i = 0; i < numTracks; ++i) {
+        const smf::target::ChannelTrackFeature& channelAndTrack = m_smfFormatFeature.getMidiTrack(i);
+        getPercussionInstrumentsInUse(channelAndTrack.getTrack(),
+                                        instrumentsInUse[channelAndTrack.getChannelNumber()]);
     }
     for (int i = 0; i < 16; ++i) {
         setUpPercussionKit(instrumentsInUse[i], i);
@@ -393,12 +386,24 @@ void smf::SmfWriter::setUpPercussionSets() {
 }
 
 void smf::SmfWriter::write() {
-    writeHeaderChunk();
     setUpPercussionSets();
 
+    writeHeaderChunk();
+
+    std::vector<const target::ChannelTrackFeature*> tracks;
     const int numTracks = m_smfFormatFeature.getNumMidiTracks();
-    for (int i = 0; i < numTracks; ++i) {
-        writeTrack(&m_smfFormatFeature.getMidiTrack(i), (i == 0));
+
+    if (m_smfFormatFeature.getSelectedTagIndex() == 0) {
+        for (int i = 0; i < numTracks; ++i) {
+            tracks.emplace_back(&m_smfFormatFeature.getMidiTrack(i));
+        }
+        writeTrack(&tracks, true);
+    } else {
+        for (int i = 0; i < numTracks; ++i) {
+            tracks.clear();
+            tracks.emplace_back(&m_smfFormatFeature.getMidiTrack(i));
+            writeTrack(&tracks, (i == 0));
+        }
     }
 }
 

@@ -22,14 +22,6 @@ smf::target::ChannelTrackFeature::ChannelTrackFeature() {
                               REGISTERED_ID("Track", "track", "a6db15c9-9f29-4fb3-92c4-771746b2b97f"));
 }
 
-int smf::target::ChannelTrackFeature::getNumTracks() const {
-    return 1;
-}
-
-const smf::target::ChannelTrackFeature& smf::target::ChannelTrackFeature::getTrack(int i) const {
-    return *this;
-}
-
 int smf::target::ChannelTrackFeature::getChannelNumber() const {
     return m_channelNum->get();
 }
@@ -81,17 +73,11 @@ smf::target::SmfFeature::SmfFeature(const babelwires::ProjectContext& projectCon
 }
 
 int smf::target::SmfFormatFeature::getNumMidiTracks() const {
-    return 1;
+    return m_channelGroup->getNumTracks();
 }
 
-const smf::target::ChannelGroup& smf::target::SmfFormatFeature::getMidiTrack(int i) const {
-    if (getSelectedTagIndex() == 0) {
-        assert((i == 0) && "There is only 1 in format 0 smf files.");
-        return *m_channelGroup;
-
-    } else {
-        return static_cast<const ChannelTrackFeature&>(*m_channelGroup->getFeature(i));
-    }
+const smf::target::ChannelTrackFeature& smf::target::SmfFormatFeature::getMidiTrack(int i) const {
+    return m_channelGroup->getTrack(i);
 }
 
 const smf::target::SmfFormatFeature& smf::target::SmfFeature::getFormatFeature() const {
