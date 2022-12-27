@@ -36,7 +36,7 @@ namespace smf {
         virtual ~SmfParser();
 
         void parse();
-        std::unique_ptr<babelwires::FileFeature> getResult() { return std::move(m_result); }
+        std::unique_ptr<source::SmfFeature> getResult() { return std::move(m_result); }
 
       protected:
         babelwires::Byte getNext();
@@ -127,7 +127,7 @@ namespace smf {
         std::array<ChannelSetup, 16> m_channelSetup;
     };
 
-    std::unique_ptr<babelwires::FileFeature> parseSmfSequence(babelwires::DataSource& dataSource,
+    std::unique_ptr<source::SmfFeature> parseSmfSequence(babelwires::DataSource& dataSource,
                                                               const babelwires::ProjectContext& projectContext,
                                                               babelwires::UserLogger& userLogger);
 

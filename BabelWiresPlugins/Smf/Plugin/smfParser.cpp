@@ -547,22 +547,32 @@ void smf::SmfParser::readTrack(int trackIndex, source::ChannelGroup& channels, M
         if ((statusByte & 0x80) || (lastStatusByte == 0)) {
             // A new status byte, so consume the status byte.
             getNext();
+
+            //Buffer stores the status when a Voice Category Status (ie, 0x80 to 0xEF) is received.
+            //Buffer is cleared when a System Common Category Status (ie, 0xF0 to 0xF7) is received.
+            //Nothing is done to the buffer when a RealTime Category message is received.
+
+            if ((statusByte >= 0x80) && (statusByte <= 0xEF)) {
+                // Voice category status
+                lastStatusByte = statusByte;
+            } else if ((statusByte >= 0xF0) && (statusByte <= 0xF7)) {
+                // System common category status
+                lastStatusByte = 0;
+            }
         } else {
             // Running status.
             statusByte = lastStatusByte;
         }
-        lastStatusByte = statusByte;
+
+        const babelwires::Byte statusHi = statusByte >> 4;
+        const babelwires::Byte statusLo = statusByte & 0xf;
 
         // Implementation note:
         // I use the debug log where an event is valid, but I haven't implemented support for it yet.
         // I use the user log where an event is invalid, so it could never be parsed correctly.
 
-        const babelwires::Byte statusHi = statusByte >> 4;
-        const babelwires::Byte statusLo = statusByte & 0xf;
         switch (statusHi) {
             case 0b1111: {
-                // No running status allowed.
-                lastStatusByte = 0;
                 if (statusLo == 0x00) {
                     readSysExEvent();
                 } else if (statusLo == 0x07) {
@@ -802,8 +812,7 @@ smf::GMSpecType::Value smf::SmfParser::getGMSpec() const {
 }
 
 void smf::SmfParser::setGMSpec(GMSpecType::Value gmSpec) {
-    for (int i = 0; i < 16; ++i)
-    {
+    for (int i = 0; i < 16; ++i) {
         m_channelSetup[9].m_kitIfPercussion = m_standardPercussionSets.getDefaultPercussionSet(gmSpec, i);
     }
     m_result->getMidiMetadata().getSpecFeature()->setFromValue(gmSpec);
@@ -836,10 +845,11 @@ void smf::SmfParser::setGsPartMode(unsigned int blockNumber, babelwires::Byte va
 void smf::SmfParser::onChangeProgram(unsigned int channelNumber) {
     ChannelSetup& channelSetup = m_channelSetup[channelNumber];
     const GMSpecType::Value gmSpec = getGMSpec();
-    channelSetup.m_kitIfPercussion = m_standardPercussionSets.getPercussionSetFromChannelSetupInfo(getGMSpec(), channelSetup.m_channelSetupInfo);
+    channelSetup.m_kitIfPercussion =
+        m_standardPercussionSets.getPercussionSetFromChannelSetupInfo(getGMSpec(), channelSetup.m_channelSetupInfo);
 }
 
-std::unique_ptr<babelwires::FileFeature> smf::parseSmfSequence(babelwires::DataSource& dataSource,
+std::unique_ptr<smf::source::SmfFeature> smf::parseSmfSequence(babelwires::DataSource& dataSource,
                                                                const babelwires::ProjectContext& projectContext,
                                                                babelwires::UserLogger& userLogger) {
     SmfParser parser(dataSource, projectContext, userLogger);
