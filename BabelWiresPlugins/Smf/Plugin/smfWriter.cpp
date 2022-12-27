@@ -26,6 +26,12 @@
 #include <set>
 #include <sstream>
 
+namespace {
+    // See page 237 of the SC-8850 English manual for the part to block conversion.
+    // We will always use the default part mapping, where parts correspond to midi channels.
+    const std::array<unsigned int, 16> s_gsChannelToBlockMapping{1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 11, 12, 13, 14, 15};
+} // namespace
+
 smf::SmfWriter::SmfWriter(const babelwires::ProjectContext& projectContext, babelwires::UserLogger& userLogger,
                           const target::SmfFormatFeature& sequence, std::ostream& ostream)
     : m_projectContext(projectContext)
@@ -244,7 +250,7 @@ template <std::size_t N> void smf::SmfWriter::writeMessage(const std::array<std:
 void smf::SmfWriter::writeGlobalSetup() {
     const MidiMetadata& metadata = m_smfFormatFeature.getMidiMetadata();
 
-    switch (const GMSpecType::Value spec = metadata.getSpecFeature()->getAsValue()) {
+    switch (metadata.getSpecFeature()->getAsValue()) {
         case GMSpecType::Value::GM:
             writeModelDuration(0);
             writeMessage(std::array<std::uint8_t, 6>{0b11110000, 0x7E, 0x7F, 0x09, 0x01, 0xF7});
@@ -293,6 +299,8 @@ void smf::SmfWriter::writeTrack(const target::ChannelGroup* channelGroup, bool i
     }
 
     if (channelGroup) {
+        const GMSpecType::Value gmSpec = m_smfFormatFeature.getMidiMetadata().getSpecFeature()->getAsValue();
+
         for (int i = 0; i < channelGroup->getNumTracks(); ++i) {
             const target::ChannelTrackFeature& channelTrack = channelGroup->getTrack(i);
             const int channelNumber = channelTrack.getChannelNumber();
@@ -301,24 +309,29 @@ void smf::SmfWriter::writeTrack(const target::ChannelGroup* channelGroup, bool i
                 const std::optional<StandardPercussionSets::ChannelSetupInfo> info =
                     m_standardPercussionSets.getChannelSetupInfoFromPercussionSet(channelSetup.m_kitIfPercussion);
                 if (info) {
-                    // TODO GS Part stuff
+                    if (gmSpec == GMSpecType::Value::GS) {
+                        // Set GS "Use For Rhythm Part"
+                        writeModelDuration(0);
+                        const std::uint8_t block = 0x10 | s_gsChannelToBlockMapping[channelNumber];
+                        const std::uint8_t checksum = 0x40 + block + 0x15 + info->m_gsPartMode;
+                        writeMessage(std::array<std::uint8_t, 11>{0b11110000, 0x41, 0x10, 0x42, 0x12, 0x40, block, 0x15,
+                                                                  info->m_gsPartMode, checksum, 0xF7});
+                    }
 
                     // Bank select MSB
                     writeModelDuration(0);
-                    m_os->put(0b10110000 | channelNumber);
-                    m_os->put(0x00);
-                    m_os->put(info->m_bankMSB);
+                    writeMessage(std::array<std::uint8_t, 3>{static_cast<std::uint8_t>(0b10110000 | channelNumber),
+                                                             0x00, info->m_bankMSB});
 
                     // Bank select LSB
                     writeModelDuration(0);
-                    m_os->put(0b10110000 | channelNumber);
-                    m_os->put(0x20);
-                    m_os->put(info->m_bankLSB);
+                    writeMessage(std::array<std::uint8_t, 3>{static_cast<std::uint8_t>(0b10110000 | channelNumber),
+                                                             0x20, info->m_bankLSB});
 
                     // Program change.
                     writeModelDuration(0);
-                    m_os->put(0b11000000 | channelNumber);
-                    m_os->put(info->m_program);
+                    writeMessage(std::array<std::uint8_t, 2>{static_cast<std::uint8_t>(0b11000000 | channelNumber),
+                                                             info->m_program});
                 }
                 channelSetup.m_setupWritten = true;
             }
@@ -342,10 +355,10 @@ void smf::SmfWriter::writeTrack(const target::ChannelGroup* channelGroup, bool i
 
 void smf::SmfWriter::setUpPercussionKit(const std::unordered_set<babelwires::Identifier>& instrumentsInUse,
                                         int channelNumber) {
-    const GMSpecType::Value spec = m_smfFormatFeature.getMidiMetadata().getSpecFeature()->getAsValue();
+    const GMSpecType::Value gmSpec = m_smfFormatFeature.getMidiMetadata().getSpecFeature()->getAsValue();
     std::unordered_set<babelwires::Identifier> excludedInstruments;
     m_channelSetup[channelNumber].m_kitIfPercussion =
-        m_standardPercussionSets.getBestPercussionSet(spec, 9, instrumentsInUse, excludedInstruments);
+        m_standardPercussionSets.getBestPercussionSet(gmSpec, 9, instrumentsInUse, excludedInstruments);
     if (!excludedInstruments.empty()) {
         m_userLogger.logWarning() << "Percussion events for " << excludedInstruments.size()
                                   << " instruments could not be represented in channel " << channelNumber;
