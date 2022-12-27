@@ -16,4 +16,4 @@ babelwires::LongIdentifier smf::GMSpecType::getThisIdentifier() {
 }
 
 smf::GMSpecType::GMSpecType()
-    : Enum(getThisIdentifier(), 1, ENUM_IDENTIFIER_VECTOR(GM_SPEC_VALUES), 0) {}
+    : Enum(getThisIdentifier(), 1, ENUM_IDENTIFIER_VECTOR(GM_SPEC_VALUES), 1) {}
