@@ -250,20 +250,20 @@ void smf::SmfWriter::writeGlobalSetup() {
     switch (metadata.getSpecFeature()->getAsValue()) {
         case GMSpecType::Value::GM:
             writeModelDuration(0);
-            writeMessage(std::array<std::uint8_t, 6>{0b11110000, 0x7E, 0x7F, 0x09, 0x01, 0xF7});
+            writeMessage(std::array<std::uint8_t, 7>{0b11110000, 0x05, 0x7E, 0x7F, 0x09, 0x01, 0xF7});
             break;
         case GMSpecType::Value::GM2:
             writeModelDuration(0);
-            writeMessage(std::array<std::uint8_t, 6>{0b11110000, 0x7E, 0x7F, 0x09, 0x03, 0xF7});
+            writeMessage(std::array<std::uint8_t, 7>{0b11110000, 0x05, 0x7E, 0x7F, 0x09, 0x03, 0xF7});
             break;
         case GMSpecType::Value::GS:
             writeModelDuration(0);
             writeMessage(
-                std::array<std::uint8_t, 11>{0b11110000, 0x41, 0x10, 0x42, 0x12, 0x40, 0x00, 0x7F, 0x00, 0x41, 0xF7});
+                std::array<std::uint8_t, 12>{0b11110000, 0x0A, 0x41, 0x10, 0x42, 0x12, 0x40, 0x00, 0x7F, 0x00, 0x41, 0xF7});
             break;
         case GMSpecType::Value::XG:
             writeModelDuration(0);
-            writeMessage(std::array<std::uint8_t, 9>{0b11110000, 0x43, 0x10, 0x4C, 0x00, 0x00, 0x7E, 0x00, 0xF7});
+            writeMessage(std::array<std::uint8_t, 10>{0b11110000, 0x09, 0x43, 0x10, 0x4C, 0x00, 0x00, 0x7E, 0x00, 0xF7});
         default:
         case GMSpecType::Value::NONE:
             break;
@@ -311,7 +311,7 @@ void smf::SmfWriter::writeTrack(const std::vector<const target::ChannelTrackFeat
                         writeModelDuration(0);
                         const std::uint8_t block = 0x10 | s_gsChannelToBlockMapping[channelNumber];
                         const std::uint8_t checksum = (0x80 - ((0x40 + block + 0x15 + info->m_gsPartMode) % 0x80)) % 0x80;
-                        writeMessage(std::array<std::uint8_t, 11>{0b11110000, 0x41, 0x10, 0x42, 0x12, 0x40, block, 0x15,
+                        writeMessage(std::array<std::uint8_t, 12>{0b11110000, 0x0A, 0x41, 0x10, 0x42, 0x12, 0x40, block, 0x15,
                                                                   info->m_gsPartMode, checksum, 0xF7});
                     }
 
@@ -355,7 +355,7 @@ void smf::SmfWriter::setUpPercussionKit(const std::unordered_set<babelwires::Ide
     const GMSpecType::Value gmSpec = m_smfFormatFeature.getMidiMetadata().getSpecFeature()->getAsValue();
     std::unordered_set<babelwires::Identifier> excludedInstruments;
     m_channelSetup[channelNumber].m_kitIfPercussion =
-        m_standardPercussionSets.getBestPercussionSet(gmSpec, 9, instrumentsInUse, excludedInstruments);
+        m_standardPercussionSets.getBestPercussionSet(gmSpec, channelNumber, instrumentsInUse, excludedInstruments);
     if (!excludedInstruments.empty()) {
         m_userLogger.logWarning() << "Percussion events for " << excludedInstruments.size()
                                   << " instruments could not be represented in channel " << channelNumber;
