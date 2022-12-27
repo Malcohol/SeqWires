@@ -372,7 +372,7 @@ void smf::SmfParser::readSysExEvent() {
             // This can overflow without problems.
             checkSum += m_messageBuffer[i];
         }
-        if (m_messageBuffer[messageSize - 2] != (0x80 - (checkSum % 0x80) % 0x80)) {
+        if (m_messageBuffer[messageSize - 2] != ((0x80 - (checkSum % 0x80)) % 0x80)) {
             m_userLogger.logWarning() << "Ignoring Roland SysEx message with invalid checksum";
             return;
         }

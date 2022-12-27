@@ -313,7 +313,7 @@ void smf::SmfWriter::writeTrack(const target::ChannelGroup* channelGroup, bool i
                         // Set GS "Use For Rhythm Part"
                         writeModelDuration(0);
                         const std::uint8_t block = 0x10 | s_gsChannelToBlockMapping[channelNumber];
-                        const std::uint8_t checksum = 0x40 + block + 0x15 + info->m_gsPartMode;
+                        const std::uint8_t checksum = (0x80 - ((0x40 + block + 0x15 + info->m_gsPartMode) % 0x80)) % 0x80;
                         writeMessage(std::array<std::uint8_t, 11>{0b11110000, 0x41, 0x10, 0x42, 0x12, 0x40, block, 0x15,
                                                                   info->m_gsPartMode, checksum, 0xF7});
                     }
