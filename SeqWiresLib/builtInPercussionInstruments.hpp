@@ -195,7 +195,10 @@
     X(Wind, "Wind", "c6c86918-1618-4c1b-90a5-a8a0e8527df4")                                                            \
     X(Seashr, "Seashore", "802751a0-4cf3-4313-8e05-943432becc37")                                                      \
     X(Stream, "Stream", "70645217-c810-4009-a186-4113797c622f")                                                        \
-    X(Bubble, "Bubble", "8b4b34a6-6cee-4777-85b6-a1568fe4c300")
+    X(Bubble, "Bubble", "8b4b34a6-6cee-4777-85b6-a1568fe4c300")                                                        \
+    /* Instruments of the GS standard 1 set */                                                                         \
+    X(SnrRll, "Snare Roll", "d04bfd3c-9c76-49f7-8624-8e28bf48d70f")                                                    \
+    X(FngSnp, "Finger Snap", "209836fb-3780-4efe-93d7-065fc3fc4403")
 
 namespace seqwires {
     /// All percussion instruments built into SeqWires.

@@ -52,9 +52,7 @@ namespace smf {
         enum KnownPercussionSets {
             GM_PERCUSSION_SET,
 
-            GM2_SETS_START,
-
-            GM2_STANDARD_PERCUSSION_SET = GM2_SETS_START,
+            GM2_STANDARD_PERCUSSION_SET,
             GM2_ANALOG_PERCUSSION_SET,
             GM2_BRUSH_PERCUSSION_SET,
             GM2_ELECTRONIC_PERCUSSION_SET,
@@ -64,10 +62,18 @@ namespace smf {
             GM2_ROOM_PERCUSSION_SET,
             GM2_SFX_PERCUSSION_SET,
 
-            GM2_SETS_END = GM2_SFX_PERCUSSION_SET,
+            GS_STANDARD_1_PERCUSSION_SET,
 
             NUM_KNOWN_PERCUSSION_SETS,
-            NOT_PERCUSSION = NUM_KNOWN_PERCUSSION_SETS
+            NOT_PERCUSSION = NUM_KNOWN_PERCUSSION_SETS,
+
+            //
+
+            GM2_SETS_START = GM2_STANDARD_PERCUSSION_SET,
+            GM2_SETS_END = GM2_SFX_PERCUSSION_SET,
+
+            GS_SETS_START = GS_STANDARD_1_PERCUSSION_SET,
+            GS_SETS_END = GS_STANDARD_1_PERCUSSION_SET,
         };
 
         /// Ensure the m_instrumentSets array is populated.

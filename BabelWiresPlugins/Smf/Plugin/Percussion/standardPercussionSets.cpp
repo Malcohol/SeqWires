@@ -17,6 +17,7 @@
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/gm2SFXPercussionSet.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/gm2StandardPercussionSet.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/gmPercussionSet.hpp>
+#include <BabelWiresPlugins/Smf/Plugin/Percussion/gsStandard1PercussionSet.hpp>
 
 #include <BabelWiresLib/Project/projectContext.hpp>
 #include <BabelWiresLib/TypeSystem/typeSystem.hpp>
@@ -26,6 +27,9 @@
 smf::StandardPercussionSets::StandardPercussionSets(const babelwires::ProjectContext& projectContext) {
     m_knownSets[GM_PERCUSSION_SET] =
         &projectContext.m_typeSystem.getRegisteredEntry(smf::GMPercussionSet::getThisIdentifier())
+             .is<smf::PercussionSet>();
+    m_knownSets[GM2_STANDARD_PERCUSSION_SET] =
+        &projectContext.m_typeSystem.getRegisteredEntry(smf::GM2StandardPercussionSet::getThisIdentifier())
              .is<smf::PercussionSet>();
     m_knownSets[GM2_ANALOG_PERCUSSION_SET] =
         &projectContext.m_typeSystem.getRegisteredEntry(smf::GM2AnalogPercussionSet::getThisIdentifier())
@@ -51,8 +55,8 @@ smf::StandardPercussionSets::StandardPercussionSets(const babelwires::ProjectCon
     m_knownSets[GM2_SFX_PERCUSSION_SET] =
         &projectContext.m_typeSystem.getRegisteredEntry(smf::GM2SFXPercussionSet::getThisIdentifier())
              .is<smf::PercussionSet>();
-    m_knownSets[GM2_STANDARD_PERCUSSION_SET] =
-        &projectContext.m_typeSystem.getRegisteredEntry(smf::GM2StandardPercussionSet::getThisIdentifier())
+    m_knownSets[GS_STANDARD_1_PERCUSSION_SET] =
+        &projectContext.m_typeSystem.getRegisteredEntry(smf::GsStandard1PercussionSet::getThisIdentifier())
              .is<smf::PercussionSet>();
 }
 
@@ -60,10 +64,13 @@ const smf::PercussionSet* smf::StandardPercussionSets::getDefaultPercussionSet(G
                                                                                int channelNumber) {
     switch (gmSpec) {
         case GMSpecType::Value::GM:
-        case GMSpecType::Value::GS:
         case GMSpecType::Value::XG:
             if (channelNumber == 9) {
                 return m_knownSets[GM_PERCUSSION_SET];
+            }
+        case GMSpecType::Value::GS:
+            if (channelNumber == 9) {
+                return m_knownSets[GS_STANDARD_1_PERCUSSION_SET];
             }
         case GMSpecType::Value::GM2:
             if (channelNumber == 9) {
@@ -126,10 +133,10 @@ smf::StandardPercussionSets::getPercussionSetFromChannelSetupInfo(GMSpecType::Va
     } else if (gmSpec == GMSpecType::Value::GS) {
         if (channelSetupInfo.m_gsPartMode == 1) {
             // Percussion mode 1
-            return m_knownSets[GM_PERCUSSION_SET];
+            return m_knownSets[GS_STANDARD_1_PERCUSSION_SET];
         } else if (channelSetupInfo.m_gsPartMode == 2) {
             // Percussion mode 2
-            return m_knownSets[GM_PERCUSSION_SET];
+            return m_knownSets[GS_STANDARD_1_PERCUSSION_SET];
         } else {
             // Not a percussion voice
             return nullptr;
@@ -187,6 +194,8 @@ smf::StandardPercussionSets::getBestPercussionSet(GMSpecType::Value gmSpec, int 
                                            excludedInstrumentsOut);
     } else if (gmSpec == GMSpecType::Value::GM2) {
         return getBestPercussionSetInRange(GM2_SETS_START, GM2_SETS_END, instrumentsInUse, excludedInstrumentsOut);
+    } else if (gmSpec == GMSpecType::Value::GS) {
+        return getBestPercussionSetInRange(GS_SETS_START, GS_SETS_END, instrumentsInUse, excludedInstrumentsOut);
     }
     return nullptr;
 }
@@ -221,6 +230,8 @@ smf::StandardPercussionSets::getChannelSetupInfoFromKnownPercussionSet(KnownPerc
             return {{0x78, 0, 49, 0}};
         case GM2_SFX_PERCUSSION_SET:
             return {{0x78, 0, 57, 0}};
+        case GS_STANDARD_1_PERCUSSION_SET:
+            return {{0x02, 0, 1, 1}};
         default:
         case NOT_PERCUSSION:
             return {};

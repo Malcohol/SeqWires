@@ -215,7 +215,7 @@ void smf::SmfWriter::writeNotes(const std::vector<const target::ChannelTrackFeat
 
         bool isFirstEventAtThisTime = true;
         for (int i = 0; i < numTracks; ++i) {
-                    const smf::target::ChannelTrackFeature& channelTrack = *tracks[i];
+            const smf::target::ChannelTrackFeature& channelTrack = *tracks[i];
             traversers[i].advance(timeToNextEvent, [this, &isFirstEventAtThisTime, &timeToNextEvent, &timeOfLastEvent,
                                                     &timeSinceStart, &channelTrack](const seqwires::TrackEvent& event) {
                 const seqwires::ModelDuration timeToThisEvent = isFirstEventAtThisTime ? timeToNextEvent : 0;
@@ -258,12 +258,13 @@ void smf::SmfWriter::writeGlobalSetup() {
             break;
         case GMSpecType::Value::GS:
             writeModelDuration(0);
-            writeMessage(
-                std::array<std::uint8_t, 12>{0b11110000, 0x0A, 0x41, 0x10, 0x42, 0x12, 0x40, 0x00, 0x7F, 0x00, 0x41, 0xF7});
+            writeMessage(std::array<std::uint8_t, 12>{0b11110000, 0x0A, 0x41, 0x10, 0x42, 0x12, 0x40, 0x00, 0x7F, 0x00,
+                                                      0x41, 0xF7});
             break;
         case GMSpecType::Value::XG:
             writeModelDuration(0);
-            writeMessage(std::array<std::uint8_t, 10>{0b11110000, 0x08, 0x43, 0x10, 0x4C, 0x00, 0x00, 0x7E, 0x00, 0xF7});
+            writeMessage(
+                std::array<std::uint8_t, 10>{0b11110000, 0x08, 0x43, 0x10, 0x4C, 0x00, 0x00, 0x7E, 0x00, 0xF7});
         default:
         case GMSpecType::Value::NONE:
             break;
@@ -286,7 +287,8 @@ void smf::SmfWriter::writeGlobalSetup() {
     }
 }
 
-void smf::SmfWriter::writeTrack(const std::vector<const target::ChannelTrackFeature*>* tracks, bool includeGlobalSetup) {
+void smf::SmfWriter::writeTrack(const std::vector<const target::ChannelTrackFeature*>* tracks,
+                                bool includeGlobalSetup) {
     std::ostream* oldStream = m_os;
     std::ostringstream tempStream;
     m_os = &tempStream;
@@ -310,20 +312,21 @@ void smf::SmfWriter::writeTrack(const std::vector<const target::ChannelTrackFeat
                         // Set GS "Use For Rhythm Part"
                         writeModelDuration(0);
                         const std::uint8_t block = 0x10 | s_gsChannelToBlockMapping[channelNumber];
-                        const std::uint8_t checksum = (0x80 - ((0x40 + block + 0x15 + info->m_gsPartMode) % 0x80)) % 0x80;
-                        writeMessage(std::array<std::uint8_t, 12>{0b11110000, 0x0A, 0x41, 0x10, 0x42, 0x12, 0x40, block, 0x15,
-                                                                  info->m_gsPartMode, checksum, 0xF7});
+                        const std::uint8_t checksum =
+                            (0x80 - ((0x40 + block + 0x15 + info->m_gsPartMode) % 0x80)) % 0x80;
+                        writeMessage(std::array<std::uint8_t, 12>{0b11110000, 0x0A, 0x41, 0x10, 0x42, 0x12, 0x40, block,
+                                                                  0x15, info->m_gsPartMode, checksum, 0xF7});
+                    } else {
+                        // Bank select MSB
+                        writeModelDuration(0);
+                        writeMessage(std::array<std::uint8_t, 3>{static_cast<std::uint8_t>(0b10110000 | channelNumber),
+                                                                 0x00, info->m_bankMSB});
+
+                        // Bank select LSB
+                        writeModelDuration(0);
+                        writeMessage(std::array<std::uint8_t, 3>{static_cast<std::uint8_t>(0b10110000 | channelNumber),
+                                                                 0x20, info->m_bankLSB});
                     }
-
-                    // Bank select MSB
-                    writeModelDuration(0);
-                    writeMessage(std::array<std::uint8_t, 3>{static_cast<std::uint8_t>(0b10110000 | channelNumber),
-                                                             0x00, info->m_bankMSB});
-
-                    // Bank select LSB
-                    writeModelDuration(0);
-                    writeMessage(std::array<std::uint8_t, 3>{static_cast<std::uint8_t>(0b10110000 | channelNumber),
-                                                             0x20, info->m_bankLSB});
 
                     // Program change.
                     writeModelDuration(0);
@@ -377,8 +380,7 @@ void smf::SmfWriter::setUpPercussionSets() {
     const int numTracks = m_smfFormatFeature.getNumMidiTracks();
     for (int i = 0; i < numTracks; ++i) {
         const smf::target::ChannelTrackFeature& channelAndTrack = m_smfFormatFeature.getMidiTrack(i);
-        getPercussionInstrumentsInUse(channelAndTrack.getTrack(),
-                                        instrumentsInUse[channelAndTrack.getChannelNumber()]);
+        getPercussionInstrumentsInUse(channelAndTrack.getTrack(), instrumentsInUse[channelAndTrack.getChannelNumber()]);
     }
     for (int i = 0; i < 16; ++i) {
         setUpPercussionKit(instrumentsInUse[i], i);
