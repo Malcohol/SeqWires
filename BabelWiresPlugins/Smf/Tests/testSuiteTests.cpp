@@ -3,10 +3,13 @@
 #include <BabelWiresPlugins/Smf/Plugin/smfParser.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/smfSourceModel.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/libRegistration.hpp>
+#include <BabelWiresPlugins/Smf/Plugin/Percussion/gm2StandardPercussionSet.hpp>
 
 #include <SeqWiresLib/Features/trackFeature.hpp>
 #include <SeqWiresLib/Tracks/noteEvents.hpp>
 #include <SeqWiresLib/libRegistration.hpp>
+#include <SeqWiresLib/Utilities/filteredTrackIterator.hpp>
+#include <SeqWiresLib/Tracks/percussionEvents.hpp>
 
 #include <Common/IO/fileDataSource.hpp>
 
@@ -312,5 +315,50 @@ TEST(SmfTestSuiteTest, corruptFiles) {
     {
         babelwires::FileDataSource midiFile("test-corrupt-file-missing-byte.mid");
         EXPECT_THROW(smf::parseSmfSequence(midiFile, testEnvironment.m_projectContext, testEnvironment.m_log), babelwires::ParseException);
+    }
+}
+
+TEST(SmfTestSuiteTest, testAllGMPercussion) {
+    testUtils::TestEnvironment testEnvironment;
+    seqwires::registerLib(testEnvironment.m_projectContext);
+    smf::registerLib(testEnvironment.m_projectContext);
+
+    babelwires::FileDataSource midiFile("test-all-gm-percussion.mid");
+
+    const auto feature = smf::parseSmfSequence(midiFile, testEnvironment.m_projectContext, testEnvironment.m_log);
+    ASSERT_NE(feature, nullptr);
+    auto smfFeature = feature.get()->as<const smf::source::Format0SmfFeature>();
+    ASSERT_NE(smfFeature, nullptr);
+
+    EXPECT_EQ(smfFeature->getNumMidiTracks(), 1);
+    const auto& channelGroup = dynamic_cast<const smf::source::RecordChannelGroup&>(smfFeature->getMidiTrack(0));
+    EXPECT_EQ(channelGroup.getNumFeatures(), 1);
+    const auto* trackFeature = channelGroup.getFeature(0)->as<const seqwires::TrackFeature>();
+    ASSERT_NE(trackFeature, nullptr);
+    // Percussion channel
+    ASSERT_EQ(channelGroup.getStepToChild(trackFeature), babelwires::PathStep(babelwires::Identifier("ch9")));
+
+    const seqwires::Track& track = trackFeature->get();
+
+    auto categoryMap = track.getNumEventGroupsByCategory();
+    EXPECT_EQ(categoryMap.find(seqwires::NoteEvent::s_noteEventCategory), categoryMap.end());
+    EXPECT_NE(categoryMap.find(seqwires::PercussionEvent::s_percussionEventCategory), categoryMap.end());
+
+    const auto& gm2StandardPercussionSet = testEnvironment.m_typeSystem.getRegisteredEntry(smf::GM2StandardPercussionSet::getThisIdentifier())
+             .is<smf::PercussionSet>();
+
+    // The file has each percussion instrument playing three times.
+    const auto& percussionInstruments = gm2StandardPercussionSet.getEnumValues();
+    int eventIndex = 0;
+    for (const auto& percussionEvent : seqwires::iterateOver<seqwires::PercussionEvent>(track))
+    {
+        const int instrumentIndex = eventIndex / 6;
+        EXPECT_EQ(percussionEvent.getInstrument(), percussionInstruments[instrumentIndex]);
+        if (eventIndex % 2 == 0) {
+            EXPECT_TRUE(percussionEvent.as<seqwires::PercussionOnEvent>());
+        } else {
+            EXPECT_TRUE(percussionEvent.as<seqwires::PercussionOffEvent>());
+        }
+        ++eventIndex;
     }
 }

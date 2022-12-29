@@ -813,7 +813,7 @@ smf::GMSpecType::Value smf::SmfParser::getGMSpec() const {
 
 void smf::SmfParser::setGMSpec(GMSpecType::Value gmSpec) {
     for (int i = 0; i < 16; ++i) {
-        m_channelSetup[9].m_kitIfPercussion = m_standardPercussionSets.getDefaultPercussionSet(gmSpec, i);
+        m_channelSetup[i].m_kitIfPercussion = m_standardPercussionSets.getDefaultPercussionSet(gmSpec, i);
     }
     m_result->getMidiMetadata().getSpecFeature()->setFromValue(gmSpec);
 }
