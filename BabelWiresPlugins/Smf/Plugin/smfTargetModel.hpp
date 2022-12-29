@@ -46,11 +46,14 @@ namespace smf {
             babelwires::Range<unsigned int> doGetSizeRange() const override;
         };
 
+        /// This is a UnionFeature in expectation of exploiting a structural difference
+        /// between format 0 and 1 files. For now, the structure is the same.
         class SmfFormatFeature : public babelwires::UnionFeature {
           public:
             SmfFormatFeature();
 
             const MidiMetadata& getMidiMetadata() const;
+            MidiMetadata& getMidiMetadata();
 
             // Convenience: Dispatches to the ArrayChannelGroup.
             int getNumMidiTracks() const;

@@ -160,7 +160,7 @@ const smf::PercussionSet* smf::StandardPercussionSets::getBestPercussionSetInRan
     for (int i = startIndex; i <= endIndex; ++i) {
         candidateExclusions.clear();
         for (auto instrument : instrumentsInUse) {
-            if (m_instrumentSets[i].find(instrument) != m_instrumentSets[i].end()) {
+            if (m_instrumentSets[i].find(instrument) == m_instrumentSets[i].end()) {
                 candidateExclusions.insert(instrument);
             }
         }

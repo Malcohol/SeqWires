@@ -66,6 +66,10 @@ const smf::MidiMetadata& smf::target::SmfFormatFeature::getMidiMetadata() const 
     return *m_metadata;
 }
 
+smf::MidiMetadata& smf::target::SmfFormatFeature::getMidiMetadata() {
+    return *m_metadata;
+}
+
 smf::target::SmfFeature::SmfFeature(const babelwires::ProjectContext& projectContext)
     : babelwires::FileFeature(projectContext, SmfSourceFormat::getThisIdentifier()) {
     m_formatFeature = addField(std::make_unique<SmfFormatFeature>(),

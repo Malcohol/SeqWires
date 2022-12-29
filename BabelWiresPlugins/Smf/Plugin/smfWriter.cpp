@@ -147,7 +147,7 @@ smf::SmfWriter::WriteTrackEventResult smf::SmfWriter::writeTrackEvent(int channe
                 return WriteTrackEventResult::NotInPercussionSet;
             }
         } else if (const seqwires::PercussionOffEvent* percussionOff = e.as<seqwires::PercussionOffEvent>()) {
-            if (auto maybePitch = kitIfPercussion->tryGetPitchFromInstrument(percussionOn->getInstrument())) {
+            if (auto maybePitch = kitIfPercussion->tryGetPitchFromInstrument(percussionOff->getInstrument())) {
                 writeModelDuration(timeSinceLastEvent);
                 m_os->put(0b10000000 | channelNumber);
                 m_os->put(*maybePitch);
@@ -263,7 +263,7 @@ void smf::SmfWriter::writeGlobalSetup() {
             break;
         case GMSpecType::Value::XG:
             writeModelDuration(0);
-            writeMessage(std::array<std::uint8_t, 10>{0b11110000, 0x09, 0x43, 0x10, 0x4C, 0x00, 0x00, 0x7E, 0x00, 0xF7});
+            writeMessage(std::array<std::uint8_t, 10>{0b11110000, 0x08, 0x43, 0x10, 0x4C, 0x00, 0x00, 0x7E, 0x00, 0xF7});
         default:
         case GMSpecType::Value::NONE:
             break;
