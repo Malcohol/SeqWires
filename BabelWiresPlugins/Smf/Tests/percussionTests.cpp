@@ -21,16 +21,25 @@
 
 #include <Tests/TestUtils/tempFilePath.hpp>
 
-class SmfStandardPercussionTest : public testing::TestWithParam<const char*> {};
+namespace {
+    struct PercussionTestData {
+        const char* m_specificationId;
+        babelwires::Identifier m_instrumentId0;
+        babelwires::Identifier m_instrumentId1;
+        babelwires::Identifier m_instrumentId2;
+    };
+} // namespace
+
+class SmfStandardPercussionTest : public testing::TestWithParam<PercussionTestData> {};
 
 TEST_P(SmfStandardPercussionTest, saveLoad) {
     testUtils::TestEnvironment testEnvironment;
     seqwires::registerLib(testEnvironment.m_projectContext);
     smf::registerLib(testEnvironment.m_projectContext);
 
-    const char* specification = GetParam();
+    const PercussionTestData& testData = GetParam();
 
-    testUtils::TempFilePath tempFile("standardPercussion.mid", specification);
+    testUtils::TempFilePath tempFile("standardPercussion.mid", testData.m_specificationId);
 
     {
         smf::target::SmfFeature smfFeature(testEnvironment.m_projectContext);
@@ -40,7 +49,7 @@ TEST_P(SmfStandardPercussionTest, saveLoad) {
             smfFeature.getChildFromStep(babelwires::PathStep("Format")).as<smf::target::SmfFormatFeature>();
         ASSERT_NE(smfFormatFeature, nullptr);
 
-        smfFormatFeature->getMidiMetadata().getSpecFeature()->set(babelwires::Identifier(specification));
+        smfFormatFeature->getMidiMetadata().getSpecFeature()->set(babelwires::Identifier(testData.m_specificationId));
 
         auto* tracks =
             smfFormatFeature->getChildFromStep(babelwires::PathStep("tracks")).as<babelwires::ArrayFeature>();
@@ -61,12 +70,12 @@ TEST_P(SmfStandardPercussionTest, saveLoad) {
 
         auto track = std::make_unique<seqwires::Track>();
 
-        track->addEvent(seqwires::PercussionOnEvent{0, "HTom"});
-        track->addEvent(seqwires::PercussionOffEvent{babelwires::Rational(1, 4), "HTom"});
-        track->addEvent(seqwires::PercussionOnEvent{0, "LMTom"});
-        track->addEvent(seqwires::PercussionOffEvent{babelwires::Rational(1, 4), "LMTom"});
-        track->addEvent(seqwires::PercussionOnEvent{0, "LwTom"});
-        track->addEvent(seqwires::PercussionOffEvent{babelwires::Rational(1, 4), "LwTom"});
+        track->addEvent(seqwires::PercussionOnEvent{0, testData.m_instrumentId0});
+        track->addEvent(seqwires::PercussionOffEvent{babelwires::Rational(1, 4), testData.m_instrumentId0});
+        track->addEvent(seqwires::PercussionOnEvent{0, testData.m_instrumentId1});
+        track->addEvent(seqwires::PercussionOffEvent{babelwires::Rational(1, 4), testData.m_instrumentId1});
+        track->addEvent(seqwires::PercussionOnEvent{0, testData.m_instrumentId2});
+        track->addEvent(seqwires::PercussionOffEvent{babelwires::Rational(1, 4), testData.m_instrumentId2});
 
         trackFeature->set(std::move(track));
 
@@ -82,7 +91,8 @@ TEST_P(SmfStandardPercussionTest, saveLoad) {
         auto smfFeature = feature.get()->as<const smf::source::Format0SmfFeature>();
         ASSERT_NE(smfFeature, nullptr);
 
-        EXPECT_EQ(smfFeature->getMidiMetadata().getSpecFeature()->get(), babelwires::Identifier(specification));
+        EXPECT_EQ(smfFeature->getMidiMetadata().getSpecFeature()->get(),
+                  babelwires::Identifier(testData.m_specificationId));
 
         EXPECT_EQ(smfFeature->getNumMidiTracks(), 1);
         const auto& channelGroup = dynamic_cast<const smf::source::RecordChannelGroup&>(smfFeature->getMidiTrack(0));
@@ -101,27 +111,38 @@ TEST_P(SmfStandardPercussionTest, saveLoad) {
 
         auto it = span.begin();
         ASSERT_NE(it, span.end());
-        EXPECT_EQ(it->as<seqwires::PercussionOnEvent>()->getInstrument(), "HTom");
+        EXPECT_EQ(it->as<seqwires::PercussionOnEvent>()->getInstrument(), testData.m_instrumentId0);
         ++it;
         ASSERT_NE(it, span.end());
-        EXPECT_EQ(it->as<seqwires::PercussionOffEvent>()->getInstrument(), "HTom");
+        EXPECT_EQ(it->as<seqwires::PercussionOffEvent>()->getInstrument(), testData.m_instrumentId0);
         ++it;
         ASSERT_NE(it, span.end());
-        EXPECT_EQ(it->as<seqwires::PercussionOnEvent>()->getInstrument(), "LMTom");
+        EXPECT_EQ(it->as<seqwires::PercussionOnEvent>()->getInstrument(), testData.m_instrumentId1);
         ++it;
         ASSERT_NE(it, span.end());
-        EXPECT_EQ(it->as<seqwires::PercussionOffEvent>()->getInstrument(), "LMTom");
+        EXPECT_EQ(it->as<seqwires::PercussionOffEvent>()->getInstrument(), testData.m_instrumentId1);
         ++it;
         ASSERT_NE(it, span.end());
-        EXPECT_EQ(it->as<seqwires::PercussionOnEvent>()->getInstrument(), "LwTom");
+        EXPECT_EQ(it->as<seqwires::PercussionOnEvent>()->getInstrument(), testData.m_instrumentId2);
         ++it;
         ASSERT_NE(it, span.end());
-        EXPECT_EQ(it->as<seqwires::PercussionOffEvent>()->getInstrument(), "LwTom");
+        EXPECT_EQ(it->as<seqwires::PercussionOffEvent>()->getInstrument(), testData.m_instrumentId2);
         ++it;
         EXPECT_EQ(it, span.end());
     }
 }
 
-INSTANTIATE_TEST_SUITE_P(PercussionTest,
-                         SmfStandardPercussionTest,
-                         testing::Values("GM", /*"GS", "XG",*/ "GM2"));
+// The set should be automatically selected based on the instruments.
+INSTANTIATE_TEST_SUITE_P(
+    PercussionTest, SmfStandardPercussionTest,
+    testing::Values(PercussionTestData{"GM", "AcBass", "HMTom", "OTrian"},                 // GM Percussion
+                    /*"GS", "XG",*/ PercussionTestData{"GM2", "HighQ", "HMTom", "OSurdo"}, // Standard percussion
+                    PercussionTestData{"GM2", "AcBass", "RLwTm2", "RHiTm1"},               // Room set
+                    PercussionTestData{"GM2", "PKick", "PLwTm2", "PHiTm1"},                // Power set
+                    PercussionTestData{"GM2", "ElBass", "ElSnr2", "RevCym"},               // Electric set
+                    PercussionTestData{"GM2", "ARmSht", "Tamb", "AClavs"},                 // Analog set
+                    PercussionTestData{"GM2", "JKick2", "HMTom", "OTrian"},                // Jazz set
+                    PercussionTestData{"GM2", "BrTap", "BrSlap", "BrSwrl"},                // Brush set
+                    PercussionTestData{"GM2", "TimpF", "Timpc", "Aplaus"},                 // Orchestra set
+                    PercussionTestData{"GM2", "GFret", "Bubble", "Dog"}                    // SFX set
+                    ));
