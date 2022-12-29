@@ -18,6 +18,7 @@
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/gm2StandardPercussionSet.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/gmPercussionSet.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/gsStandard1PercussionSet.hpp>
+#include <BabelWiresPlugins/Smf/Plugin/Percussion/xgStandard1PercussionSet.hpp>
 
 #include <BabelWiresLib/Project/projectContext.hpp>
 #include <BabelWiresLib/TypeSystem/typeSystem.hpp>
@@ -58,15 +59,21 @@ smf::StandardPercussionSets::StandardPercussionSets(const babelwires::ProjectCon
     m_knownSets[GS_STANDARD_1_PERCUSSION_SET] =
         &projectContext.m_typeSystem.getRegisteredEntry(smf::GsStandard1PercussionSet::getThisIdentifier())
              .is<smf::PercussionSet>();
+    m_knownSets[XG_STANDARD_1_PERCUSSION_SET] =
+        &projectContext.m_typeSystem.getRegisteredEntry(smf::XgStandard1PercussionSet::getThisIdentifier())
+             .is<smf::PercussionSet>();
 }
 
 const smf::PercussionSet* smf::StandardPercussionSets::getDefaultPercussionSet(GMSpecType::Value gmSpec,
                                                                                int channelNumber) {
     switch (gmSpec) {
         case GMSpecType::Value::GM:
-        case GMSpecType::Value::XG:
             if (channelNumber == 9) {
                 return m_knownSets[GM_PERCUSSION_SET];
+            }
+        case GMSpecType::Value::XG:
+            if (channelNumber == 9) {
+                return m_knownSets[XG_STANDARD_1_PERCUSSION_SET];
             }
         case GMSpecType::Value::GS:
             if (channelNumber == 9) {
@@ -118,7 +125,11 @@ smf::StandardPercussionSets::getPercussionSetFromChannelSetupInfo(GMSpecType::Va
     } else if (gmSpec == GMSpecType::Value::XG) {
         if (channelSetupInfo.m_bankMSB == 0x7f) {
             // Percussion
-            return m_knownSets[GM_PERCUSSION_SET];
+            switch (channelSetupInfo.m_program) {
+                case 1:
+                default:
+                    return m_knownSets[XG_STANDARD_1_PERCUSSION_SET];
+            }
         } else if (channelSetupInfo.m_bankMSB == 0x7e) {
             // SFX Percussion
         } else if (channelSetupInfo.m_bankMSB == 0x00) {
@@ -196,6 +207,8 @@ smf::StandardPercussionSets::getBestPercussionSet(GMSpecType::Value gmSpec, int 
         return getBestPercussionSetInRange(GM2_SETS_START, GM2_SETS_END, instrumentsInUse, excludedInstrumentsOut);
     } else if (gmSpec == GMSpecType::Value::GS) {
         return getBestPercussionSetInRange(GS_SETS_START, GS_SETS_END, instrumentsInUse, excludedInstrumentsOut);
+    } else if (gmSpec == GMSpecType::Value::XG) {
+        return getBestPercussionSetInRange(XG_SETS_START, XG_SETS_END, instrumentsInUse, excludedInstrumentsOut);
     }
     return nullptr;
 }
@@ -232,6 +245,8 @@ smf::StandardPercussionSets::getChannelSetupInfoFromKnownPercussionSet(KnownPerc
             return {{0x78, 0, 57, 0}};
         case GS_STANDARD_1_PERCUSSION_SET:
             return {{0x02, 0, 1, 1}};
+        case XG_STANDARD_1_PERCUSSION_SET:
+            return {{0x7f, 0, 1, 0}};
         default:
         case NOT_PERCUSSION:
             return {};

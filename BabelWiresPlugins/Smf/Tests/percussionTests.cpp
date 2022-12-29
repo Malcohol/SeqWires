@@ -135,7 +135,7 @@ TEST_P(SmfStandardPercussionTest, saveLoad) {
 INSTANTIATE_TEST_SUITE_P(
     PercussionTest, SmfStandardPercussionTest,
     testing::Values(PercussionTestData{"GM", "AcBass", "HMTom", "OTrian"},                 // GM Percussion
-                    /*"XG",*/ PercussionTestData{"GM2", "HighQ", "HMTom", "OSurdo"}, // Standard percussion
+                    PercussionTestData{"GM2", "HighQ", "HMTom", "OSurdo"}, // Standard percussion
                     PercussionTestData{"GM2", "AcBass", "RLwTm2", "RHiTm1"},               // Room set
                     PercussionTestData{"GM2", "PKick", "PLwTm2", "PHiTm1"},                // Power set
                     PercussionTestData{"GM2", "ElBass", "ElSnr2", "RevCym"},               // Electronic set
@@ -144,5 +144,6 @@ INSTANTIATE_TEST_SUITE_P(
                     PercussionTestData{"GM2", "BrTap", "BrSlap", "BrSwrl"},                // Brush set
                     PercussionTestData{"GM2", "TimpF", "Timpc", "Aplaus"},                 // Orchestra set
                     PercussionTestData{"GM2", "GFret", "Bubble", "Dog"},                    // SFX set
-                    PercussionTestData{"GS", "SnrRll", "FngSnp", "AcBass"}                 // GS Standard 1 set
+                    PercussionTestData{"GS", "SnrRll", "FngSnp", "AcBass"},                 // GS Standard 1 set
+                    PercussionTestData{"XG", "SnrRll", "FngSnp", "AcBass"}                 // XG Standard 1 set
                     ));
