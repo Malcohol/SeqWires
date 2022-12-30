@@ -11,7 +11,6 @@
 
 namespace smf {
     /// A PercussionSet corresponding to the instruments of XG Rock percussion set.
-    /// This also works as the XG Standard 2 percussion set.
     class XgRockPercussionSet : public PercussionSet {
       public:
         XgRockPercussionSet(const seqwires::BuiltInPercussionInstruments& builtInInstruments);
