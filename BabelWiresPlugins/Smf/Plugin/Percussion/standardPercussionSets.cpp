@@ -20,6 +20,7 @@
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/gsStandard1PercussionSet.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/xgRoomPercussionSet.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/xgStandard1PercussionSet.hpp>
+#include <BabelWiresPlugins/Smf/Plugin/Percussion/xgRockPercussionSet.hpp>
 
 #include <BabelWiresLib/Project/projectContext.hpp>
 #include <BabelWiresLib/TypeSystem/typeSystem.hpp>
@@ -65,6 +66,9 @@ smf::StandardPercussionSets::StandardPercussionSets(const babelwires::ProjectCon
              .is<smf::PercussionSet>();
     m_knownSets[XG_ROOM_PERCUSSION_SET] =
         &projectContext.m_typeSystem.getRegisteredEntry(smf::XgRoomPercussionSet::getThisIdentifier())
+             .is<smf::PercussionSet>();
+    m_knownSets[XG_ROCK_PERCUSSION_SET] =
+        &projectContext.m_typeSystem.getRegisteredEntry(smf::XgRockPercussionSet::getThisIdentifier())
              .is<smf::PercussionSet>();
 }
 
@@ -132,6 +136,8 @@ smf::StandardPercussionSets::getPercussionSetFromChannelSetupInfo(GMSpecType::Va
             switch (channelSetupInfo.m_program) {
                 case 9:
                     return m_knownSets[XG_ROOM_PERCUSSION_SET];
+                case 17:
+                    return m_knownSets[XG_ROCK_PERCUSSION_SET];
                 case 1:
                 case 2: /* Also used for Standard 2 */
                 default:
@@ -256,6 +262,8 @@ smf::StandardPercussionSets::getChannelSetupInfoFromKnownPercussionSet(KnownPerc
             return {{0x7f, 0, 1, 0}};
         case XG_ROOM_PERCUSSION_SET:
             return {{0x7f, 0, 9, 0}};
+        case XG_ROCK_PERCUSSION_SET:
+            return {{0x7f, 0, 17, 0}};
         default:
         case NOT_PERCUSSION:
             return {};
