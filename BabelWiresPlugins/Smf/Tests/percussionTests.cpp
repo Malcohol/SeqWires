@@ -132,18 +132,17 @@ TEST_P(SmfStandardPercussionTest, saveLoad) {
 }
 
 // The set should be automatically selected based on the instruments.
-INSTANTIATE_TEST_SUITE_P(
-    PercussionTest, SmfStandardPercussionTest,
-    testing::Values(PercussionTestData{"GM", "AcBass", "HMTom", "OTrian"},                 // GM Percussion
-                    PercussionTestData{"GM2", "HighQ", "HMTom", "OSurdo"}, // Standard percussion
-                    PercussionTestData{"GM2", "AcBass", "RLwTm2", "RHiTm1"},               // Room set
-                    PercussionTestData{"GM2", "PKick", "PLwTm2", "PHiTm1"},                // Power set
-                    PercussionTestData{"GM2", "ElBass", "ElSnr2", "RevCym"},               // Electronic set
-                    PercussionTestData{"GM2", "ARmSht", "Tamb", "AClavs"},                 // Analog set
-                    PercussionTestData{"GM2", "JKick2", "HMTom", "OTrian"},                // Jazz set
-                    PercussionTestData{"GM2", "BrTap", "BrSlap", "BrSwrl"},                // Brush set
-                    PercussionTestData{"GM2", "TimpF", "Timpc", "Aplaus"},                 // Orchestra set
-                    PercussionTestData{"GM2", "GFret", "Bubble", "Dog"},                    // SFX set
-                    PercussionTestData{"GS", "SnrRll", "FngSnp", "AcBass"},                 // GS Standard 1 set
-                    PercussionTestData{"XG", "SnrRll", "FngSnp", "AcBass"}                 // XG Standard 1 set
-                    ));
+INSTANTIATE_TEST_SUITE_P(PercussionTest, SmfStandardPercussionTest,
+                         testing::Values(PercussionTestData{"GM", "AcBass", "HMTom", "OTrian"},   // GM Percussion
+                                         PercussionTestData{"GM2", "HighQ", "HMTom", "OSurdo"},   // Standard percussion
+                                         PercussionTestData{"GM2", "AcBass", "RLwTm2", "RHiTm1"}, // Room set
+                                         PercussionTestData{"GM2", "PKick", "PLwTm2", "PHiTm1"},  // Power set
+                                         PercussionTestData{"GM2", "ElBass", "ElSnr2", "RevCym"}, // Electronic set
+                                         PercussionTestData{"GM2", "ARmSht", "Tamb", "AClavs"},   // Analog set
+                                         PercussionTestData{"GM2", "JKick2", "HMTom", "OTrian"},  // Jazz set
+                                         PercussionTestData{"GM2", "BrTap", "BrSlap", "BrSwrl"},  // Brush set
+                                         PercussionTestData{"GM2", "TimpF", "Timpc", "Aplaus"},   // Orchestra set
+                                         PercussionTestData{"GM2", "GFret", "Bubble", "Dog"},     // SFX set
+                                         PercussionTestData{"GS", "SnrRll", "FngSnp", "AcBass"},  // GS Standard 1 set
+                                         PercussionTestData{"XG", "SnrRll", "RimSht", "AcBass"}   // XG Standard 1 set
+                                         ));

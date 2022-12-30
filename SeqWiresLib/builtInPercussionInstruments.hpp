@@ -198,7 +198,9 @@
     X(Bubble, "Bubble", "8b4b34a6-6cee-4777-85b6-a1568fe4c300")                                                        \
     /* Instruments of the GS standard 1 set */                                                                         \
     X(SnrRll, "Snare Roll", "d04bfd3c-9c76-49f7-8624-8e28bf48d70f")                                                    \
-    X(FngSnp, "Finger Snap", "209836fb-3780-4efe-93d7-065fc3fc4403")
+    X(FngSnp, "Finger Snap", "209836fb-3780-4efe-93d7-065fc3fc4403")                                                   \
+    /* Instruments of the XG standard 1 set */                                                                         \
+    X(RimSht, "Open Rim Shot", "10744886-d7d9-4fae-bac3-1970490f01c8")
 
 namespace seqwires {
     /// All percussion instruments built into SeqWires.

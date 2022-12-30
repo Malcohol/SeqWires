@@ -69,7 +69,7 @@ namespace smf {
             NUM_KNOWN_PERCUSSION_SETS,
             NOT_PERCUSSION = NUM_KNOWN_PERCUSSION_SETS,
 
-            //
+            // Ranges
 
             GM2_SETS_START = GM2_STANDARD_PERCUSSION_SET,
             GM2_SETS_END = GM2_SFX_PERCUSSION_SET,

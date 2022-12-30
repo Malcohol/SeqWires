@@ -31,7 +31,7 @@ smf::XgStandard1PercussionSet::XgStandard1PercussionSet(
                                                              seqwires::BuiltInPercussionInstruments::Value::AcSnr, // Snare L
                                                              seqwires::BuiltInPercussionInstruments::Value::SStick, // Sticks
                                                              seqwires::BuiltInPercussionInstruments::Value::Bass1, // Bass Drum L
-                                                             seqwires::BuiltInPercussionInstruments::Value::SStick, // Open Rim Shot
+                                                             seqwires::BuiltInPercussionInstruments::Value::RimSht,
                                                              seqwires::BuiltInPercussionInstruments::Value::AcBass,
                                                              seqwires::BuiltInPercussionInstruments::Value::Bass1,
                                                              seqwires::BuiltInPercussionInstruments::Value::SStick,
