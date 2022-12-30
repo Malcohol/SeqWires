@@ -200,7 +200,10 @@
     X(SnrRll, "Snare Roll", "d04bfd3c-9c76-49f7-8624-8e28bf48d70f")                                                    \
     X(FngSnp, "Finger Snap", "209836fb-3780-4efe-93d7-065fc3fc4403")                                                   \
     /* Instruments of the XG standard 1 set */                                                                         \
-    X(RimSht, "Open Rim Shot", "10744886-d7d9-4fae-bac3-1970490f01c8")
+    X(RimSht, "Open Rim Shot", "10744886-d7d9-4fae-bac3-1970490f01c8")                                                 \
+    /* Giving these instruments slightly more generic identifiers */                                                   \
+    X(BeepLo, "Beep Low", "c7d34e2c-b7c9-440b-be57-e08819991337")  /* XG Seq Click L */                                \
+    X(BeepHi, "Beep High", "0f1d756e-0b25-4bb4-b169-144c37becf05") /* XG Seq Click H */
 
 namespace seqwires {
     /// All percussion instruments built into SeqWires.

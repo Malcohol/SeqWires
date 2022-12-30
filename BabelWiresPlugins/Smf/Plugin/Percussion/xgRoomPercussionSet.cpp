@@ -1,5 +1,5 @@
 /**
- * A PercussionSet corresponding to the instruments of XG Standard 1 Percussion Set.
+ * A PercussionSet corresponding to the instruments of XG Room Percussion Set.
  *
  * (C) 2021 Malcolm Tyrrell
  *
@@ -20,8 +20,8 @@ smf::XgRoomPercussionSet::XgRoomPercussionSet(
                                                              seqwires::BuiltInPercussionInstruments::Value::SqClck,
                                                              seqwires::BuiltInPercussionInstruments::Value::MtrClk,
                                                              seqwires::BuiltInPercussionInstruments::Value::MtrBll,
-                                                             seqwires::BuiltInPercussionInstruments::Value::SqClck, // Seq Click L
-                                                             seqwires::BuiltInPercussionInstruments::Value::SqClck, // Seq Click H
+                                                             seqwires::BuiltInPercussionInstruments::Value::BeepLo, // Seq Click L
+                                                             seqwires::BuiltInPercussionInstruments::Value::BeepHi, // Seq Click H
                                                              seqwires::BuiltInPercussionInstruments::Value::BrTap,
                                                              seqwires::BuiltInPercussionInstruments::Value::BrSwrl, // Swirl L
                                                              seqwires::BuiltInPercussionInstruments::Value::BrSlap,
