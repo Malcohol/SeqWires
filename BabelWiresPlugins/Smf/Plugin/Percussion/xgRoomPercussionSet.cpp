@@ -5,9 +5,9 @@
  *
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
-#include <BabelWiresPlugins/Smf/Plugin/Percussion/xgStandard1PercussionSet.hpp>
+#include <BabelWiresPlugins/Smf/Plugin/Percussion/xgRoomPercussionSet.hpp>
 
-smf::XgStandard1PercussionSet::XgStandard1PercussionSet(
+smf::XgRoomPercussionSet::XgRoomPercussionSet(
     const seqwires::BuiltInPercussionInstruments& builtInInstruments)
     : PercussionSet(getThisIdentifier(), 1,
                     builtInInstruments.convertToIdentifiers({seqwires::BuiltInPercussionInstruments::Value::MSurdo,
@@ -33,21 +33,21 @@ smf::XgStandard1PercussionSet::XgStandard1PercussionSet(
                                                              seqwires::BuiltInPercussionInstruments::Value::Bass1, // Bass Drum L
                                                              seqwires::BuiltInPercussionInstruments::Value::RimSht,
                                                              seqwires::BuiltInPercussionInstruments::Value::AcBass,
-                                                             seqwires::BuiltInPercussionInstruments::Value::Bass1,
+                                                             seqwires::BuiltInPercussionInstruments::Value::Bass1, // BD Room
                                                              seqwires::BuiltInPercussionInstruments::Value::SStick,
                                                              seqwires::BuiltInPercussionInstruments::Value::AcSnr,
                                                              seqwires::BuiltInPercussionInstruments::Value::Clap,
                                                              seqwires::BuiltInPercussionInstruments::Value::ElSnr,
-                                                             seqwires::BuiltInPercussionInstruments::Value::LFlTom,
+                                                             seqwires::BuiltInPercussionInstruments::Value::RLwTm2,
                                                              seqwires::BuiltInPercussionInstruments::Value::ClHHat,
-                                                             seqwires::BuiltInPercussionInstruments::Value::HFlTom,
+                                                             seqwires::BuiltInPercussionInstruments::Value::RLwTm1,
                                                              seqwires::BuiltInPercussionInstruments::Value::PdHHat,
-                                                             seqwires::BuiltInPercussionInstruments::Value::LwTom,
+                                                             seqwires::BuiltInPercussionInstruments::Value::RMdTm2,
                                                              seqwires::BuiltInPercussionInstruments::Value::OpHHat,
-                                                             seqwires::BuiltInPercussionInstruments::Value::LMTom,
-                                                             seqwires::BuiltInPercussionInstruments::Value::HMTom,
+                                                             seqwires::BuiltInPercussionInstruments::Value::RMdTm1,
+                                                             seqwires::BuiltInPercussionInstruments::Value::RHiTm2,
                                                              seqwires::BuiltInPercussionInstruments::Value::Crash1,
-                                                             seqwires::BuiltInPercussionInstruments::Value::HTom,
+                                                             seqwires::BuiltInPercussionInstruments::Value::RHiTm1,
                                                              seqwires::BuiltInPercussionInstruments::Value::Ride1,
                                                              seqwires::BuiltInPercussionInstruments::Value::ChnCym,
                                                              seqwires::BuiltInPercussionInstruments::Value::RideBl,
@@ -84,7 +84,7 @@ smf::XgStandard1PercussionSet::XgStandard1PercussionSet(
                                                              seqwires::BuiltInPercussionInstruments::Value::BlTree}),
                     0, 13) {}
 
-babelwires::LongIdentifier smf::XgStandard1PercussionSet::getThisIdentifier() {
-    return REGISTERED_LONGID("XGStandard1Perc", "Yamaha XG Standard 1 Percussion",
-                             "4c094420-0a8e-4dfa-b315-2bdb516d489a");
+babelwires::LongIdentifier smf::XgRoomPercussionSet::getThisIdentifier() {
+    return REGISTERED_LONGID("XGRoomPerc", "Yamaha XG Room Percussion",
+                             "4ad1aa44-6e23-4f3e-ae83-75b0b1edad4a");
 }
