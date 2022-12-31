@@ -18,6 +18,7 @@ SET( SMFLIB_SRCS
 	Percussion/gsStandard1PercussionSet.cpp
 	Percussion/percussionSet.cpp
 	Percussion/standardPercussionSets.cpp
+	Percussion/xgAnalogPercussionSet.cpp
 	Percussion/xgElectroPercussionSet.cpp
 	Percussion/xgStandard1PercussionSet.cpp
 	Percussion/xgRockPercussionSet.cpp
