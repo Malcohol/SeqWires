@@ -140,7 +140,7 @@ INSTANTIATE_TEST_SUITE_P(PercussionTest, SmfStandardPercussionTest,
                                          PercussionTestData{"GM2", "ElBass", "ElSnr2", "RevCym"}, // Electronic set
                                          PercussionTestData{"GM2", "ARmSht", "Tamb", "AClavs"},   // Analog set
                                          PercussionTestData{"GM2", "JKick2", "HMTom", "OTrian"},  // Jazz set
-                                         PercussionTestData{"GM2", "BrTap", "BrSlap", "BrSwrl"},  // Brush set
+                                         PercussionTestData{"GM2", "BrTap", "BrSlap", "BrSwrL"},  // Brush set
                                          PercussionTestData{"GM2", "TimpF", "Timpc", "Aplaus"},   // Orchestra set
                                          PercussionTestData{"GM2", "GFret", "Bubble", "Dog"},     // SFX set
                                          PercussionTestData{"GS", "SnrRll", "FngSnp", "AcBass"},  // GS Standard 1 set

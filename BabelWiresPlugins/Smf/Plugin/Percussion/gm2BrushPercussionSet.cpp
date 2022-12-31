@@ -23,7 +23,7 @@ smf::GM2BrushPercussionSet::GM2BrushPercussionSet(
                                                              seqwires::BuiltInPercussionInstruments::Value::SStick,
                                                              seqwires::BuiltInPercussionInstruments::Value::BrTap,
                                                              seqwires::BuiltInPercussionInstruments::Value::BrSlap,
-                                                             seqwires::BuiltInPercussionInstruments::Value::BrSwrl,
+                                                             seqwires::BuiltInPercussionInstruments::Value::BrSwrL,
                                                              seqwires::BuiltInPercussionInstruments::Value::LFlTom,
                                                              seqwires::BuiltInPercussionInstruments::Value::ClHHat,
                                                              seqwires::BuiltInPercussionInstruments::Value::HFlTom,

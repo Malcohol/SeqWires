@@ -135,7 +135,7 @@
     /* Instruments of the GM2 Brush Set */                                                                             \
     X(BrTap, "Brush Tap", "7cf52502-5bac-43bc-9a83-6c3e62039732")                                                      \
     X(BrSlap, "Brush Slap", "c35c576c-6b02-46f3-94bd-d76af0330adf")                                                    \
-    X(BrSwrl, "Brush Swirl", "ab6149aa-754f-43b4-acf6-2d6b8167ca0d")                                                   \
+    X(BrSwrL, "Brush Swirl", "ab6149aa-754f-43b4-acf6-2d6b8167ca0d")                                                   \
     /* Instruments of the GM2 Orchestra Set */                                                                         \
     X(ClHH2, "Closed Hi-hat 2", "07d0de4d-0857-451d-ad7f-5f53a3320ba3")                                                \
     X(OpHH2, "Open Hi-hat 2", "e3a28b92-3b8a-4767-8241-1d90018f1123")                                                  \
@@ -203,7 +203,8 @@
     X(RimSht, "Open Rim Shot", "10744886-d7d9-4fae-bac3-1970490f01c8")                                                 \
     /* Giving these instruments slightly more generic identifiers */                                                   \
     X(BeepLo, "Beep Low", "c7d34e2c-b7c9-440b-be57-e08819991337")  /* XG Seq Click L */                                \
-    X(BeepHi, "Beep High", "0f1d756e-0b25-4bb4-b169-144c37becf05") /* XG Seq Click H */
+    X(BeepHi, "Beep High", "0f1d756e-0b25-4bb4-b169-144c37becf05") /* XG Seq Click H */                                \
+    X(BrSwrH, "Brush Swirl High", "9cc3f63b-05b5-4b38-a3ec-43b4a8337ca2")
 
 namespace seqwires {
     /// All percussion instruments built into SeqWires.

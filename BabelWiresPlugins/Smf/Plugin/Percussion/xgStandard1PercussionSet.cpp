@@ -23,9 +23,9 @@ smf::XgStandard1PercussionSet::XgStandard1PercussionSet(
                                                              seqwires::BuiltInPercussionInstruments::Value::BeepLo, // Seq Click L
                                                              seqwires::BuiltInPercussionInstruments::Value::BeepHi, // Seq Click H
                                                              seqwires::BuiltInPercussionInstruments::Value::BrTap,
-                                                             seqwires::BuiltInPercussionInstruments::Value::BrSwrl, // Swirl L
+                                                             seqwires::BuiltInPercussionInstruments::Value::BrSwrL,
                                                              seqwires::BuiltInPercussionInstruments::Value::BrSlap,
-                                                             seqwires::BuiltInPercussionInstruments::Value::BrSwrl, // Swirl H
+                                                             seqwires::BuiltInPercussionInstruments::Value::BrSwrH,
                                                              seqwires::BuiltInPercussionInstruments::Value::SnrRll,
                                                              seqwires::BuiltInPercussionInstruments::Value::Cstnts,
                                                              seqwires::BuiltInPercussionInstruments::Value::AcSnr, // Snare L

@@ -23,7 +23,7 @@ smf::XgAnalogPercussionSet::XgAnalogPercussionSet(
                                                              seqwires::BuiltInPercussionInstruments::Value::BeepLo, // Seq Click L
                                                              seqwires::BuiltInPercussionInstruments::Value::BeepHi, // Seq Click H
                                                              seqwires::BuiltInPercussionInstruments::Value::BrTap,
-                                                             seqwires::BuiltInPercussionInstruments::Value::BrSwrl, // Swirl L
+                                                             seqwires::BuiltInPercussionInstruments::Value::BrSwrL,
                                                              seqwires::BuiltInPercussionInstruments::Value::BrSlap,
                                                              seqwires::BuiltInPercussionInstruments::Value::RevCym, // Swirl H
                                                              seqwires::BuiltInPercussionInstruments::Value::SnrRll,
