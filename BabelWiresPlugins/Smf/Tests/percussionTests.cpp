@@ -131,7 +131,7 @@ TEST_P(SmfStandardPercussionTest, saveLoad) {
     }
 }
 
-// The set should be automatically selected based on the instruments.
+// The set should be automatically selected based on the standard and instruments.
 INSTANTIATE_TEST_SUITE_P(PercussionTest, SmfStandardPercussionTest,
                          testing::Values(PercussionTestData{"GM", "AcBass", "HMTom", "OTrian"},   // GM Percussion
                                          PercussionTestData{"GM2", "HighQ", "HMTom", "OSurdo"},   // Standard percussion
@@ -148,5 +148,6 @@ INSTANTIATE_TEST_SUITE_P(PercussionTest, SmfStandardPercussionTest,
                                          PercussionTestData{"XG", "SnrRll", "RLwTm2", "BeepLo"},  // XG Room set
                                          PercussionTestData{"XG", "PKick", "PLwTm1", "BeepLo"},   // XG Rock set
                                          PercussionTestData{"XG", "PKick", "ELwTm1", "RevCym"},   // XG Electro set
-                                         PercussionTestData{"XG", "AnBass", "AMdTm2", "RevCym"}   // XG Analog set
+                                         PercussionTestData{"XG", "AnBass", "AMdTm2", "RevCym"},   // XG Analog set
+                                         PercussionTestData{"XG", "JKick1", "ClHHat", "OpHHat"}   // XG Jazz set
                                          ));

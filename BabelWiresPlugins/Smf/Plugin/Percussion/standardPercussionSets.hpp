@@ -69,6 +69,7 @@ namespace smf {
             XG_ROCK_PERCUSSION_SET,
             XG_ELECTRO_PERCUSSION_SET,
             XG_ANALOG_PERCUSSION_SET,
+            XG_JAZZ_PERCUSSION_SET,
 
             NUM_KNOWN_PERCUSSION_SETS,
             NOT_PERCUSSION = NUM_KNOWN_PERCUSSION_SETS,
@@ -82,7 +83,7 @@ namespace smf {
             GS_SETS_END = GS_STANDARD_1_PERCUSSION_SET,
 
             XG_SETS_START = XG_STANDARD_1_PERCUSSION_SET,
-            XG_SETS_END = XG_ANALOG_PERCUSSION_SET,
+            XG_SETS_END = XG_JAZZ_PERCUSSION_SET,
         };
 
         /// Ensure the m_instrumentSets array is populated.

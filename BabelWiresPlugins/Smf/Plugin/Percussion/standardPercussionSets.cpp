@@ -20,6 +20,7 @@
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/gsStandard1PercussionSet.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/xgAnalogPercussionSet.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/xgElectroPercussionSet.hpp>
+#include <BabelWiresPlugins/Smf/Plugin/Percussion/xgJazzPercussionSet.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/xgRockPercussionSet.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/xgRoomPercussionSet.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/xgStandard1PercussionSet.hpp>
@@ -77,6 +78,9 @@ smf::StandardPercussionSets::StandardPercussionSets(const babelwires::ProjectCon
              .is<smf::PercussionSet>();
     m_knownSets[XG_ANALOG_PERCUSSION_SET] =
         &projectContext.m_typeSystem.getRegisteredEntry(smf::XgAnalogPercussionSet::getThisIdentifier())
+             .is<smf::PercussionSet>();
+    m_knownSets[XG_JAZZ_PERCUSSION_SET] =
+        &projectContext.m_typeSystem.getRegisteredEntry(smf::XgJazzPercussionSet::getThisIdentifier())
              .is<smf::PercussionSet>();
 }
 
@@ -150,6 +154,8 @@ smf::StandardPercussionSets::getPercussionSetFromChannelSetupInfo(GMSpecType::Va
                     return m_knownSets[XG_ELECTRO_PERCUSSION_SET];
                 case 26:
                     return m_knownSets[XG_ANALOG_PERCUSSION_SET];
+                case 33:
+                    return m_knownSets[XG_JAZZ_PERCUSSION_SET];
                 case 1:
                 case 2: /* Also used for Standard 2 */
                 default:
@@ -280,6 +286,8 @@ smf::StandardPercussionSets::getChannelSetupInfoFromKnownPercussionSet(KnownPerc
             return {{0x7f, 0, 25, 0}};
         case XG_ANALOG_PERCUSSION_SET:
             return {{0x7f, 0, 26, 0}};
+        case XG_JAZZ_PERCUSSION_SET:
+            return {{0x7f, 0, 33, 0}};
         default:
         case NOT_PERCUSSION:
             return {};

@@ -201,7 +201,7 @@
     X(FngSnp, "Finger Snap", "209836fb-3780-4efe-93d7-065fc3fc4403")                                                   \
     /* Instruments of the XG standard 1 set */                                                                         \
     X(RimSht, "Open Rim Shot", "10744886-d7d9-4fae-bac3-1970490f01c8")                                                 \
-    /* Giving these instruments slightly more generic identifiers */                                                   \
+    /* Giving these two clicks slightly more generic identifiers */                                                   \
     X(BeepLo, "Beep Low", "c7d34e2c-b7c9-440b-be57-e08819991337")  /* XG Seq Click L */                                \
     X(BeepHi, "Beep High", "0f1d756e-0b25-4bb4-b169-144c37becf05") /* XG Seq Click H */                                \
     X(BrSwrH, "Brush Swirl High", "9cc3f63b-05b5-4b38-a3ec-43b4a8337ca2")
