@@ -24,12 +24,21 @@ namespace smf {
         /// This constructor expects instruments to be in a single contiguous block.
         PercussionSet(babelwires::LongIdentifier identifier, babelwires::VersionNumber version, InstrumentBlock instruments, seqwires::Pitch pitchOfDefaultValue);
 
+        /// This constructor allows more than one, non-overlapping block of instruments.
+        PercussionSet(babelwires::LongIdentifier identifier, babelwires::VersionNumber version, std::vector<InstrumentBlock> instruments, seqwires::Pitch pitchOfDefaultValue);
+
         /// Get the pitch of an instrument if it is in this set.
         /// The highest pitch of any duplicate instrument is returned.
         std::optional<seqwires::Pitch> tryGetPitchFromInstrument(babelwires::Identifier identifier) const;
 
         /// Get the instrument corresponding to the pitch, if it is in this set.
         std::optional<babelwires::Identifier> tryGetInstrumentFromPitch(seqwires::Pitch pitch) const;
+
+      private:
+        // Private class just used to pass complex calculated arguments to the base class constructor.
+        class ComplexConstructorArguments;
+
+        PercussionSet(babelwires::LongIdentifier identifier, babelwires::VersionNumber version, ComplexConstructorArguments&& removeDuplicates);
 
       private:
         std::unordered_map<seqwires::Pitch, babelwires::Identifier> m_pitchToInstrument;
