@@ -353,7 +353,7 @@ TEST(SmfTestSuiteTest, testAllGMPercussion) {
     for (const auto& percussionEvent : seqwires::iterateOver<seqwires::PercussionEvent>(track))
     {
         const int instrumentIndex = eventIndex / 6;
-        EXPECT_EQ(percussionEvent.getInstrument(), percussionInstruments[instrumentIndex]);
+        EXPECT_EQ(percussionEvent.getInstrument(), gm2StandardPercussionSet.tryGetInstrumentFromPitch(instrumentIndex + 27));
         if (eventIndex % 2 == 0) {
             EXPECT_TRUE(percussionEvent.as<seqwires::PercussionOnEvent>());
         } else {
