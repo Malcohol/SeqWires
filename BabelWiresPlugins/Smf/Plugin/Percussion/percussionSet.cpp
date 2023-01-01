@@ -25,13 +25,17 @@ namespace {
 } // namespace
 
 smf::PercussionSet::PercussionSet(babelwires::LongIdentifier identifier, babelwires::VersionNumber version,
-                                  std::vector<babelwires::Identifier> values, unsigned int indexOfDefaultValue,
-                                  seqwires::Pitch pitchOfLowestInstrument)
-    : Enum(identifier, version, getUniqueEnumValues(values), indexOfDefaultValue) {
-    seqwires::Pitch pitch = pitchOfLowestInstrument;
-    for (auto id : values) {
-        // In the case of duplicates, allow later pitches to override earlier pitches.
-        m_instrumentToPitch[id] = pitch;
+                                  InstrumentBlock instruments,
+                                  seqwires::Pitch pitchOfDefaultInstrument)
+    : Enum(identifier, version, getUniqueEnumValues(instruments.m_instruments), pitchOfDefaultInstrument - instruments.m_pitchOfLowestInstrument) {
+    seqwires::Pitch pitch = instruments.m_pitchOfLowestInstrument;
+    for (auto id : instruments.m_instruments) {
+        if (m_instrumentToPitch.find(id) == m_instrumentToPitch.end()) {
+            // In the case of duplicates, use the first pitch to match the sequence of the EnumValues.
+            m_instrumentToPitch[id] = pitch;
+        } else {
+            assert((pitch != pitchOfDefaultInstrument) && "You can only use the lowest pitch of a duplicate instrument as the default value");
+        }
         m_pitchToInstrument[pitch] = id;
         ++pitch;
     }

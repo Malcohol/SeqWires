@@ -14,10 +14,15 @@ namespace smf {
     /// An base class for Enums of percussion instruments which can be mapped to pitches.
     class PercussionSet : public babelwires::Enum {
       public:
-        /// Unlike EnumValues, the instruments vector may contain duplicates.
-        /// This constructor expects instruments to be in a contiguous block starting at pitchOfLowestInstrument.
-        PercussionSet(babelwires::LongIdentifier identifier, babelwires::VersionNumber version, std::vector<babelwires::Identifier> instruments,
-                      unsigned int indexOfDefaultValue, seqwires::Pitch pitchOfLowestInstrument);
+        /// A block of instruments which have contiguous pitches.
+        /// The block may contain duplicates.
+        struct InstrumentBlock {
+          std::vector<babelwires::Identifier> m_instruments;
+          seqwires::Pitch m_pitchOfLowestInstrument;
+        };
+
+        /// This constructor expects instruments to be in a single contiguous block.
+        PercussionSet(babelwires::LongIdentifier identifier, babelwires::VersionNumber version, InstrumentBlock instruments, seqwires::Pitch pitchOfDefaultValue);
 
         /// Get the pitch of an instrument if it is in this set.
         /// The highest pitch of any duplicate instrument is returned.
