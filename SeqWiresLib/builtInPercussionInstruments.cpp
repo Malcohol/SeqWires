@@ -18,11 +18,3 @@ babelwires::LongIdentifier seqwires::BuiltInPercussionInstruments::getThisIdenti
     return REGISTERED_LONGID("BuiltInPercussion", "Built In Percussion", "c67f1a9e-653d-42b5-bf73-1fdc2f8a9b1a");
 }
 
-babelwires::Enum::EnumValues
-seqwires::BuiltInPercussionInstruments::convertToIdentifiers(const std::vector<Value>& values) const {
-    babelwires::Enum::EnumValues identifiers;
-    std::transform(
-        values.cbegin(), values.cend(), std::back_inserter(identifiers),
-        [this](seqwires::BuiltInPercussionInstruments::Value value) { return getIdentifierFromValue(value); });
-    return identifiers;
-}

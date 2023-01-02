@@ -201,10 +201,17 @@
     X(FngSnp, "Finger Snap", "209836fb-3780-4efe-93d7-065fc3fc4403")                                                   \
     /* Instruments of the XG standard 1 set */                                                                         \
     X(RimSht, "Open Rim Shot", "10744886-d7d9-4fae-bac3-1970490f01c8")                                                 \
-    /* Giving these two clicks slightly more generic identifiers */                                                   \
+    /* Giving these next two clicks slightly more generic identifiers */                                               \
     X(BeepLo, "Beep Low", "c7d34e2c-b7c9-440b-be57-e08819991337")  /* XG Seq Click L */                                \
     X(BeepHi, "Beep High", "0f1d756e-0b25-4bb4-b169-144c37becf05") /* XG Seq Click H */                                \
-    X(BrSwrH, "Brush Swirl High", "9cc3f63b-05b5-4b38-a3ec-43b4a8337ca2")
+    X(BrSwrH, "Brush Swirl High", "9cc3f63b-05b5-4b38-a3ec-43b4a8337ca2")                                              \
+    /* Instruments of the XG SFX 1 set */                                                                              \
+    X(DCutNs, "Dist. Cut Noise", "67e1ad81-8200-47e7-89ee-0c8bfe2c7551")                                               \
+    X(BssSld, "Bass Slide", "3e78e972-dd5e-4c16-9ee1-14b6ad8ab986")                                                    \
+    X(PckScr, "Pick Scrape", "33cbb130-bcc4-4c22-b683-16a0778bcf47")                                                   \
+    X(Kitty, "Kitty", "8c0bb60b-7cba-4785-acb8-2102be4d8f4a")                                                          \
+    X(Growl, "Growl", "0c15ca54-8b02-4294-a8bc-580fe4678c5d")                                                          \
+    X(Ghost, "Ghost", "e0255357-e611-41d5-9d53-15b93c0473c3")
 
 namespace seqwires {
     /// All percussion instruments built into SeqWires.
@@ -217,8 +224,5 @@ namespace seqwires {
         ENUM_DEFINE_CPP_ENUM(BUILT_IN_PERCUSSION_INSTRUMENTS);
 
         static babelwires::LongIdentifier getThisIdentifier();
-
-        /// Convert a vector of selected percussion instruments to a vector of identifiers.
-        babelwires::Enum::EnumValues convertToIdentifiers(const std::vector<Value>& values) const;
     };
 } // namespace seqwires
