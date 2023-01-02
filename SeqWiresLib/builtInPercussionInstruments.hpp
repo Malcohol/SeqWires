@@ -209,16 +209,15 @@
     X(DCutNs, "Dist. Cut Noise", "67e1ad81-8200-47e7-89ee-0c8bfe2c7551")                                               \
     X(BssSld, "Bass Slide", "3e78e972-dd5e-4c16-9ee1-14b6ad8ab986")                                                    \
     X(PckScr, "Pick Scrape", "33cbb130-bcc4-4c22-b683-16a0778bcf47")                                                   \
-    X(Kitty, "Kitty", "8c0bb60b-7cba-4785-acb8-2102be4d8f4a")                                                          \
-    X(Growl, "Growl", "0c15ca54-8b02-4294-a8bc-580fe4678c5d")                                                          \
+    X(Kitty, "Kitty", "8c0bb60b-7cba-4785-acb8-2102be4d8f4a") /* Cat */                                                \
+    X(Growl, "Growl", "0c15ca54-8b02-4294-a8bc-580fe4678c5d") /* Dog */                                                \
     X(Ghost, "Ghost", "e0255357-e611-41d5-9d53-15b93c0473c3")                                                          \
     /* Instruments of the XG SFX 2 set */                                                                              \
     X(DialTn, "Dial Tone", "c4de31a0-680b-4d86-8671-ee2a4e983e54")                                                     \
-    X(TeleRn, "Telephone Ring", "40f514c0-5a46-4ec7-b3a1-18e238f04c47") \
-    X(TireSc, "Tire Screech", "3cb39aa0-67fe-448c-8861-cdadf0e0a372") \
-    X(Submrn, "Submarine", "f36acda3-c89d-4d1b-9e41-f6b62d83b9d0") \
-    X(Frewrk, "FireWork", "0e2ca006-d30a-466d-abe6-71504102dfe3") 
-    
+    X(TeleRn, "Telephone Ring", "40f514c0-5a46-4ec7-b3a1-18e238f04c47")                                                \
+    X(TireSc, "Tire Screech", "3cb39aa0-67fe-448c-8861-cdadf0e0a372") /* Brake, Tyre */                                \
+    X(Submrn, "Submarine", "f36acda3-c89d-4d1b-9e41-f6b62d83b9d0")                                                     \
+    X(Frewrk, "FireWork", "0e2ca006-d30a-466d-abe6-71504102dfe3")
 
 namespace seqwires {
     /// All percussion instruments built into SeqWires.
