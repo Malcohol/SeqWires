@@ -10,15 +10,22 @@
 #include <SeqWiresLib/musicTypes.hpp>
 #include <SeqWiresLib/builtInPercussionInstruments.hpp>
 
+#include <variant>
+
 namespace smf {
     /// An base class for Enums of percussion instruments which can be mapped to pitches.
+    /// To the extent possible, PercussionSets should use as many instruments from the BuiltInPercussionInstruments
+    /// Enum as possible.
     class PercussionSet : public babelwires::Enum {
       public:
         /// A block of instruments which have contiguous pitches.
         /// The block may contain duplicates.
         struct InstrumentBlock {
-          std::vector<babelwires::Identifier> m_instruments;
+          /// For convenience, you can directly reference built-in percussion instruments.
+          std::vector<std::variant<babelwires::Identifier, seqwires::BuiltInPercussionInstruments::Value>> m_instruments;
           seqwires::Pitch m_pitchOfLowestInstrument;
+          // Only needed if values are present in m_instruments.
+          const seqwires::BuiltInPercussionInstruments* m_builtInPercussionInstruments = nullptr;
         };
 
         /// This constructor expects instruments to be in a single contiguous block.

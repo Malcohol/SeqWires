@@ -28,7 +28,9 @@ class smf::PercussionSet::ComplexConstructorArguments {
     void addInstruments(const InstrumentBlock& instrumentBlock,
                                                 seqwires::Pitch pitchOfDefaultValue) {
         seqwires::Pitch pitch = instrumentBlock.m_pitchOfLowestInstrument;
-        for (auto id : instrumentBlock.m_instruments) {
+        for (auto v : instrumentBlock.m_instruments) {
+            assert(((v.index() == 0) || (instrumentBlock.m_builtInPercussionInstruments)) && "You must provide the m_builtInPercussionInstruments if you use the value branch of the variant");
+            const babelwires::Identifier id = (v.index() == 0) ? std::get<0>(v) : instrumentBlock.m_builtInPercussionInstruments->getIdentifierFromValue(std::get<1>(v));
             if (m_alreadySeen.find(id) == m_alreadySeen.end()) {
                 if (pitchOfDefaultValue == pitch) {
                     m_indexOfDefaultValue = m_enumValues.size();
