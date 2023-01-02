@@ -26,6 +26,7 @@ SET( SMFLIB_SRCS
 	Percussion/xgRockPercussionSet.cpp
 	Percussion/xgRoomPercussionSet.cpp
 	Percussion/xgSFX1PercussionSet.cpp
+	Percussion/xgSFX2PercussionSet.cpp
 	Percussion/xgStandard1PercussionSet.cpp
 	smfFormat.cpp
 	gmSpec.cpp

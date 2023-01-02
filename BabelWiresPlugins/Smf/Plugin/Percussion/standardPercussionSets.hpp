@@ -73,6 +73,7 @@ namespace smf {
             XG_BRUSH_PERCUSSION_SET,
             XG_CLASSIC_PERCUSSION_SET,
             XG_SFX_1_PERCUSSION_SET,
+            XG_SFX_2_PERCUSSION_SET,
 
             NUM_KNOWN_PERCUSSION_SETS,
             NOT_PERCUSSION = NUM_KNOWN_PERCUSSION_SETS,
@@ -86,7 +87,7 @@ namespace smf {
             GS_SETS_END = GS_STANDARD_1_PERCUSSION_SET,
 
             XG_SETS_START = XG_STANDARD_1_PERCUSSION_SET,
-            XG_SETS_END = XG_SFX_1_PERCUSSION_SET,
+            XG_SETS_END = XG_SFX_2_PERCUSSION_SET,
         };
 
         /// Ensure the m_instrumentSets array is populated.

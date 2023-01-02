@@ -151,6 +151,7 @@ INSTANTIATE_TEST_SUITE_P(PercussionTest, SmfStandardPercussionTest,
                                          PercussionTestData{"XG", "AnBass", "AMdTm2", "RevCym"},  // XG Analog set
                                          PercussionTestData{"XG", "JKick1", "ClHHat", "OpHHat"},  // XG Jazz set
                                          PercussionTestData{"XG", "JKick2", "BrTap", "BrSlap"},   // XG Brush set
-                                         PercussionTestData{"XG", "CnBD1", "CnCym2", "CnBD2"},     // XG Classic set
-                                         PercussionTestData{"XG", "PckScr", "Thnder", "XgMaou"}     // XG SFX1 set
+                                         PercussionTestData{"XG", "CnBD1", "CnCym2", "CnBD2"},    // XG Classic set
+                                         PercussionTestData{"XG", "PckScr", "Thnder", "XgMaou"},  // XG SFX1 set
+                                         PercussionTestData{"XG", "DoorCr", "Aplaus", "XgCstr"}   // XG SFX2 set
                                          ));

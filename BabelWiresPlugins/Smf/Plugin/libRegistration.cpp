@@ -32,6 +32,7 @@
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/xgRoomPercussionSet.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/xgStandard1PercussionSet.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/xgSFX1PercussionSet.hpp>
+#include <BabelWiresPlugins/Smf/Plugin/Percussion/xgSFX2PercussionSet.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/gmSpec.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/smfFormat.hpp>
 
@@ -67,6 +68,7 @@ void smf::registerLib(babelwires::ProjectContext& context) {
     context.m_typeSystem.addEntry(std::make_unique<XgBrushPercussionSet>(builtInPercussion));
     context.m_typeSystem.addEntry(std::make_unique<XgClassicPercussionSet>(builtInPercussion));
     context.m_typeSystem.addEntry(std::make_unique<XgSFX1PercussionSet>(builtInPercussion));
+    context.m_typeSystem.addEntry(std::make_unique<XgSFX2PercussionSet>(builtInPercussion));
 
     // Subtype relationships.
     context.m_typeSystem.addRelatedTypes(GM2StandardPercussionSet::getThisIdentifier(),
