@@ -11,6 +11,7 @@
 
 namespace smf {
     /// A PercussionSet corresponding to the instruments of GS Electronic Percussion Set.
+    /// This can also serve for the GS Dance set.
     class GsElectronicPercussionSet : public PercussionSet {
       public:
         GsElectronicPercussionSet(const seqwires::BuiltInPercussionInstruments& builtInInstruments);
