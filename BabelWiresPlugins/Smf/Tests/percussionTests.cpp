@@ -146,6 +146,7 @@ INSTANTIATE_TEST_SUITE_P(PercussionTest, SmfStandardPercussionTest,
                                          PercussionTestData{"GS", "SnrRll", "FngSnp", "AcBass"},  // GS Standard 1 set
                                          PercussionTestData{"GS", "SnrRll", "RLwTm2", "RHiTm1"},  // GS Room set
                                          PercussionTestData{"GS", "SnrRll", "PLwTm2", "PHiTm1"},  // GS Power set
+                                         PercussionTestData{"GS", "SnrRll", "ELwTm2", "RevCym"},  // GS Electronic set
                                          PercussionTestData{"XG", "SnrRll", "RimSht", "BeepLo"},  // XG Standard 1 set
                                          PercussionTestData{"XG", "SnrRll", "RLwTm2", "BeepLo"},  // XG Room set
                                          PercussionTestData{"XG", "PKick", "PLwTm1", "BeepLo"},   // XG Rock set
