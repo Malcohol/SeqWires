@@ -35,69 +35,33 @@
 #include <cassert>
 
 smf::StandardPercussionSets::StandardPercussionSets(const babelwires::ProjectContext& projectContext) {
-    m_knownSets[GM_PERCUSSION_SET] =
-        &projectContext.m_typeSystem.getRegisteredEntry(smf::GMPercussionSet::getThisIdentifier())
-             .is<smf::PercussionSet>();
-    m_knownSets[GM2_STANDARD_PERCUSSION_SET] =
-        &projectContext.m_typeSystem.getRegisteredEntry(smf::GM2StandardPercussionSet::getThisIdentifier())
-             .is<smf::PercussionSet>();
-    m_knownSets[GM2_ANALOG_PERCUSSION_SET] =
-        &projectContext.m_typeSystem.getRegisteredEntry(smf::GM2AnalogPercussionSet::getThisIdentifier())
-             .is<smf::PercussionSet>();
-    m_knownSets[GM2_BRUSH_PERCUSSION_SET] =
-        &projectContext.m_typeSystem.getRegisteredEntry(smf::GM2BrushPercussionSet::getThisIdentifier())
-             .is<smf::PercussionSet>();
-    m_knownSets[GM2_ELECTRONIC_PERCUSSION_SET] =
-        &projectContext.m_typeSystem.getRegisteredEntry(smf::GM2ElectronicPercussionSet::getThisIdentifier())
-             .is<smf::PercussionSet>();
-    m_knownSets[GM2_JAZZ_PERCUSSION_SET] =
-        &projectContext.m_typeSystem.getRegisteredEntry(smf::GM2JazzPercussionSet::getThisIdentifier())
-             .is<smf::PercussionSet>();
-    m_knownSets[GM2_ORCHESTRA_PERCUSSION_SET] =
-        &projectContext.m_typeSystem.getRegisteredEntry(smf::GM2OrchestraPercussionSet::getThisIdentifier())
-             .is<smf::PercussionSet>();
-    m_knownSets[GM2_POWER_PERCUSSION_SET] =
-        &projectContext.m_typeSystem.getRegisteredEntry(smf::GM2PowerPercussionSet::getThisIdentifier())
-             .is<smf::PercussionSet>();
-    m_knownSets[GM2_ROOM_PERCUSSION_SET] =
-        &projectContext.m_typeSystem.getRegisteredEntry(smf::GM2RoomPercussionSet::getThisIdentifier())
-             .is<smf::PercussionSet>();
-    m_knownSets[GM2_SFX_PERCUSSION_SET] =
-        &projectContext.m_typeSystem.getRegisteredEntry(smf::GM2SFXPercussionSet::getThisIdentifier())
-             .is<smf::PercussionSet>();
-    m_knownSets[GS_STANDARD_1_PERCUSSION_SET] =
-        &projectContext.m_typeSystem.getRegisteredEntry(smf::GsStandard1PercussionSet::getThisIdentifier())
-             .is<smf::PercussionSet>();
-    m_knownSets[XG_STANDARD_1_PERCUSSION_SET] =
-        &projectContext.m_typeSystem.getRegisteredEntry(smf::XgStandard1PercussionSet::getThisIdentifier())
-             .is<smf::PercussionSet>();
-    m_knownSets[XG_ROOM_PERCUSSION_SET] =
-        &projectContext.m_typeSystem.getRegisteredEntry(smf::XgRoomPercussionSet::getThisIdentifier())
-             .is<smf::PercussionSet>();
-    m_knownSets[XG_ROCK_PERCUSSION_SET] =
-        &projectContext.m_typeSystem.getRegisteredEntry(smf::XgRockPercussionSet::getThisIdentifier())
-             .is<smf::PercussionSet>();
-    m_knownSets[XG_ELECTRO_PERCUSSION_SET] =
-        &projectContext.m_typeSystem.getRegisteredEntry(smf::XgElectroPercussionSet::getThisIdentifier())
-             .is<smf::PercussionSet>();
-    m_knownSets[XG_ANALOG_PERCUSSION_SET] =
-        &projectContext.m_typeSystem.getRegisteredEntry(smf::XgAnalogPercussionSet::getThisIdentifier())
-             .is<smf::PercussionSet>();
-    m_knownSets[XG_JAZZ_PERCUSSION_SET] =
-        &projectContext.m_typeSystem.getRegisteredEntry(smf::XgJazzPercussionSet::getThisIdentifier())
-             .is<smf::PercussionSet>();
-    m_knownSets[XG_BRUSH_PERCUSSION_SET] =
-        &projectContext.m_typeSystem.getRegisteredEntry(smf::XgBrushPercussionSet::getThisIdentifier())
-             .is<smf::PercussionSet>();
-    m_knownSets[XG_CLASSIC_PERCUSSION_SET] =
-        &projectContext.m_typeSystem.getRegisteredEntry(smf::XgClassicPercussionSet::getThisIdentifier())
-             .is<smf::PercussionSet>();
-    m_knownSets[XG_SFX_1_PERCUSSION_SET] =
-        &projectContext.m_typeSystem.getRegisteredEntry(smf::XgSFX1PercussionSet::getThisIdentifier())
-             .is<smf::PercussionSet>();
-    m_knownSets[XG_SFX_2_PERCUSSION_SET] =
-        &projectContext.m_typeSystem.getRegisteredEntry(smf::XgSFX2PercussionSet::getThisIdentifier())
-             .is<smf::PercussionSet>();
+#define DECLARE_PERCUSSION_SET(ENUM, CLASS)                                                                            \
+    m_knownSets[ENUM] =                                                                                                \
+        &projectContext.m_typeSystem.getRegisteredEntry(CLASS::getThisIdentifier()).is<smf::PercussionSet>();
+
+    DECLARE_PERCUSSION_SET(GM_PERCUSSION_SET, smf::GMPercussionSet)
+    DECLARE_PERCUSSION_SET(GM2_STANDARD_PERCUSSION_SET, smf::GM2StandardPercussionSet)
+    DECLARE_PERCUSSION_SET(GM2_ANALOG_PERCUSSION_SET, smf::GM2AnalogPercussionSet)
+    DECLARE_PERCUSSION_SET(GM2_BRUSH_PERCUSSION_SET, smf::GM2BrushPercussionSet)
+    DECLARE_PERCUSSION_SET(GM2_ELECTRONIC_PERCUSSION_SET, smf::GM2ElectronicPercussionSet)
+    DECLARE_PERCUSSION_SET(GM2_JAZZ_PERCUSSION_SET, smf::GM2JazzPercussionSet)
+    DECLARE_PERCUSSION_SET(GM2_ORCHESTRA_PERCUSSION_SET, smf::GM2OrchestraPercussionSet)
+    DECLARE_PERCUSSION_SET(GM2_POWER_PERCUSSION_SET, smf::GM2PowerPercussionSet)
+    DECLARE_PERCUSSION_SET(GM2_ROOM_PERCUSSION_SET, smf::GM2RoomPercussionSet)
+    DECLARE_PERCUSSION_SET(GM2_SFX_PERCUSSION_SET, smf::GM2SFXPercussionSet)
+    DECLARE_PERCUSSION_SET(GS_STANDARD_1_PERCUSSION_SET, smf::GsStandard1PercussionSet)
+    DECLARE_PERCUSSION_SET(XG_STANDARD_1_PERCUSSION_SET, smf::XgStandard1PercussionSet)
+    DECLARE_PERCUSSION_SET(XG_ROOM_PERCUSSION_SET, smf::XgRoomPercussionSet)
+    DECLARE_PERCUSSION_SET(XG_ROCK_PERCUSSION_SET, smf::XgRockPercussionSet)
+    DECLARE_PERCUSSION_SET(XG_ELECTRO_PERCUSSION_SET, smf::XgElectroPercussionSet)
+    DECLARE_PERCUSSION_SET(XG_ANALOG_PERCUSSION_SET, smf::XgAnalogPercussionSet)
+    DECLARE_PERCUSSION_SET(XG_JAZZ_PERCUSSION_SET, smf::XgJazzPercussionSet)
+    DECLARE_PERCUSSION_SET(XG_BRUSH_PERCUSSION_SET, smf::XgBrushPercussionSet)
+    DECLARE_PERCUSSION_SET(XG_CLASSIC_PERCUSSION_SET, smf::XgClassicPercussionSet)
+    DECLARE_PERCUSSION_SET(XG_SFX_1_PERCUSSION_SET, smf::XgSFX1PercussionSet)
+    DECLARE_PERCUSSION_SET(XG_SFX_2_PERCUSSION_SET, smf::XgSFX2PercussionSet)
+
+#undef DECLARE_PERCUSSION_SET
 }
 
 const smf::PercussionSet* smf::StandardPercussionSets::getDefaultPercussionSet(GMSpecType::Value gmSpec,
