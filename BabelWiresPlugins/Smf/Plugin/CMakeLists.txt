@@ -15,8 +15,9 @@ SET( SMFLIB_SRCS
 	Percussion/gm2SFXPercussionSet.cpp
 	Percussion/gm2StandardPercussionSet.cpp
 	Percussion/gm2RoomPercussionSet.cpp
+	Percussion/gs808909PercussionSet.cpp
 	Percussion/gsElectronicPercussionSet.cpp
-	Percussion/gsPowerPercussionSet.cpp
+	Percussion/gsPowerPercussionSet.cpp	
 	Percussion/gsRoomPercussionSet.cpp
 	Percussion/gsStandard1PercussionSet.cpp
 	Percussion/percussionSet.cpp

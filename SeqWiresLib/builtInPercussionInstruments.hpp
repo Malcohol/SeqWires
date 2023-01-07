@@ -198,6 +198,9 @@
     /* Instruments of the GS standard 1 set */                                                                         \
     X(SnrRll, "Snare Roll", "d04bfd3c-9c76-49f7-8624-8e28bf48d70f")                                                    \
     X(FngSnp, "Finger Snap", "209836fb-3780-4efe-93d7-065fc3fc4403")                                                   \
+    /* Instruments of the GS 808/909 set */                                                                            \
+    X(Bs808, "808 Bass Drum", "82282139-14a5-4f33-9749-b517ab591ea4")                                                  \
+    X(Bs909, "909 Bass Drum", "65edb0af-59e2-4543-ad5c-37f6d6f04f96")                                                  \
     /* Instruments of the XG standard 1 set */                                                                         \
     X(RimSht, "Open Rim Shot", "10744886-d7d9-4fae-bac3-1970490f01c8")                                                 \
     /* Giving these next two clicks slightly more generic identifiers */                                               \

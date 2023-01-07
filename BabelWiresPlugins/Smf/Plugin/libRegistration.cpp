@@ -22,6 +22,7 @@
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/gm2SFXPercussionSet.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/gm2StandardPercussionSet.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/gmPercussionSet.hpp>
+#include <BabelWiresPlugins/Smf/Plugin/Percussion/gs808909PercussionSet.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/gsElectronicPercussionSet.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/gsPowerPercussionSet.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/gsRoomPercussionSet.hpp>
@@ -65,6 +66,7 @@ void smf::registerLib(babelwires::ProjectContext& context) {
     context.m_typeSystem.addEntry(std::make_unique<GsRoomPercussionSet>(builtInPercussion));
     context.m_typeSystem.addEntry(std::make_unique<GsPowerPercussionSet>(builtInPercussion));
     context.m_typeSystem.addEntry(std::make_unique<GsElectronicPercussionSet>(builtInPercussion));
+    context.m_typeSystem.addEntry(std::make_unique<Gs808909PercussionSet>(builtInPercussion));
     context.m_typeSystem.addEntry(std::make_unique<XgStandard1PercussionSet>(builtInPercussion));
     context.m_typeSystem.addEntry(std::make_unique<XgRoomPercussionSet>(builtInPercussion));
     context.m_typeSystem.addEntry(std::make_unique<XgRockPercussionSet>(builtInPercussion));
@@ -107,6 +109,8 @@ void smf::registerLib(babelwires::ProjectContext& context) {
     context.m_typeSystem.addRelatedTypes(
         GsElectronicPercussionSet::getThisIdentifier(),
         {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}, {GM2ElectronicPercussionSet::getThisIdentifier()}});
+    context.m_typeSystem.addRelatedTypes(Gs808909PercussionSet::getThisIdentifier(),
+                                         {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}, {}});
     context.m_typeSystem.addRelatedTypes(XgStandard1PercussionSet::getThisIdentifier(),
                                          {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}, {}});
     context.m_typeSystem.addRelatedTypes(XgRoomPercussionSet::getThisIdentifier(),
