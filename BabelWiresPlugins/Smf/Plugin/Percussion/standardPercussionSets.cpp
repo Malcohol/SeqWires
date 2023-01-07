@@ -24,6 +24,7 @@
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/gsOrchestraPercussionSet.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/gsPowerPercussionSet.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/gsRoomPercussionSet.hpp>
+#include <BabelWiresPlugins/Smf/Plugin/Percussion/gsSFXPercussionSet.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/gsStandard1PercussionSet.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/xgAnalogPercussionSet.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/xgBrushPercussionSet.hpp>
@@ -64,6 +65,7 @@ smf::StandardPercussionSets::StandardPercussionSets(const babelwires::ProjectCon
     DECLARE_PERCUSSION_SET(GS_JAZZ_PERCUSSION_SET, smf::GsJazzPercussionSet)
     DECLARE_PERCUSSION_SET(GS_BRUSH_PERCUSSION_SET, smf::GsBrushPercussionSet)
     DECLARE_PERCUSSION_SET(GS_ORCHESTRA_PERCUSSION_SET, smf::GsOrchestraPercussionSet)
+    DECLARE_PERCUSSION_SET(GS_SFX_PERCUSSION_SET, smf::GsSFXPercussionSet)
     DECLARE_PERCUSSION_SET(XG_STANDARD_1_PERCUSSION_SET, smf::XgStandard1PercussionSet)
     DECLARE_PERCUSSION_SET(XG_ROOM_PERCUSSION_SET, smf::XgRoomPercussionSet)
     DECLARE_PERCUSSION_SET(XG_ROCK_PERCUSSION_SET, smf::XgRockPercussionSet)
@@ -200,6 +202,8 @@ smf::StandardPercussionSets::getPercussionSetFromChannelSetupInfo(GMSpecType::Va
                     return m_knownSets[GS_BRUSH_PERCUSSION_SET];
                 case 49:
                     return m_knownSets[GS_ORCHESTRA_PERCUSSION_SET];
+                case 57:
+                    return m_knownSets[GS_SFX_PERCUSSION_SET];
             }
         } else {
             // Not a percussion voice
@@ -312,6 +316,8 @@ smf::StandardPercussionSets::getChannelSetupInfoFromKnownPercussionSet(KnownPerc
             return {{0x02, 0, 41, 1}};
         case GS_ORCHESTRA_PERCUSSION_SET:
             return {{0x02, 0, 49, 1}};
+        case GS_SFX_PERCUSSION_SET:
+            return {{0x02, 0, 57, 1}};
         case XG_STANDARD_1_PERCUSSION_SET:
             return {{0x7f, 0, 1, 0}};
         case XG_ROOM_PERCUSSION_SET:

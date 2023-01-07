@@ -30,6 +30,7 @@
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/gsPowerPercussionSet.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/gsRoomPercussionSet.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/gsStandard1PercussionSet.hpp>
+#include <BabelWiresPlugins/Smf/Plugin/Percussion/gsSFXPercussionSet.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/xgAnalogPercussionSet.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/xgBrushPercussionSet.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/xgClassicPercussionSet.hpp>
@@ -73,6 +74,7 @@ void smf::registerLib(babelwires::ProjectContext& context) {
     context.m_typeSystem.addEntry(std::make_unique<GsJazzPercussionSet>(builtInPercussion));
     context.m_typeSystem.addEntry(std::make_unique<GsBrushPercussionSet>(builtInPercussion));
     context.m_typeSystem.addEntry(std::make_unique<GsOrchestraPercussionSet>(builtInPercussion));
+    context.m_typeSystem.addEntry(std::make_unique<GsSFXPercussionSet>(builtInPercussion));
     context.m_typeSystem.addEntry(std::make_unique<XgStandard1PercussionSet>(builtInPercussion));
     context.m_typeSystem.addEntry(std::make_unique<XgRoomPercussionSet>(builtInPercussion));
     context.m_typeSystem.addEntry(std::make_unique<XgRockPercussionSet>(builtInPercussion));
@@ -124,6 +126,8 @@ void smf::registerLib(babelwires::ProjectContext& context) {
         GsBrushPercussionSet::getThisIdentifier(),
         {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}, {GM2BrushPercussionSet::getThisIdentifier()}});
     context.m_typeSystem.addRelatedTypes(GsOrchestraPercussionSet::getThisIdentifier(),
+                                         {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}, {}});
+    context.m_typeSystem.addRelatedTypes(GsSFXPercussionSet::getThisIdentifier(),
                                          {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}, {}});
     context.m_typeSystem.addRelatedTypes(XgStandard1PercussionSet::getThisIdentifier(),
                                          {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}, {}});

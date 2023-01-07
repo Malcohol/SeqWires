@@ -149,8 +149,9 @@ INSTANTIATE_TEST_SUITE_P(PercussionTest, SmfStandardPercussionTest,
                                          PercussionTestData{"GS", "SnrRll", "ELwTm2", "RevCym"},  // GS Electronic set
                                          PercussionTestData{"GS", "Bs909", "ELwTm2", "Bs808"},    // GS 808/909 set
                                          PercussionTestData{"GS", "SnrRll", "JKick1", "JKick2"},  // GS Jazz set
-                                         PercussionTestData{"GS", "SnrRll", "JKick2", "BrTap"},  // GS Jazz set
-                                         PercussionTestData{"GS", "TimpF", "Timpc", "Aplaus"},   // Orchestra set
+                                         PercussionTestData{"GS", "SnrRll", "JKick2", "BrTap"},   // GS Jazz set
+                                         PercussionTestData{"GS", "TimpF", "Timpc", "Aplaus"},    // GS Orchestra set
+                                         PercussionTestData{"GS", "Laugh", "Jetpln", "Aplaus"},   // GS SFX set
                                          PercussionTestData{"XG", "SnrRll", "RimSht", "BeepLo"},  // XG Standard 1 set
                                          PercussionTestData{"XG", "SnrRll", "RLwTm2", "BeepLo"},  // XG Room set
                                          PercussionTestData{"XG", "PKick", "PLwTm1", "BeepLo"},   // XG Rock set
