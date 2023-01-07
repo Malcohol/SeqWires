@@ -17,6 +17,7 @@
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/gm2SFXPercussionSet.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/gm2StandardPercussionSet.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/gmPercussionSet.hpp>
+#include <BabelWiresPlugins/Smf/Plugin/Percussion/gsRoomPercussionSet.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/gsStandard1PercussionSet.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/xgAnalogPercussionSet.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/xgBrushPercussionSet.hpp>
@@ -50,6 +51,7 @@ smf::StandardPercussionSets::StandardPercussionSets(const babelwires::ProjectCon
     DECLARE_PERCUSSION_SET(GM2_ROOM_PERCUSSION_SET, smf::GM2RoomPercussionSet)
     DECLARE_PERCUSSION_SET(GM2_SFX_PERCUSSION_SET, smf::GM2SFXPercussionSet)
     DECLARE_PERCUSSION_SET(GS_STANDARD_1_PERCUSSION_SET, smf::GsStandard1PercussionSet)
+    DECLARE_PERCUSSION_SET(GS_ROOM_PERCUSSION_SET, smf::GsRoomPercussionSet)
     DECLARE_PERCUSSION_SET(XG_STANDARD_1_PERCUSSION_SET, smf::XgStandard1PercussionSet)
     DECLARE_PERCUSSION_SET(XG_ROOM_PERCUSSION_SET, smf::XgRoomPercussionSet)
     DECLARE_PERCUSSION_SET(XG_ROCK_PERCUSSION_SET, smf::XgRockPercussionSet)
@@ -164,12 +166,16 @@ smf::StandardPercussionSets::getPercussionSetFromChannelSetupInfo(GMSpecType::Va
             // Not specified by XG
         }
     } else if (gmSpec == GMSpecType::Value::GS) {
-        if (channelSetupInfo.m_gsPartMode == 1) {
-            // Percussion mode 1
-            return m_knownSets[GS_STANDARD_1_PERCUSSION_SET];
-        } else if (channelSetupInfo.m_gsPartMode == 2) {
-            // Percussion mode 2
-            return m_knownSets[GS_STANDARD_1_PERCUSSION_SET];
+        if ((channelSetupInfo.m_gsPartMode == 1) || (channelSetupInfo.m_gsPartMode == 2)) {
+            // Percussion
+            switch (channelSetupInfo.m_program) {
+                case 9:
+                    return m_knownSets[GS_ROOM_PERCUSSION_SET];
+                case 1:
+                case 2:
+                default:
+                    return m_knownSets[GS_STANDARD_1_PERCUSSION_SET];
+            }
         } else {
             // Not a percussion voice
             return nullptr;
@@ -267,6 +273,8 @@ smf::StandardPercussionSets::getChannelSetupInfoFromKnownPercussionSet(KnownPerc
             return {{0x78, 0, 57, 0}};
         case GS_STANDARD_1_PERCUSSION_SET:
             return {{0x02, 0, 1, 1}};
+        case GS_ROOM_PERCUSSION_SET:
+            return {{0x02, 0, 9, 1}};
         case XG_STANDARD_1_PERCUSSION_SET:
             return {{0x7f, 0, 1, 0}};
         case XG_ROOM_PERCUSSION_SET:

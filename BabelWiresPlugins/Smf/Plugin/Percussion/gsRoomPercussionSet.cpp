@@ -1,13 +1,13 @@
 /**
- * A PercussionSet corresponding to the instruments of GS Standard Percussion Set.
+ * A PercussionSet corresponding to the instruments of GS Room Percussion Set.
  *
  * (C) 2021 Malcolm Tyrrell
  *
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
-#include <BabelWiresPlugins/Smf/Plugin/Percussion/gsStandard1PercussionSet.hpp>
+#include <BabelWiresPlugins/Smf/Plugin/Percussion/gsRoomPercussionSet.hpp>
 
-smf::GsStandard1PercussionSet::GsStandard1PercussionSet(
+smf::GsRoomPercussionSet::GsRoomPercussionSet(
     const seqwires::BuiltInPercussionInstruments& builtInInstruments)
     : PercussionSet(getThisIdentifier(), 1,
                     InstrumentBlock{{seqwires::BuiltInPercussionInstruments::Value::SnrRll,
@@ -26,16 +26,16 @@ smf::GsStandard1PercussionSet::GsStandard1PercussionSet(
                                      seqwires::BuiltInPercussionInstruments::Value::AcSnr,
                                      seqwires::BuiltInPercussionInstruments::Value::Clap,
                                      seqwires::BuiltInPercussionInstruments::Value::ElSnr,
-                                     seqwires::BuiltInPercussionInstruments::Value::LFlTom,
+                                     seqwires::BuiltInPercussionInstruments::Value::RLwTm2,
                                      seqwires::BuiltInPercussionInstruments::Value::ClHHat,
-                                     seqwires::BuiltInPercussionInstruments::Value::HFlTom,
+                                     seqwires::BuiltInPercussionInstruments::Value::RLwTm1,
                                      seqwires::BuiltInPercussionInstruments::Value::PdHHat,
-                                     seqwires::BuiltInPercussionInstruments::Value::LwTom,
+                                     seqwires::BuiltInPercussionInstruments::Value::RMdTm2,
                                      seqwires::BuiltInPercussionInstruments::Value::OpHHat,
-                                     seqwires::BuiltInPercussionInstruments::Value::LMTom,
-                                     seqwires::BuiltInPercussionInstruments::Value::HMTom,
+                                     seqwires::BuiltInPercussionInstruments::Value::RMdTm1,
+                                     seqwires::BuiltInPercussionInstruments::Value::RHiTm2,
                                      seqwires::BuiltInPercussionInstruments::Value::Crash1,
-                                     seqwires::BuiltInPercussionInstruments::Value::HTom,
+                                     seqwires::BuiltInPercussionInstruments::Value::RHiTm1,
                                      seqwires::BuiltInPercussionInstruments::Value::Ride1,
                                      seqwires::BuiltInPercussionInstruments::Value::ChnCym,
                                      seqwires::BuiltInPercussionInstruments::Value::RideBl,
@@ -77,7 +77,7 @@ smf::GsStandard1PercussionSet::GsStandard1PercussionSet(
                                     &builtInInstruments},
                     25) {}
 
-babelwires::LongIdentifier smf::GsStandard1PercussionSet::getThisIdentifier() {
-    return REGISTERED_LONGID("GSStandard1Perc", "Roland GS Standard 1 Percussion",
-                             "a1fb9fe9-98d0-4f56-ab75-49b9c936d246");
+babelwires::LongIdentifier smf::GsRoomPercussionSet::getThisIdentifier() {
+    return REGISTERED_LONGID("GSRoomPerc", "Roland GS Room Percussion",
+                             "ea4fe75f-71ff-42c7-9480-99486b513d37");
 }

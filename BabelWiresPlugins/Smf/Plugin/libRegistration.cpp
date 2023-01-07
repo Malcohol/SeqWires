@@ -22,6 +22,7 @@
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/gm2SFXPercussionSet.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/gm2StandardPercussionSet.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/gmPercussionSet.hpp>
+#include <BabelWiresPlugins/Smf/Plugin/Percussion/gsRoomPercussionSet.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/gsStandard1PercussionSet.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/xgAnalogPercussionSet.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/xgBrushPercussionSet.hpp>
@@ -30,9 +31,9 @@
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/xgJazzPercussionSet.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/xgRockPercussionSet.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/xgRoomPercussionSet.hpp>
-#include <BabelWiresPlugins/Smf/Plugin/Percussion/xgStandard1PercussionSet.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/xgSFX1PercussionSet.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/xgSFX2PercussionSet.hpp>
+#include <BabelWiresPlugins/Smf/Plugin/Percussion/xgStandard1PercussionSet.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/gmSpec.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/smfFormat.hpp>
 
@@ -59,6 +60,7 @@ void smf::registerLib(babelwires::ProjectContext& context) {
     context.m_typeSystem.addEntry(std::make_unique<GM2OrchestraPercussionSet>(builtInPercussion));
     context.m_typeSystem.addEntry(std::make_unique<GM2SFXPercussionSet>(builtInPercussion));
     context.m_typeSystem.addEntry(std::make_unique<GsStandard1PercussionSet>(builtInPercussion));
+    context.m_typeSystem.addEntry(std::make_unique<GsRoomPercussionSet>(builtInPercussion));
     context.m_typeSystem.addEntry(std::make_unique<XgStandard1PercussionSet>(builtInPercussion));
     context.m_typeSystem.addEntry(std::make_unique<XgRoomPercussionSet>(builtInPercussion));
     context.m_typeSystem.addEntry(std::make_unique<XgRockPercussionSet>(builtInPercussion));
@@ -92,6 +94,8 @@ void smf::registerLib(babelwires::ProjectContext& context) {
     context.m_typeSystem.addRelatedTypes(GsStandard1PercussionSet::getThisIdentifier(),
                                          {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()},
                                           {GM2StandardPercussionSet::getThisIdentifier()}});
+    context.m_typeSystem.addRelatedTypes(GsRoomPercussionSet::getThisIdentifier(),
+                                         {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}, {GM2RoomPercussionSet::getThisIdentifier()}});
     context.m_typeSystem.addRelatedTypes(XgStandard1PercussionSet::getThisIdentifier(),
                                          {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}, {}});
     context.m_typeSystem.addRelatedTypes(XgRoomPercussionSet::getThisIdentifier(),
