@@ -100,7 +100,6 @@
     X(PHiTm1, "Power Hi Tom 1", "b18634b2-bdba-44be-8259-822b4b96be8a")                                                \
     /* Instruments from the GM2 Electronic Set */                                                                      \
     X(ElBass, "Electric Bass Drum", "d978c296-2e32-46d2-b8aa-ab00b31bdf36")                                            \
-    X(ElSnr1, "Electric Snare 1", "3d10dc34-0fd8-4efc-8dd0-25dde63c0232")                                              \
     X(ElSnr2, "Electric Snare 2", "4f7523a1-0996-4094-b5d7-c02ea5eb319a")                                              \
     X(ELwTm2, "Electric Low Tom 2", "2944dabe-ab8b-459c-974d-44fa453824c4")                                            \
     X(ELwTm1, "Electric Low Tom 1", "c2b2f01c-d428-46a3-8d38-fc090d6e4b7b")                                            \
