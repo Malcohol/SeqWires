@@ -23,7 +23,7 @@ smf::GsElectronicPercussionSet::GsElectronicPercussionSet(
                                      seqwires::BuiltInPercussionInstruments::Value::AcBass,
                                      seqwires::BuiltInPercussionInstruments::Value::ElBass,
                                      seqwires::BuiltInPercussionInstruments::Value::SStick,
-                                     seqwires::BuiltInPercussionInstruments::Value::ElSnr1,
+                                     seqwires::BuiltInPercussionInstruments::Value::ElSnr,
                                      seqwires::BuiltInPercussionInstruments::Value::Clap,
                                      seqwires::BuiltInPercussionInstruments::Value::ElSnr2,
                                      seqwires::BuiltInPercussionInstruments::Value::ELwTm2,
