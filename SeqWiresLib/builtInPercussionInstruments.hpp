@@ -13,7 +13,8 @@
 
 #include <optional>
 
-/// A master list of all the built-in percussion instruments.
+/// A master list of all the built-in percussion instruments (including SFX instruments that are used in
+/// percussion kits on some instruments).
 /// We assume the General MIDI standard v2 gives good coverage of percussion instruments, so we use the instruments
 /// found there. Note that the notion of a percussion instrument is extensible: it is not required that a percussion
 /// event have a value defined by this set.

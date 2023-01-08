@@ -306,7 +306,7 @@ void smf::SmfWriter::writeTrack(const std::vector<const target::ChannelTrackFeat
             ChannelSetup& channelSetup = m_channelSetup[channelNumber];
             if (!channelSetup.m_setupWritten) {
                 const std::optional<StandardPercussionSets::ChannelSetupInfo> info =
-                    m_standardPercussionSets.getChannelSetupInfoFromPercussionSet(channelSetup.m_kitIfPercussion);
+                    m_standardPercussionSets.getChannelSetupInfoFromPercussionSet(channelSetup.m_kitIfPercussion, channelNumber);
                 if (info) {
                     if (gmSpec == GMSpecType::Value::GS) {
                         // Set GS "Use For Rhythm Part"

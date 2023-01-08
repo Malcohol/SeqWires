@@ -224,21 +224,27 @@ void smf::StandardPercussionSets::ensureInstrumentSets() {
     }
 }
 
+void smf::StandardPercussionSets::getExcludedInstruments(
+    int percussionSetIndex, const std::unordered_set<babelwires::Identifier>& instrumentsInUse,
+    std::unordered_set<babelwires::Identifier>& excludedInstrumentsOut) {
+    ensureInstrumentSets();
+    for (auto instrument : instrumentsInUse) {
+        if (m_instrumentSets[percussionSetIndex].find(instrument) == m_instrumentSets[percussionSetIndex].end()) {
+            excludedInstrumentsOut.insert(instrument);
+        }
+    }
+}
+
 const smf::PercussionSet* smf::StandardPercussionSets::getBestPercussionSetInRange(
     int startIndex, int endIndex, const std::unordered_set<babelwires::Identifier>& instrumentsInUse,
     std::unordered_set<babelwires::Identifier>& excludedInstrumentsOut) {
-    ensureInstrumentSets();
 
     int bestFit = -1;
     std::unordered_set<babelwires::Identifier> candidateExclusions;
 
     for (int i = startIndex; i <= endIndex; ++i) {
         candidateExclusions.clear();
-        for (auto instrument : instrumentsInUse) {
-            if (m_instrumentSets[i].find(instrument) == m_instrumentSets[i].end()) {
-                candidateExclusions.insert(instrument);
-            }
-        }
+        getExcludedInstruments(i, instrumentsInUse, candidateExclusions);
         if ((bestFit == -1) || (candidateExclusions.size() < excludedInstrumentsOut.size())) {
             bestFit = i;
             excludedInstrumentsOut.swap(candidateExclusions);
@@ -251,22 +257,28 @@ const smf::PercussionSet*
 smf::StandardPercussionSets::getBestPercussionSet(GMSpecType::Value gmSpec, int channelNumber,
                                                   const std::unordered_set<babelwires::Identifier>& instrumentsInUse,
                                                   std::unordered_set<babelwires::Identifier>& excludedInstrumentsOut) {
-    // TODO XG / chan 10.
-    if (channelNumber != 9) {
-        excludedInstrumentsOut = instrumentsInUse;
-        return nullptr;
-    }
-
     if (gmSpec == GMSpecType::Value::GM) {
-        return getBestPercussionSetInRange(GM_PERCUSSION_SET, GM_PERCUSSION_SET, instrumentsInUse,
-                                           excludedInstrumentsOut);
+        if (channelNumber == 9) {
+            return getBestPercussionSetInRange(GM_PERCUSSION_SET, GM_PERCUSSION_SET, instrumentsInUse,
+                                               excludedInstrumentsOut);
+        }
     } else if (gmSpec == GMSpecType::Value::GM2) {
-        return getBestPercussionSetInRange(GM2_SETS_START, GM2_SETS_END, instrumentsInUse, excludedInstrumentsOut);
+        if ((channelNumber == 9) || (channelNumber == 10)) {
+            return getBestPercussionSetInRange(GM2_SETS_START, GM2_SETS_END, instrumentsInUse, excludedInstrumentsOut);
+        }
     } else if (gmSpec == GMSpecType::Value::GS) {
-        return getBestPercussionSetInRange(GS_SETS_START, GS_SETS_END, instrumentsInUse, excludedInstrumentsOut);
+        // This is a simplification for SeqWires rather than a constraint of GS.
+        // Limiting percussion to two channels means I can allocate one percussion part to each without
+        // having to write an algorithm to pick the best assignment of two percussion sets across all channels.
+        // TODO Write that algorithm.
+        if ((channelNumber == 9) || (channelNumber == 10)) {
+            return getBestPercussionSetInRange(GS_SETS_START, GS_SETS_END, instrumentsInUse, excludedInstrumentsOut);
+        }
     } else if (gmSpec == GMSpecType::Value::XG) {
+        // There are no constraints which channels support XG percussion
         return getBestPercussionSetInRange(XG_SETS_START, XG_SETS_END, instrumentsInUse, excludedInstrumentsOut);
     }
+    excludedInstrumentsOut = instrumentsInUse;
     return nullptr;
 }
 
@@ -278,8 +290,11 @@ smf::StandardPercussionSets::getKnownPercussionSetFromPercussionSet(const Percus
 }
 
 std::optional<smf::StandardPercussionSets::ChannelSetupInfo>
-smf::StandardPercussionSets::getChannelSetupInfoFromKnownPercussionSet(KnownPercussionSets percussionSet) {
+smf::StandardPercussionSets::getChannelSetupInfoFromKnownPercussionSet(KnownPercussionSets percussionSet, int channelNumber) {
+    const babelwires::Byte gsPartNumber = channelNumber - 8;
     switch (percussionSet) {
+        default:
+        case NOT_PERCUSSION:
         case GM_PERCUSSION_SET:
             return {};
         case GM2_STANDARD_PERCUSSION_SET:
@@ -301,23 +316,23 @@ smf::StandardPercussionSets::getChannelSetupInfoFromKnownPercussionSet(KnownPerc
         case GM2_SFX_PERCUSSION_SET:
             return {{0x78, 0, 57, 0}};
         case GS_STANDARD_1_PERCUSSION_SET:
-            return {{0x02, 0, 1, 1}};
+            return {{0x02, 0, 1, gsPartNumber}};
         case GS_ROOM_PERCUSSION_SET:
-            return {{0x02, 0, 9, 1}};
+            return {{0x02, 0, 9, gsPartNumber}};
         case GS_POWER_PERCUSSION_SET:
-            return {{0x02, 0, 17, 1}};
+            return {{0x02, 0, 17, gsPartNumber}};
         case GS_ELECTRONIC_PERCUSSION_SET:
-            return {{0x02, 0, 25, 1}};
+            return {{0x02, 0, 25, gsPartNumber}};
         case GS_808_909_PERCUSSION_SET:
-            return {{0x02, 0, 26, 1}};
+            return {{0x02, 0, 26, gsPartNumber}};
         case GS_JAZZ_PERCUSSION_SET:
-            return {{0x02, 0, 33, 1}};
+            return {{0x02, 0, 33, gsPartNumber}};
         case GS_BRUSH_PERCUSSION_SET:
-            return {{0x02, 0, 41, 1}};
+            return {{0x02, 0, 41, gsPartNumber}};
         case GS_ORCHESTRA_PERCUSSION_SET:
-            return {{0x02, 0, 49, 1}};
+            return {{0x02, 0, 49, gsPartNumber}};
         case GS_SFX_PERCUSSION_SET:
-            return {{0x02, 0, 57, 1}};
+            return {{0x02, 0, 57, gsPartNumber}};
         case XG_STANDARD_1_PERCUSSION_SET:
             return {{0x7f, 0, 1, 0}};
         case XG_ROOM_PERCUSSION_SET:
@@ -338,17 +353,14 @@ smf::StandardPercussionSets::getChannelSetupInfoFromKnownPercussionSet(KnownPerc
             return {{0x7e, 0, 1, 0}};
         case XG_SFX_2_PERCUSSION_SET:
             return {{0x7e, 0, 2, 0}};
-        default:
-        case NOT_PERCUSSION:
-            return {};
     }
 }
 
 std::optional<smf::StandardPercussionSets::ChannelSetupInfo>
-smf::StandardPercussionSets::getChannelSetupInfoFromPercussionSet(const PercussionSet* percussionSet) {
+smf::StandardPercussionSets::getChannelSetupInfoFromPercussionSet(const PercussionSet* percussionSet, int channelNumber) {
     if (percussionSet) {
         const KnownPercussionSets knownPercussionSet = getKnownPercussionSetFromPercussionSet(percussionSet);
-        return getChannelSetupInfoFromKnownPercussionSet(knownPercussionSet);
+        return getChannelSetupInfoFromKnownPercussionSet(knownPercussionSet, channelNumber);
     } else {
         return {};
     }
