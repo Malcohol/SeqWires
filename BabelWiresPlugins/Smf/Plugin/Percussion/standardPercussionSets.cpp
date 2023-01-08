@@ -239,18 +239,19 @@ const smf::PercussionSet* smf::StandardPercussionSets::getBestPercussionSetInRan
     int startIndex, int endIndex, const std::unordered_set<babelwires::Identifier>& instrumentsInUse,
     std::unordered_set<babelwires::Identifier>& excludedInstrumentsOut) {
 
-    int bestFit = -1;
+    int bestFit = NOT_PERCUSSION;
     std::unordered_set<babelwires::Identifier> candidateExclusions;
+    excludedInstrumentsOut = instrumentsInUse;
 
     for (int i = startIndex; i <= endIndex; ++i) {
         candidateExclusions.clear();
         getExcludedInstruments(i, instrumentsInUse, candidateExclusions);
-        if ((bestFit == -1) || (candidateExclusions.size() < excludedInstrumentsOut.size())) {
+        if ((candidateExclusions.size() < excludedInstrumentsOut.size())) {
             bestFit = i;
             excludedInstrumentsOut.swap(candidateExclusions);
         }
     }
-    return m_knownSets[bestFit];
+    return (bestFit == NOT_PERCUSSION) ? nullptr : m_knownSets[bestFit];
 }
 
 const smf::PercussionSet*

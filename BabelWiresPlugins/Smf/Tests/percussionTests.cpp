@@ -18,6 +18,7 @@
 
 #include <Tests/BabelWiresLib/TestUtils/testEnvironment.hpp>
 
+#include <Tests/TestUtils/equalSets.hpp>
 #include <Tests/TestUtils/tempFilePath.hpp>
 
 namespace {
@@ -163,3 +164,151 @@ INSTANTIATE_TEST_SUITE_P(PercussionTest, SmfStandardPercussionTest,
                                          PercussionTestData{"XG", "PckScr", "Thnder", "XgMaou"},  // XG SFX1 set
                                          PercussionTestData{"XG", "DoorCr", "Aplaus", "XgCstr"}   // XG SFX2 set
                                          ));
+
+namespace {
+    struct TrackAllocationTestData {
+        const char* m_specificationId;
+        std::vector<babelwires::Identifier> m_instrumentsInChannel[3];
+        bool m_hasNotes[3];
+        // The events expected to appear in channels 8, 9 and 10.
+        std::vector<babelwires::Identifier> m_expectedInChannel[3];
+    };
+} // namespace
+
+class SmfTrackAllocationPercussionTest : public testing::TestWithParam<TrackAllocationTestData> {};
+
+TEST_P(SmfTrackAllocationPercussionTest, trackAllocation) {
+    testUtils::TestEnvironment testEnvironment;
+    seqwires::registerLib(testEnvironment.m_projectContext);
+    smf::registerLib(testEnvironment.m_projectContext);
+
+    const TrackAllocationTestData& testData = GetParam();
+
+    testUtils::TempFilePath tempFile("smfPercussionTrackAllocation.mid", testData.m_specificationId);
+
+    {
+        smf::target::SmfFeature smfFeature(testEnvironment.m_projectContext);
+        smfFeature.setToDefault();
+
+        auto* smfFormatFeature =
+            smfFeature.getChildFromStep(babelwires::PathStep("Format")).as<smf::target::SmfFormatFeature>();
+        ASSERT_NE(smfFormatFeature, nullptr);
+
+        smfFormatFeature->getMidiMetadata().getSpecFeature()->set(babelwires::Identifier(testData.m_specificationId));
+
+        auto* tracks =
+            smfFormatFeature->getChildFromStep(babelwires::PathStep("tracks")).as<babelwires::ArrayFeature>();
+
+        tracks->setSize(3);
+
+        for (int i = 0; i < 3; ++i) {
+            auto* channelTrack = tracks->getFeature(i)->as<babelwires::RecordFeature>();
+            ASSERT_NE(channelTrack, nullptr);
+            EXPECT_EQ(channelTrack->getNumFeatures(), 2);
+
+            auto* channelFeature =
+                channelTrack->getChildFromStep(babelwires::PathStep("Chan")).as<babelwires::IntFeature>();
+            channelFeature->set(8 + i);
+
+            auto* trackFeature =
+                channelTrack->getChildFromStep(babelwires::PathStep("Track")).as<seqwires::TrackFeature>();
+
+            auto track = std::make_unique<seqwires::Track>();
+
+            track->addEvent(seqwires::NoteOnEvent{0, 65});
+            track->addEvent(seqwires::NoteOffEvent{babelwires::Rational(1, 4), 65});
+
+            for (auto instrument : testData.m_instrumentsInChannel[i]) {
+                track->addEvent(seqwires::PercussionOnEvent{0, instrument});
+                track->addEvent(seqwires::PercussionOffEvent{babelwires::Rational(1, 4), instrument});
+            }
+
+            trackFeature->set(std::move(track));
+        }
+
+        std::ofstream os(tempFile);
+        smf::writeToSmf(testEnvironment.m_projectContext, testEnvironment.m_log, smfFeature.getFormatFeature(), os);
+    }
+
+    {
+        babelwires::FileDataSource midiFile(tempFile);
+
+        const auto feature = smf::parseSmfSequence(midiFile, testEnvironment.m_projectContext, testEnvironment.m_log);
+        ASSERT_NE(feature, nullptr);
+        auto smfFeature = feature.get()->as<const smf::source::Format0SmfFeature>();
+        ASSERT_NE(smfFeature, nullptr);
+
+        EXPECT_EQ(smfFeature->getMidiMetadata().getSpecFeature()->get(),
+                  babelwires::Identifier(testData.m_specificationId));
+
+        EXPECT_EQ(smfFeature->getNumMidiTracks(), 1);
+        const auto& channelGroup = dynamic_cast<const smf::source::RecordChannelGroup&>(smfFeature->getMidiTrack(0));
+        EXPECT_EQ(channelGroup.getNumFeatures(), 3);
+
+        for (int i = 0; i < 3; ++i) {
+            const auto* const trackFeature = channelGroup.getFeature(i)->as<const seqwires::TrackFeature>();
+            ASSERT_NE(trackFeature, nullptr);
+            // ASSERT_EQ(channelGroup.getStepToChild(trackFeature),
+            // babelwires::PathStep(babelwires::Identifier("ch9")));
+
+            const auto& track = trackFeature->get();
+            auto categoryMap = track.getNumEventGroupsByCategory();
+
+            if (testData.m_hasNotes[i]) {
+                ASSERT_NE(categoryMap.find(seqwires::NoteEvent::s_noteEventCategory), categoryMap.end());
+                EXPECT_EQ(categoryMap.find(seqwires::NoteEvent::s_noteEventCategory)->second, 1);
+                EXPECT_EQ(categoryMap.find(seqwires::PercussionEvent::s_percussionEventCategory), categoryMap.end());
+            } else {
+                EXPECT_EQ(categoryMap.find(seqwires::NoteEvent::s_noteEventCategory), categoryMap.end());
+                ASSERT_NE(categoryMap.find(seqwires::PercussionEvent::s_percussionEventCategory), categoryMap.end());
+
+                std::vector<babelwires::Identifier> instrumentsInTrack;
+                for (auto event : seqwires::iterateOver<seqwires::PercussionOnEvent>(track)) {
+                    instrumentsInTrack.emplace_back(event.getInstrument());
+                }
+
+                EXPECT_TRUE(testUtils::areEqualSets(instrumentsInTrack, testData.m_expectedInChannel[i]));
+            }
+        }
+    }
+}
+
+// The set should be automatically selected based on the standard and instruments.
+INSTANTIATE_TEST_SUITE_P(
+    PercussionTest, SmfTrackAllocationPercussionTest,
+    testing::Values(
+        TrackAllocationTestData{
+            "GM",
+            {{"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}},
+            {true, false, true},
+            {{}, {"AcBass", "HMTom", "OTrian"}, {}}},
+        TrackAllocationTestData{
+            "GM2",
+            {{"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}},
+            {true, false, false},
+            {{}, {"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}}},
+        TrackAllocationTestData{
+            "GM2",
+            {{"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}, {}},
+            {true, false, true},
+            {{}, {"AcBass", "HMTom", "OTrian"}, {}}},
+        TrackAllocationTestData{
+            "GS",
+            {{"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}},
+            {true, false, false},
+            {{}, {"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}}},
+        TrackAllocationTestData{
+            "GS",
+            {{"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}, {}},
+            {true, false, true},
+            {{}, {"AcBass", "HMTom", "OTrian"}, {}}},
+        TrackAllocationTestData{
+            "XG",
+            {{"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}},
+            {false, false, false},
+            {{"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}}},
+        TrackAllocationTestData{
+            "XG",
+            {{"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}, {}},
+            {false, false, true},
+            {{"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}, {}}}));

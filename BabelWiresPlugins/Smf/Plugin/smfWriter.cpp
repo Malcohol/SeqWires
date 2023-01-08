@@ -29,7 +29,7 @@
 namespace {
     // See page 237 of the SC-8850 English manual for the part to block conversion.
     // We will always use the default part mapping, where parts correspond to midi channels.
-    const std::array<unsigned int, 16> s_gsChannelToBlockMapping{1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 11, 12, 13, 14, 15};
+    const std::array<unsigned int, 16> s_gsChannelToBlockMapping{1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 10, 11, 12, 13, 14, 15};
 } // namespace
 
 smf::SmfWriter::SmfWriter(const babelwires::ProjectContext& projectContext, babelwires::UserLogger& userLogger,
