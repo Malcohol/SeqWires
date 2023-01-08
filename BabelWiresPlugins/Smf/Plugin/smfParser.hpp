@@ -110,9 +110,6 @@ namespace smf {
         int m_numTracks;
         int m_division;
 
-        /// The specification provides additional semantics when interpreting the data.
-        GMSpecType::Value m_gmSpec;
-
         /// Knowledge of how pitches map to percussion instruments.
         StandardPercussionSets m_standardPercussionSets;
 

@@ -548,9 +548,9 @@ void smf::SmfParser::readTrack(int trackIndex, source::ChannelGroup& channels, M
             // A new status byte, so consume the status byte.
             getNext();
 
-            //Buffer stores the status when a Voice Category Status (ie, 0x80 to 0xEF) is received.
-            //Buffer is cleared when a System Common Category Status (ie, 0xF0 to 0xF7) is received.
-            //Nothing is done to the buffer when a RealTime Category message is received.
+            // Buffer stores the status when a Voice Category Status (ie, 0x80 to 0xEF) is received.
+            // Buffer is cleared when a System Common Category Status (ie, 0xF0 to 0xF7) is received.
+            // Nothing is done to the buffer when a RealTime Category message is received.
 
             if ((statusByte >= 0x80) && (statusByte <= 0xEF)) {
                 // Voice category status
@@ -713,8 +713,8 @@ void smf::SmfParser::readTrack(int trackIndex, source::ChannelGroup& channels, M
                         default: // Unknown meta-event type
                         {
                             // This isn't in the spec, so warn: Perhaps SeqWires is out-of-date.
-                            logByteSequence(m_userLogger.logWarning()
-                                                << "Skipping unknown meta-event of type " << std::hex << type << ": ",
+                            logByteSequence(m_userLogger.logWarning() << "Skipping unknown meta-event of type "
+                                                                      << std::hex << (int)type << ": ",
                                             length);
                             break;
                         }
@@ -744,7 +744,6 @@ void smf::SmfParser::readTrack(int trackIndex, source::ChannelGroup& channels, M
                         timeSinceLastNoteEvent = 0;
                     }
                 } else {
-                    // TODO This is wrong: This should just be skipped.
                     if (tracks.addNoteOff(statusLo, timeSinceLastNoteEvent, pitch, velocity)) {
                         timeSinceLastNoteEvent = 0;
                     }
