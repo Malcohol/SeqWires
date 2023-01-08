@@ -273,42 +273,40 @@ TEST_P(SmfTrackAllocationPercussionTest, trackAllocation) {
     }
 }
 
-// The set should be automatically selected based on the standard and instruments.
+// Test how tracks get assigned in the various standards (the GS implementation in SeqWires is not as flexible as the
+// full standard)
 INSTANTIATE_TEST_SUITE_P(
     PercussionTest, SmfTrackAllocationPercussionTest,
-    testing::Values(
-        TrackAllocationTestData{
-            "GM",
-            {{"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}},
-            {true, false, true},
-            {{}, {"AcBass", "HMTom", "OTrian"}, {}}},
-        TrackAllocationTestData{
-            "GM2",
-            {{"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}},
-            {true, false, false},
-            {{}, {"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}}},
-        TrackAllocationTestData{
-            "GM2",
-            {{"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}, {}},
-            {true, false, true},
-            {{}, {"AcBass", "HMTom", "OTrian"}, {}}},
-        TrackAllocationTestData{
-            "GS",
-            {{"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}},
-            {true, false, false},
-            {{}, {"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}}},
-        TrackAllocationTestData{
-            "GS",
-            {{"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}, {}},
-            {true, false, true},
-            {{}, {"AcBass", "HMTom", "OTrian"}, {}}},
-        TrackAllocationTestData{
-            "XG",
-            {{"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}},
-            {false, false, false},
-            {{"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}}},
-        TrackAllocationTestData{
-            "XG",
-            {{"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}, {}},
-            {false, false, true},
-            {{"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}, {}}}));
+    testing::Values(TrackAllocationTestData{"GM",
+                                            {{"AcBass", "HMTom", "OTrian"},
+                                             {"AcBass", "HMTom", "OTrian"},
+                                             {"AcBass", "HMTom", "OTrian"}},
+                                            {true, false, true},
+                                            {{}, {"AcBass", "HMTom", "OTrian"}, {}}},
+                    TrackAllocationTestData{
+                        "GM2",
+                        {{"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}},
+                        {true, false, false},
+                        {{}, {"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}}},
+                    TrackAllocationTestData{"GM2",
+                                            {{"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}, {}},
+                                            {true, false, true},
+                                            {{}, {"AcBass", "HMTom", "OTrian"}, {}}},
+                    TrackAllocationTestData{
+                        "GS",
+                        {{"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}},
+                        {true, false, false},
+                        {{}, {"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}}},
+                    TrackAllocationTestData{"GS",
+                                            {{"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}, {}},
+                                            {true, false, true},
+                                            {{}, {"AcBass", "HMTom", "OTrian"}, {}}},
+                    TrackAllocationTestData{
+                        "XG",
+                        {{"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}},
+                        {false, false, false},
+                        {{"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}}},
+                    TrackAllocationTestData{"XG",
+                                            {{"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}, {}},
+                                            {false, false, true},
+                                            {{"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}, {}}}));
