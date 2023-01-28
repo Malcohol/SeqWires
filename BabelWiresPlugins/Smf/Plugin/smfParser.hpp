@@ -118,7 +118,7 @@ namespace smf {
             StandardPercussionSets::ChannelSetupInfo m_channelSetupInfo;
             // This is non-null when the pitches in the data should be interpreted as percussion events from the given
             // kit.
-            const smf::PercussionSet* m_kitIfPercussion = nullptr;
+            const seqwires::PercussionSet* m_kitIfPercussion = nullptr;
         };
 
         std::array<ChannelSetup, 16> m_channelSetup;

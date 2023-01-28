@@ -12,7 +12,7 @@
 
 #include <variant>
 
-namespace smf {
+namespace seqwires {
     /// An base class for Enums of percussion instruments which can be mapped to pitches.
     /// To the extent possible, PercussionSets should use as many instruments from the BuiltInPercussionInstruments
     /// Enum as possible.

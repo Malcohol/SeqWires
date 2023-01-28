@@ -7,11 +7,11 @@
  **/
 #pragma once
 
-#include <BabelWiresPlugins/Smf/Plugin/Percussion/percussionSet.hpp>
+#include <SeqWiresLib/Percussion/percussionSet.hpp>
 
 namespace smf {
     /// A PercussionSet corresponding to the instruments of GM2 standard percussion set.
-    class GM2StandardPercussionSet : public PercussionSet {
+    class GM2StandardPercussionSet : public seqwires::PercussionSet {
       public:
         GM2StandardPercussionSet(const seqwires::BuiltInPercussionInstruments& builtInInstruments);
 

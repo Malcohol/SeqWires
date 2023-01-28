@@ -7,12 +7,12 @@
  **/
 #pragma once
 
-#include <BabelWiresPlugins/Smf/Plugin/Percussion/percussionSet.hpp>
+#include <SeqWiresLib/Percussion/percussionSet.hpp>
 
 namespace smf {
     /// A PercussionSet corresponding to the instruments of GS standard percussion set.
     /// There are two such sets, but we do not distinguish them 
-    class GsBrushPercussionSet : public PercussionSet {
+    class GsBrushPercussionSet : public seqwires::PercussionSet {
       public:
         GsBrushPercussionSet(const seqwires::BuiltInPercussionInstruments& builtInInstruments);
 

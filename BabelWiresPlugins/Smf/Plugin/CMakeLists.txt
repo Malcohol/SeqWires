@@ -24,7 +24,6 @@ SET( SMFLIB_SRCS
 	Percussion/gsRoomPercussionSet.cpp
 	Percussion/gsStandard1PercussionSet.cpp
 	Percussion/gsSFXPercussionSet.cpp
-	Percussion/percussionSet.cpp
 	Percussion/standardPercussionSets.cpp
 	Percussion/xgAnalogPercussionSet.cpp
 	Percussion/xgBrushPercussionSet.cpp
