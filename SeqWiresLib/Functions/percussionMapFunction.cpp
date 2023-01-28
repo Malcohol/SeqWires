@@ -9,7 +9,7 @@
 
 #include <SeqWiresLib/Tracks/percussionEvents.hpp>
 #include <SeqWiresLib/Tracks/trackEventHolder.hpp>
-#include <SeqWiresLib/builtInPercussionInstruments.hpp>
+#include <SeqWiresLib/Percussion/builtInPercussionInstruments.hpp>
 
 #include <BabelWiresLib/Features/mapFeature.hpp>
 #include <BabelWiresLib/Features/modelExceptions.hpp>

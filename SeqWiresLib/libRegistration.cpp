@@ -26,7 +26,7 @@
 #include <SeqWiresLib/Processors/silenceProcessor.hpp>
 #include <SeqWiresLib/Processors/splitAtPitchProcessor.hpp>
 #include <SeqWiresLib/Processors/transposeProcessor.hpp>
-#include <SeqWiresLib/builtInPercussionInstruments.hpp>
+#include <SeqWiresLib/Percussion/builtInPercussionInstruments.hpp>
 #include <SeqWiresLib/chord.hpp>
 #include <SeqWiresLib/pitchClass.hpp>
 

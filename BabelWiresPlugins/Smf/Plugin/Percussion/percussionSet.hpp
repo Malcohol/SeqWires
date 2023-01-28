@@ -8,7 +8,7 @@
 #pragma once
 
 #include <SeqWiresLib/musicTypes.hpp>
-#include <SeqWiresLib/builtInPercussionInstruments.hpp>
+#include <SeqWiresLib/Percussion/builtInPercussionInstruments.hpp>
 
 #include <variant>
 

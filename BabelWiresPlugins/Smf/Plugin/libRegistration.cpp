@@ -7,7 +7,7 @@
  **/
 #include <BabelWiresPlugins/Smf/Plugin/libRegistration.hpp>
 
-#include <SeqWiresLib/builtInPercussionInstruments.hpp>
+#include <SeqWiresLib/Percussion/builtInPercussionInstruments.hpp>
 
 #include <BabelWiresLib/Project/projectContext.hpp>
 #include <BabelWiresLib/TypeSystem/typeSystem.hpp>

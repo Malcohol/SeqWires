@@ -10,7 +10,7 @@
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/percussionSet.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/gmSpec.hpp>
 
-#include <SeqWiresLib/builtInPercussionInstruments.hpp>
+#include <SeqWiresLib/Percussion/builtInPercussionInstruments.hpp>
 
 #include <unordered_set>
 
