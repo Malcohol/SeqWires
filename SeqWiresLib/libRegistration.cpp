@@ -7,11 +7,6 @@
  **/
 #include <SeqWiresLib/libRegistration.hpp>
 
-#include <BabelWiresLib/Processors/processorFactory.hpp>
-#include <BabelWiresLib/Processors/processorFactoryRegistry.hpp>
-#include <BabelWiresLib/Project/projectContext.hpp>
-#include <BabelWiresLib/TypeSystem/typeSystem.hpp>
-
 #include <SeqWiresLib/Functions/fingeredChordsFunction.hpp>
 #include <SeqWiresLib/Functions/monophonicSubtracksFunction.hpp>
 #include <SeqWiresLib/Processors/chordMapProcessor.hpp>
@@ -29,6 +24,11 @@
 #include <SeqWiresLib/Percussion/builtInPercussionInstruments.hpp>
 #include <SeqWiresLib/chord.hpp>
 #include <SeqWiresLib/pitchClass.hpp>
+
+#include <BabelWiresLib/Processors/processorFactory.hpp>
+#include <BabelWiresLib/Processors/processorFactoryRegistry.hpp>
+#include <BabelWiresLib/Project/projectContext.hpp>
+#include <BabelWiresLib/TypeSystem/typeSystem.hpp>
 
 void seqwires::registerLib(babelwires::ProjectContext& context) {
     context.m_typeSystem.addEntry(std::make_unique<ChordType>());
