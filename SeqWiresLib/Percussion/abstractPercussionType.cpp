@@ -16,3 +16,7 @@ seqwires::AbstractPercussionType::AbstractPercussionType()
 babelwires::LongIdentifier seqwires::AbstractPercussionType::getThisIdentifier() {
     return REGISTERED_LONGID("AbstractPercussionType", "AbstractPercussionType", "f81e2125-28e5-485a-88c0-500b5c1dc31e");
 }
+
+bool seqwires::AbstractPercussionType::isAbstract() const { 
+    return true;
+}

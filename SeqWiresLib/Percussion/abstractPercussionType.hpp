@@ -17,6 +17,8 @@ namespace seqwires {
       public:
         AbstractPercussionType();
 
+        virtual bool isAbstract() const override;
+
         static babelwires::LongIdentifier getThisIdentifier();
     };
 } // namespace seqwires
