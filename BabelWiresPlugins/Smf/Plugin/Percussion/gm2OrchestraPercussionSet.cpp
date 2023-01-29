@@ -9,7 +9,7 @@
 
 smf::GM2OrchestraPercussionSet::GM2OrchestraPercussionSet(
     const seqwires::BuiltInPercussionInstruments& builtInInstruments)
-    : PercussionSet(getThisIdentifier(), 1,
+    : PercussionSetWithPitchMap(getThisIdentifier(), 1,
                     InstrumentBlock{{seqwires::BuiltInPercussionInstruments::Value::ClHH2,
                                      seqwires::BuiltInPercussionInstruments::Value::PdHHat,
                                      seqwires::BuiltInPercussionInstruments::Value::OpHH2,

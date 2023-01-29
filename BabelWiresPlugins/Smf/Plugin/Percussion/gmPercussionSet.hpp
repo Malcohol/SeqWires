@@ -7,13 +7,13 @@
  **/
 #pragma once
 
-#include <SeqWiresLib/Percussion/percussionSet.hpp>
+#include <SeqWiresLib/Percussion/percussionSetWithPitchMap.hpp>
 
 namespace smf {
     // TODO GS, XG percussion, with appropriate subtyping.
 
     /// A PercussionSet corresponding to the original General MIDI percussion set.
-    class GMPercussionSet : public seqwires::PercussionSet {
+    class GMPercussionSet : public seqwires::PercussionSetWithPitchMap {
       public:
         GMPercussionSet(const seqwires::BuiltInPercussionInstruments& builtInInstruments);
 

@@ -5,11 +5,11 @@
  *
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
-#include <SeqWiresLib/Percussion/percussionSet.hpp>
+#include <SeqWiresLib/Percussion/percussionSetWithPitchMap.hpp>
 
 #include <unordered_set>
 
-class seqwires::PercussionSet::ComplexConstructorArguments {
+class seqwires::PercussionSetWithPitchMap::ComplexConstructorArguments {
   public:
     babelwires::Enum::EnumValues m_enumValues;
     std::unordered_map<seqwires::Pitch, babelwires::Identifier> m_pitchToInstrument;
@@ -55,21 +55,21 @@ class seqwires::PercussionSet::ComplexConstructorArguments {
     std::unordered_set<babelwires::Identifier> m_alreadySeen;
 };
 
-seqwires::PercussionSet::PercussionSet(babelwires::LongIdentifier identifier, babelwires::VersionNumber version,
+seqwires::PercussionSetWithPitchMap::PercussionSetWithPitchMap(babelwires::LongIdentifier identifier, babelwires::VersionNumber version,
                                   ComplexConstructorArguments&& removeDuplicates)
     : Enum(identifier, version, std::move(removeDuplicates.m_enumValues), removeDuplicates.m_indexOfDefaultValue)
     , m_pitchToInstrument(std::move(removeDuplicates.m_pitchToInstrument))
     , m_instrumentToPitch(std::move(removeDuplicates.m_instrumentToPitch)) {}
 
-seqwires::PercussionSet::PercussionSet(babelwires::LongIdentifier identifier, babelwires::VersionNumber version,
+seqwires::PercussionSetWithPitchMap::PercussionSetWithPitchMap(babelwires::LongIdentifier identifier, babelwires::VersionNumber version,
                                   InstrumentBlock instruments, seqwires::Pitch pitchOfDefaultInstrument)
-    : PercussionSet(identifier, version, ComplexConstructorArguments(instruments, pitchOfDefaultInstrument)) {}
+    : PercussionSetWithPitchMap(identifier, version, ComplexConstructorArguments(instruments, pitchOfDefaultInstrument)) {}
 
-seqwires::PercussionSet::PercussionSet(babelwires::LongIdentifier identifier, babelwires::VersionNumber version,
+seqwires::PercussionSetWithPitchMap::PercussionSetWithPitchMap(babelwires::LongIdentifier identifier, babelwires::VersionNumber version,
                                   std::vector<InstrumentBlock> instruments, seqwires::Pitch pitchOfDefaultInstrument)
-    : PercussionSet(identifier, version, ComplexConstructorArguments(instruments, pitchOfDefaultInstrument)) {}
+    : PercussionSetWithPitchMap(identifier, version, ComplexConstructorArguments(instruments, pitchOfDefaultInstrument)) {}
 
-std::optional<seqwires::Pitch> seqwires::PercussionSet::tryGetPitchFromInstrument(babelwires::Identifier identifier) const {
+std::optional<seqwires::Pitch> seqwires::PercussionSetWithPitchMap::tryGetPitchFromInstrument(babelwires::Identifier identifier) const {
     const auto it = m_instrumentToPitch.find(identifier);
     if (it != m_instrumentToPitch.end()) {
         return it->second;
@@ -77,7 +77,7 @@ std::optional<seqwires::Pitch> seqwires::PercussionSet::tryGetPitchFromInstrumen
     return {};
 }
 
-std::optional<babelwires::Identifier> seqwires::PercussionSet::tryGetInstrumentFromPitch(seqwires::Pitch pitch) const {
+std::optional<babelwires::Identifier> seqwires::PercussionSetWithPitchMap::tryGetInstrumentFromPitch(seqwires::Pitch pitch) const {
     const auto it = m_pitchToInstrument.find(pitch);
     if (it != m_pitchToInstrument.end()) {
         return it->second;

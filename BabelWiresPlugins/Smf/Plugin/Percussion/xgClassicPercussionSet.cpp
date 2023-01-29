@@ -9,7 +9,7 @@
 
 // Using the GM2 mappings for CnCym2 / CnCym2 for the hand cymbals.
 smf::XgClassicPercussionSet::XgClassicPercussionSet(const seqwires::BuiltInPercussionInstruments& builtInInstruments)
-    : PercussionSet(getThisIdentifier(), 1,
+    : PercussionSetWithPitchMap(getThisIdentifier(), 1,
                     InstrumentBlock{{seqwires::BuiltInPercussionInstruments::Value::MSurdo,
                                      seqwires::BuiltInPercussionInstruments::Value::OSurdo,
                                      seqwires::BuiltInPercussionInstruments::Value::HighQ,

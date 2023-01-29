@@ -9,7 +9,7 @@
 
 // Follow GM2 and do not distinguish Jazz toms from regular toms.
 smf::XgJazzPercussionSet::XgJazzPercussionSet(const seqwires::BuiltInPercussionInstruments& builtInInstruments)
-    : PercussionSet(getThisIdentifier(), 1,
+    : PercussionSetWithPitchMap(getThisIdentifier(), 1,
                     InstrumentBlock{{seqwires::BuiltInPercussionInstruments::Value::MSurdo,
                                      seqwires::BuiltInPercussionInstruments::Value::OSurdo,
                                      seqwires::BuiltInPercussionInstruments::Value::HighQ,

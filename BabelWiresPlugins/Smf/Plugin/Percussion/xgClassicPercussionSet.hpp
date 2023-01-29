@@ -7,12 +7,12 @@
  **/
 #pragma once
 
-#include <SeqWiresLib/Percussion/percussionSet.hpp>
+#include <SeqWiresLib/Percussion/percussionSetWithPitchMap.hpp>
 
 namespace smf {
     /// A PercussionSet corresponding to the instruments of XG Standard 1 percussion set.
     /// This also works as the XG Standard 2 percussion set.
-    class XgClassicPercussionSet : public seqwires::PercussionSet {
+    class XgClassicPercussionSet : public seqwires::PercussionSetWithPitchMap {
       public:
         XgClassicPercussionSet(const seqwires::BuiltInPercussionInstruments& builtInInstruments);
 

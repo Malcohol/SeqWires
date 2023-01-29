@@ -12,7 +12,7 @@
 // (It needs to exist, since it has a different layout to the Jazz set, but a different instrument
 // set ensures it's easier to test.)
 smf::XgBrushPercussionSet::XgBrushPercussionSet(const seqwires::BuiltInPercussionInstruments& builtInInstruments)
-    : PercussionSet(getThisIdentifier(), 1,
+    : PercussionSetWithPitchMap(getThisIdentifier(), 1,
                     InstrumentBlock{{seqwires::BuiltInPercussionInstruments::Value::MSurdo,
                                      seqwires::BuiltInPercussionInstruments::Value::OSurdo,
                                      seqwires::BuiltInPercussionInstruments::Value::HighQ,

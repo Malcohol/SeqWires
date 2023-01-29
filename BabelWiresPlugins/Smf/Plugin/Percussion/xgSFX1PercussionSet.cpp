@@ -8,7 +8,7 @@
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/xgSFX1PercussionSet.hpp>
 
 smf::XgSFX1PercussionSet::XgSFX1PercussionSet(const seqwires::BuiltInPercussionInstruments& builtInInstruments)
-    : PercussionSet(getThisIdentifier(), 1,
+    : PercussionSetWithPitchMap(getThisIdentifier(), 1,
                     std::vector<InstrumentBlock>{
                         {{seqwires::BuiltInPercussionInstruments::Value::GCutUp, // Guitar Cutting Noise
                           seqwires::BuiltInPercussionInstruments::Value::GCutDn, // Guitar Cutting Noise 2

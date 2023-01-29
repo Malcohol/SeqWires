@@ -8,7 +8,7 @@
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/gsSFXPercussionSet.hpp>
 
 smf::GsSFXPercussionSet::GsSFXPercussionSet(const seqwires::BuiltInPercussionInstruments& builtInInstruments)
-    : PercussionSet(
+    : PercussionSetWithPitchMap(
           getThisIdentifier(), 1,
           InstrumentBlock{
               {

@@ -186,7 +186,7 @@ class smf::SmfParser::TrackSplitter {
 
     bool addNoteOn(unsigned int channelNumber, seqwires::ModelDuration timeSinceLastTrackEvent, seqwires::Pitch pitch,
                    seqwires::Velocity velocity) {
-        if (const seqwires::PercussionSet* const percussionSet = m_channelSetup[channelNumber].m_kitIfPercussion) {
+        if (const seqwires::PercussionSetWithPitchMap* const percussionSet = m_channelSetup[channelNumber].m_kitIfPercussion) {
             if (auto instrument = percussionSet->tryGetInstrumentFromPitch(pitch)) {
                 addToChannel<seqwires::PercussionOnEvent>(channelNumber, timeSinceLastTrackEvent, *instrument,
                                                           velocity);
@@ -201,7 +201,7 @@ class smf::SmfParser::TrackSplitter {
 
     bool addNoteOff(unsigned int channelNumber, seqwires::ModelDuration timeSinceLastTrackEvent, seqwires::Pitch pitch,
                     seqwires::Velocity velocity) {
-        if (const seqwires::PercussionSet* const percussionSet = m_channelSetup[channelNumber].m_kitIfPercussion) {
+        if (const seqwires::PercussionSetWithPitchMap* const percussionSet = m_channelSetup[channelNumber].m_kitIfPercussion) {
             if (auto instrument = percussionSet->tryGetInstrumentFromPitch(pitch)) {
                 addToChannel<seqwires::PercussionOffEvent>(channelNumber, timeSinceLastTrackEvent, *instrument,
                                                            velocity);
@@ -276,7 +276,7 @@ class smf::SmfParser::TrackSplitter {
   private:
     static const int MAX_CHANNELS = 16;
 
-    std::array<const seqwires::PercussionSet*, NUM_KNOWN_PERCUSSION_KITS> m_knownKits;
+    std::array<const seqwires::PercussionSetWithPitchMap*, NUM_KNOWN_PERCUSSION_KITS> m_knownKits;
 
     seqwires::ModelDuration m_timeSinceStart;
 

@@ -8,7 +8,7 @@
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/gs808909PercussionSet.hpp>
 
 smf::Gs808909PercussionSet::Gs808909PercussionSet(const seqwires::BuiltInPercussionInstruments& builtInInstruments)
-    : PercussionSet(getThisIdentifier(), 1,
+    : PercussionSetWithPitchMap(getThisIdentifier(), 1,
                     InstrumentBlock{{seqwires::BuiltInPercussionInstruments::Value::SnrRll,
                                      seqwires::BuiltInPercussionInstruments::Value::FngSnp,
                                      seqwires::BuiltInPercussionInstruments::Value::HighQ,

@@ -8,7 +8,7 @@
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/gm2BrushPercussionSet.hpp>
 
 smf::GM2BrushPercussionSet::GM2BrushPercussionSet(const seqwires::BuiltInPercussionInstruments& builtInInstruments)
-    : seqwires::PercussionSet(getThisIdentifier(), 1,
+    : seqwires::PercussionSetWithPitchMap(getThisIdentifier(), 1,
                     InstrumentBlock{{seqwires::BuiltInPercussionInstruments::Value::HighQ,
                                      seqwires::BuiltInPercussionInstruments::Value::Slap,
                                      seqwires::BuiltInPercussionInstruments::Value::ScrPsh,

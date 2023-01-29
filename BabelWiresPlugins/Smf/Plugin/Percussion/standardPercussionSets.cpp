@@ -45,7 +45,7 @@
 smf::StandardPercussionSets::StandardPercussionSets(const babelwires::ProjectContext& projectContext) {
 #define DECLARE_PERCUSSION_SET(ENUM, CLASS)                                                                            \
     m_knownSets[ENUM] =                                                                                                \
-        &projectContext.m_typeSystem.getRegisteredEntry(CLASS::getThisIdentifier()).is<seqwires::PercussionSet>();
+        &projectContext.m_typeSystem.getRegisteredEntry(CLASS::getThisIdentifier()).is<seqwires::PercussionSetWithPitchMap>();
 
     DECLARE_PERCUSSION_SET(GM_PERCUSSION_SET, smf::GMPercussionSet)
     DECLARE_PERCUSSION_SET(GM2_STANDARD_PERCUSSION_SET, smf::GM2StandardPercussionSet)
@@ -80,7 +80,7 @@ smf::StandardPercussionSets::StandardPercussionSets(const babelwires::ProjectCon
 #undef DECLARE_PERCUSSION_SET
 }
 
-const seqwires::PercussionSet* smf::StandardPercussionSets::getDefaultPercussionSet(GMSpecType::Value gmSpec,
+const seqwires::PercussionSetWithPitchMap* smf::StandardPercussionSets::getDefaultPercussionSet(GMSpecType::Value gmSpec,
                                                                                int channelNumber) {
     switch (gmSpec) {
         case GMSpecType::Value::GM:
@@ -106,7 +106,7 @@ const seqwires::PercussionSet* smf::StandardPercussionSets::getDefaultPercussion
     return nullptr;
 }
 
-const seqwires::PercussionSet*
+const seqwires::PercussionSetWithPitchMap*
 smf::StandardPercussionSets::getPercussionSetFromChannelSetupInfo(GMSpecType::Value gmSpec,
                                                                   ChannelSetupInfo channelSetupInfo) {
     if (gmSpec == GMSpecType::Value::GM2) {
@@ -235,7 +235,7 @@ void smf::StandardPercussionSets::getExcludedInstruments(
     }
 }
 
-const seqwires::PercussionSet* smf::StandardPercussionSets::getBestPercussionSetInRange(
+const seqwires::PercussionSetWithPitchMap* smf::StandardPercussionSets::getBestPercussionSetInRange(
     int startIndex, int endIndex, const std::unordered_set<babelwires::Identifier>& instrumentsInUse,
     std::unordered_set<babelwires::Identifier>& excludedInstrumentsOut) {
 
@@ -254,7 +254,7 @@ const seqwires::PercussionSet* smf::StandardPercussionSets::getBestPercussionSet
     return (bestFit == NOT_PERCUSSION) ? nullptr : m_knownSets[bestFit];
 }
 
-const seqwires::PercussionSet*
+const seqwires::PercussionSetWithPitchMap*
 smf::StandardPercussionSets::getBestPercussionSet(GMSpecType::Value gmSpec, int channelNumber,
                                                   const std::unordered_set<babelwires::Identifier>& instrumentsInUse,
                                                   std::unordered_set<babelwires::Identifier>& excludedInstrumentsOut) {
@@ -284,7 +284,7 @@ smf::StandardPercussionSets::getBestPercussionSet(GMSpecType::Value gmSpec, int 
 }
 
 smf::StandardPercussionSets::KnownPercussionSets
-smf::StandardPercussionSets::getKnownPercussionSetFromPercussionSet(const seqwires::PercussionSet* percussionSet) {
+smf::StandardPercussionSets::getKnownPercussionSetFromPercussionSet(const seqwires::PercussionSetWithPitchMap* percussionSet) {
     const auto it = std::find(m_knownSets.begin(), m_knownSets.end(), percussionSet);
     assert((it != m_knownSets.end()) && "Percussion set not known");
     return static_cast<KnownPercussionSets>(it - m_knownSets.begin());
@@ -358,7 +358,7 @@ smf::StandardPercussionSets::getChannelSetupInfoFromKnownPercussionSet(KnownPerc
 }
 
 std::optional<smf::StandardPercussionSets::ChannelSetupInfo>
-smf::StandardPercussionSets::getChannelSetupInfoFromPercussionSet(const seqwires::PercussionSet* percussionSet, int channelNumber) {
+smf::StandardPercussionSets::getChannelSetupInfoFromPercussionSet(const seqwires::PercussionSetWithPitchMap* percussionSet, int channelNumber) {
     if (percussionSet) {
         const KnownPercussionSets knownPercussionSet = getKnownPercussionSetFromPercussionSet(percussionSet);
         return getChannelSetupInfoFromKnownPercussionSet(knownPercussionSet, channelNumber);

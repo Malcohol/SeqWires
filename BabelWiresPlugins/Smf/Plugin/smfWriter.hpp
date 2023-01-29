@@ -85,7 +85,7 @@ namespace smf {
         struct ChannelSetup {
             // This is non-null when the pitches in the data should be interpreted as percussion events from the given
             // kit.
-            const seqwires::PercussionSet* m_kitIfPercussion = nullptr;
+            const seqwires::PercussionSetWithPitchMap* m_kitIfPercussion = nullptr;
             // Has channel set-up information been written for this channel yet?
             // (Since more than one track can correspond to a channel, we only want to write this for the first track for each channel.)
             bool m_setupWritten = false;

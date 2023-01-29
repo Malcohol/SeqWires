@@ -8,7 +8,7 @@
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/xgRoomPercussionSet.hpp>
 
 smf::XgRoomPercussionSet::XgRoomPercussionSet(const seqwires::BuiltInPercussionInstruments& builtInInstruments)
-    : PercussionSet(getThisIdentifier(), 1,
+    : PercussionSetWithPitchMap(getThisIdentifier(), 1,
                     InstrumentBlock{{seqwires::BuiltInPercussionInstruments::Value::MSurdo,
                                      seqwires::BuiltInPercussionInstruments::Value::OSurdo,
                                      seqwires::BuiltInPercussionInstruments::Value::HighQ,

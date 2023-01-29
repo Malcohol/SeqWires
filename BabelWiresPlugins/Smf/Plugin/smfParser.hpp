@@ -24,7 +24,7 @@
 #include <vector>
 
 namespace seqwires {
-    class PercussionSet;
+    class PercussionSetWithPitchMap;
 }
 
 namespace smf {
@@ -118,7 +118,7 @@ namespace smf {
             StandardPercussionSets::ChannelSetupInfo m_channelSetupInfo;
             // This is non-null when the pitches in the data should be interpreted as percussion events from the given
             // kit.
-            const seqwires::PercussionSet* m_kitIfPercussion = nullptr;
+            const seqwires::PercussionSetWithPitchMap* m_kitIfPercussion = nullptr;
         };
 
         std::array<ChannelSetup, 16> m_channelSetup;

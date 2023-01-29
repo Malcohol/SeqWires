@@ -35,7 +35,7 @@ SET( SEQWIRESLIB_SRCS
 	musicTypes.cpp
 	Percussion/abstractPercussionType.cpp
 	Percussion/builtInPercussionInstruments.cpp
-	Percussion/percussionSet.cpp
+	Percussion/percussionSetWithPitchMap.cpp
 	pitchClass.cpp
 	Utilities/monophonicNoteIterator.cpp
 	libRegistration.cpp

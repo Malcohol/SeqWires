@@ -135,7 +135,7 @@ smf::SmfWriter::WriteTrackEventResult smf::SmfWriter::writeTrackEvent(int channe
     assert(channelNumber >= 0);
     assert(channelNumber <= 15);
 
-    if (const seqwires::PercussionSet* const kitIfPercussion = m_channelSetup[channelNumber].m_kitIfPercussion) {
+    if (const seqwires::PercussionSetWithPitchMap* const kitIfPercussion = m_channelSetup[channelNumber].m_kitIfPercussion) {
         if (const seqwires::PercussionOnEvent* percussionOn = e.as<seqwires::PercussionOnEvent>()) {
             if (auto maybePitch = kitIfPercussion->tryGetPitchFromInstrument(percussionOn->getInstrument())) {
                 writeModelDuration(timeSinceLastEvent);

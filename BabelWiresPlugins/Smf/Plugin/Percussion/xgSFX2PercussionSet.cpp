@@ -8,7 +8,7 @@
 #include <BabelWiresPlugins/Smf/Plugin/Percussion/xgSFX2PercussionSet.hpp>
 
 smf::XgSFX2PercussionSet::XgSFX2PercussionSet(const seqwires::BuiltInPercussionInstruments& builtInInstruments)
-    : PercussionSet(getThisIdentifier(), 1,
+    : PercussionSetWithPitchMap(getThisIdentifier(), 1,
                     std::vector<InstrumentBlock>{
                         {{seqwires::BuiltInPercussionInstruments::Value::DialTn,
                           seqwires::BuiltInPercussionInstruments::Value::DoorCr,

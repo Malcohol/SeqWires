@@ -21,8 +21,7 @@ namespace seqwires {
     /// used when converting to pitches.
     /// PercussionSets should use as many instruments from the BuiltInPercussionInstruments Enum as possible,
     /// although instruments registered elsewhere are also supported.
-    // TODO Rename to something like PitchedPercussionSet.
-    class PercussionSet : public babelwires::Enum {
+    class PercussionSetWithPitchMap : public babelwires::Enum {
       public:
         /// A block of instruments which have contiguous pitches.
         struct InstrumentBlock {
@@ -34,10 +33,10 @@ namespace seqwires {
         };
 
         /// This constructor expects instruments to be in a single contiguous block.
-        PercussionSet(babelwires::LongIdentifier identifier, babelwires::VersionNumber version, InstrumentBlock instruments, seqwires::Pitch pitchOfDefaultValue);
+        PercussionSetWithPitchMap(babelwires::LongIdentifier identifier, babelwires::VersionNumber version, InstrumentBlock instruments, seqwires::Pitch pitchOfDefaultValue);
 
         /// This constructor allows more than one, non-overlapping block of instruments.
-        PercussionSet(babelwires::LongIdentifier identifier, babelwires::VersionNumber version, std::vector<InstrumentBlock> instruments, seqwires::Pitch pitchOfDefaultValue);
+        PercussionSetWithPitchMap(babelwires::LongIdentifier identifier, babelwires::VersionNumber version, std::vector<InstrumentBlock> instruments, seqwires::Pitch pitchOfDefaultValue);
 
         /// Get the pitch of an instrument if it is in this set.
         /// The highest pitch of any duplicate instrument is returned.
@@ -50,7 +49,7 @@ namespace seqwires {
         // Private class just used to pass complex calculated arguments to the base class constructor.
         class ComplexConstructorArguments;
 
-        PercussionSet(babelwires::LongIdentifier identifier, babelwires::VersionNumber version, ComplexConstructorArguments&& removeDuplicates);
+        PercussionSetWithPitchMap(babelwires::LongIdentifier identifier, babelwires::VersionNumber version, ComplexConstructorArguments&& removeDuplicates);
 
       private:
         std::unordered_map<seqwires::Pitch, babelwires::Identifier> m_pitchToInstrument;

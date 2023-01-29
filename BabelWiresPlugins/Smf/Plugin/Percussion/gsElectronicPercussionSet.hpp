@@ -7,12 +7,12 @@
  **/
 #pragma once
 
-#include <SeqWiresLib/Percussion/percussionSet.hpp>
+#include <SeqWiresLib/Percussion/percussionSetWithPitchMap.hpp>
 
 namespace smf {
     /// A PercussionSet corresponding to the instruments of GS Electronic Percussion Set.
     /// This can also serve for the GS Dance set.
-    class GsElectronicPercussionSet : public seqwires::PercussionSet {
+    class GsElectronicPercussionSet : public seqwires::PercussionSetWithPitchMap {
       public:
         GsElectronicPercussionSet(const seqwires::BuiltInPercussionInstruments& builtInInstruments);
 

@@ -7,11 +7,11 @@
  **/
 #pragma once
 
-#include <SeqWiresLib/Percussion/percussionSet.hpp>
+#include <SeqWiresLib/Percussion/percussionSetWithPitchMap.hpp>
 
 namespace smf {
     /// A PercussionSet corresponding to the instruments of GM2 Standard Percussion Set.
-    class GM2RoomPercussionSet : public seqwires::PercussionSet {
+    class GM2RoomPercussionSet : public seqwires::PercussionSetWithPitchMap {
       public:
         GM2RoomPercussionSet(const seqwires::BuiltInPercussionInstruments& builtInInstruments);
 
