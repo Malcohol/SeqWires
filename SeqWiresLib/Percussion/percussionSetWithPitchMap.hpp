@@ -15,7 +15,7 @@
 namespace seqwires {
     /// An convenience class for Enums of percussion instruments which provides support for mapping between instruments and pitch.
     /// Note: Using this class is an implementation detail, and does not affect an Enum's position in the TypeSystem.
-    /// (This contrasts with AbstractPercussionType, which can be used to declare an enum as containing percussion instruments).
+    /// (This contrasts with AbstractPercussionSet, which can be used to declare an enum as containing percussion instruments).
     /// In particular, not every enum of percussion instruments is required to derive from PercussionSet.
     /// Instruments may be duplicated (i.e. correspond to more than one pitch), but the lowest such pitch is always
     /// used when converting to pitches.

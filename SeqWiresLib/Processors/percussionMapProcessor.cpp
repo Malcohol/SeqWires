@@ -8,7 +8,7 @@
 #include <SeqWiresLib/Processors/percussionMapProcessor.hpp>
 
 #include <SeqWiresLib/Functions/percussionMapFunction.hpp>
-#include <SeqWiresLib/Percussion/abstractPercussionType.hpp>
+#include <SeqWiresLib/Percussion/abstractPercussionSet.hpp>
 #include <SeqWiresLib/Percussion/builtInPercussionInstruments.hpp>
 
 #include <BabelWiresLib/Features/mapFeature.hpp>
@@ -35,7 +35,7 @@ namespace {
         void getAllPercussionTypes(AllowedTypes& allowedTypesOut) const {
             const babelwires::ProjectContext& context = babelwires::RootFeature::getProjectContextAt(*this);
             allowedTypesOut.m_typeIds =
-                context.m_typeSystem.getAllSupertypes(seqwires::AbstractPercussionType::getThisIdentifier());
+                context.m_typeSystem.getAllSupertypes(seqwires::AbstractPercussionSet::getThisIdentifier());
             const auto it = std::find(allowedTypesOut.m_typeIds.begin(), allowedTypesOut.m_typeIds.end(),
                           seqwires::BuiltInPercussionInstruments::getThisIdentifier());
             assert(it != allowedTypesOut.m_typeIds.end());

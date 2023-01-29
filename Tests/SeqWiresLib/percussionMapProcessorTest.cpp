@@ -4,7 +4,7 @@
 #include <SeqWiresLib/Processors/percussionMapProcessor.hpp>
 #include <SeqWiresLib/Tracks/percussionEvents.hpp>
 #include <SeqWiresLib/Tracks/track.hpp>
-#include <SeqWiresLib/Percussion/abstractPercussionType.hpp>
+#include <SeqWiresLib/Percussion/abstractPercussionSet.hpp>
 #include <SeqWiresLib/Percussion/builtInPercussionInstruments.hpp>
 
 #include <BabelWiresLib/Features/mapFeature.hpp>
@@ -95,10 +95,10 @@ TEST(PercussionMapProcessorTest, funcSimple) {
 
 TEST(PercussionMapProcessorTest, processor) {
     testUtils::TestEnvironment testEnvironment;
-    testEnvironment.m_typeSystem.addEntry(std::make_unique<seqwires::AbstractPercussionType>());
+    testEnvironment.m_typeSystem.addEntry(std::make_unique<seqwires::AbstractPercussionSet>());
     testEnvironment.m_typeSystem.addEntry(std::make_unique<seqwires::BuiltInPercussionInstruments>());
     testEnvironment.m_typeSystem.addRelatedTypes(seqwires::BuiltInPercussionInstruments::getThisIdentifier(),
-                                         {{}, {seqwires::AbstractPercussionType::getThisIdentifier()}});
+                                         {{}, {seqwires::AbstractPercussionSet::getThisIdentifier()}});
 
     seqwires::PercussionMapProcessor processor(testEnvironment.m_projectContext);
 

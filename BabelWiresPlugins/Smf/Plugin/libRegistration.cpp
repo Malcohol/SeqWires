@@ -8,7 +8,7 @@
 #include <BabelWiresPlugins/Smf/Plugin/libRegistration.hpp>
 
 #include <SeqWiresLib/Percussion/builtInPercussionInstruments.hpp>
-#include <SeqWiresLib/Percussion/abstractPercussionType.hpp>
+#include <SeqWiresLib/Percussion/abstractPercussionSet.hpp>
 
 #include <BabelWiresLib/Project/projectContext.hpp>
 #include <BabelWiresLib/TypeSystem/typeSystem.hpp>
@@ -89,23 +89,23 @@ void smf::registerLib(babelwires::ProjectContext& context) {
 
     // Subtype relationships.
     context.m_typeSystem.addRelatedTypes(GM2StandardPercussionSet::getThisIdentifier(),
-                                         {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}, {seqwires::AbstractPercussionType::getThisIdentifier()}});
+                                         {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}, {seqwires::AbstractPercussionSet::getThisIdentifier()}});
     context.m_typeSystem.addRelatedTypes(GM2RoomPercussionSet::getThisIdentifier(),
-                                         {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}, {seqwires::AbstractPercussionType::getThisIdentifier()}});
+                                         {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}, {seqwires::AbstractPercussionSet::getThisIdentifier()}});
     context.m_typeSystem.addRelatedTypes(GM2PowerPercussionSet::getThisIdentifier(),
-                                         {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}, {seqwires::AbstractPercussionType::getThisIdentifier()}});
+                                         {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}, {seqwires::AbstractPercussionSet::getThisIdentifier()}});
     context.m_typeSystem.addRelatedTypes(GM2ElectronicPercussionSet::getThisIdentifier(),
-                                         {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}, {seqwires::AbstractPercussionType::getThisIdentifier()}});
+                                         {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}, {seqwires::AbstractPercussionSet::getThisIdentifier()}});
     context.m_typeSystem.addRelatedTypes(GM2AnalogPercussionSet::getThisIdentifier(),
-                                         {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}, {seqwires::AbstractPercussionType::getThisIdentifier()}});
+                                         {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}, {seqwires::AbstractPercussionSet::getThisIdentifier()}});
     context.m_typeSystem.addRelatedTypes(GM2JazzPercussionSet::getThisIdentifier(),
-                                         {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}, {seqwires::AbstractPercussionType::getThisIdentifier()}});
+                                         {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}, {seqwires::AbstractPercussionSet::getThisIdentifier()}});
     context.m_typeSystem.addRelatedTypes(GM2BrushPercussionSet::getThisIdentifier(),
-                                         {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}, {seqwires::AbstractPercussionType::getThisIdentifier()}});
+                                         {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}, {seqwires::AbstractPercussionSet::getThisIdentifier()}});
     context.m_typeSystem.addRelatedTypes(GM2OrchestraPercussionSet::getThisIdentifier(),
-                                         {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}, {seqwires::AbstractPercussionType::getThisIdentifier()}});
+                                         {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}, {seqwires::AbstractPercussionSet::getThisIdentifier()}});
     context.m_typeSystem.addRelatedTypes(GM2SFXPercussionSet::getThisIdentifier(),
-                                         {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}, {seqwires::AbstractPercussionType::getThisIdentifier()}});
+                                         {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}, {seqwires::AbstractPercussionSet::getThisIdentifier()}});
     context.m_typeSystem.addRelatedTypes(GsStandard1PercussionSet::getThisIdentifier(),
                                          {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()},
                                           {GM2StandardPercussionSet::getThisIdentifier()}});
@@ -119,7 +119,7 @@ void smf::registerLib(babelwires::ProjectContext& context) {
                                          {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()},
                                           {GM2ElectronicPercussionSet::getThisIdentifier()}});
     context.m_typeSystem.addRelatedTypes(Gs808909PercussionSet::getThisIdentifier(),
-                                         {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}, {seqwires::AbstractPercussionType::getThisIdentifier()}});
+                                         {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}, {seqwires::AbstractPercussionSet::getThisIdentifier()}});
     context.m_typeSystem.addRelatedTypes(
         GsJazzPercussionSet::getThisIdentifier(),
         {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}, {GM2JazzPercussionSet::getThisIdentifier()}});
@@ -127,31 +127,31 @@ void smf::registerLib(babelwires::ProjectContext& context) {
         GsBrushPercussionSet::getThisIdentifier(),
         {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}, {GM2BrushPercussionSet::getThisIdentifier()}});
     context.m_typeSystem.addRelatedTypes(GsOrchestraPercussionSet::getThisIdentifier(),
-                                         {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}, {seqwires::AbstractPercussionType::getThisIdentifier()}});
+                                         {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}, {seqwires::AbstractPercussionSet::getThisIdentifier()}});
     context.m_typeSystem.addRelatedTypes(GsSFXPercussionSet::getThisIdentifier(),
-                                         {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}, {seqwires::AbstractPercussionType::getThisIdentifier()}});
+                                         {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}, {seqwires::AbstractPercussionSet::getThisIdentifier()}});
     context.m_typeSystem.addRelatedTypes(XgStandard1PercussionSet::getThisIdentifier(),
-                                         {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}, {seqwires::AbstractPercussionType::getThisIdentifier()}});
+                                         {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}, {seqwires::AbstractPercussionSet::getThisIdentifier()}});
     context.m_typeSystem.addRelatedTypes(XgRoomPercussionSet::getThisIdentifier(),
-                                         {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}, {seqwires::AbstractPercussionType::getThisIdentifier()}});
+                                         {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}, {seqwires::AbstractPercussionSet::getThisIdentifier()}});
     context.m_typeSystem.addRelatedTypes(XgRockPercussionSet::getThisIdentifier(),
-                                         {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}, {seqwires::AbstractPercussionType::getThisIdentifier()}});
+                                         {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}, {seqwires::AbstractPercussionSet::getThisIdentifier()}});
     context.m_typeSystem.addRelatedTypes(XgElectroPercussionSet::getThisIdentifier(),
-                                         {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}, {seqwires::AbstractPercussionType::getThisIdentifier()}});
+                                         {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}, {seqwires::AbstractPercussionSet::getThisIdentifier()}});
     context.m_typeSystem.addRelatedTypes(XgAnalogPercussionSet::getThisIdentifier(),
-                                         {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}, {seqwires::AbstractPercussionType::getThisIdentifier()}});
+                                         {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}, {seqwires::AbstractPercussionSet::getThisIdentifier()}});
     context.m_typeSystem.addRelatedTypes(XgJazzPercussionSet::getThisIdentifier(),
-                                         {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}, {seqwires::AbstractPercussionType::getThisIdentifier()}});
+                                         {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}, {seqwires::AbstractPercussionSet::getThisIdentifier()}});
     context.m_typeSystem.addRelatedTypes(XgBrushPercussionSet::getThisIdentifier(),
-                                         {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}, {seqwires::AbstractPercussionType::getThisIdentifier()}});
+                                         {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}, {seqwires::AbstractPercussionSet::getThisIdentifier()}});
     context.m_typeSystem.addRelatedTypes(XgClassicPercussionSet::getThisIdentifier(),
-                                         {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}, {seqwires::AbstractPercussionType::getThisIdentifier()}});
+                                         {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}, {seqwires::AbstractPercussionSet::getThisIdentifier()}});
     context.m_typeSystem.addRelatedTypes(XgSFX1PercussionSet::getThisIdentifier(),
-                                         {{}, {seqwires::AbstractPercussionType::getThisIdentifier()}});
+                                         {{}, {seqwires::AbstractPercussionSet::getThisIdentifier()}});
     context.m_typeSystem.addRelatedTypes(XgSFX2PercussionSet::getThisIdentifier(),
-                                         {{}, {seqwires::AbstractPercussionType::getThisIdentifier()}});
+                                         {{}, {seqwires::AbstractPercussionSet::getThisIdentifier()}});
     context.m_typeSystem.addRelatedTypes(GMPercussionSet::getThisIdentifier(),
-                                         {{GM2StandardPercussionSet::getThisIdentifier()}, {seqwires::AbstractPercussionType::getThisIdentifier()}});
+                                         {{GM2StandardPercussionSet::getThisIdentifier()}, {seqwires::AbstractPercussionSet::getThisIdentifier()}});
 
 
 }

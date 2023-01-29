@@ -1,5 +1,5 @@
 /**
- * AbstractPercussionType is an empty Enum which is acts as the common type of Enums of percussion instruments.
+ * AbstractPercussionSet is an empty Enum which is acts as the common type of Enums of percussion instruments.
  *
  * (C) 2021 Malcolm Tyrrell
  *
@@ -13,9 +13,9 @@ namespace seqwires {
     /// Any supertype of this enum is assumed to carry values suitable for use as percussion instruments.
     /// Note: The supertype relationship is not automatic. A type has to declare itself a supertype of this
     /// type (or one of its existing supertypes).
-    class AbstractPercussionType : public babelwires::Enum {
+    class AbstractPercussionSet : public babelwires::Enum {
       public:
-        AbstractPercussionType();
+        AbstractPercussionSet();
 
         virtual bool isAbstract() const override;
 
