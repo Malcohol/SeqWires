@@ -9,19 +9,20 @@
 
 #include <SeqWiresLib/Functions/fingeredChordsFunction.hpp>
 #include <SeqWiresLib/Functions/monophonicSubtracksFunction.hpp>
+#include <SeqWiresLib/Percussion/abstractPercussionType.hpp>
+#include <SeqWiresLib/Percussion/builtInPercussionInstruments.hpp>
 #include <SeqWiresLib/Processors/chordMapProcessor.hpp>
 #include <SeqWiresLib/Processors/concatenateProcessor.hpp>
 #include <SeqWiresLib/Processors/excerptProcessor.hpp>
 #include <SeqWiresLib/Processors/fingeredChordsProcessor.hpp>
 #include <SeqWiresLib/Processors/mergeProcessor.hpp>
 #include <SeqWiresLib/Processors/monophonicSubtracksProcessor.hpp>
-#include <SeqWiresLib/Processors/repeatProcessor.hpp>
 #include <SeqWiresLib/Processors/percussionMapProcessor.hpp>
 #include <SeqWiresLib/Processors/quantizeProcessor.hpp>
+#include <SeqWiresLib/Processors/repeatProcessor.hpp>
 #include <SeqWiresLib/Processors/silenceProcessor.hpp>
 #include <SeqWiresLib/Processors/splitAtPitchProcessor.hpp>
 #include <SeqWiresLib/Processors/transposeProcessor.hpp>
-#include <SeqWiresLib/Percussion/builtInPercussionInstruments.hpp>
 #include <SeqWiresLib/chord.hpp>
 #include <SeqWiresLib/pitchClass.hpp>
 
@@ -33,9 +34,13 @@
 void seqwires::registerLib(babelwires::ProjectContext& context) {
     context.m_typeSystem.addEntry(std::make_unique<ChordType>());
     context.m_typeSystem.addEntry(std::make_unique<PitchClass>());
+    context.m_typeSystem.addEntry(std::make_unique<AbstractPercussionType>());
     context.m_typeSystem.addEntry(std::make_unique<BuiltInPercussionInstruments>());
     context.m_typeSystem.addEntry(std::make_unique<MonophonicSubtracksPolicyEnum>());
     context.m_typeSystem.addEntry(std::make_unique<FingeredChordsSustainPolicyEnum>());
+
+    context.m_typeSystem.addRelatedTypes(BuiltInPercussionInstruments::getThisIdentifier(),
+                                         {{}, {AbstractPercussionType::getThisIdentifier()}});
 
     context.m_processorReg.addEntry(std::make_unique<ChordMapProcessor::Factory>());
     context.m_processorReg.addEntry(std::make_unique<ConcatenateProcessor::Factory>());

@@ -33,6 +33,7 @@ SET( SEQWIRESLIB_SRCS
 	Tracks/track.cpp
 	chord.cpp
 	musicTypes.cpp
+	Percussion/abstractPercussionType.cpp
 	Percussion/builtInPercussionInstruments.cpp
 	Percussion/percussionSet.cpp
 	pitchClass.cpp

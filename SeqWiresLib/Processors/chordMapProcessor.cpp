@@ -19,9 +19,9 @@
 #include <Common/Identifiers/registeredIdentifier.hpp>
 
 namespace {
-    struct ChordTypeMap : babelwires::MapFeature {
+    struct ChordTypeMap : babelwires::StandardMapFeature {
         ChordTypeMap()
-            : babelwires::MapFeature(seqwires::ChordType::getThisIdentifier(),
+            : babelwires::StandardMapFeature(seqwires::ChordType::getThisIdentifier(),
                                      seqwires::ChordType::getThisIdentifier()) {}
 
         babelwires::MapData getDefaultMapData() const override {
@@ -29,9 +29,9 @@ namespace {
         }
     };
 
-    struct PitchClassMap : babelwires::MapFeature {
+    struct PitchClassMap : babelwires::StandardMapFeature {
         PitchClassMap()
-            : babelwires::MapFeature(seqwires::PitchClass::getThisIdentifier(),
+            : babelwires::StandardMapFeature(seqwires::PitchClass::getThisIdentifier(),
                                      seqwires::PitchClass::getThisIdentifier()) {}
 
         babelwires::MapData getDefaultMapData() const override {

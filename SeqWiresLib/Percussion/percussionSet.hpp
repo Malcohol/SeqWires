@@ -13,13 +13,18 @@
 #include <variant>
 
 namespace seqwires {
-    /// An base class for Enums of percussion instruments which can be mapped to pitches.
-    /// To the extent possible, PercussionSets should use as many instruments from the BuiltInPercussionInstruments
-    /// Enum as possible.
+    /// An convenience class for Enums of percussion instruments which provides support for mapping between instruments and pitch.
+    /// Note: Using this class is an implementation detail, and does not affect an Enum's position in the TypeSystem.
+    /// (This contrasts with AbstractPercussionType, which can be used to declare an enum as containing percussion instruments).
+    /// In particular, not every enum of percussion instruments is required to derive from PercussionSet.
+    /// Instruments may be duplicated (i.e. correspond to more than one pitch), but the lowest such pitch is always
+    /// used when converting to pitches.
+    /// PercussionSets should use as many instruments from the BuiltInPercussionInstruments Enum as possible,
+    /// although instruments registered elsewhere are also supported.
+    // TODO Rename to something like PitchedPercussionSet.
     class PercussionSet : public babelwires::Enum {
       public:
         /// A block of instruments which have contiguous pitches.
-        /// The block may contain duplicates.
         struct InstrumentBlock {
           /// For convenience, you can directly reference built-in percussion instruments.
           std::vector<std::variant<babelwires::Identifier, seqwires::BuiltInPercussionInstruments::Value>> m_instruments;

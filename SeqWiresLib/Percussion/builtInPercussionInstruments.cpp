@@ -7,8 +7,6 @@
  **/
 #include <SeqWiresLib/Percussion/builtInPercussionInstruments.hpp>
 
-#include <Common/Identifiers/identifierRegistry.hpp>
-
 ENUM_DEFINE_ENUM_VALUE_SOURCE(BUILT_IN_PERCUSSION_INSTRUMENTS);
 
 seqwires::BuiltInPercussionInstruments::BuiltInPercussionInstruments()
