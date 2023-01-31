@@ -52,7 +52,7 @@ TEST(SmfSaveLoadTest, cMajorScale) {
 
         trackFeature->set(std::move(track));
 
-        std::ofstream os(tempFile);
+        std::ofstream os(tempFile, std::ios_base::binary);
         smf::writeToSmf(testEnvironment.m_projectContext, testEnvironment.m_log, smfFeature.getFormatFeature(), os);
     }
 
@@ -150,7 +150,7 @@ TEST(SmfSaveLoadTest, cMajorScaleWithMetadata) {
 
             trackFeature->set(std::move(track));
 
-            std::ofstream os(tempFile);
+            std::ofstream os(tempFile, std::ios_base::binary);
             smf::writeToSmf(testEnvironment.m_projectContext, testEnvironment.m_log, smfFeature.getFormatFeature(), os);
         }
 
@@ -213,7 +213,7 @@ TEST(SmfSaveLoadTest, format0Chords) {
             trackFeature->set(std::move(track));
         }
 
-        std::ofstream os(tempFile);
+        std::ofstream os(tempFile, std::ios_base::binary);
         smf::writeToSmf(testEnvironment.m_projectContext, testEnvironment.m_log, smfFeature.getFormatFeature(), os);
     }
 
@@ -279,7 +279,7 @@ TEST(SmfSaveLoadTest, format1Chords) {
             trackFeature->set(std::move(track));
         }
 
-        std::ofstream os(tempFile);
+        std::ofstream os(tempFile, std::ios_base::binary);
         smf::writeToSmf(testEnvironment.m_projectContext, testEnvironment.m_log, smfFeature.getFormatFeature(), os);
     }
 
