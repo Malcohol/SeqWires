@@ -10,6 +10,7 @@ SET( SEQUENCELIB_TESTS_SRCS
       monophonicSubtracksProcessorTest.cpp
       musicTypesTest.cpp
       percussionMapProcessorTest.cpp
+      percussionSetWithPitchMapTest.cpp
       quantizeProcessorTest.cpp
       repeatProcessorTest.cpp
       sanitizingFunctionsTest.cpp

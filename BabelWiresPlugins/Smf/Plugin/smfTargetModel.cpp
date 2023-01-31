@@ -22,13 +22,14 @@ smf::target::ChannelTrackFeature::ChannelTrackFeature() {
                               REGISTERED_ID("Track", "track", "a6db15c9-9f29-4fb3-92c4-771746b2b97f"));
 }
 
-int smf::target::ChannelTrackFeature::getNumTracks() const {
-    return 1;
+int smf::target::ChannelTrackFeature::getChannelNumber() const {
+    return m_channelNum->get();
 }
 
-const smf::target::ChannelTrackFeature& smf::target::ChannelTrackFeature::getTrack(int i) const {
-    return *this;
+const seqwires::Track& smf::target::ChannelTrackFeature::getTrack() const {
+    return m_trackFeature->get();
 }
+
 
 int smf::target::ArrayChannelGroup::getNumTracks() const {
     return getNumFeatures();
@@ -65,6 +66,10 @@ const smf::MidiMetadata& smf::target::SmfFormatFeature::getMidiMetadata() const 
     return *m_metadata;
 }
 
+smf::MidiMetadata& smf::target::SmfFormatFeature::getMidiMetadata() {
+    return *m_metadata;
+}
+
 smf::target::SmfFeature::SmfFeature(const babelwires::ProjectContext& projectContext)
     : babelwires::FileFeature(projectContext, SmfSourceFormat::getThisIdentifier()) {
     m_formatFeature = addField(std::make_unique<SmfFormatFeature>(),
@@ -72,17 +77,11 @@ smf::target::SmfFeature::SmfFeature(const babelwires::ProjectContext& projectCon
 }
 
 int smf::target::SmfFormatFeature::getNumMidiTracks() const {
-    return 1;
+    return m_channelGroup->getNumTracks();
 }
 
-const smf::target::ChannelGroup& smf::target::SmfFormatFeature::getMidiTrack(int i) const {
-    if (getSelectedTagIndex() == 0) {
-        assert((i == 0) && "There is only 1 in format 0 smf files.");
-        return *m_channelGroup;
-
-    } else {
-        return static_cast<const ChannelTrackFeature&>(*m_channelGroup->getFeature(i));
-    }
+const smf::target::ChannelTrackFeature& smf::target::SmfFormatFeature::getMidiTrack(int i) const {
+    return m_channelGroup->getTrack(i);
 }
 
 const smf::target::SmfFormatFeature& smf::target::SmfFeature::getFormatFeature() const {

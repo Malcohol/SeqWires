@@ -8,7 +8,8 @@
 #include <SeqWiresLib/Processors/percussionMapProcessor.hpp>
 
 #include <SeqWiresLib/Functions/percussionMapFunction.hpp>
-#include <SeqWiresLib/percussion.hpp>
+#include <SeqWiresLib/Percussion/abstractPercussionSet.hpp>
+#include <SeqWiresLib/Percussion/builtInPercussionInstruments.hpp>
 
 #include <BabelWiresLib/Features/mapFeature.hpp>
 #include <BabelWiresLib/Features/rootFeature.hpp>
@@ -19,13 +20,30 @@
 
 namespace {
     struct PercussionTypeMap : babelwires::MapFeature {
-        PercussionTypeMap()
-            : babelwires::MapFeature(seqwires::GM2Percussion::getThisIdentifier(),
-                                     seqwires::GM2Percussion::getThisIdentifier()) {}
+        void getAllowedSourceTypeIds(AllowedTypes& allowedTypesOut) const override {
+            getAllPercussionTypes(allowedTypesOut);
+        }
+
+        void getAllowedTargetTypeIds(AllowedTypes& allowedTypesOut) const override {
+            getAllPercussionTypes(allowedTypesOut);
+        }
 
         babelwires::MapData getDefaultMapData() const override {
             return getStandardDefaultMapData(babelwires::MapEntryData::Kind::AllToSame);
         }
+
+        void getAllPercussionTypes(AllowedTypes& allowedTypesOut) const {
+            const babelwires::ProjectContext& context = babelwires::RootFeature::getProjectContextAt(*this);
+            allowedTypesOut.m_typeIds =
+                context.m_typeSystem.getAllSupertypes(seqwires::AbstractPercussionSet::getThisIdentifier());
+            const auto it = std::find(allowedTypesOut.m_typeIds.begin(), allowedTypesOut.m_typeIds.end(),
+                          seqwires::BuiltInPercussionInstruments::getThisIdentifier());
+            assert(it != allowedTypesOut.m_typeIds.end());
+            allowedTypesOut.m_indexOfDefault = std::distance(allowedTypesOut.m_typeIds.begin(), it);
+        }
+
+        /// Cached
+        AllowedTypes m_allowedTypes;
     };
 } // namespace
 
@@ -40,9 +58,11 @@ seqwires::PercussionMapProcessor::Factory::Factory()
     : CommonProcessorFactory(
           REGISTERED_LONGID("PercussionMapProcessor", "Percussion Map", "1ab6fd2b-8176-4516-9d9a-3b2d91a53f42"), 1) {}
 
-void seqwires::PercussionMapProcessor::processEntry(babelwires::UserLogger& userLogger, const seqwires::TrackFeature& input,
-                                               seqwires::TrackFeature& output) const {
+void seqwires::PercussionMapProcessor::processEntry(babelwires::UserLogger& userLogger,
+                                                    const seqwires::TrackFeature& input,
+                                                    seqwires::TrackFeature& output) const {
     const babelwires::ProjectContext& context = babelwires::RootFeature::getProjectContextAt(*m_percussionMapFeature);
 
-    output.set(std::make_unique<Track>(mapPercussionFunction(context.m_typeSystem, input.get(), m_percussionMapFeature->get())));
+    output.set(std::make_unique<Track>(
+        mapPercussionFunction(context.m_typeSystem, input.get(), m_percussionMapFeature->get())));
 }

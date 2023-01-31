@@ -7,8 +7,11 @@
  **/
 #pragma once
 
-#include <BabelWiresLib/Features/stringFeature.hpp>
+#include <BabelWiresPlugins/Smf/Plugin/gmSpec.hpp>
+
 #include <SeqWiresLib/Features/tempoFeature.hpp>
+
+#include <BabelWiresLib/Features/stringFeature.hpp>
 #include <BabelWiresLib/Features/recordWithOptionalsFeature.hpp>
 
 namespace seqwires {
@@ -16,19 +19,25 @@ namespace seqwires {
 }
 
 namespace smf {
+    class GmSpecTypeFeature : public babelwires::EnumWithCppEnumFeature<GMSpecType> {};
+
     class MidiMetadata : public babelwires::RecordWithOptionalsFeature {
       public:
         MidiMetadata();
 
+        const GmSpecTypeFeature* getSpecFeature() const;        
         const seqwires::TempoFeature* getTempoFeature() const;
         const babelwires::StringFeature* getCopyright() const;
         const babelwires::StringFeature* getSequenceName() const;
+
+        GmSpecTypeFeature* getSpecFeature();
 
         seqwires::TempoFeature& getActivatedTempoFeature();
         babelwires::StringFeature& getActivatedCopyright();
         babelwires::StringFeature& getActivatedSequenceName();
 
       protected:
+        GmSpecTypeFeature* m_specFeature;
         babelwires::StringFeature* m_sequenceName;
         babelwires::StringFeature* m_copyright;
         seqwires::TempoFeature* m_tempo;

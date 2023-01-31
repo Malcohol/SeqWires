@@ -11,7 +11,7 @@
 
 namespace seqwires {
 
-    /// Base of potentially set of note track events.
+    /// Base type for note events.
     struct NoteEvent : public TrackEvent {
         STREAM_EVENT_ABSTRACT(NoteEvent);
         NoteEvent() = default;

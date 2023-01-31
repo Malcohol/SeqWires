@@ -1,4 +1,5 @@
 SET( SMF_TESTS_SRCS
+      percussionTests.cpp
       smfTests.cpp
       saveLoadTests.cpp
       testSuiteTests.cpp

@@ -2,8 +2,10 @@
 
 #include <SeqWiresLib/Functions/percussionMapFunction.hpp>
 #include <SeqWiresLib/Processors/percussionMapProcessor.hpp>
+#include <SeqWiresLib/Tracks/percussionEvents.hpp>
 #include <SeqWiresLib/Tracks/track.hpp>
-#include <SeqWiresLib/percussion.hpp>
+#include <SeqWiresLib/Percussion/abstractPercussionSet.hpp>
+#include <SeqWiresLib/Percussion/builtInPercussionInstruments.hpp>
 
 #include <BabelWiresLib/Features/mapFeature.hpp>
 #include <BabelWiresLib/Maps/MapEntries/allToSameFallbackMapEntryData.hpp>
@@ -18,27 +20,27 @@
 
 namespace {
     babelwires::MapData getTestPercussionMap(const babelwires::TypeSystem& typeSystem) {
-        const seqwires::GM2Percussion& percussionType =
-            typeSystem.getRegisteredEntry(seqwires::GM2Percussion::getThisIdentifier()).is<seqwires::GM2Percussion>();
+        const seqwires::BuiltInPercussionInstruments& builtInPercussion =
+            typeSystem.getRegisteredEntry(seqwires::BuiltInPercussionInstruments::getThisIdentifier()).is<seqwires::BuiltInPercussionInstruments>();
 
         babelwires::MapData percussionMap;
-        percussionMap.setSourceTypeId(seqwires::GMPercussion::getThisIdentifier());
-        percussionMap.setTargetTypeId(seqwires::GMPercussion::getThisIdentifier());
+        percussionMap.setSourceTypeId(seqwires::BuiltInPercussionInstruments::getThisIdentifier());
+        percussionMap.setTargetTypeId(seqwires::BuiltInPercussionInstruments::getThisIdentifier());
 
-        babelwires::OneToOneMapEntryData maplet(typeSystem, seqwires::GM2Percussion::getThisIdentifier(),
-                                                seqwires::GM2Percussion::getThisIdentifier());
+        babelwires::OneToOneMapEntryData maplet(typeSystem, seqwires::BuiltInPercussionInstruments::getThisIdentifier(),
+                                                seqwires::BuiltInPercussionInstruments::getThisIdentifier());
 
         babelwires::EnumValue sourceValue;
         babelwires::EnumValue targetValue;
 
-        sourceValue.set(percussionType.getIdentifierFromValue(seqwires::GM2Percussion::Value::Clap));
-        targetValue.set(percussionType.getIdentifierFromValue(seqwires::GM2Percussion::Value::Cowbll));
+        sourceValue.set(builtInPercussion.getIdentifierFromValue(seqwires::BuiltInPercussionInstruments::Value::Clap));
+        targetValue.set(builtInPercussion.getIdentifierFromValue(seqwires::BuiltInPercussionInstruments::Value::Cowbll));
         maplet.setSourceValue(sourceValue.clone());
         maplet.setTargetValue(targetValue.clone());
         percussionMap.emplaceBack(maplet.clone());
 
-        sourceValue.set(percussionType.getIdentifierFromValue(seqwires::GM2Percussion::Value::Crash1));
-        targetValue.set(percussionType.getIdentifierFromValue(seqwires::GM2Percussion::Value::Crash2));
+        sourceValue.set(builtInPercussion.getIdentifierFromValue(seqwires::BuiltInPercussionInstruments::Value::Crash1));
+        targetValue.set(builtInPercussion.getIdentifierFromValue(seqwires::BuiltInPercussionInstruments::Value::Crash2));
         maplet.setSourceValue(sourceValue.clone());
         maplet.setTargetValue(targetValue.clone());
         percussionMap.emplaceBack(maplet.clone());
@@ -49,34 +51,30 @@ namespace {
 
     seqwires::Track getTestInputTrack() {
         seqwires::Track track;
-
-        testUtils::addNotes(
-            {
-                {seqwires::GM2Percussion::getPitchFromValue(seqwires::GM2Percussion::Value::AcBass), 0,
-                 babelwires::Rational(1, 2)},
-                {seqwires::GM2Percussion::getPitchFromValue(seqwires::GM2Percussion::Value::Clap), 0,
-                 babelwires::Rational(1, 2)},
-                {12, 0, babelwires::Rational(1, 2)},
-                {seqwires::GM2Percussion::getPitchFromValue(seqwires::GM2Percussion::Value::Crash1), 0,
-                 babelwires::Rational(1, 2)},
-            },
-            track);
-
+        track.addEvent(seqwires::PercussionOnEvent{ 0, "AcBass", 64 });
+        track.addEvent(seqwires::PercussionOffEvent{ babelwires::Rational(1, 2), "AcBass", 64 });
+        track.addEvent(seqwires::PercussionOnEvent{ 0, "Clap", 64 });
+        track.addEvent(seqwires::PercussionOffEvent{ babelwires::Rational(1, 2), "Clap", 64 });
+        // An unrecognized instrument.
+        track.addEvent(seqwires::PercussionOnEvent{ 0, "Dummy", 64 });
+        track.addEvent(seqwires::PercussionOffEvent{ babelwires::Rational(1, 2), "Dummy", 64 });
+        track.addEvent(seqwires::PercussionOnEvent{ 0, "Crash1", 64 });
+        track.addEvent(seqwires::PercussionOffEvent{ babelwires::Rational(1, 2), "Crash1", 64 });
         return track;
     }
 
-    void testOutputTrack(const seqwires::Track& outputTrack) {
-        testUtils::testNotes(
-            {
-                {seqwires::GM2Percussion::getPitchFromValue(seqwires::GM2Percussion::Value::AcBass), 0,
-                 babelwires::Rational(1, 2)},
-                {seqwires::GM2Percussion::getPitchFromValue(seqwires::GM2Percussion::Value::Cowbll), 0,
-                 babelwires::Rational(1, 2)},
-                // The out of range note gets dropped here.
-                {seqwires::GM2Percussion::getPitchFromValue(seqwires::GM2Percussion::Value::Crash2),
-                 babelwires::Rational(1, 2), babelwires::Rational(1, 2)},
-            },
-            outputTrack);
+    seqwires::Track getTestOutputTrack() {
+        seqwires::Track track;
+        track.addEvent(seqwires::PercussionOnEvent{ 0, "AcBass", 64 });
+        track.addEvent(seqwires::PercussionOffEvent{ babelwires::Rational(1, 2), "AcBass", 64 });
+        track.addEvent(seqwires::PercussionOnEvent{ 0, "Cowbll", 64 });
+        track.addEvent(seqwires::PercussionOffEvent{ babelwires::Rational(1, 2), "Cowbll", 64 });
+        // An unrecognized instrument.
+        track.addEvent(seqwires::PercussionOnEvent{ 0, "Dummy", 64 });
+        track.addEvent(seqwires::PercussionOffEvent{ babelwires::Rational(1, 2), "Dummy", 64 });
+        track.addEvent(seqwires::PercussionOnEvent{ 0, "Crash2", 64 });
+        track.addEvent(seqwires::PercussionOffEvent{ babelwires::Rational(1, 2), "Crash2", 64 });
+        return track;
     }
 } // namespace
 
@@ -84,27 +82,23 @@ TEST(PercussionMapProcessorTest, funcSimple) {
     testUtils::TestLog log;
 
     babelwires::TypeSystem typeSystem;
-    typeSystem.addEntry(std::make_unique<seqwires::GM2Percussion>());
-    typeSystem.addEntry(std::make_unique<seqwires::GMPercussion>());
 
-    babelwires::MapData mapData = getTestPercussionMap(typeSystem);
+    const seqwires::BuiltInPercussionInstruments *const builtInPercussion = typeSystem.addEntry(std::make_unique<seqwires::BuiltInPercussionInstruments>());
 
-    seqwires::Track inputTrack = getTestInputTrack();
+    const babelwires::MapData mapData = getTestPercussionMap(typeSystem);
+    const seqwires::Track inputTrack = getTestInputTrack();
+    const seqwires::Track outputTrack = seqwires::mapPercussionFunction(typeSystem, inputTrack, mapData);
+    const seqwires::Track expectedOutputTrack = getTestOutputTrack();
 
-    seqwires::Track outputTrack = seqwires::mapPercussionFunction(typeSystem, inputTrack, mapData);
-
-    testOutputTrack(outputTrack);
-    EXPECT_EQ(inputTrack.getDuration(), outputTrack.getDuration());
+    EXPECT_EQ(outputTrack, expectedOutputTrack);
 }
 
 TEST(PercussionMapProcessorTest, processor) {
     testUtils::TestEnvironment testEnvironment;
-    testEnvironment.m_typeSystem.addEntry(std::make_unique<seqwires::GM2Percussion>());
-    testEnvironment.m_typeSystem.addEntry(std::make_unique<seqwires::GMPercussion>());
-
-    const seqwires::GM2Percussion& percussionType =
-        testEnvironment.m_typeSystem.getRegisteredEntry(seqwires::GM2Percussion::getThisIdentifier())
-            .is<seqwires::GM2Percussion>();
+    testEnvironment.m_typeSystem.addEntry(std::make_unique<seqwires::AbstractPercussionSet>());
+    testEnvironment.m_typeSystem.addEntry(std::make_unique<seqwires::BuiltInPercussionInstruments>());
+    testEnvironment.m_typeSystem.addRelatedTypes(seqwires::BuiltInPercussionInstruments::getThisIdentifier(),
+                                         {{}, {seqwires::AbstractPercussionSet::getThisIdentifier()}});
 
     seqwires::PercussionMapProcessor processor(testEnvironment.m_projectContext);
 
@@ -137,5 +131,8 @@ TEST(PercussionMapProcessorTest, processor) {
 
     processor.process(testEnvironment.m_log);
 
-    testOutputTrack(getOutputTrack(0)->get());
+    const seqwires::Track outputTrack = getOutputTrack(0)->get();
+    const seqwires::Track expectedOutputTrack = getTestOutputTrack();
+
+    EXPECT_EQ(outputTrack, expectedOutputTrack);
 }

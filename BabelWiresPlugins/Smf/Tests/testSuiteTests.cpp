@@ -1,10 +1,15 @@
 #include <gtest/gtest.h>
 
+#include <BabelWiresPlugins/Smf/Plugin/Percussion/gm2StandardPercussionSet.hpp>
+#include <BabelWiresPlugins/Smf/Plugin/libRegistration.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/smfParser.hpp>
 #include <BabelWiresPlugins/Smf/Plugin/smfSourceModel.hpp>
 
 #include <SeqWiresLib/Features/trackFeature.hpp>
 #include <SeqWiresLib/Tracks/noteEvents.hpp>
+#include <SeqWiresLib/Tracks/percussionEvents.hpp>
+#include <SeqWiresLib/Utilities/filteredTrackIterator.hpp>
+#include <SeqWiresLib/libRegistration.hpp>
 
 #include <Common/IO/fileDataSource.hpp>
 
@@ -14,6 +19,9 @@
 
 TEST(SmfTestSuiteTest, loadAllTestFilesWithoutCrashing) {
     testUtils::TestEnvironment testEnvironment;
+    seqwires::registerLib(testEnvironment.m_projectContext);
+    smf::registerLib(testEnvironment.m_projectContext);
+
     int numFilesTested = 0;
 
     for (auto& p : std::filesystem::directory_iterator(std::filesystem::current_path())) {
@@ -39,6 +47,8 @@ namespace {
 
 TEST(SmfTestSuiteTest, cMajorScale) {
     testUtils::TestEnvironment testEnvironment;
+    seqwires::registerLib(testEnvironment.m_projectContext);
+    smf::registerLib(testEnvironment.m_projectContext);
 
     babelwires::FileDataSource midiFile("test-c-major-scale.mid");
 
@@ -71,6 +81,8 @@ TEST(SmfTestSuiteTest, cMajorScale) {
 
 TEST(SmfTestSuiteTest, multichannelChords0) {
     testUtils::TestEnvironment testEnvironment;
+    seqwires::registerLib(testEnvironment.m_projectContext);
+    smf::registerLib(testEnvironment.m_projectContext);
 
     babelwires::FileDataSource midiFile("test-multichannel-chords-0.mid");
 
@@ -104,6 +116,8 @@ TEST(SmfTestSuiteTest, multichannelChords0) {
 
 TEST(SmfTestSuiteTest, multichannelChords1) {
     testUtils::TestEnvironment testEnvironment;
+    seqwires::registerLib(testEnvironment.m_projectContext);
+    smf::registerLib(testEnvironment.m_projectContext);
 
     babelwires::FileDataSource midiFile("test-multichannel-chords-1.mid");
 
@@ -133,8 +147,7 @@ TEST(SmfTestSuiteTest, multichannelChords1) {
 
         const auto* trackFeature = channelGroup.getFeature(1)->as<const seqwires::TrackFeature>();
         ASSERT_NE(trackFeature, nullptr);
-        ASSERT_EQ(channelGroup.getStepToChild(trackFeature),
-                  babelwires::PathStep(babelwires::Identifier("Track")));
+        ASSERT_EQ(channelGroup.getStepToChild(trackFeature), babelwires::PathStep(babelwires::Identifier("Track")));
         tracks[i] = &trackFeature->get();
     }
 
@@ -145,6 +158,8 @@ TEST(SmfTestSuiteTest, multichannelChords1) {
 
 TEST(SmfTestSuiteTest, multichannelChords2) {
     testUtils::TestEnvironment testEnvironment;
+    seqwires::registerLib(testEnvironment.m_projectContext);
+    smf::registerLib(testEnvironment.m_projectContext);
 
     babelwires::FileDataSource midiFile("test-multichannel-chords-2.mid");
 
@@ -166,8 +181,7 @@ TEST(SmfTestSuiteTest, multichannelChords2) {
 
     const auto* channelNumFeature = channelGroup0.getFeature(0)->as<const babelwires::IntFeature>();
     ASSERT_NE(channelNumFeature, nullptr);
-    ASSERT_EQ(channelGroup0.getStepToChild(channelNumFeature),
-              babelwires::PathStep(babelwires::Identifier("ChanNo")));
+    ASSERT_EQ(channelGroup0.getStepToChild(channelNumFeature), babelwires::PathStep(babelwires::Identifier("ChanNo")));
     EXPECT_EQ(channelNumFeature->get(), 0);
 
     const auto* trackFeature0 = channelGroup0.getFeature(1)->as<const seqwires::TrackFeature>();
@@ -185,8 +199,7 @@ TEST(SmfTestSuiteTest, multichannelChords2) {
 
     const auto* channelNumFeature2 = channelGroup1.getFeature(0)->as<const babelwires::IntFeature>();
     ASSERT_NE(channelNumFeature2, nullptr);
-    ASSERT_EQ(channelGroup1.getStepToChild(channelNumFeature2),
-              babelwires::PathStep(babelwires::Identifier("ChanNo")));
+    ASSERT_EQ(channelGroup1.getStepToChild(channelNumFeature2), babelwires::PathStep(babelwires::Identifier("ChanNo")));
     EXPECT_EQ(channelNumFeature2->get(), 2);
 
     const auto* trackFeature2 = channelGroup1.getFeature(1)->as<const seqwires::TrackFeature>();
@@ -201,6 +214,8 @@ TEST(SmfTestSuiteTest, multichannelChords2) {
 
 TEST(SmfTestSuiteTest, multichannelChords3) {
     testUtils::TestEnvironment testEnvironment;
+    seqwires::registerLib(testEnvironment.m_projectContext);
+    smf::registerLib(testEnvironment.m_projectContext);
 
     babelwires::FileDataSource midiFile("test-multichannel-chords-3.mid");
 
@@ -232,8 +247,7 @@ TEST(SmfTestSuiteTest, multichannelChords3) {
 
         const auto* trackFeature = channelGroup.getFeature(1)->as<const seqwires::TrackFeature>();
         ASSERT_NE(trackFeature, nullptr);
-        ASSERT_EQ(channelGroup.getStepToChild(trackFeature),
-                  babelwires::PathStep(babelwires::Identifier("Track")));
+        ASSERT_EQ(channelGroup.getStepToChild(trackFeature), babelwires::PathStep(babelwires::Identifier("Track")));
         tracks[i] = &trackFeature->get();
     }
 
@@ -244,6 +258,8 @@ TEST(SmfTestSuiteTest, multichannelChords3) {
 
 TEST(SmfTestSuiteTest, trackLength) {
     testUtils::TestEnvironment testEnvironment;
+    seqwires::registerLib(testEnvironment.m_projectContext);
+    smf::registerLib(testEnvironment.m_projectContext);
 
     babelwires::FileDataSource midiFile("test-track-length.mid");
 
@@ -264,6 +280,8 @@ TEST(SmfTestSuiteTest, trackLength) {
 
 TEST(SmfTestSuiteTest, tempoTest) {
     testUtils::TestEnvironment testEnvironment;
+    seqwires::registerLib(testEnvironment.m_projectContext);
+    smf::registerLib(testEnvironment.m_projectContext);
 
     babelwires::FileDataSource midiFile("test-karaoke-kar.mid");
 
@@ -282,6 +300,8 @@ TEST(SmfTestSuiteTest, tempoTest) {
 
 TEST(SmfTestSuiteTest, corruptFiles) {
     testUtils::TestEnvironment testEnvironment;
+    seqwires::registerLib(testEnvironment.m_projectContext);
+    smf::registerLib(testEnvironment.m_projectContext);
 
     {
         babelwires::FileDataSource midiFile("test-corrupt-file-extra-byte.mid");
@@ -290,6 +310,93 @@ TEST(SmfTestSuiteTest, corruptFiles) {
     }
     {
         babelwires::FileDataSource midiFile("test-corrupt-file-missing-byte.mid");
-        EXPECT_THROW(smf::parseSmfSequence(midiFile, testEnvironment.m_projectContext, testEnvironment.m_log), babelwires::ParseException);
+        EXPECT_THROW(smf::parseSmfSequence(midiFile, testEnvironment.m_projectContext, testEnvironment.m_log),
+                     babelwires::ParseException);
+    }
+}
+
+TEST(SmfTestSuiteTest, testAllGMPercussion) {
+    testUtils::TestEnvironment testEnvironment;
+    seqwires::registerLib(testEnvironment.m_projectContext);
+    smf::registerLib(testEnvironment.m_projectContext);
+
+    babelwires::FileDataSource midiFile("test-all-gm-percussion.mid");
+
+    const auto feature = smf::parseSmfSequence(midiFile, testEnvironment.m_projectContext, testEnvironment.m_log);
+    ASSERT_NE(feature, nullptr);
+    auto smfFeature = feature.get()->as<const smf::source::Format0SmfFeature>();
+    ASSERT_NE(smfFeature, nullptr);
+
+    EXPECT_EQ(smfFeature->getNumMidiTracks(), 1);
+    const auto& channelGroup = dynamic_cast<const smf::source::RecordChannelGroup&>(smfFeature->getMidiTrack(0));
+    EXPECT_EQ(channelGroup.getNumFeatures(), 1);
+    const auto* trackFeature = channelGroup.getFeature(0)->as<const seqwires::TrackFeature>();
+    ASSERT_NE(trackFeature, nullptr);
+    // Percussion channel
+    ASSERT_EQ(channelGroup.getStepToChild(trackFeature), babelwires::PathStep(babelwires::Identifier("ch9")));
+
+    const seqwires::Track& track = trackFeature->get();
+
+    auto categoryMap = track.getNumEventGroupsByCategory();
+    EXPECT_EQ(categoryMap.find(seqwires::NoteEvent::s_noteEventCategory), categoryMap.end());
+    EXPECT_NE(categoryMap.find(seqwires::PercussionEvent::s_percussionEventCategory), categoryMap.end());
+
+    const auto& gm2StandardPercussionSet =
+        testEnvironment.m_typeSystem.getRegisteredEntry(smf::GM2StandardPercussionSet::getThisIdentifier())
+            .is<seqwires::PercussionSetWithPitchMap>();
+
+    // The file has each percussion instrument playing three times.
+    const auto& percussionInstruments = gm2StandardPercussionSet.getEnumValues();
+    int eventIndex = 0;
+    for (const auto& percussionEvent : seqwires::iterateOver<seqwires::PercussionEvent>(track)) {
+        const int instrumentIndex = eventIndex / 6;
+        EXPECT_EQ(percussionEvent.getInstrument(),
+                  gm2StandardPercussionSet.tryGetInstrumentFromPitch(instrumentIndex + 27));
+        if (eventIndex % 2 == 0) {
+            EXPECT_TRUE(percussionEvent.as<seqwires::PercussionOnEvent>());
+        } else {
+            EXPECT_TRUE(percussionEvent.as<seqwires::PercussionOffEvent>());
+        }
+        ++eventIndex;
+    }
+}
+
+TEST(SmfTestSuiteTest, testGSDrumPartChange) {
+    testUtils::TestEnvironment testEnvironment;
+    seqwires::registerLib(testEnvironment.m_projectContext);
+    smf::registerLib(testEnvironment.m_projectContext);
+
+    babelwires::FileDataSource midiFile("test-sysex-gs-40-1x-15-drum-part-change.mid");
+
+    const auto feature = smf::parseSmfSequence(midiFile, testEnvironment.m_projectContext, testEnvironment.m_log);
+    ASSERT_NE(feature, nullptr);
+    auto smfFeature = feature.get()->as<const smf::source::Format0SmfFeature>();
+    ASSERT_NE(smfFeature, nullptr);
+
+    EXPECT_EQ(smfFeature->getNumMidiTracks(), 1);
+    const auto& channelGroup = dynamic_cast<const smf::source::RecordChannelGroup&>(smfFeature->getMidiTrack(0));
+    EXPECT_EQ(channelGroup.getNumFeatures(), 2);
+
+    {
+        const auto* trackFeature = channelGroup.getFeature(0)->as<const seqwires::TrackFeature>();
+        ASSERT_NE(trackFeature, nullptr);
+
+        const seqwires::Track& track = trackFeature->get();
+
+        auto categoryMap = track.getNumEventGroupsByCategory();
+        EXPECT_EQ(categoryMap.find(seqwires::NoteEvent::s_noteEventCategory), categoryMap.end());
+        ASSERT_NE(categoryMap.find(seqwires::PercussionEvent::s_percussionEventCategory), categoryMap.end());
+        EXPECT_EQ(categoryMap.find(seqwires::PercussionEvent::s_percussionEventCategory)->second, 4);
+    }
+    {
+        const auto* trackFeature = channelGroup.getFeature(1)->as<const seqwires::TrackFeature>();
+        ASSERT_NE(trackFeature, nullptr);
+
+        const seqwires::Track& track = trackFeature->get();
+
+        auto categoryMap = track.getNumEventGroupsByCategory();
+        EXPECT_EQ(categoryMap.find(seqwires::PercussionEvent::s_percussionEventCategory), categoryMap.end());
+        ASSERT_NE(categoryMap.find(seqwires::NoteEvent::s_noteEventCategory), categoryMap.end());
+        EXPECT_EQ(categoryMap.find(seqwires::NoteEvent::s_noteEventCategory)->second, 4);
     }
 }
