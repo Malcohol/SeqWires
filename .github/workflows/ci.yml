@@ -99,6 +99,6 @@ jobs:
       run: BabelWiresAudio/Alsa/Tests/${{ matrix.config.targetFolder }}alsaTests${{ matrix.config.exeExtension }}
 
     - name: SmfTests
-      working-directory: build/BabelWiresPlugins/Smf/Tests
+      working-directory: build/Plugins/Smf/Tests
       shell: bash
       run: ${{ matrix.config.targetFolder }}SmfTests${{ matrix.config.exeExtension }}
