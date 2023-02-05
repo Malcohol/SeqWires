@@ -13,30 +13,32 @@
 #include <SeqWiresLib/pitchClass.hpp>
 
 #include <BabelWiresLib/Features/mapFeature.hpp>
-#include <BabelWiresLib/Maps/Helpers/enumValueAdapters.hpp>
-#include <BabelWiresLib/Maps/Helpers/enumSourceMapApplicator.hpp>
-#include <BabelWiresLib/TypeSystem/typeSystem.hpp>
 #include <BabelWiresLib/Features/modelExceptions.hpp>
+#include <BabelWiresLib/Maps/Helpers/enumSourceMapApplicator.hpp>
+#include <BabelWiresLib/Maps/Helpers/enumValueAdapters.hpp>
+#include <BabelWiresLib/TypeSystem/typeSystem.hpp>
 
-seqwires::Track seqwires::mapChordsFunction(const babelwires::TypeSystem& typeSystem, const Track& sourceTrack, const babelwires::MapData& chordTypeMapData, const babelwires::MapData& pitchClassMapData) {
+seqwires::Track seqwires::mapChordsFunction(const babelwires::TypeSystem& typeSystem, const Track& sourceTrack,
+                                            const babelwires::MapData& chordTypeMapData,
+                                            const babelwires::MapData& pitchClassMapData) {
 
     if (!chordTypeMapData.isValid(typeSystem)) {
         throw babelwires::ModelException() << "The Chord Type Map is not valid.";
     }
 
-    const ChordType& chordType =
-        typeSystem.getEntryByIdentifier(seqwires::ChordType::getThisIdentifier())->is<ChordType>();
+    const ChordType& chordType = typeSystem.getEntryByType<seqwires::ChordType>();
     const babelwires::EnumToValueValueAdapter<ChordType> chordTypeTargetAdapter{chordType};
-    babelwires::EnumSourceMapApplicator<ChordType, ChordType::Value> chordTypeApplicator(chordTypeMapData, chordType, chordTypeTargetAdapter);
+    babelwires::EnumSourceMapApplicator<ChordType, ChordType::Value> chordTypeApplicator(chordTypeMapData, chordType,
+                                                                                         chordTypeTargetAdapter);
 
     if (!pitchClassMapData.isValid(typeSystem)) {
         throw babelwires::ModelException() << "The Pitch Class Map is not valid.";
     }
 
-    const PitchClass& pitchClass =
-        typeSystem.getEntryByIdentifier(seqwires::PitchClass::getThisIdentifier())->is<PitchClass>();
+    const PitchClass& pitchClass = typeSystem.getEntryByType<seqwires::PitchClass>();
     const babelwires::EnumToValueValueAdapter<PitchClass> pitchClassTargetAdapter{pitchClass};
-    babelwires::EnumSourceMapApplicator<PitchClass, PitchClass::Value> pitchClassApplicator(pitchClassMapData, pitchClass, pitchClassTargetAdapter);
+    babelwires::EnumSourceMapApplicator<PitchClass, PitchClass::Value> pitchClassApplicator(
+        pitchClassMapData, pitchClass, pitchClassTargetAdapter);
 
     Track trackOut;
 
