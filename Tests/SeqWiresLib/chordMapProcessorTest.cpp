@@ -93,8 +93,8 @@ TEST(ChordMapProcessorTest, simpleFunction) {
     testUtils::TestLog log;
 
     babelwires::TypeSystem typeSystem;
-    typeSystem.addEntry(std::make_unique<seqwires::ChordType>());
-    typeSystem.addEntry(std::make_unique<seqwires::PitchClass>());
+    typeSystem.addEntry<seqwires::ChordType>();
+    typeSystem.addEntry<seqwires::PitchClass>();
 
     babelwires::MapData chordTypeMap = getTestChordTypeMap(typeSystem);
     babelwires::MapData pitchClassMap = getTestPitchClassMap(typeSystem);
@@ -109,8 +109,8 @@ TEST(ChordMapProcessorTest, simpleFunction) {
 
 TEST(ChordMapProcessorTest, processor) {
     testUtils::TestEnvironment testEnvironment;
-    testEnvironment.m_typeSystem.addEntry(std::make_unique<seqwires::ChordType>());
-    testEnvironment.m_typeSystem.addEntry(std::make_unique<seqwires::PitchClass>());
+    testEnvironment.m_typeSystem.addEntry<seqwires::ChordType>();
+    testEnvironment.m_typeSystem.addEntry<seqwires::PitchClass>();
 
     const seqwires::ChordType& chordTypeEnum =
         testEnvironment.m_typeSystem.getRegisteredEntry(seqwires::ChordType::getThisIdentifier())

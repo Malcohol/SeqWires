@@ -12,7 +12,7 @@
 TEST(PercussionSetWithPitchMapTest, oneInstrumentBlockAllBuiltIn) {
     testUtils::TestEnvironment testEnvironment;
     const seqwires::BuiltInPercussionInstruments* const builtIns =
-        testEnvironment.m_typeSystem.addEntry(std::make_unique<seqwires::BuiltInPercussionInstruments>());
+        testEnvironment.m_typeSystem.addEntry<seqwires::BuiltInPercussionInstruments>();
 
     seqwires::PercussionSetWithPitchMap::InstrumentBlock block = {{seqwires::BuiltInPercussionInstruments::Value::HBongo,
                                                        seqwires::BuiltInPercussionInstruments::Value::Claves,
@@ -71,7 +71,7 @@ TEST(PercussionSetWithPitchMapTest, oneInstrumentBlockAllNew) {
 TEST(PercussionSetWithPitchMapTest, oneInstrumentBlockMixed) {
     testUtils::TestEnvironment testEnvironment;
     const seqwires::BuiltInPercussionInstruments* const builtIns =
-        testEnvironment.m_typeSystem.addEntry(std::make_unique<seqwires::BuiltInPercussionInstruments>());
+        testEnvironment.m_typeSystem.addEntry<seqwires::BuiltInPercussionInstruments>();
 
     seqwires::PercussionSetWithPitchMap::InstrumentBlock block = {{testUtils::getTestRegisteredIdentifier("Bar"),
                                                        seqwires::BuiltInPercussionInstruments::Value::Claves},
@@ -99,7 +99,7 @@ TEST(PercussionSetWithPitchMapTest, oneInstrumentBlockMixed) {
 TEST(PercussionSetWithPitchMapTest, twoInstrumentBlocks) {
     testUtils::TestEnvironment testEnvironment;
     const seqwires::BuiltInPercussionInstruments* const builtIns =
-        testEnvironment.m_typeSystem.addEntry(std::make_unique<seqwires::BuiltInPercussionInstruments>());
+        testEnvironment.m_typeSystem.addEntry<seqwires::BuiltInPercussionInstruments>();
 
     seqwires::PercussionSetWithPitchMap::InstrumentBlock block0 = {{seqwires::BuiltInPercussionInstruments::Value::HBongo,
                                                        seqwires::BuiltInPercussionInstruments::Value::Claves,
@@ -146,7 +146,7 @@ TEST(PercussionSetWithPitchMapTest, twoInstrumentBlocks) {
 TEST(PercussionSetWithPitchMapTest, duplicates) {
     testUtils::TestEnvironment testEnvironment;
     const seqwires::BuiltInPercussionInstruments* const builtIns =
-        testEnvironment.m_typeSystem.addEntry(std::make_unique<seqwires::BuiltInPercussionInstruments>());
+        testEnvironment.m_typeSystem.addEntry<seqwires::BuiltInPercussionInstruments>();
 
     seqwires::PercussionSetWithPitchMap::InstrumentBlock block0 = {{seqwires::BuiltInPercussionInstruments::Value::HBongo,
                                                        seqwires::BuiltInPercussionInstruments::Value::Claves,
