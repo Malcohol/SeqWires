@@ -55,8 +55,7 @@ void smf::registerLib(babelwires::ProjectContext& context) {
 
     // Percussion types
     const seqwires::BuiltInPercussionInstruments& builtInPercussion =
-        context.m_typeSystem.getRegisteredEntry(seqwires::BuiltInPercussionInstruments::getThisIdentifier())
-            .is<seqwires::BuiltInPercussionInstruments>();
+        context.m_typeSystem.getEntryByType<seqwires::BuiltInPercussionInstruments>();
     context.m_typeSystem.addEntry(std::make_unique<GMPercussionSet>(builtInPercussion));
     context.m_typeSystem.addEntry(std::make_unique<GM2StandardPercussionSet>(builtInPercussion));
     context.m_typeSystem.addEntry(std::make_unique<GM2RoomPercussionSet>(builtInPercussion));

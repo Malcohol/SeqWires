@@ -21,7 +21,7 @@
 namespace {
     babelwires::MapData getTestPercussionMap(const babelwires::TypeSystem& typeSystem) {
         const seqwires::BuiltInPercussionInstruments& builtInPercussion =
-            typeSystem.getRegisteredEntry(seqwires::BuiltInPercussionInstruments::getThisIdentifier()).is<seqwires::BuiltInPercussionInstruments>();
+            typeSystem.getEntryByType<seqwires::BuiltInPercussionInstruments>();
 
         babelwires::MapData percussionMap;
         percussionMap.setSourceTypeId(seqwires::BuiltInPercussionInstruments::getThisIdentifier());

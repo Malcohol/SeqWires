@@ -43,9 +43,7 @@
 #include <cassert>
 
 smf::StandardPercussionSets::StandardPercussionSets(const babelwires::ProjectContext& projectContext) {
-#define DECLARE_PERCUSSION_SET(ENUM, CLASS)                                                                            \
-    m_knownSets[ENUM] =                                                                                                \
-        &projectContext.m_typeSystem.getRegisteredEntry(CLASS::getThisIdentifier()).is<seqwires::PercussionSetWithPitchMap>();
+#define DECLARE_PERCUSSION_SET(ENUM, CLASS) m_knownSets[ENUM] = &projectContext.m_typeSystem.getEntryByType<CLASS>();
 
     DECLARE_PERCUSSION_SET(GM_PERCUSSION_SET, smf::GMPercussionSet)
     DECLARE_PERCUSSION_SET(GM2_STANDARD_PERCUSSION_SET, smf::GM2StandardPercussionSet)
@@ -80,8 +78,8 @@ smf::StandardPercussionSets::StandardPercussionSets(const babelwires::ProjectCon
 #undef DECLARE_PERCUSSION_SET
 }
 
-const seqwires::PercussionSetWithPitchMap* smf::StandardPercussionSets::getDefaultPercussionSet(GMSpecType::Value gmSpec,
-                                                                               int channelNumber) {
+const seqwires::PercussionSetWithPitchMap*
+smf::StandardPercussionSets::getDefaultPercussionSet(GMSpecType::Value gmSpec, int channelNumber) {
     switch (gmSpec) {
         case GMSpecType::Value::GM:
             if (channelNumber == 9) {
@@ -283,15 +281,16 @@ smf::StandardPercussionSets::getBestPercussionSet(GMSpecType::Value gmSpec, int 
     return nullptr;
 }
 
-smf::StandardPercussionSets::KnownPercussionSets
-smf::StandardPercussionSets::getKnownPercussionSetFromPercussionSet(const seqwires::PercussionSetWithPitchMap* percussionSet) {
+smf::StandardPercussionSets::KnownPercussionSets smf::StandardPercussionSets::getKnownPercussionSetFromPercussionSet(
+    const seqwires::PercussionSetWithPitchMap* percussionSet) {
     const auto it = std::find(m_knownSets.begin(), m_knownSets.end(), percussionSet);
     assert((it != m_knownSets.end()) && "Percussion set not known");
     return static_cast<KnownPercussionSets>(it - m_knownSets.begin());
 }
 
 std::optional<smf::StandardPercussionSets::ChannelSetupInfo>
-smf::StandardPercussionSets::getChannelSetupInfoFromKnownPercussionSet(KnownPercussionSets percussionSet, int channelNumber) {
+smf::StandardPercussionSets::getChannelSetupInfoFromKnownPercussionSet(KnownPercussionSets percussionSet,
+                                                                       int channelNumber) {
     const babelwires::Byte gsPartNumber = channelNumber - 8;
     switch (percussionSet) {
         default:
@@ -358,7 +357,8 @@ smf::StandardPercussionSets::getChannelSetupInfoFromKnownPercussionSet(KnownPerc
 }
 
 std::optional<smf::StandardPercussionSets::ChannelSetupInfo>
-smf::StandardPercussionSets::getChannelSetupInfoFromPercussionSet(const seqwires::PercussionSetWithPitchMap* percussionSet, int channelNumber) {
+smf::StandardPercussionSets::getChannelSetupInfoFromPercussionSet(
+    const seqwires::PercussionSetWithPitchMap* percussionSet, int channelNumber) {
     if (percussionSet) {
         const KnownPercussionSets knownPercussionSet = getKnownPercussionSetFromPercussionSet(percussionSet);
         return getChannelSetupInfoFromKnownPercussionSet(knownPercussionSet, channelNumber);
