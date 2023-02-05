@@ -1,8 +1,8 @@
 /**
  * The seq2tape main function.
- * 
+ *
  * (C) 2021 Malcolm Tyrrell
- * 
+ *
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
 #include <Seq2tapeExe/seq2tapeOptions.hpp>
@@ -17,6 +17,8 @@
 #include <Common/Audio/fileAudioSource.hpp>
 #include <Common/IO/fileDataSource.hpp>
 #include <Common/IO/outFileStream.hpp>
+#include <Common/Identifiers/identifierRegistry.hpp>
+#include <Common/Log/unifiedLog.hpp>
 
 #include <cassert>
 #include <fstream>
@@ -156,6 +158,10 @@ void captureMode(const Context& context, const ProgramOptions::CaptureOptions& c
 }
 
 int main(int argc, char* argv[]) {
+    babelwires::UnifiedLog log;
+    babelwires::DebugLogger::swapGlobalDebugLogger(&log);
+    babelwires::IdentifierRegistryScope identifierRegistry;
+
     Context context;
     babelwires::init_audio(context.m_audioInterfaceRegistry);
     const bool playbackAvailable = !context.m_audioInterfaceRegistry.getDestinationNames().empty();
@@ -173,14 +179,16 @@ int main(int argc, char* argv[]) {
             }
             case ProgramOptions::MODE_CAPTURE: {
                 if (!captureAvailable) {
-                    throw babelwires::OptionError() << "No source audio interfaces were registered, so audio capture is unavailable.";
+                    throw babelwires::OptionError()
+                        << "No source audio interfaces were registered, so audio capture is unavailable.";
                 }
                 captureMode(context, *options.m_captureOptions);
                 break;
             }
             case ProgramOptions::MODE_PLAYBACK: {
                 if (!playbackAvailable) {
-                    throw babelwires::OptionError() << "No destination audio interface were registered, so audio playback is unavailable.";
+                    throw babelwires::OptionError()
+                        << "No destination audio interface were registered, so audio playback is unavailable.";
                 }
                 playbackMode(context, *options.m_playbackOptions);
                 break;
