@@ -33,7 +33,7 @@
 #include <Common/Log/unifiedLog.hpp>
 #include <Common/Serialization/deserializationRegistry.hpp>
 // "plugins"
-#include <BabelWiresPlugins/Smf/Plugin/libRegistration.hpp>
+#include <Plugins/Smf/Plugin/libRegistration.hpp>
 #include <SeqWiresLib/libRegistration.hpp>
 #include <SeqWiresLibUi/libRegistration.hpp>
 

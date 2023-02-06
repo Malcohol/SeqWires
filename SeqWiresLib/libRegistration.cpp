@@ -32,26 +32,26 @@
 #include <BabelWiresLib/TypeSystem/typeSystem.hpp>
 
 void seqwires::registerLib(babelwires::ProjectContext& context) {
-    context.m_typeSystem.addEntry(std::make_unique<ChordType>());
-    context.m_typeSystem.addEntry(std::make_unique<PitchClass>());
-    context.m_typeSystem.addEntry(std::make_unique<AbstractPercussionSet>());
-    context.m_typeSystem.addEntry(std::make_unique<BuiltInPercussionInstruments>());
-    context.m_typeSystem.addEntry(std::make_unique<MonophonicSubtracksPolicyEnum>());
-    context.m_typeSystem.addEntry(std::make_unique<FingeredChordsSustainPolicyEnum>());
+    context.m_typeSystem.addEntry<ChordType>();
+    context.m_typeSystem.addEntry<PitchClass>();
+    context.m_typeSystem.addEntry<AbstractPercussionSet>();
+    context.m_typeSystem.addEntry<BuiltInPercussionInstruments>();
+    context.m_typeSystem.addEntry<MonophonicSubtracksPolicyEnum>();
+    context.m_typeSystem.addEntry<FingeredChordsSustainPolicyEnum>();
 
     context.m_typeSystem.addRelatedTypes(BuiltInPercussionInstruments::getThisIdentifier(),
                                          {{}, {AbstractPercussionSet::getThisIdentifier()}});
 
-    context.m_processorReg.addEntry(std::make_unique<ChordMapProcessor::Factory>());
-    context.m_processorReg.addEntry(std::make_unique<ConcatenateProcessor::Factory>());
-    context.m_processorReg.addEntry(std::make_unique<ExcerptProcessor::Factory>());
-    context.m_processorReg.addEntry(std::make_unique<MergeProcessor::Factory>());
-    context.m_processorReg.addEntry(std::make_unique<MonophonicSubtracksProcessor::Factory>());
-    context.m_processorReg.addEntry(std::make_unique<FingeredChordsProcessor::Factory>());
-    context.m_processorReg.addEntry(std::make_unique<PercussionMapProcessor::Factory>());
-    context.m_processorReg.addEntry(std::make_unique<QuantizeProcessor::Factory>());
-    context.m_processorReg.addEntry(std::make_unique<RepeatProcessor::Factory>());
-    context.m_processorReg.addEntry(std::make_unique<SilenceProcessor::Factory>());
-    context.m_processorReg.addEntry(std::make_unique<SplitAtPitchProcessor::Factory>());
-    context.m_processorReg.addEntry(std::make_unique<TransposeProcessor::Factory>());
+    context.m_processorReg.addEntry<ChordMapProcessor::Factory>();
+    context.m_processorReg.addEntry<ConcatenateProcessor::Factory>();
+    context.m_processorReg.addEntry<ExcerptProcessor::Factory>();
+    context.m_processorReg.addEntry<MergeProcessor::Factory>();
+    context.m_processorReg.addEntry<MonophonicSubtracksProcessor::Factory>();
+    context.m_processorReg.addEntry<FingeredChordsProcessor::Factory>();
+    context.m_processorReg.addEntry<PercussionMapProcessor::Factory>();
+    context.m_processorReg.addEntry<QuantizeProcessor::Factory>();
+    context.m_processorReg.addEntry<RepeatProcessor::Factory>();
+    context.m_processorReg.addEntry<SilenceProcessor::Factory>();
+    context.m_processorReg.addEntry<SplitAtPitchProcessor::Factory>();
+    context.m_processorReg.addEntry<TransposeProcessor::Factory>();
 }
