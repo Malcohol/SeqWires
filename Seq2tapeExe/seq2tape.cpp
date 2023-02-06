@@ -9,6 +9,7 @@
 
 #include <Seq2tapeLib/tapeFile.hpp>
 #include <Seq2tapeLib/tapeFileFormat.hpp>
+#include <Seq2tapeLib/seq2tapeContext.hpp>
 
 #include <BabelWiresAudio/Common/audioInit.hpp>
 
@@ -26,10 +27,9 @@
 #include <sstream>
 #include <stdexcept>
 
-struct Context {
-    seq2tape::TapeFileFormatRegistry m_tapeFileRegistry;
-    babelwires::AudioInterfaceRegistry m_audioInterfaceRegistry;
-    babelwires::FileAudioDestRegistry m_fileAudioDestRegistry;
+struct Context : seq2tape::Seq2TapeContext {
+    babelwires::AudioInterfaceRegistry& m_audioInterfaceRegistry;
+    babelwires::FileAudioDestRegistry& m_fileAudioDestRegistry;
 };
 
 void convertMode(const Context& context, const ProgramOptions::ConvertOptions& convertOptions) {
@@ -162,7 +162,15 @@ int main(int argc, char* argv[]) {
     babelwires::DebugLogger::swapGlobalDebugLogger(&log);
     babelwires::IdentifierRegistryScope identifierRegistry;
 
-    Context context;
+
+    seq2tape::TapeFileFormatRegistry tapeFileRegistry;
+    babelwires::AudioInterfaceRegistry audioInterfaceRegistry;
+    babelwires::FileAudioDestRegistry fileAudioDestRegistry;
+
+    Context context { tapeFileRegistry, audioInterfaceRegistry, fileAudioDestRegistry };
+
+    // Register plugins here.
+
     babelwires::init_audio(context.m_audioInterfaceRegistry);
     const bool playbackAvailable = !context.m_audioInterfaceRegistry.getDestinationNames().empty();
     const bool captureAvailable = !context.m_audioInterfaceRegistry.getSourceNames().empty();
