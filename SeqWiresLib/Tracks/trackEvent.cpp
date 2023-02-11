@@ -7,7 +7,7 @@
  **/
 #include <SeqWiresLib/Tracks/trackEvent.hpp>
 
-#include <Common/Utilities/hash.hpp>
+#include <Common/Hash/hash.hpp>
 
 const char* seqwires::TrackEvent::GroupingInfo::s_genericCategory = "Generic";
 

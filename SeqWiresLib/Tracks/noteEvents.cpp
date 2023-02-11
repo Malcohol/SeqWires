@@ -7,7 +7,7 @@
  **/
 #include <SeqWiresLib/Tracks/noteEvents.hpp>
 
-#include <Common/Utilities/hash.hpp>
+#include <Common/Hash/hash.hpp>
 
 #include <sstream>
 #include <typeinfo>

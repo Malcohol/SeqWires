@@ -7,7 +7,7 @@
  **/
 #include <SeqWiresLib/Tracks/track.hpp>
 
-#include <Common/Utilities/hash.hpp>
+#include <Common/Hash/hash.hpp>
 
 int seqwires::Track::getNumEvents() const {
     return m_blockStream.getNumEvents();
