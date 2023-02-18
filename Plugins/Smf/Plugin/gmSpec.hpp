@@ -8,6 +8,7 @@
 #pragma once
 
 #include <BabelWiresLib/Enums/enumWithCppEnum.hpp>
+#include <BabelWiresLib/TypeSystem/primitiveType.hpp>
 
 #define GM_SPEC_VALUES(X)                                                                                              \
     X(NONE, "No Specification", "0d8e86c7-3d0c-4a6c-8fb0-3aaa0410dfc1")                                                \
@@ -20,9 +21,8 @@ namespace smf {
     /// Carries the enum of GM Spec values.
     class GMSpecType : public babelwires::Enum {
       public:
+        PRIMITIVE_TYPE("GMSpec", "GM Specification", "4dc2566d-1be8-468b-9aa0-2f4d63344a13", 1);
         GMSpecType();
-
-        static babelwires::LongIdentifier getThisIdentifier();
 
         ENUM_DEFINE_CPP_ENUM(GM_SPEC_VALUES);
     };

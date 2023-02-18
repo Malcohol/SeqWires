@@ -9,7 +9,6 @@
 
 smf::GsSFXPercussionSet::GsSFXPercussionSet(const seqwires::BuiltInPercussionInstruments& builtInInstruments)
     : PercussionSetWithPitchMap(
-          getThisIdentifier(), 1,
           InstrumentBlock{
               {
                   seqwires::BuiltInPercussionInstruments::Value::ScrPsh, // Scratch Push 2
@@ -76,7 +75,3 @@ smf::GsSFXPercussionSet::GsSFXPercussionSet(const seqwires::BuiltInPercussionIns
               31,
               &builtInInstruments},
           31) {}
-
-babelwires::LongIdentifier smf::GsSFXPercussionSet::getThisIdentifier() {
-    return REGISTERED_LONGID("GSSFXPerc", "Roland GS SFX Percussion", "135823fa-ec1b-427e-9e03-f888be7383c8");
-}

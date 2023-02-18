@@ -8,6 +8,8 @@
 #pragma once
 
 #include <BabelWiresLib/Enums/enumWithCppEnum.hpp>
+#include <BabelWiresLib/TypeSystem/primitiveType.hpp>
+
 #include <Common/Math/rational.hpp>
 #include <Common/types.hpp>
 
@@ -34,9 +36,8 @@ namespace seqwires {
 
     class PitchClass : public babelwires::Enum {
       public:
+        PRIMITIVE_TYPE("PitchClass", "Pitch Class", "0c7fed24-9923-42d3-9ad1-5879bf1c8af6", 1);
         PitchClass();
-
-        static babelwires::LongIdentifier getThisIdentifier();
 
         ENUM_DEFINE_CPP_ENUM(PITCH_CLASS_VALUES);
 

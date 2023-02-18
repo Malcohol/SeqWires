@@ -9,13 +9,15 @@
 
 #include <SeqWiresLib/Percussion/percussionSetWithPitchMap.hpp>
 
+#include <BabelWiresLib/TypeSystem/primitiveType.hpp>
+
 namespace smf {
     /// A PercussionSet corresponding to the instruments of GS standard percussion set.
-    /// There are two such sets, but we do not distinguish them 
+    /// There are two such sets, but we do not distinguish them
     class GsSFXPercussionSet : public seqwires::PercussionSetWithPitchMap {
       public:
-        GsSFXPercussionSet(const seqwires::BuiltInPercussionInstruments& builtInInstruments);
+        PRIMITIVE_TYPE("GSSFXPerc", "Roland GS SFX Percussion", "135823fa-ec1b-427e-9e03-f888be7383c8", 1);
 
-        static babelwires::LongIdentifier getThisIdentifier();
+        GsSFXPercussionSet(const seqwires::BuiltInPercussionInstruments& builtInInstruments);
     };
 } // namespace smf

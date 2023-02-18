@@ -20,17 +20,21 @@ class seqwires::PercussionSetWithPitchMap::ComplexConstructorArguments {
         addInstruments(instrumentBlock, pitchOfDefaultValue);
     }
 
-    ComplexConstructorArguments(const std::vector<InstrumentBlock>& instrumentBlocks, seqwires::Pitch pitchOfDefaultValue) {
+    ComplexConstructorArguments(const std::vector<InstrumentBlock>& instrumentBlocks,
+                                seqwires::Pitch pitchOfDefaultValue) {
         std::for_each(instrumentBlocks.begin(), instrumentBlocks.end(),
                       [this, pitchOfDefaultValue](const auto& b) { addInstruments(b, pitchOfDefaultValue); });
     }
 
-    void addInstruments(const InstrumentBlock& instrumentBlock,
-                                                seqwires::Pitch pitchOfDefaultValue) {
+    void addInstruments(const InstrumentBlock& instrumentBlock, seqwires::Pitch pitchOfDefaultValue) {
         seqwires::Pitch pitch = instrumentBlock.m_pitchOfLowestInstrument;
         for (auto v : instrumentBlock.m_instruments) {
-            assert(((v.index() == 0) || (instrumentBlock.m_builtInPercussionInstruments)) && "You must provide the m_builtInPercussionInstruments if you use the value branch of the variant");
-            const babelwires::Identifier id = (v.index() == 0) ? std::get<0>(v) : instrumentBlock.m_builtInPercussionInstruments->getIdentifierFromValue(std::get<1>(v));
+            assert(((v.index() == 0) || (instrumentBlock.m_builtInPercussionInstruments)) &&
+                   "You must provide the m_builtInPercussionInstruments if you use the value branch of the variant");
+            const babelwires::Identifier id =
+                (v.index() == 0)
+                    ? std::get<0>(v)
+                    : instrumentBlock.m_builtInPercussionInstruments->getIdentifierFromValue(std::get<1>(v));
             if (m_alreadySeen.find(id) == m_alreadySeen.end()) {
                 if (pitchOfDefaultValue == pitch) {
                     m_indexOfDefaultValue = m_enumValues.size();
@@ -55,21 +59,21 @@ class seqwires::PercussionSetWithPitchMap::ComplexConstructorArguments {
     std::unordered_set<babelwires::Identifier> m_alreadySeen;
 };
 
-seqwires::PercussionSetWithPitchMap::PercussionSetWithPitchMap(babelwires::LongIdentifier identifier, babelwires::VersionNumber version,
-                                  ComplexConstructorArguments&& removeDuplicates)
-    : Enum(identifier, version, std::move(removeDuplicates.m_enumValues), removeDuplicates.m_indexOfDefaultValue)
+seqwires::PercussionSetWithPitchMap::PercussionSetWithPitchMap(ComplexConstructorArguments&& removeDuplicates)
+    : Enum(std::move(removeDuplicates.m_enumValues), removeDuplicates.m_indexOfDefaultValue)
     , m_pitchToInstrument(std::move(removeDuplicates.m_pitchToInstrument))
     , m_instrumentToPitch(std::move(removeDuplicates.m_instrumentToPitch)) {}
 
-seqwires::PercussionSetWithPitchMap::PercussionSetWithPitchMap(babelwires::LongIdentifier identifier, babelwires::VersionNumber version,
-                                  InstrumentBlock instruments, seqwires::Pitch pitchOfDefaultInstrument)
-    : PercussionSetWithPitchMap(identifier, version, ComplexConstructorArguments(instruments, pitchOfDefaultInstrument)) {}
+seqwires::PercussionSetWithPitchMap::PercussionSetWithPitchMap(InstrumentBlock instruments,
+                                                               seqwires::Pitch pitchOfDefaultInstrument)
+    : PercussionSetWithPitchMap(ComplexConstructorArguments(instruments, pitchOfDefaultInstrument)) {}
 
-seqwires::PercussionSetWithPitchMap::PercussionSetWithPitchMap(babelwires::LongIdentifier identifier, babelwires::VersionNumber version,
-                                  std::vector<InstrumentBlock> instruments, seqwires::Pitch pitchOfDefaultInstrument)
-    : PercussionSetWithPitchMap(identifier, version, ComplexConstructorArguments(instruments, pitchOfDefaultInstrument)) {}
+seqwires::PercussionSetWithPitchMap::PercussionSetWithPitchMap(std::vector<InstrumentBlock> instruments,
+                                                               seqwires::Pitch pitchOfDefaultInstrument)
+    : PercussionSetWithPitchMap(ComplexConstructorArguments(instruments, pitchOfDefaultInstrument)) {}
 
-std::optional<seqwires::Pitch> seqwires::PercussionSetWithPitchMap::tryGetPitchFromInstrument(babelwires::Identifier identifier) const {
+std::optional<seqwires::Pitch>
+seqwires::PercussionSetWithPitchMap::tryGetPitchFromInstrument(babelwires::Identifier identifier) const {
     const auto it = m_instrumentToPitch.find(identifier);
     if (it != m_instrumentToPitch.end()) {
         return it->second;
@@ -77,7 +81,8 @@ std::optional<seqwires::Pitch> seqwires::PercussionSetWithPitchMap::tryGetPitchF
     return {};
 }
 
-std::optional<babelwires::Identifier> seqwires::PercussionSetWithPitchMap::tryGetInstrumentFromPitch(seqwires::Pitch pitch) const {
+std::optional<babelwires::Identifier>
+seqwires::PercussionSetWithPitchMap::tryGetInstrumentFromPitch(seqwires::Pitch pitch) const {
     const auto it = m_pitchToInstrument.find(pitch);
     if (it != m_pitchToInstrument.end()) {
         return it->second;

@@ -8,7 +8,7 @@
 #include <Plugins/Smf/Plugin/Percussion/gm2BrushPercussionSet.hpp>
 
 smf::GM2BrushPercussionSet::GM2BrushPercussionSet(const seqwires::BuiltInPercussionInstruments& builtInInstruments)
-    : seqwires::PercussionSetWithPitchMap(getThisIdentifier(), 1,
+    : seqwires::PercussionSetWithPitchMap(
                     InstrumentBlock{{seqwires::BuiltInPercussionInstruments::Value::HighQ,
                                      seqwires::BuiltInPercussionInstruments::Value::Slap,
                                      seqwires::BuiltInPercussionInstruments::Value::ScrPsh,
@@ -73,7 +73,3 @@ smf::GM2BrushPercussionSet::GM2BrushPercussionSet(const seqwires::BuiltInPercuss
                                     27,
                                     &builtInInstruments},
                     27) {}
-
-babelwires::LongIdentifier smf::GM2BrushPercussionSet::getThisIdentifier() {
-    return REGISTERED_LONGID("GM2BrushPerc", "General MIDI 2 Brush Percussion", "9686b521-ffb2-4275-b98a-e7e6cdc1f91d");
-}

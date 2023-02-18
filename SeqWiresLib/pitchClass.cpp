@@ -11,12 +11,8 @@
 
 ENUM_DEFINE_ENUM_VALUE_SOURCE(PITCH_CLASS_VALUES);
 
-babelwires::LongIdentifier seqwires::PitchClass::getThisIdentifier() {
-    return REGISTERED_LONGID("PitchClass", "Pitch Class", "0c7fed24-9923-42d3-9ad1-5879bf1c8af6");
-}
-
 seqwires::PitchClass::PitchClass()
-    : Enum(getThisIdentifier(), 1, ENUM_IDENTIFIER_VECTOR(PITCH_CLASS_VALUES), 0) {}
+    : Enum(ENUM_IDENTIFIER_VECTOR(PITCH_CLASS_VALUES), 0) {}
 
 #define JUST_NAMES(A, B, C) B, 
 

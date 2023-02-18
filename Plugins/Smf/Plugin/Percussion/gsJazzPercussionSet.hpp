@@ -9,12 +9,14 @@
 
 #include <SeqWiresLib/Percussion/percussionSetWithPitchMap.hpp>
 
+#include <BabelWiresLib/TypeSystem/primitiveType.hpp>
+
 namespace smf {
     /// A PercussionSet corresponding to the instruments of GS Jazz Percussion set.
     class GsJazzPercussionSet : public seqwires::PercussionSetWithPitchMap {
       public:
-        GsJazzPercussionSet(const seqwires::BuiltInPercussionInstruments& builtInInstruments);
+        PRIMITIVE_TYPE("GSJazzPerc", "Roland GS Jazz Percussion", "82bf0d75-260c-46f3-91d0-1d09b5494022", 1);
 
-        static babelwires::LongIdentifier getThisIdentifier();
+        GsJazzPercussionSet(const seqwires::BuiltInPercussionInstruments& builtInInstruments);
     };
 } // namespace smf

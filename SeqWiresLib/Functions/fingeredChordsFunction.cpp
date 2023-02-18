@@ -15,13 +15,8 @@
 
 ENUM_DEFINE_ENUM_VALUE_SOURCE(FINGERED_CHORDS_SUSTAIN_POLICY);
 
-babelwires::LongIdentifier seqwires::FingeredChordsSustainPolicyEnum::getThisIdentifier() {
-    return REGISTERED_LONGID("FingeredChordsPolicy", "Fingered Chords Sustain Policy", "64bb3fa9-1b77-4629-b691-431713fe2eee");
-}
-
 seqwires::FingeredChordsSustainPolicyEnum::FingeredChordsSustainPolicyEnum()
-    : babelwires::Enum(getThisIdentifier(), 1, ENUM_IDENTIFIER_VECTOR(FINGERED_CHORDS_SUSTAIN_POLICY), 0) {}
-
+    : babelwires::Enum(ENUM_IDENTIFIER_VECTOR(FINGERED_CHORDS_SUSTAIN_POLICY), 0) {}
 
 namespace {
     using IntervalSet = std::uint16_t;

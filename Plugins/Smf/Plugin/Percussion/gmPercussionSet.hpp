@@ -9,14 +9,16 @@
 
 #include <SeqWiresLib/Percussion/percussionSetWithPitchMap.hpp>
 
+#include <BabelWiresLib/TypeSystem/primitiveType.hpp>
+
 namespace smf {
     // TODO GS, XG percussion, with appropriate subtyping.
 
     /// A PercussionSet corresponding to the original General MIDI percussion set.
     class GMPercussionSet : public seqwires::PercussionSetWithPitchMap {
       public:
-        GMPercussionSet(const seqwires::BuiltInPercussionInstruments& builtInInstruments);
+        PRIMITIVE_TYPE("GMPerc", "General MIDI Percussion", "7571c9ca-1c7f-4547-9218-391a339bae7d", 1);
 
-        static babelwires::LongIdentifier getThisIdentifier();
+        GMPercussionSet(const seqwires::BuiltInPercussionInstruments& builtInInstruments);
     };
 } // namespace smf
