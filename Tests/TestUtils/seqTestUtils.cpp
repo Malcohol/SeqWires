@@ -82,8 +82,7 @@ void testUtils::addChords(const std::vector<ChordInfo>& chords, seqwires::Track&
 }
 
 void testUtils::testChords(const std::vector<ChordInfo>& expectedChords, const seqwires::Track& track) {
-    // Note: right now, we only parse notes. As we add parsing of other event types, this test will fail.
-    // (A temporarily fix would be to use a FilteredTrackIterator.)
+    // TODO: Use filteredTrackIterator to allow testing chords when other events present.
     auto chordIterator = track.begin();
     const auto endIterator = track.end();
 
