@@ -1,12 +1,13 @@
 #include <gtest/gtest.h>
 
 #include <SeqWiresLib/Functions/percussionMapFunction.hpp>
+#include <SeqWiresLib/Percussion/abstractPercussionSet.hpp>
+#include <SeqWiresLib/Percussion/builtInPercussionInstruments.hpp>
 #include <SeqWiresLib/Processors/percussionMapProcessor.hpp>
 #include <SeqWiresLib/Tracks/percussionEvents.hpp>
 #include <SeqWiresLib/Tracks/track.hpp>
-#include <SeqWiresLib/Percussion/abstractPercussionSet.hpp>
-#include <SeqWiresLib/Percussion/builtInPercussionInstruments.hpp>
 
+#include <BabelWiresLib/Enums/addBlank.hpp>
 #include <BabelWiresLib/Features/mapFeature.hpp>
 #include <BabelWiresLib/Maps/MapEntries/allToSameFallbackMapEntryData.hpp>
 #include <BabelWiresLib/Maps/MapEntries/oneToOneMapEntryData.hpp>
@@ -23,24 +24,36 @@ namespace {
         const seqwires::BuiltInPercussionInstruments& builtInPercussion =
             typeSystem.getEntryByType<seqwires::BuiltInPercussionInstruments>();
 
+        babelwires::TypeRef targetTypeRef(babelwires::AddBlank::getThisIdentifier(), {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}});
+
         babelwires::MapData percussionMap;
         percussionMap.setSourceTypeId(seqwires::BuiltInPercussionInstruments::getThisIdentifier());
-        percussionMap.setTargetTypeId(seqwires::BuiltInPercussionInstruments::getThisIdentifier());
+        percussionMap.setTargetTypeId(targetTypeRef);
 
         babelwires::OneToOneMapEntryData maplet(typeSystem, seqwires::BuiltInPercussionInstruments::getThisIdentifier(),
-                                                seqwires::BuiltInPercussionInstruments::getThisIdentifier());
+                                                targetTypeRef);
 
         babelwires::EnumValue sourceValue;
         babelwires::EnumValue targetValue;
 
         sourceValue.set(builtInPercussion.getIdentifierFromValue(seqwires::BuiltInPercussionInstruments::Value::Clap));
-        targetValue.set(builtInPercussion.getIdentifierFromValue(seqwires::BuiltInPercussionInstruments::Value::Cowbll));
+        targetValue.set(
+            builtInPercussion.getIdentifierFromValue(seqwires::BuiltInPercussionInstruments::Value::Cowbll));
         maplet.setSourceValue(sourceValue.clone());
         maplet.setTargetValue(targetValue.clone());
         percussionMap.emplaceBack(maplet.clone());
 
-        sourceValue.set(builtInPercussion.getIdentifierFromValue(seqwires::BuiltInPercussionInstruments::Value::Crash1));
-        targetValue.set(builtInPercussion.getIdentifierFromValue(seqwires::BuiltInPercussionInstruments::Value::Crash2));
+        sourceValue.set(
+            builtInPercussion.getIdentifierFromValue(seqwires::BuiltInPercussionInstruments::Value::Crash1));
+        targetValue.set(
+            builtInPercussion.getIdentifierFromValue(seqwires::BuiltInPercussionInstruments::Value::Crash2));
+        maplet.setSourceValue(sourceValue.clone());
+        maplet.setTargetValue(targetValue.clone());
+        percussionMap.emplaceBack(maplet.clone());
+
+        sourceValue.set(
+            builtInPercussion.getIdentifierFromValue(seqwires::BuiltInPercussionInstruments::Value::LFlTom));
+        targetValue.set(babelwires::AddBlank::getBlankValue());
         maplet.setSourceValue(sourceValue.clone());
         maplet.setTargetValue(targetValue.clone());
         percussionMap.emplaceBack(maplet.clone());
@@ -51,29 +64,32 @@ namespace {
 
     seqwires::Track getTestInputTrack() {
         seqwires::Track track;
-        track.addEvent(seqwires::PercussionOnEvent{ 0, "AcBass", 64 });
-        track.addEvent(seqwires::PercussionOffEvent{ babelwires::Rational(1, 2), "AcBass", 64 });
-        track.addEvent(seqwires::PercussionOnEvent{ 0, "Clap", 64 });
-        track.addEvent(seqwires::PercussionOffEvent{ babelwires::Rational(1, 2), "Clap", 64 });
+        track.addEvent(seqwires::PercussionOnEvent{0, "AcBass", 64});
+        track.addEvent(seqwires::PercussionOffEvent{babelwires::Rational(1, 2), "AcBass", 64});
+        track.addEvent(seqwires::PercussionOnEvent{0, "Clap", 64});
+        track.addEvent(seqwires::PercussionOffEvent{babelwires::Rational(1, 2), "Clap", 64});
+        track.addEvent(seqwires::PercussionOnEvent{0, "LFlTom", 64});
+        track.addEvent(seqwires::PercussionOffEvent{babelwires::Rational(1, 2), "LFlTom", 64});
         // An unrecognized instrument.
-        track.addEvent(seqwires::PercussionOnEvent{ 0, "Dummy", 64 });
-        track.addEvent(seqwires::PercussionOffEvent{ babelwires::Rational(1, 2), "Dummy", 64 });
-        track.addEvent(seqwires::PercussionOnEvent{ 0, "Crash1", 64 });
-        track.addEvent(seqwires::PercussionOffEvent{ babelwires::Rational(1, 2), "Crash1", 64 });
+        track.addEvent(seqwires::PercussionOnEvent{0, "Dummy", 64});
+        track.addEvent(seqwires::PercussionOffEvent{babelwires::Rational(1, 2), "Dummy", 64});
+        track.addEvent(seqwires::PercussionOnEvent{0, "Crash1", 64});
+        track.addEvent(seqwires::PercussionOffEvent{babelwires::Rational(1, 2), "Crash1", 64});
         return track;
     }
 
     seqwires::Track getTestOutputTrack() {
         seqwires::Track track;
-        track.addEvent(seqwires::PercussionOnEvent{ 0, "AcBass", 64 });
-        track.addEvent(seqwires::PercussionOffEvent{ babelwires::Rational(1, 2), "AcBass", 64 });
-        track.addEvent(seqwires::PercussionOnEvent{ 0, "Cowbll", 64 });
-        track.addEvent(seqwires::PercussionOffEvent{ babelwires::Rational(1, 2), "Cowbll", 64 });
+        track.addEvent(seqwires::PercussionOnEvent{0, "AcBass", 64});
+        track.addEvent(seqwires::PercussionOffEvent{babelwires::Rational(1, 2), "AcBass", 64});
+        track.addEvent(seqwires::PercussionOnEvent{0, "Cowbll", 64});
+        track.addEvent(seqwires::PercussionOffEvent{babelwires::Rational(1, 2), "Cowbll", 64});
+        // LFlTom removed.
         // An unrecognized instrument.
-        track.addEvent(seqwires::PercussionOnEvent{ 0, "Dummy", 64 });
-        track.addEvent(seqwires::PercussionOffEvent{ babelwires::Rational(1, 2), "Dummy", 64 });
-        track.addEvent(seqwires::PercussionOnEvent{ 0, "Crash2", 64 });
-        track.addEvent(seqwires::PercussionOffEvent{ babelwires::Rational(1, 2), "Crash2", 64 });
+        track.addEvent(seqwires::PercussionOnEvent{babelwires::Rational(1, 2), "Dummy", 64});
+        track.addEvent(seqwires::PercussionOffEvent{babelwires::Rational(1, 2), "Dummy", 64});
+        track.addEvent(seqwires::PercussionOnEvent{0, "Crash2", 64});
+        track.addEvent(seqwires::PercussionOffEvent{babelwires::Rational(1, 2), "Crash2", 64});
         return track;
     }
 } // namespace
@@ -82,8 +98,9 @@ TEST(PercussionMapProcessorTest, funcSimple) {
     testUtils::TestLog log;
 
     babelwires::TypeSystem typeSystem;
-
-    const seqwires::BuiltInPercussionInstruments *const builtInPercussion = typeSystem.addEntry<seqwires::BuiltInPercussionInstruments>();
+    const seqwires::BuiltInPercussionInstruments* const builtInPercussion =
+        typeSystem.addEntry<seqwires::BuiltInPercussionInstruments>();
+    typeSystem.addTypeConstructor<babelwires::AddBlank>();
 
     const babelwires::MapData mapData = getTestPercussionMap(typeSystem);
     const seqwires::Track inputTrack = getTestInputTrack();
@@ -97,8 +114,9 @@ TEST(PercussionMapProcessorTest, processor) {
     testUtils::TestEnvironment testEnvironment;
     testEnvironment.m_typeSystem.addEntry<seqwires::AbstractPercussionSet>();
     testEnvironment.m_typeSystem.addEntry<seqwires::BuiltInPercussionInstruments>();
+    testEnvironment.m_typeSystem.addTypeConstructor<babelwires::AddBlank>();
     testEnvironment.m_typeSystem.addRelatedTypes(seqwires::BuiltInPercussionInstruments::getThisIdentifier(),
-                                         {{}, {seqwires::AbstractPercussionSet::getThisIdentifier()}});
+                                                 {{}, {seqwires::AbstractPercussionSet::getThisIdentifier()}});
 
     seqwires::PercussionMapProcessor processor(testEnvironment.m_projectContext);
 

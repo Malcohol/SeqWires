@@ -11,6 +11,7 @@
 #include <SeqWiresLib/Percussion/abstractPercussionSet.hpp>
 #include <SeqWiresLib/Percussion/builtInPercussionInstruments.hpp>
 
+#include <BabelWiresLib/Enums/addBlank.hpp>
 #include <BabelWiresLib/Features/mapFeature.hpp>
 #include <BabelWiresLib/Features/rootFeature.hpp>
 #include <BabelWiresLib/Project/projectContext.hpp>
@@ -26,6 +27,9 @@ namespace {
 
         void getAllowedTargetTypeIds(AllowedTypes& allowedTypesOut) const override {
             getAllPercussionTypes(allowedTypesOut);
+            for (auto& typeRef : allowedTypesOut.m_typeIds) {
+                typeRef = babelwires::TypeRef(babelwires::AddBlank::getThisIdentifier(), {{typeRef}});
+            }
         }
 
         babelwires::MapData getDefaultMapData() const override {
@@ -36,14 +40,12 @@ namespace {
             const babelwires::ProjectContext& context = babelwires::RootFeature::getProjectContextAt(*this);
             allowedTypesOut.m_typeIds =
                 context.m_typeSystem.getAllSupertypes(seqwires::AbstractPercussionSet::getThisIdentifier());
+            // Maybe remove the abstract types here.
             const auto it = std::find(allowedTypesOut.m_typeIds.begin(), allowedTypesOut.m_typeIds.end(),
-                          seqwires::BuiltInPercussionInstruments::getThisIdentifier());
+                                      seqwires::BuiltInPercussionInstruments::getThisIdentifier());
             assert(it != allowedTypesOut.m_typeIds.end());
             allowedTypesOut.m_indexOfDefault = std::distance(allowedTypesOut.m_typeIds.begin(), it);
         }
-
-        /// Cached
-        AllowedTypes m_allowedTypes;
     };
 } // namespace
 
