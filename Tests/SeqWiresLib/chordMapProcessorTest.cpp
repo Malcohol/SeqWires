@@ -6,7 +6,7 @@
 #include <SeqWiresLib/Tracks/track.hpp>
 #include <SeqWiresLib/chord.hpp>
 
-#include <BabelWiresLib/Enums/addDummy.hpp>
+#include <BabelWiresLib/Enums/addBlank.hpp>
 #include <BabelWiresLib/Features/mapFeature.hpp>
 #include <BabelWiresLib/Maps/MapEntries/allToSameFallbackMapEntryData.hpp>
 #include <BabelWiresLib/Maps/MapEntries/oneToOneMapEntryData.hpp>
@@ -49,7 +49,7 @@ namespace {
             chordTypeSourceValue.set(chordTypeEnum.getIdentifierFromValue(seqwires::ChordType::Value::M6));
 
             babelwires::EnumValue chordTypeTargetValue;
-            chordTypeTargetValue.set(babelwires::AddDummy::getDummyValue());
+            chordTypeTargetValue.set(babelwires::AddBlank::getBlankValue());
 
             chordTypeMaplet.setSourceValue(chordTypeSourceValue.clone());
             chordTypeMaplet.setTargetValue(chordTypeTargetValue.clone());
@@ -113,7 +113,7 @@ TEST(ChordMapProcessorTest, simpleFunction) {
     babelwires::TypeSystem typeSystem;
     typeSystem.addEntry<seqwires::ChordType>();
     typeSystem.addEntry<seqwires::PitchClass>();
-    typeSystem.addTypeConstructor<babelwires::AddDummy>();
+    typeSystem.addTypeConstructor<babelwires::AddBlank>();
 
     babelwires::MapData chordTypeMap = getTestChordTypeMap(typeSystem);
     babelwires::MapData pitchClassMap = getTestPitchClassMap(typeSystem);
@@ -130,7 +130,7 @@ TEST(ChordMapProcessorTest, processor) {
     testUtils::TestEnvironment testEnvironment;
     testEnvironment.m_typeSystem.addEntry<seqwires::ChordType>();
     testEnvironment.m_typeSystem.addEntry<seqwires::PitchClass>();
-    testEnvironment.m_typeSystem.addTypeConstructor<babelwires::AddDummy>();
+    testEnvironment.m_typeSystem.addTypeConstructor<babelwires::AddBlank>();
 
     const seqwires::ChordType& chordTypeEnum =
         testEnvironment.m_typeSystem.getEntryByType<seqwires::ChordType>().is<seqwires::ChordType>();

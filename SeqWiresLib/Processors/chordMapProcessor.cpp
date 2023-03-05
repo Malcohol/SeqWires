@@ -11,7 +11,7 @@
 #include <SeqWiresLib/chord.hpp>
 #include <SeqWiresLib/pitchClass.hpp>
 
-#include <BabelWiresLib/Enums/addDummy.hpp>
+#include <BabelWiresLib/Enums/addBlank.hpp>
 #include <BabelWiresLib/Features/mapFeature.hpp>
 #include <BabelWiresLib/Features/rootFeature.hpp>
 #include <BabelWiresLib/Project/projectContext.hpp>

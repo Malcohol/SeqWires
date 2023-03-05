@@ -12,7 +12,7 @@
 #include <SeqWiresLib/chord.hpp>
 #include <SeqWiresLib/pitchClass.hpp>
 
-#include <BabelWiresLib/Enums/addDummy.hpp>
+#include <BabelWiresLib/Enums/addBlank.hpp>
 #include <BabelWiresLib/Features/mapFeature.hpp>
 #include <BabelWiresLib/Features/modelExceptions.hpp>
 #include <BabelWiresLib/Maps/Helpers/enumSourceMapApplicator.hpp>
@@ -20,7 +20,7 @@
 #include <BabelWiresLib/TypeSystem/typeSystem.hpp>
 
 babelwires::TypeRef seqwires::getMapChordFunctionTypeRef() {
-    return babelwires::TypeRef(babelwires::AddDummy::getThisIdentifier(), {{seqwires::ChordType::getThisIdentifier()}});
+    return babelwires::TypeRef(babelwires::AddBlank::getThisIdentifier(), {{seqwires::ChordType::getThisIdentifier()}});
 }
 
 seqwires::Track seqwires::mapChordsFunction(const babelwires::TypeSystem& typeSystem, const Track& sourceTrack,
@@ -49,6 +49,7 @@ seqwires::Track seqwires::mapChordsFunction(const babelwires::TypeSystem& typeSy
         pitchClassMapData, pitchClass, pitchClassTargetAdapter);
 
     Track trackOut;
+
 
     // If an event is dropped, then we need to carry its time forward for the next event.
     bool droppingChordEvent = false;
