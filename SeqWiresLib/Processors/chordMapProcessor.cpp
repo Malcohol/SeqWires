@@ -22,8 +22,8 @@
 namespace {
     struct ChordTypeMap : babelwires::StandardMapFeature {
         ChordTypeMap()
-            : babelwires::StandardMapFeature(seqwires::getMapChordFunctionTypeRef(),
-                                             seqwires::getMapChordFunctionTypeRef()) {}
+            : babelwires::StandardMapFeature(seqwires::getMapChordFunctionChordTypeRef(),
+                                             seqwires::getMapChordFunctionChordTypeRef()) {}
 
         babelwires::MapData getDefaultMapData() const override {
             return getStandardDefaultMapData(babelwires::MapEntryData::Kind::AllToSame);
@@ -32,8 +32,8 @@ namespace {
 
     struct PitchClassMap : babelwires::StandardMapFeature {
         PitchClassMap()
-            : babelwires::StandardMapFeature(seqwires::PitchClass::getThisIdentifier(),
-                                             seqwires::PitchClass::getThisIdentifier()) {}
+            : babelwires::StandardMapFeature(seqwires::getMapChordFunctionPitchClassRef(),
+                                             seqwires::getMapChordFunctionPitchClassRef()) {}
 
         babelwires::MapData getDefaultMapData() const override {
             return getStandardDefaultMapData(babelwires::MapEntryData::Kind::AllToSame);
