@@ -17,6 +17,7 @@
 #include <BabelWiresLib/Maps/Helpers/unorderedMapApplicator.hpp>
 #include <BabelWiresLib/Maps/Helpers/enumValueAdapters.hpp>
 #include <BabelWiresLib/TypeSystem/typeSystem.hpp>
+//#include <BabelWiresLib/Enums/addDummy.hpp>
 
 seqwires::Track seqwires::mapPercussionFunction(const babelwires::TypeSystem& typeSystem, const Track& trackIn,
                                                 const babelwires::MapData& percussionMapData) {
@@ -38,11 +39,12 @@ seqwires::Track seqwires::mapPercussionFunction(const babelwires::TypeSystem& ty
             TrackEventHolder holder(*it);
             PercussionEvent& percussionEvent = static_cast<PercussionEvent&>(*holder);
             babelwires::Identifier newInstrument = mapApplicator[percussionEvent.getInstrument()];
-            // TODO if (newInstrument != "DISCARD")
-            percussionEvent.setInstrument(newInstrument);
-            percussionEvent.setTimeSinceLastEvent(holder->getTimeSinceLastEvent() + timeFromDroppedEvent);
-            timeFromDroppedEvent = 0;
-            trackOut.addEvent(holder.release());
+            //if (newInstrument != babelwires::AddDummy::getDummyValue()) {
+                percussionEvent.setInstrument(newInstrument);
+                percussionEvent.setTimeSinceLastEvent(holder->getTimeSinceLastEvent() + timeFromDroppedEvent);
+                timeFromDroppedEvent = 0;
+                trackOut.addEvent(holder.release());
+            //}
             //} else {
             //    timeFromDroppedEvent += it->getTimeSinceLastEvent();
             //}

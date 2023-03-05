@@ -6,6 +6,7 @@
 #include <SeqWiresLib/Tracks/track.hpp>
 #include <SeqWiresLib/chord.hpp>
 
+#include <BabelWiresLib/Enums/addDummy.hpp>
 #include <BabelWiresLib/Features/mapFeature.hpp>
 #include <BabelWiresLib/Maps/MapEntries/allToSameFallbackMapEntryData.hpp>
 #include <BabelWiresLib/Maps/MapEntries/oneToOneMapEntryData.hpp>
@@ -22,22 +23,39 @@ namespace {
         const seqwires::ChordType& chordTypeEnum = typeSystem.getEntryByType<seqwires::ChordType>();
 
         babelwires::MapData chordTypeMap;
-        chordTypeMap.setSourceTypeId(seqwires::ChordType::getThisIdentifier());
-        chordTypeMap.setTargetTypeId(seqwires::ChordType::getThisIdentifier());
+        chordTypeMap.setSourceTypeId(seqwires::getMapChordFunctionTypeRef());
+        chordTypeMap.setTargetTypeId(seqwires::getMapChordFunctionTypeRef());
 
-        babelwires::OneToOneMapEntryData chordTypeMaplet(typeSystem, seqwires::ChordType::getThisIdentifier(),
-                                                         seqwires::ChordType::getThisIdentifier());
+        {
+            babelwires::OneToOneMapEntryData chordTypeMaplet(typeSystem, seqwires::getMapChordFunctionTypeRef(),
+                                                             seqwires::getMapChordFunctionTypeRef());
 
-        babelwires::EnumValue chordTypeSourceValue;
-        chordTypeSourceValue.set(chordTypeEnum.getIdentifierFromValue(seqwires::ChordType::Value::m));
+            babelwires::EnumValue chordTypeSourceValue;
+            chordTypeSourceValue.set(chordTypeEnum.getIdentifierFromValue(seqwires::ChordType::Value::m));
 
-        babelwires::EnumValue chordTypeTargetValue;
-        chordTypeTargetValue.set(chordTypeEnum.getIdentifierFromValue(seqwires::ChordType::Value::m7));
+            babelwires::EnumValue chordTypeTargetValue;
+            chordTypeTargetValue.set(chordTypeEnum.getIdentifierFromValue(seqwires::ChordType::Value::m7));
 
-        chordTypeMaplet.setSourceValue(chordTypeSourceValue.clone());
-        chordTypeMaplet.setTargetValue(chordTypeTargetValue.clone());
+            chordTypeMaplet.setSourceValue(chordTypeSourceValue.clone());
+            chordTypeMaplet.setTargetValue(chordTypeTargetValue.clone());
 
-        chordTypeMap.emplaceBack(chordTypeMaplet.clone());
+            chordTypeMap.emplaceBack(chordTypeMaplet.clone());
+        }
+        {
+            babelwires::OneToOneMapEntryData chordTypeMaplet(typeSystem, seqwires::getMapChordFunctionTypeRef(),
+                                                             seqwires::getMapChordFunctionTypeRef());
+
+            babelwires::EnumValue chordTypeSourceValue;
+            chordTypeSourceValue.set(chordTypeEnum.getIdentifierFromValue(seqwires::ChordType::Value::M6));
+
+            babelwires::EnumValue chordTypeTargetValue;
+            chordTypeTargetValue.set(babelwires::AddDummy::getDummyValue());
+
+            chordTypeMaplet.setSourceValue(chordTypeSourceValue.clone());
+            chordTypeMaplet.setTargetValue(chordTypeTargetValue.clone());
+
+            chordTypeMap.emplaceBack(chordTypeMaplet.clone());
+        }
         chordTypeMap.emplaceBack(std::make_unique<babelwires::AllToSameFallbackMapEntryData>());
         return chordTypeMap;
     }
@@ -72,6 +90,7 @@ namespace {
 
         testUtils::addChords({{seqwires::PitchClass::Value::C, seqwires::ChordType::ChordType::Value::M},
                               {seqwires::PitchClass::Value::D, seqwires::ChordType::ChordType::Value::M},
+                              {seqwires::PitchClass::Value::C, seqwires::ChordType::ChordType::Value::M6},
                               {seqwires::PitchClass::Value::C, seqwires::ChordType::ChordType::Value::m},
                               {seqwires::PitchClass::Value::D, seqwires::ChordType::ChordType::Value::m}},
                              track);
@@ -82,7 +101,7 @@ namespace {
     void testOutputTrack(const seqwires::Track& outputTrack) {
         testUtils::testChords({{seqwires::PitchClass::Value::C, seqwires::ChordType::ChordType::Value::M},
                                {seqwires::PitchClass::Value::A, seqwires::ChordType::ChordType::Value::M},
-                               {seqwires::PitchClass::Value::C, seqwires::ChordType::ChordType::Value::m7},
+                               {seqwires::PitchClass::Value::C, seqwires::ChordType::ChordType::Value::m7, babelwires::Rational(1, 2), babelwires::Rational(1, 2)},
                                {seqwires::PitchClass::Value::A, seqwires::ChordType::ChordType::Value::m7}},
                               outputTrack);
     }
@@ -94,6 +113,7 @@ TEST(ChordMapProcessorTest, simpleFunction) {
     babelwires::TypeSystem typeSystem;
     typeSystem.addEntry<seqwires::ChordType>();
     typeSystem.addEntry<seqwires::PitchClass>();
+    typeSystem.addTypeConstructor<babelwires::AddDummy>();
 
     babelwires::MapData chordTypeMap = getTestChordTypeMap(typeSystem);
     babelwires::MapData pitchClassMap = getTestPitchClassMap(typeSystem);
@@ -110,6 +130,7 @@ TEST(ChordMapProcessorTest, processor) {
     testUtils::TestEnvironment testEnvironment;
     testEnvironment.m_typeSystem.addEntry<seqwires::ChordType>();
     testEnvironment.m_typeSystem.addEntry<seqwires::PitchClass>();
+    testEnvironment.m_typeSystem.addTypeConstructor<babelwires::AddDummy>();
 
     const seqwires::ChordType& chordTypeEnum =
         testEnvironment.m_typeSystem.getEntryByType<seqwires::ChordType>().is<seqwires::ChordType>();

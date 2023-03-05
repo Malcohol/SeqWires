@@ -11,6 +11,7 @@
 #include <SeqWiresLib/chord.hpp>
 #include <SeqWiresLib/pitchClass.hpp>
 
+#include <BabelWiresLib/Enums/addDummy.hpp>
 #include <BabelWiresLib/Features/mapFeature.hpp>
 #include <BabelWiresLib/Features/rootFeature.hpp>
 #include <BabelWiresLib/Project/projectContext.hpp>
@@ -21,8 +22,8 @@
 namespace {
     struct ChordTypeMap : babelwires::StandardMapFeature {
         ChordTypeMap()
-            : babelwires::StandardMapFeature(seqwires::ChordType::getThisIdentifier(),
-                                     seqwires::ChordType::getThisIdentifier()) {}
+            : babelwires::StandardMapFeature(seqwires::getMapChordFunctionTypeRef(),
+                                             seqwires::getMapChordFunctionTypeRef()) {}
 
         babelwires::MapData getDefaultMapData() const override {
             return getStandardDefaultMapData(babelwires::MapEntryData::Kind::AllToSame);
@@ -32,7 +33,7 @@ namespace {
     struct PitchClassMap : babelwires::StandardMapFeature {
         PitchClassMap()
             : babelwires::StandardMapFeature(seqwires::PitchClass::getThisIdentifier(),
-                                     seqwires::PitchClass::getThisIdentifier()) {}
+                                             seqwires::PitchClass::getThisIdentifier()) {}
 
         babelwires::MapData getDefaultMapData() const override {
             return getStandardDefaultMapData(babelwires::MapEntryData::Kind::AllToSame);
@@ -57,5 +58,6 @@ void seqwires::ChordMapProcessor::processEntry(babelwires::UserLogger& userLogge
                                                seqwires::TrackFeature& output) const {
     const babelwires::ProjectContext& context = babelwires::RootFeature::getProjectContextAt(*m_chordTypeMapFeature);
 
-    output.set(std::make_unique<Track>(mapChordsFunction(context.m_typeSystem, input.get(), m_chordTypeMapFeature->get(), m_pitchClassMapFeature->get())));
+    output.set(std::make_unique<Track>(mapChordsFunction(context.m_typeSystem, input.get(),
+                                                         m_chordTypeMapFeature->get(), m_pitchClassMapFeature->get())));
 }

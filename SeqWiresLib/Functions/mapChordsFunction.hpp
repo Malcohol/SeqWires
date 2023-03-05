@@ -13,6 +13,9 @@ namespace babelwires {
 }
 
 namespace seqwires {
-    /// Create tracks of chord events from tracks of note events.
+    babelwires::TypeRef getMapChordFunctionTypeRef();
+
+    /// Apply maps to chord events in the track.
+    /// Until the type system has cross products, this will be somewhat limited in value.
     Track mapChordsFunction(const babelwires::TypeSystem& typeSystem, const Track& sourceTrack, const babelwires::MapData& chordTypeMapData, const babelwires::MapData& pitchClassMapData);
 }
