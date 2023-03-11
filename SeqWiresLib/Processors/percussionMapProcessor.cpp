@@ -21,13 +21,13 @@
 
 namespace {
     struct PercussionTypeMap : babelwires::MapFeature {
-        void getAllowedSourceTypeIds(AllowedTypes& allowedTypesOut) const override {
+        void getAllowedSourceTypeRefs(AllowedTypes& allowedTypesOut) const override {
             getAllPercussionTypes(allowedTypesOut);
         }
 
-        void getAllowedTargetTypeIds(AllowedTypes& allowedTypesOut) const override {
+        void getAllowedTargetTypeRefs(AllowedTypes& allowedTypesOut) const override {
             getAllPercussionTypes(allowedTypesOut);
-            for (auto& typeRef : allowedTypesOut.m_typeIds) {
+            for (auto& typeRef : allowedTypesOut.m_typeRefs) {
                 typeRef = babelwires::TypeRef(babelwires::AddBlank::getThisIdentifier(), {{typeRef}});
             }
         }
@@ -39,13 +39,13 @@ namespace {
         void getAllPercussionTypes(AllowedTypes& allowedTypesOut) const {
             const babelwires::ProjectContext& context = babelwires::RootFeature::getProjectContextAt(*this);
             auto superTypes = context.m_typeSystem.getAllSupertypes(seqwires::AbstractPercussionSet::getThisIdentifier());
-            std::for_each(superTypes.begin(), superTypes.end(), [&allowedTypesOut](babelwires::LongIdentifier typeId) { allowedTypesOut.m_typeIds.emplace_back(typeId); });
+            std::for_each(superTypes.begin(), superTypes.end(), [&allowedTypesOut](babelwires::LongIdentifier typeId) { allowedTypesOut.m_typeRefs.emplace_back(typeId); });
                 
             // Maybe remove the abstract types here.
-            const auto it = std::find(allowedTypesOut.m_typeIds.begin(), allowedTypesOut.m_typeIds.end(),
+            const auto it = std::find(allowedTypesOut.m_typeRefs.begin(), allowedTypesOut.m_typeRefs.end(),
                                       seqwires::BuiltInPercussionInstruments::getThisIdentifier());
-            assert(it != allowedTypesOut.m_typeIds.end());
-            allowedTypesOut.m_indexOfDefault = std::distance(allowedTypesOut.m_typeIds.begin(), it);
+            assert(it != allowedTypesOut.m_typeRefs.end());
+            allowedTypesOut.m_indexOfDefault = std::distance(allowedTypesOut.m_typeRefs.begin(), it);
         }
     };
 } // namespace
