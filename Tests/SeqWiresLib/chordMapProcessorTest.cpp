@@ -25,8 +25,8 @@ namespace {
         const seqwires::ChordType& chordTypeEnum = typeSystem.getEntryByType<seqwires::ChordType>();
 
         babelwires::MapData chordTypeMap;
-        chordTypeMap.setSourceTypeId(seqwires::getMapChordFunctionChordTypeRef());
-        chordTypeMap.setTargetTypeId(seqwires::getMapChordFunctionChordTypeRef());
+        chordTypeMap.setSourceTypeRef(seqwires::getMapChordFunctionChordTypeRef());
+        chordTypeMap.setTargetTypeRef(seqwires::getMapChordFunctionChordTypeRef());
 
         {
             babelwires::OneToOneMapEntryData chordTypeMaplet(typeSystem, seqwires::getMapChordFunctionChordTypeRef(),
@@ -82,8 +82,8 @@ namespace {
             typeSystem.getEntryByType<seqwires::PitchClass>().is<seqwires::PitchClass>();
 
         babelwires::MapData pitchClassMap;
-        pitchClassMap.setSourceTypeId(seqwires::getMapChordFunctionPitchClassRef());
-        pitchClassMap.setTargetTypeId(seqwires::getMapChordFunctionPitchClassRef());
+        pitchClassMap.setSourceTypeRef(seqwires::getMapChordFunctionPitchClassRef());
+        pitchClassMap.setTargetTypeRef(seqwires::getMapChordFunctionPitchClassRef());
 
         {
             babelwires::OneToOneMapEntryData chordTypeMaplet(typeSystem, seqwires::getMapChordFunctionPitchClassRef(),

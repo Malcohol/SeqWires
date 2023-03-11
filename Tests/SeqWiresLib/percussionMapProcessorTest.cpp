@@ -27,8 +27,8 @@ namespace {
         babelwires::TypeRef targetTypeRef(babelwires::AddBlank::getThisIdentifier(), {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}});
 
         babelwires::MapData percussionMap;
-        percussionMap.setSourceTypeId(seqwires::BuiltInPercussionInstruments::getThisIdentifier());
-        percussionMap.setTargetTypeId(targetTypeRef);
+        percussionMap.setSourceTypeRef(seqwires::BuiltInPercussionInstruments::getThisIdentifier());
+        percussionMap.setTargetTypeRef(targetTypeRef);
 
         babelwires::OneToOneMapEntryData maplet(typeSystem, seqwires::BuiltInPercussionInstruments::getThisIdentifier(),
                                                 targetTypeRef);
