@@ -9,13 +9,15 @@
 
 #include <SeqWiresLib/Percussion/percussionSetWithPitchMap.hpp>
 
+#include <BabelWiresLib/TypeSystem/primitiveType.hpp>
+
 namespace smf {
     /// A PercussionSet corresponding to the instruments of XG Standard 1 percussion set.
     /// This also works as the XG Standard 2 percussion set.
     class XgStandard1PercussionSet : public seqwires::PercussionSetWithPitchMap {
       public:
-        XgStandard1PercussionSet(const seqwires::BuiltInPercussionInstruments& builtInInstruments);
+        PRIMITIVE_TYPE("XGStandard1Perc", "Yamaha XG Standard 1 Percussion", "4c094420-0a8e-4dfa-b315-2bdb516d489a", 1);
 
-        static babelwires::LongIdentifier getThisIdentifier();
+        XgStandard1PercussionSet(const seqwires::BuiltInPercussionInstruments& builtInInstruments);
     };
 } // namespace smf

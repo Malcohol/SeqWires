@@ -13,10 +13,10 @@
 #include <variant>
 
 namespace seqwires {
-    /// An convenience class for Enums of percussion instruments which provides support for mapping between instruments and pitch.
+    /// A convenience class for Enums of percussion instruments which provides support for mapping between instruments and pitch.
     /// Note: Using this class is an implementation detail, and does not affect an Enum's position in the TypeSystem.
     /// (This contrasts with AbstractPercussionSet, which can be used to declare an enum as containing percussion instruments).
-    /// In particular, not every enum of percussion instruments is required to derive from PercussionSet.
+    /// In particular, not every enum of percussion instruments is required to derive from PercussionSetWithPitchMap.
     /// Instruments may be duplicated (i.e. correspond to more than one pitch), but the lowest such pitch is always
     /// used when converting to pitches.
     /// PercussionSets should use as many instruments from the BuiltInPercussionInstruments Enum as possible,
@@ -33,10 +33,10 @@ namespace seqwires {
         };
 
         /// This constructor expects instruments to be in a single contiguous block.
-        PercussionSetWithPitchMap(babelwires::LongIdentifier identifier, babelwires::VersionNumber version, InstrumentBlock instruments, seqwires::Pitch pitchOfDefaultValue);
+        PercussionSetWithPitchMap(InstrumentBlock instruments, seqwires::Pitch pitchOfDefaultValue);
 
         /// This constructor allows more than one, non-overlapping block of instruments.
-        PercussionSetWithPitchMap(babelwires::LongIdentifier identifier, babelwires::VersionNumber version, std::vector<InstrumentBlock> instruments, seqwires::Pitch pitchOfDefaultValue);
+        PercussionSetWithPitchMap(std::vector<InstrumentBlock> instruments, seqwires::Pitch pitchOfDefaultValue);
 
         /// Get the pitch of an instrument if it is in this set.
         /// The highest pitch of any duplicate instrument is returned.
@@ -49,7 +49,7 @@ namespace seqwires {
         // Private class just used to pass complex calculated arguments to the base class constructor.
         class ComplexConstructorArguments;
 
-        PercussionSetWithPitchMap(babelwires::LongIdentifier identifier, babelwires::VersionNumber version, ComplexConstructorArguments&& removeDuplicates);
+        PercussionSetWithPitchMap(ComplexConstructorArguments&& removeDuplicates);
 
       private:
         std::unordered_map<seqwires::Pitch, babelwires::Identifier> m_pitchToInstrument;

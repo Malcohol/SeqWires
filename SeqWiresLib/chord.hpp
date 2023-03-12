@@ -10,6 +10,7 @@
 #include <SeqWiresLib/musicTypes.hpp>
 
 #include <BabelWiresLib/Enums/enumWithCppEnum.hpp>
+#include <BabelWiresLib/TypeSystem/primitiveType.hpp>
 
 /// These match the "Chord type" values from the XF Format Specifications v2.01
 // TODO Consider using \u266d (flat) and \u266f (sharp) in names.
@@ -66,9 +67,9 @@ namespace seqwires {
     /// Carries the enum of chord types.
     class ChordType : public babelwires::Enum {
       public:
-        ChordType();
+        PRIMITIVE_TYPE("ChordType", "Chord Type", "c63ea174-1562-4cb5-a456-d6c0bd89e335", 1);
 
-        static babelwires::LongIdentifier getThisIdentifier();
+        ChordType();
 
         ENUM_DEFINE_CPP_ENUM(CHORD_TYPE_VALUES);
     };

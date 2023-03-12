@@ -9,12 +9,14 @@
 
 #include <SeqWiresLib/Percussion/percussionSetWithPitchMap.hpp>
 
+#include <BabelWiresLib/TypeSystem/primitiveType.hpp>
+
 namespace smf {
     /// A PercussionSet corresponding to the instruments of GM2 Orchestra percussion set.
     class GM2OrchestraPercussionSet : public seqwires::PercussionSetWithPitchMap {
       public:
-        GM2OrchestraPercussionSet(const seqwires::BuiltInPercussionInstruments& builtInInstruments);
+        PRIMITIVE_TYPE("GM2OrchestraPerc", "General MIDI 2 Orchestra Percussion", "6a77f085-35c7-409c-92e1-5f4a20f3c750", 1);
 
-        static babelwires::LongIdentifier getThisIdentifier();
+        GM2OrchestraPercussionSet(const seqwires::BuiltInPercussionInstruments& builtInInstruments);
     };
 } // namespace smf

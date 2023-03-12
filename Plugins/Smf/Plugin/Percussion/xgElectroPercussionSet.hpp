@@ -9,12 +9,14 @@
 
 #include <SeqWiresLib/Percussion/percussionSetWithPitchMap.hpp>
 
+#include <BabelWiresLib/TypeSystem/primitiveType.hpp>
+
 namespace smf {
     /// A PercussionSet corresponding to the instruments of XG Electro percussion set.
     class XgElectroPercussionSet : public seqwires::PercussionSetWithPitchMap {
       public:
-        XgElectroPercussionSet(const seqwires::BuiltInPercussionInstruments& builtInInstruments);
+        PRIMITIVE_TYPE("XGElectroPerc", "Yamaha XG Electro Percussion", "eb1c03a3-292c-4bc9-b932-ce1c989e02ca", 1);
 
-        static babelwires::LongIdentifier getThisIdentifier();
+        XgElectroPercussionSet(const seqwires::BuiltInPercussionInstruments& builtInInstruments);
     };
 } // namespace smf

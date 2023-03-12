@@ -8,7 +8,9 @@
 #pragma once
 
 #include <SeqWiresLib/Tracks/track.hpp>
+
 #include <BabelWiresLib/Enums/enumWithCppEnum.hpp>
+#include <BabelWiresLib/TypeSystem/primitiveType.hpp>
 
 namespace seqwires {
 #define MONOPHONIC_SUBTRACK_POLICY(X)                                                                                  \
@@ -20,9 +22,8 @@ namespace seqwires {
     /// The enum that determines the algorithm used.
     class MonophonicSubtracksPolicyEnum : public babelwires::Enum {
       public:
+        PRIMITIVE_TYPE("MonoSubtracksPolicy", "Monophonic Subtracks Policy", "d9ae8da5-3001-45ff-b2ce-4375f7d18afd", 1);
         MonophonicSubtracksPolicyEnum();
-
-        static babelwires::LongIdentifier getThisIdentifier();
 
         ENUM_DEFINE_CPP_ENUM(MONOPHONIC_SUBTRACK_POLICY);
     };

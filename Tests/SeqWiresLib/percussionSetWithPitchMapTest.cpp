@@ -9,6 +9,17 @@
 #include <Tests/TestUtils/equalSets.hpp>
 #include <Tests/TestUtils/testIdentifiers.hpp>
 
+namespace {
+    struct TestPercussionSet : seqwires::PercussionSetWithPitchMap
+    {
+        TestPercussionSet(InstrumentBlock block, seqwires::Pitch pitchOfDefaultValue) : PercussionSetWithPitchMap(std::move(block), pitchOfDefaultValue) {}
+        TestPercussionSet(std::vector<InstrumentBlock> instruments, seqwires::Pitch pitchOfDefaultValue) : PercussionSetWithPitchMap(std::move(instruments), pitchOfDefaultValue) {}
+        babelwires::TypeRef getTypeRef() const {
+            return testUtils::getTestRegisteredLongIdentifier("Foo");
+        }
+    };
+}
+
 TEST(PercussionSetWithPitchMapTest, oneInstrumentBlockAllBuiltIn) {
     testUtils::TestEnvironment testEnvironment;
     const seqwires::BuiltInPercussionInstruments* const builtIns =
@@ -20,10 +31,8 @@ TEST(PercussionSetWithPitchMapTest, oneInstrumentBlockAllBuiltIn) {
                                                       40,
                                                       builtIns};
 
-    seqwires::PercussionSetWithPitchMap percussionSet(testUtils::getTestRegisteredLongIdentifier("Foo"), 12, block, 41);
+    TestPercussionSet percussionSet(block, 41);
 
-    EXPECT_EQ(percussionSet.getIdentifier(), "Foo");
-    EXPECT_EQ(percussionSet.getVersion(), 12);
     EXPECT_TRUE(testUtils::areEqualSets(percussionSet.getEnumValues(), {"HBongo", "Claves", "Bass1"}));
     EXPECT_EQ(percussionSet.getEnumValues().size(), 3);
     EXPECT_EQ(percussionSet.getEnumValues()[0], "HBongo");
@@ -50,7 +59,7 @@ TEST(PercussionSetWithPitchMapTest, oneInstrumentBlockAllNew) {
                                                        testUtils::getTestRegisteredIdentifier("Boo")},
                                                       50};
 
-    seqwires::PercussionSetWithPitchMap percussionSet(testUtils::getTestRegisteredLongIdentifier("Foo"), 12, block, 50);
+    TestPercussionSet percussionSet(block, 50);
 
     EXPECT_TRUE(testUtils::areEqualSets(percussionSet.getEnumValues(), {"Bar", "Boo"}));
     EXPECT_EQ(percussionSet.getEnumValues().size(), 2);
@@ -78,7 +87,7 @@ TEST(PercussionSetWithPitchMapTest, oneInstrumentBlockMixed) {
                                                       50,
                                                       builtIns};
 
-    seqwires::PercussionSetWithPitchMap percussionSet(testUtils::getTestRegisteredLongIdentifier("Foo"), 12, block, 50);
+    TestPercussionSet percussionSet(block, 50);
 
     EXPECT_TRUE(testUtils::areEqualSets(percussionSet.getEnumValues(), {"Bar", "Claves"}));
     EXPECT_EQ(percussionSet.getEnumValues().size(), 2);
@@ -111,7 +120,7 @@ TEST(PercussionSetWithPitchMapTest, twoInstrumentBlocks) {
                                                        testUtils::getTestRegisteredIdentifier("Boo")},
                                                       50};
 
-    seqwires::PercussionSetWithPitchMap percussionSet(testUtils::getTestRegisteredLongIdentifier("Foo"), 12, { block0, block1 }, 41);
+    TestPercussionSet percussionSet({ block0, block1 }, 41);
 
     EXPECT_TRUE(testUtils::areEqualSets(percussionSet.getEnumValues(), {"HBongo", "Claves", "Bass1", "Bar", "Boo"}));
     EXPECT_EQ(percussionSet.getEnumValues().size(), 5);
@@ -160,7 +169,7 @@ TEST(PercussionSetWithPitchMapTest, duplicates) {
                                                       50,
                                                       builtIns};
 
-    seqwires::PercussionSetWithPitchMap percussionSet(testUtils::getTestRegisteredLongIdentifier("Foo"), 12, { block0, block1 }, 41);
+    TestPercussionSet percussionSet({ block0, block1 }, 41);
 
     EXPECT_TRUE(testUtils::areEqualSets(percussionSet.getEnumValues(), {"HBongo", "Claves", "Bass1", "Bar"}));
     EXPECT_EQ(percussionSet.getEnumValues().size(), 4);

@@ -21,7 +21,8 @@ void testUtils::testSimpleNotes(const std::vector<seqwires::Pitch>& expectedPitc
     auto noteIterator = track.begin();
     const auto endIterator = track.end();
 
-    for (auto pitch : expectedPitches) {
+    for (unsigned int i = 0; i < expectedPitches.size(); ++i) {
+        auto pitch = expectedPitches[i];
         ASSERT_NE(noteIterator, endIterator);
         auto noteOn = noteIterator->as<const seqwires::NoteOnEvent>();
         ASSERT_NE(noteOn, nullptr);
@@ -53,8 +54,8 @@ void testUtils::testNotes(const std::vector<NoteInfo>& expectedNotes, const seqw
     auto noteIterator = track.begin();
     const auto endIterator = track.end();
 
-    for (auto note : expectedNotes)
-    {
+    for (unsigned int i = 0; i < expectedNotes.size(); ++i) {
+        auto note = expectedNotes[i];
         EXPECT_NE(noteIterator, endIterator);
         auto noteOn = noteIterator->as<const seqwires::NoteOnEvent>();
         ASSERT_NE(noteOn, nullptr);
@@ -82,12 +83,12 @@ void testUtils::addChords(const std::vector<ChordInfo>& chords, seqwires::Track&
 }
 
 void testUtils::testChords(const std::vector<ChordInfo>& expectedChords, const seqwires::Track& track) {
-    // Note: right now, we only parse notes. As we add parsing of other event types, this test will fail.
-    // (A temporarily fix would be to use a FilteredTrackIterator.)
+    // TODO: Use filteredTrackIterator to allow testing chords when other events present.
     auto chordIterator = track.begin();
     const auto endIterator = track.end();
 
-    for (auto expectedChord : expectedChords) {
+    for (unsigned int i = 0; i < expectedChords.size(); ++i) {
+        auto expectedChord = expectedChords[i];
         EXPECT_NE(chordIterator, endIterator);
         auto chordOn = chordIterator->as<const seqwires::ChordOnEvent>();
         ASSERT_NE(chordOn, nullptr);

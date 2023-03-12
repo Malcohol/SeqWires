@@ -8,6 +8,7 @@
 #pragma once
 
 #include <BabelWiresLib/Enums/enum.hpp>
+#include <BabelWiresLib/TypeSystem/primitiveType.hpp>
 
 namespace seqwires {
     /// Any supertype of this enum is assumed to carry values suitable for use as percussion instruments.
@@ -15,10 +16,10 @@ namespace seqwires {
     /// type (or one of its existing supertypes).
     class AbstractPercussionSet : public babelwires::Enum {
       public:
+        PRIMITIVE_TYPE("AbstractPercussionSet", "AbstractPercussionSet", "f81e2125-28e5-485a-88c0-500b5c1dc31e", 1);
+
         AbstractPercussionSet();
 
         virtual bool isAbstract() const override;
-
-        static babelwires::LongIdentifier getThisIdentifier();
     };
 } // namespace seqwires

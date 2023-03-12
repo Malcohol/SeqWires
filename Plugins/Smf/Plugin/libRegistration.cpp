@@ -51,40 +51,40 @@ void smf::registerLib(babelwires::ProjectContext& context) {
     context.m_targetFileFormatReg.addEntry(std::make_unique<smf::SmfTargetFormat>());
 
     // Types
-    context.m_typeSystem.addEntry(std::make_unique<smf::GMSpecType>());
+    context.m_typeSystem.addEntry<smf::GMSpecType>();
 
     // Percussion types
     const seqwires::BuiltInPercussionInstruments& builtInPercussion =
         context.m_typeSystem.getEntryByType<seqwires::BuiltInPercussionInstruments>();
-    context.m_typeSystem.addEntry(std::make_unique<GMPercussionSet>(builtInPercussion));
-    context.m_typeSystem.addEntry(std::make_unique<GM2StandardPercussionSet>(builtInPercussion));
-    context.m_typeSystem.addEntry(std::make_unique<GM2RoomPercussionSet>(builtInPercussion));
-    context.m_typeSystem.addEntry(std::make_unique<GM2PowerPercussionSet>(builtInPercussion));
-    context.m_typeSystem.addEntry(std::make_unique<GM2ElectronicPercussionSet>(builtInPercussion));
-    context.m_typeSystem.addEntry(std::make_unique<GM2AnalogPercussionSet>(builtInPercussion));
-    context.m_typeSystem.addEntry(std::make_unique<GM2JazzPercussionSet>(builtInPercussion));
-    context.m_typeSystem.addEntry(std::make_unique<GM2BrushPercussionSet>(builtInPercussion));
-    context.m_typeSystem.addEntry(std::make_unique<GM2OrchestraPercussionSet>(builtInPercussion));
-    context.m_typeSystem.addEntry(std::make_unique<GM2SFXPercussionSet>(builtInPercussion));
-    context.m_typeSystem.addEntry(std::make_unique<GsStandard1PercussionSet>(builtInPercussion));
-    context.m_typeSystem.addEntry(std::make_unique<GsRoomPercussionSet>(builtInPercussion));
-    context.m_typeSystem.addEntry(std::make_unique<GsPowerPercussionSet>(builtInPercussion));
-    context.m_typeSystem.addEntry(std::make_unique<GsElectronicPercussionSet>(builtInPercussion));
-    context.m_typeSystem.addEntry(std::make_unique<Gs808909PercussionSet>(builtInPercussion));
-    context.m_typeSystem.addEntry(std::make_unique<GsJazzPercussionSet>(builtInPercussion));
-    context.m_typeSystem.addEntry(std::make_unique<GsBrushPercussionSet>(builtInPercussion));
-    context.m_typeSystem.addEntry(std::make_unique<GsOrchestraPercussionSet>(builtInPercussion));
-    context.m_typeSystem.addEntry(std::make_unique<GsSFXPercussionSet>(builtInPercussion));
-    context.m_typeSystem.addEntry(std::make_unique<XgStandard1PercussionSet>(builtInPercussion));
-    context.m_typeSystem.addEntry(std::make_unique<XgRoomPercussionSet>(builtInPercussion));
-    context.m_typeSystem.addEntry(std::make_unique<XgRockPercussionSet>(builtInPercussion));
-    context.m_typeSystem.addEntry(std::make_unique<XgElectroPercussionSet>(builtInPercussion));
-    context.m_typeSystem.addEntry(std::make_unique<XgAnalogPercussionSet>(builtInPercussion));
-    context.m_typeSystem.addEntry(std::make_unique<XgJazzPercussionSet>(builtInPercussion));
-    context.m_typeSystem.addEntry(std::make_unique<XgBrushPercussionSet>(builtInPercussion));
-    context.m_typeSystem.addEntry(std::make_unique<XgClassicPercussionSet>(builtInPercussion));
-    context.m_typeSystem.addEntry(std::make_unique<XgSFX1PercussionSet>(builtInPercussion));
-    context.m_typeSystem.addEntry(std::make_unique<XgSFX2PercussionSet>(builtInPercussion));
+    context.m_typeSystem.addEntry<GMPercussionSet>(builtInPercussion);
+    context.m_typeSystem.addEntry<GM2StandardPercussionSet>(builtInPercussion);
+    context.m_typeSystem.addEntry<GM2RoomPercussionSet>(builtInPercussion);
+    context.m_typeSystem.addEntry<GM2PowerPercussionSet>(builtInPercussion);
+    context.m_typeSystem.addEntry<GM2ElectronicPercussionSet>(builtInPercussion);
+    context.m_typeSystem.addEntry<GM2AnalogPercussionSet>(builtInPercussion);
+    context.m_typeSystem.addEntry<GM2JazzPercussionSet>(builtInPercussion);
+    context.m_typeSystem.addEntry<GM2BrushPercussionSet>(builtInPercussion);
+    context.m_typeSystem.addEntry<GM2OrchestraPercussionSet>(builtInPercussion);
+    context.m_typeSystem.addEntry<GM2SFXPercussionSet>(builtInPercussion);
+    context.m_typeSystem.addEntry<GsStandard1PercussionSet>(builtInPercussion);
+    context.m_typeSystem.addEntry<GsRoomPercussionSet>(builtInPercussion);
+    context.m_typeSystem.addEntry<GsPowerPercussionSet>(builtInPercussion);
+    context.m_typeSystem.addEntry<GsElectronicPercussionSet>(builtInPercussion);
+    context.m_typeSystem.addEntry<Gs808909PercussionSet>(builtInPercussion);
+    context.m_typeSystem.addEntry<GsJazzPercussionSet>(builtInPercussion);
+    context.m_typeSystem.addEntry<GsBrushPercussionSet>(builtInPercussion);
+    context.m_typeSystem.addEntry<GsOrchestraPercussionSet>(builtInPercussion);
+    context.m_typeSystem.addEntry<GsSFXPercussionSet>(builtInPercussion);
+    context.m_typeSystem.addEntry<XgStandard1PercussionSet>(builtInPercussion);
+    context.m_typeSystem.addEntry<XgRoomPercussionSet>(builtInPercussion);
+    context.m_typeSystem.addEntry<XgRockPercussionSet>(builtInPercussion);
+    context.m_typeSystem.addEntry<XgElectroPercussionSet>(builtInPercussion);
+    context.m_typeSystem.addEntry<XgAnalogPercussionSet>(builtInPercussion);
+    context.m_typeSystem.addEntry<XgJazzPercussionSet>(builtInPercussion);
+    context.m_typeSystem.addEntry<XgBrushPercussionSet>(builtInPercussion);
+    context.m_typeSystem.addEntry<XgClassicPercussionSet>(builtInPercussion);
+    context.m_typeSystem.addEntry<XgSFX1PercussionSet>(builtInPercussion);
+    context.m_typeSystem.addEntry<XgSFX2PercussionSet>(builtInPercussion);
 
     // Subtype relationships.
     context.m_typeSystem.addRelatedTypes(GM2StandardPercussionSet::getThisIdentifier(),

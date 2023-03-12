@@ -5,12 +5,8 @@ SeqWires:
 * Improved handling of event truncation: 
   - Use new group events to denote truncated end and start. 
   - When truncated end meets truncated start, act as though event was not truncated.
-* Chords:
-  - Have a "sustain until CancelChord" as an optional policy in the chordsFromNotes processor.
-
 
 Seq2tape:
-* Proper plugin initialization for Seq2tape
 * Add support for setting name and copyright from commandline.
 * Add another text field: info.
 * Test Multichannel input and output
@@ -24,7 +20,6 @@ SMF
 * Support Format 2 files.
 
 Processors:
-* PolyToChord
-* ChordToPoly
-* Harmonize
+* Harmonize - Attempted to adapt notes to a given chord (This is supported by arranger keyboards)
+* First note, last note - Can be combined with the excerpt processor (and possibly quantize) to trim a track.
 * etc.
