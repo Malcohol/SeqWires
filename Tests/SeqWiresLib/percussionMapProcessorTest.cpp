@@ -7,7 +7,7 @@
 #include <SeqWiresLib/Tracks/percussionEvents.hpp>
 #include <SeqWiresLib/Tracks/track.hpp>
 
-#include <BabelWiresLib/Enums/addBlank.hpp>
+#include <BabelWiresLib/Enums/addBlankToEnum.hpp>
 #include <BabelWiresLib/Features/mapFeature.hpp>
 #include <BabelWiresLib/Maps/MapEntries/allToSameFallbackMapEntryData.hpp>
 #include <BabelWiresLib/Maps/MapEntries/oneToOneMapEntryData.hpp>
@@ -24,7 +24,7 @@ namespace {
         const seqwires::BuiltInPercussionInstruments& builtInPercussion =
             typeSystem.getEntryByType<seqwires::BuiltInPercussionInstruments>();
 
-        babelwires::TypeRef targetTypeRef(babelwires::AddBlank::getThisIdentifier(), {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}});
+        babelwires::TypeRef targetTypeRef(babelwires::AddBlankToEnum::getThisIdentifier(), {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}});
 
         babelwires::MapData percussionMap;
         percussionMap.setSourceTypeRef(seqwires::BuiltInPercussionInstruments::getThisIdentifier());
@@ -53,7 +53,7 @@ namespace {
 
         sourceValue.set(
             builtInPercussion.getIdentifierFromValue(seqwires::BuiltInPercussionInstruments::Value::LFlTom));
-        targetValue.set(babelwires::AddBlank::getBlankValue());
+        targetValue.set(babelwires::AddBlankToEnum::getBlankValue());
         maplet.setSourceValue(sourceValue.clone());
         maplet.setTargetValue(targetValue.clone());
         percussionMap.emplaceBack(maplet.clone());
@@ -100,7 +100,7 @@ TEST(PercussionMapProcessorTest, funcSimple) {
     babelwires::TypeSystem typeSystem;
     const seqwires::BuiltInPercussionInstruments* const builtInPercussion =
         typeSystem.addEntry<seqwires::BuiltInPercussionInstruments>();
-    typeSystem.addTypeConstructor<babelwires::AddBlank>();
+    typeSystem.addTypeConstructor<babelwires::AddBlankToEnum>();
 
     const babelwires::MapData mapData = getTestPercussionMap(typeSystem);
     const seqwires::Track inputTrack = getTestInputTrack();
@@ -114,7 +114,7 @@ TEST(PercussionMapProcessorTest, processor) {
     testUtils::TestEnvironment testEnvironment;
     testEnvironment.m_typeSystem.addEntry<seqwires::AbstractPercussionSet>();
     testEnvironment.m_typeSystem.addEntry<seqwires::BuiltInPercussionInstruments>();
-    testEnvironment.m_typeSystem.addTypeConstructor<babelwires::AddBlank>();
+    testEnvironment.m_typeSystem.addTypeConstructor<babelwires::AddBlankToEnum>();
     testEnvironment.m_typeSystem.addRelatedTypes(seqwires::BuiltInPercussionInstruments::getThisIdentifier(),
                                                  {{}, {seqwires::AbstractPercussionSet::getThisIdentifier()}});
 

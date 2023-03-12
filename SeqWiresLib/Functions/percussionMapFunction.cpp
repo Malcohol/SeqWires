@@ -11,14 +11,13 @@
 #include <SeqWiresLib/Tracks/trackEventHolder.hpp>
 #include <SeqWiresLib/Percussion/builtInPercussionInstruments.hpp>
 
-#include <BabelWiresLib/Enums/addBlank.hpp>
+#include <BabelWiresLib/Enums/addBlankToEnum.hpp>
 #include <BabelWiresLib/Features/mapFeature.hpp>
 #include <BabelWiresLib/Features/modelExceptions.hpp>
 #include <BabelWiresLib/Maps/Helpers/enumSourceMapApplicator.hpp>
 #include <BabelWiresLib/Maps/Helpers/unorderedMapApplicator.hpp>
 #include <BabelWiresLib/Maps/Helpers/enumValueAdapters.hpp>
 #include <BabelWiresLib/TypeSystem/typeSystem.hpp>
-//#include <BabelWiresLib/Enums/addBlank.hpp>
 
 seqwires::Track seqwires::mapPercussionFunction(const babelwires::TypeSystem& typeSystem, const Track& trackIn,
                                                 const babelwires::MapData& percussionMapData) {
@@ -40,7 +39,7 @@ seqwires::Track seqwires::mapPercussionFunction(const babelwires::TypeSystem& ty
             TrackEventHolder holder(*it);
             PercussionEvent& percussionEvent = static_cast<PercussionEvent&>(*holder);
             babelwires::Identifier newInstrument = mapApplicator[percussionEvent.getInstrument()];
-            if (newInstrument != babelwires::AddBlank::getBlankValue()) {
+            if (newInstrument != babelwires::AddBlankToEnum::getBlankValue()) {
                 percussionEvent.setInstrument(newInstrument);
                 percussionEvent.setTimeSinceLastEvent(holder->getTimeSinceLastEvent() + timeFromDroppedEvent);
                 timeFromDroppedEvent = 0;
