@@ -12,7 +12,7 @@
 #include <SeqWiresLib/chord.hpp>
 #include <SeqWiresLib/pitchClass.hpp>
 
-#include <BabelWiresLib/Enums/addBlank.hpp>
+#include <BabelWiresLib/Enums/addBlankToEnum.hpp>
 #include <BabelWiresLib/Features/mapFeature.hpp>
 #include <BabelWiresLib/Features/modelExceptions.hpp>
 #include <BabelWiresLib/Maps/Helpers/enumSourceMapApplicator.hpp>
@@ -20,11 +20,11 @@
 #include <BabelWiresLib/TypeSystem/typeSystem.hpp>
 
 babelwires::TypeRef seqwires::getMapChordFunctionChordTypeRef() {
-    return babelwires::TypeRef(babelwires::AddBlank::getThisIdentifier(), {{seqwires::ChordType::getThisIdentifier()}});
+    return babelwires::TypeRef(babelwires::AddBlankToEnum::getThisIdentifier(), {{seqwires::ChordType::getThisIdentifier()}});
 }
 
 babelwires::TypeRef seqwires::getMapChordFunctionPitchClassRef() {
-    return babelwires::TypeRef(babelwires::AddBlank::getThisIdentifier(),
+    return babelwires::TypeRef(babelwires::AddBlankToEnum::getThisIdentifier(),
                                {{seqwires::PitchClass::getThisIdentifier()}});
 }
 
