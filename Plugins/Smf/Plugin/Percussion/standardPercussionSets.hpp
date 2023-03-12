@@ -41,8 +41,8 @@ namespace smf {
         /// Find the percussion set which contains the most instruments from the given set, and is suitable for use in
         /// the given channel.
         const seqwires::PercussionSetWithPitchMap* getBestPercussionSet(GMSpecType::Value gmSpec, int channelNumber,
-                                                  const std::unordered_set<babelwires::Identifier>& instrumentsInUse,
-                                                  std::unordered_set<babelwires::Identifier>& excludedInstrumentsOut);
+                                                  const std::unordered_set<babelwires::ShortId>& instrumentsInUse,
+                                                  std::unordered_set<babelwires::ShortId>& excludedInstrumentsOut);
 
         /// Get setup information for the given percussionSet if any is required. 
         /// A null argument is allowed, in which case an empty optional is returned.
@@ -102,13 +102,13 @@ namespace smf {
         void ensureInstrumentSets();
 
         /// Get the set of instruments in instrumentsInUse missing from the percussion set at the given index.
-        void getExcludedInstruments(int percussionSetIndex, const std::unordered_set<babelwires::Identifier>& instrumentsInUse,
-                                                  std::unordered_set<babelwires::Identifier>& excludedInstrumentsOut);
+        void getExcludedInstruments(int percussionSetIndex, const std::unordered_set<babelwires::ShortId>& instrumentsInUse,
+                                                  std::unordered_set<babelwires::ShortId>& excludedInstrumentsOut);
 
         /// From the range of known percussion, select the best percussion set.
         const seqwires::PercussionSetWithPitchMap* getBestPercussionSetInRange(int startIndex, int endIndex,
-                                                  const std::unordered_set<babelwires::Identifier>& instrumentsInUse,
-                                                  std::unordered_set<babelwires::Identifier>& excludedInstrumentsOut);
+                                                  const std::unordered_set<babelwires::ShortId>& instrumentsInUse,
+                                                  std::unordered_set<babelwires::ShortId>& excludedInstrumentsOut);
 
         /// Find the percussion set in the array of known percussion sets. Asserts if not found.
         KnownPercussionSets getKnownPercussionSetFromPercussionSet(const seqwires::PercussionSetWithPitchMap* percussionSet);
@@ -119,7 +119,7 @@ namespace smf {
         std::array<const seqwires::PercussionSetWithPitchMap*, NUM_KNOWN_PERCUSSION_SETS> m_knownSets;
 
         /// This is populated on demand.
-        std::array<std::unordered_set<babelwires::Identifier>, NUM_KNOWN_PERCUSSION_SETS> m_instrumentSets;
+        std::array<std::unordered_set<babelwires::ShortId>, NUM_KNOWN_PERCUSSION_SETS> m_instrumentSets;
     };
 
 } // namespace smf

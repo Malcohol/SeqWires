@@ -68,7 +68,7 @@ TEST(SmfTestSuiteTest, cMajorScale) {
     EXPECT_EQ(channelGroup.getNumFeatures(), 1);
     const auto* trackFeature = channelGroup.getFeature(0)->as<const seqwires::TrackFeature>();
     ASSERT_NE(trackFeature, nullptr);
-    ASSERT_EQ(channelGroup.getStepToChild(trackFeature), babelwires::PathStep(babelwires::Identifier("ch0")));
+    ASSERT_EQ(channelGroup.getStepToChild(trackFeature), babelwires::PathStep(babelwires::ShortId("ch0")));
 
     const seqwires::Track& track = trackFeature->get();
     const auto& categoryMap = track.getNumEventGroupsByCategory();
@@ -105,7 +105,7 @@ TEST(SmfTestSuiteTest, multichannelChords0) {
         const auto* trackFeature = channelGroup.getFeature(i)->as<const seqwires::TrackFeature>();
         ASSERT_NE(trackFeature, nullptr);
         ASSERT_EQ(channelGroup.getStepToChild(trackFeature),
-                  babelwires::PathStep(babelwires::Identifier(channelNames[i])));
+                  babelwires::PathStep(babelwires::ShortId(channelNames[i])));
         tracks[i] = &trackFeature->get();
     }
 
@@ -142,12 +142,12 @@ TEST(SmfTestSuiteTest, multichannelChords1) {
         const auto* channelNumFeature = channelGroup.getFeature(0)->as<const babelwires::IntFeature>();
         ASSERT_NE(channelNumFeature, nullptr);
         ASSERT_EQ(channelGroup.getStepToChild(channelNumFeature),
-                  babelwires::PathStep(babelwires::Identifier("ChanNo")));
+                  babelwires::PathStep(babelwires::ShortId("ChanNo")));
         EXPECT_EQ(channelNumFeature->get(), i);
 
         const auto* trackFeature = channelGroup.getFeature(1)->as<const seqwires::TrackFeature>();
         ASSERT_NE(trackFeature, nullptr);
-        ASSERT_EQ(channelGroup.getStepToChild(trackFeature), babelwires::PathStep(babelwires::Identifier("Track")));
+        ASSERT_EQ(channelGroup.getStepToChild(trackFeature), babelwires::PathStep(babelwires::ShortId("Track")));
         tracks[i] = &trackFeature->get();
     }
 
@@ -181,17 +181,17 @@ TEST(SmfTestSuiteTest, multichannelChords2) {
 
     const auto* channelNumFeature = channelGroup0.getFeature(0)->as<const babelwires::IntFeature>();
     ASSERT_NE(channelNumFeature, nullptr);
-    ASSERT_EQ(channelGroup0.getStepToChild(channelNumFeature), babelwires::PathStep(babelwires::Identifier("ChanNo")));
+    ASSERT_EQ(channelGroup0.getStepToChild(channelNumFeature), babelwires::PathStep(babelwires::ShortId("ChanNo")));
     EXPECT_EQ(channelNumFeature->get(), 0);
 
     const auto* trackFeature0 = channelGroup0.getFeature(1)->as<const seqwires::TrackFeature>();
     ASSERT_NE(trackFeature0, nullptr);
-    ASSERT_EQ(channelGroup0.getStepToChild(trackFeature0), babelwires::PathStep(babelwires::Identifier("Track")));
+    ASSERT_EQ(channelGroup0.getStepToChild(trackFeature0), babelwires::PathStep(babelwires::ShortId("Track")));
     tracks[0] = &trackFeature0->get();
 
     const auto* trackFeature1 = channelGroup0.getFeature(2)->as<const seqwires::TrackFeature>();
     ASSERT_NE(trackFeature1, nullptr);
-    ASSERT_EQ(channelGroup0.getStepToChild(trackFeature1), babelwires::PathStep(babelwires::Identifier("ex1")));
+    ASSERT_EQ(channelGroup0.getStepToChild(trackFeature1), babelwires::PathStep(babelwires::ShortId("ex1")));
     tracks[1] = &trackFeature1->get();
 
     const auto& channelGroup1 = dynamic_cast<const smf::source::ExtensibleChannelGroup&>(smfFeature->getMidiTrack(1));
@@ -199,12 +199,12 @@ TEST(SmfTestSuiteTest, multichannelChords2) {
 
     const auto* channelNumFeature2 = channelGroup1.getFeature(0)->as<const babelwires::IntFeature>();
     ASSERT_NE(channelNumFeature2, nullptr);
-    ASSERT_EQ(channelGroup1.getStepToChild(channelNumFeature2), babelwires::PathStep(babelwires::Identifier("ChanNo")));
+    ASSERT_EQ(channelGroup1.getStepToChild(channelNumFeature2), babelwires::PathStep(babelwires::ShortId("ChanNo")));
     EXPECT_EQ(channelNumFeature2->get(), 2);
 
     const auto* trackFeature2 = channelGroup1.getFeature(1)->as<const seqwires::TrackFeature>();
     ASSERT_NE(trackFeature2, nullptr);
-    ASSERT_EQ(channelGroup1.getStepToChild(trackFeature2), babelwires::PathStep(babelwires::Identifier("Track")));
+    ASSERT_EQ(channelGroup1.getStepToChild(trackFeature2), babelwires::PathStep(babelwires::ShortId("Track")));
     tracks[2] = &trackFeature2->get();
 
     testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65, 67, 69, 71, 72}, *tracks[0]);
@@ -242,12 +242,12 @@ TEST(SmfTestSuiteTest, multichannelChords3) {
         const auto* channelNumFeature = channelGroup.getFeature(0)->as<const babelwires::IntFeature>();
         ASSERT_NE(channelNumFeature, nullptr);
         ASSERT_EQ(channelGroup.getStepToChild(channelNumFeature),
-                  babelwires::PathStep(babelwires::Identifier("ChanNo")));
+                  babelwires::PathStep(babelwires::ShortId("ChanNo")));
         EXPECT_EQ(channelNumFeature->get(), expectedChannelMapping[i]);
 
         const auto* trackFeature = channelGroup.getFeature(1)->as<const seqwires::TrackFeature>();
         ASSERT_NE(trackFeature, nullptr);
-        ASSERT_EQ(channelGroup.getStepToChild(trackFeature), babelwires::PathStep(babelwires::Identifier("Track")));
+        ASSERT_EQ(channelGroup.getStepToChild(trackFeature), babelwires::PathStep(babelwires::ShortId("Track")));
         tracks[i] = &trackFeature->get();
     }
 
@@ -333,7 +333,7 @@ TEST(SmfTestSuiteTest, testAllGMPercussion) {
     const auto* trackFeature = channelGroup.getFeature(0)->as<const seqwires::TrackFeature>();
     ASSERT_NE(trackFeature, nullptr);
     // Percussion channel
-    ASSERT_EQ(channelGroup.getStepToChild(trackFeature), babelwires::PathStep(babelwires::Identifier("ch9")));
+    ASSERT_EQ(channelGroup.getStepToChild(trackFeature), babelwires::PathStep(babelwires::ShortId("ch9")));
 
     const seqwires::Track& track = trackFeature->get();
 

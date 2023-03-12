@@ -353,10 +353,10 @@ void smf::SmfWriter::writeTrack(const std::vector<const target::ChannelTrackFeat
     m_os->write(tempStream.str().data(), tempStream.tellp());
 }
 
-void smf::SmfWriter::setUpPercussionKit(const std::unordered_set<babelwires::Identifier>& instrumentsInUse,
+void smf::SmfWriter::setUpPercussionKit(const std::unordered_set<babelwires::ShortId>& instrumentsInUse,
                                         int channelNumber) {
     const GMSpecType::Value gmSpec = m_smfFormatFeature.getMidiMetadata().getSpecFeature()->getAsValue();
-    std::unordered_set<babelwires::Identifier> excludedInstruments;
+    std::unordered_set<babelwires::ShortId> excludedInstruments;
     m_channelSetup[channelNumber].m_kitIfPercussion =
         m_standardPercussionSets.getBestPercussionSet(gmSpec, channelNumber, instrumentsInUse, excludedInstruments);
     if (!excludedInstruments.empty()) {
@@ -367,7 +367,7 @@ void smf::SmfWriter::setUpPercussionKit(const std::unordered_set<babelwires::Ide
 
 namespace {
     void getPercussionInstrumentsInUse(const seqwires::Track& track,
-                                       std::unordered_set<babelwires::Identifier>& instrumentsInUse) {
+                                       std::unordered_set<babelwires::ShortId>& instrumentsInUse) {
         for (auto it : seqwires::iterateOver<seqwires::PercussionEvent>(track)) {
             instrumentsInUse.insert(it.getInstrument());
         }
@@ -376,7 +376,7 @@ namespace {
 } // namespace
 
 void smf::SmfWriter::setUpPercussionSets() {
-    std::array<std::unordered_set<babelwires::Identifier>, 16> instrumentsInUse;
+    std::array<std::unordered_set<babelwires::ShortId>, 16> instrumentsInUse;
     const int numTracks = m_smfFormatFeature.getNumMidiTracks();
     for (int i = 0; i < numTracks; ++i) {
         const smf::target::ChannelTrackFeature& channelAndTrack = m_smfFormatFeature.getMidiTrack(i);

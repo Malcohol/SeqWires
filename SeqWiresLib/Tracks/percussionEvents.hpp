@@ -18,20 +18,20 @@ namespace seqwires {
 
         static GroupingInfo::Category s_percussionEventCategory;
 
-        void setInstrument(babelwires::Identifier instrument) { m_instrument = instrument; }
-        babelwires::Identifier getInstrument() const { return m_instrument; }
+        void setInstrument(babelwires::ShortId instrument) { m_instrument = instrument; }
+        babelwires::ShortId getInstrument() const { return m_instrument; }
 
         void setVelocity(Velocity velocity) { m_velocity = velocity; }
         Velocity getVelocity() const { return m_velocity; }
 
       protected:
-        PercussionEvent(ModelDuration timeSinceLastEvent, babelwires::Identifier instrument, Velocity velocity)
+        PercussionEvent(ModelDuration timeSinceLastEvent, babelwires::ShortId instrument, Velocity velocity)
             : TrackEvent(timeSinceLastEvent)
             , m_instrument(instrument)
             , m_velocity(velocity) {}
 
       protected:
-        babelwires::Identifier m_instrument;
+        babelwires::ShortId m_instrument;
         Velocity m_velocity;
     };
 
@@ -39,7 +39,7 @@ namespace seqwires {
     struct PercussionOnEvent : public PercussionEvent {
         STREAM_EVENT(PercussionOnEvent);
         PercussionOnEvent() = default;
-        PercussionOnEvent(ModelDuration timeSinceLastEvent, babelwires::Identifier instrument, Velocity velocity = 127)
+        PercussionOnEvent(ModelDuration timeSinceLastEvent, babelwires::ShortId instrument, Velocity velocity = 127)
             : PercussionEvent(timeSinceLastEvent, instrument, velocity) {}
         virtual bool operator==(const TrackEvent& other) const override;
         virtual std::size_t getHash() const override;
@@ -50,7 +50,7 @@ namespace seqwires {
     struct PercussionOffEvent : public PercussionEvent {
         STREAM_EVENT(PercussionOffEvent);
         PercussionOffEvent() = default;
-        PercussionOffEvent(ModelDuration timeSinceLastEvent, babelwires::Identifier instrument, Velocity velocity = 64)
+        PercussionOffEvent(ModelDuration timeSinceLastEvent, babelwires::ShortId instrument, Velocity velocity = 64)
             : PercussionEvent(timeSinceLastEvent, instrument, velocity) {}
 
         virtual bool operator==(const TrackEvent& other) const override;

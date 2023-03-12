@@ -64,7 +64,7 @@ namespace smf {
         void writeGlobalSetup();
 
         /// Determine from the events in the tracks what percussion kit (allowed for the channelNumber) includes the largest number of the events.
-        void setUpPercussionKit(const std::unordered_set<babelwires::Identifier>& instrumentsInUse, int channelNumber);
+        void setUpPercussionKit(const std::unordered_set<babelwires::ShortId>& instrumentsInUse, int channelNumber);
 
         void setUpPercussionSets();
 
