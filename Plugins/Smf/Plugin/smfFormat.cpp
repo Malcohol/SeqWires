@@ -23,7 +23,7 @@ smf::SmfSourceFormat::SmfSourceFormat()
           REGISTERED_LONGID(s_formatIdentifier, "Standard MIDI file (in)", "418b8238-c184-4885-a369-b24c4e0d06ec"), 1,
           Extensions{"mid", "smf"}) {}
 
-babelwires::LongIdentifier smf::SmfSourceFormat::getThisIdentifier() {
+babelwires::LongId smf::SmfSourceFormat::getThisIdentifier() {
     return s_formatIdentifier;
 }
 

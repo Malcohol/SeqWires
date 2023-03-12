@@ -27,7 +27,7 @@ namespace seq2tape {
     class TapeFile {
       public:
         /// Construct an empty TapeFile for the given format.
-        TapeFile(babelwires::LongIdentifier formatIdentifier);
+        TapeFile(babelwires::LongId formatIdentifier);
 
         /// Load the TapeFile from the data stream.
         TapeFile(babelwires::DataSource& dataSource);
@@ -35,7 +35,7 @@ namespace seq2tape {
         /// Write the PmcTapFile as bytes to the stream.
         void write(std::ostream& stream) const;
 
-        babelwires::LongIdentifier getFormatIdentifier() const;
+        babelwires::LongId getFormatIdentifier() const;
 
         std::string getName() const;
         void setName(std::string name);
@@ -51,7 +51,7 @@ namespace seq2tape {
         void addDataFile(std::unique_ptr<DataFile> dataFile);
 
       protected:
-        babelwires::LongIdentifier m_formatIdentifier;
+        babelwires::LongId m_formatIdentifier;
         std::string m_name;
         std::string m_copyright;
 

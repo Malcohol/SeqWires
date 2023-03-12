@@ -39,7 +39,7 @@ namespace {
         void getAllPercussionTypes(AllowedTypes& allowedTypesOut) const {
             const babelwires::ProjectContext& context = babelwires::RootFeature::getProjectContextAt(*this);
             auto superTypes = context.m_typeSystem.getAllSupertypes(seqwires::AbstractPercussionSet::getThisIdentifier());
-            std::for_each(superTypes.begin(), superTypes.end(), [&allowedTypesOut](babelwires::LongIdentifier typeId) { allowedTypesOut.m_typeRefs.emplace_back(typeId); });
+            std::for_each(superTypes.begin(), superTypes.end(), [&allowedTypesOut](babelwires::LongId typeId) { allowedTypesOut.m_typeRefs.emplace_back(typeId); });
                 
             // Maybe remove the abstract types here.
             const auto it = std::find(allowedTypesOut.m_typeRefs.begin(), allowedTypesOut.m_typeRefs.end(),
