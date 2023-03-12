@@ -29,12 +29,12 @@ namespace {
 seqwires::RepeatProcessor::RepeatProcessor(const babelwires::ProjectContext& projectContext) 
 : babelwires::ParallelProcessor<seqwires::TrackFeature, seqwires::TrackFeature>(projectContext) {
     m_count = m_inputFeature->addField(std::make_unique<NonNegativeIntFeature>(),
-                                       REGISTERED_ID("Count", "Count", "f5d2ab08-4430-47fa-b26c-0ff2154826e3"));
-    addArrayFeature(REGISTERED_ID("Tracks", "Tracks", "f727937f-0215-4527-bab4-0eca269d6c5c"));
+                                       BW_SHORT_ID("Count", "Count", "f5d2ab08-4430-47fa-b26c-0ff2154826e3"));
+    addArrayFeature(BW_SHORT_ID("Tracks", "Tracks", "f727937f-0215-4527-bab4-0eca269d6c5c"));
 }
 
 seqwires::RepeatProcessor::Factory::Factory()
-    : CommonProcessorFactory(REGISTERED_LONGID("RepeatTracks", "Repeat", "6c5b3e89-bb57-4c90-8a66-1d8cdeb29db9"), 1) {}
+    : CommonProcessorFactory(BW_LONG_ID("RepeatTracks", "Repeat", "6c5b3e89-bb57-4c90-8a66-1d8cdeb29db9"), 1) {}
 
 void seqwires::RepeatProcessor::processEntry(babelwires::UserLogger& userLogger, const seqwires::TrackFeature& input, seqwires::TrackFeature& output) const {
     auto trackOut = std::make_unique<Track>();

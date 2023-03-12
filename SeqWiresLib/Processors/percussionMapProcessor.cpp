@@ -53,13 +53,13 @@ namespace {
 seqwires::PercussionMapProcessor::PercussionMapProcessor(const babelwires::ProjectContext& context)
     : babelwires::ParallelProcessor<seqwires::TrackFeature, seqwires::TrackFeature>(context) {
     m_percussionMapFeature = m_inputFeature->addField(
-        std::make_unique<PercussionTypeMap>(), REGISTERED_ID("Map", "Map", "b8cbf8c9-579b-4292-bdef-524b7d1010bc"));
-    addArrayFeature(REGISTERED_ID("Tracks", "Tracks", "fe71b1c6-6604-430b-a731-f40b2692d2cf"));
+        std::make_unique<PercussionTypeMap>(), BW_SHORT_ID("Map", "Map", "b8cbf8c9-579b-4292-bdef-524b7d1010bc"));
+    addArrayFeature(BW_SHORT_ID("Tracks", "Tracks", "fe71b1c6-6604-430b-a731-f40b2692d2cf"));
 }
 
 seqwires::PercussionMapProcessor::Factory::Factory()
     : CommonProcessorFactory(
-          REGISTERED_LONGID("PercussionMapProcessor", "Percussion Map", "1ab6fd2b-8176-4516-9d9a-3b2d91a53f42"), 1) {}
+          BW_LONG_ID("PercussionMapProcessor", "Percussion Map", "1ab6fd2b-8176-4516-9d9a-3b2d91a53f42"), 1) {}
 
 void seqwires::PercussionMapProcessor::processEntry(babelwires::UserLogger& userLogger,
                                                     const seqwires::TrackFeature& input,

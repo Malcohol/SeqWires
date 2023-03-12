@@ -67,9 +67,9 @@ void smf::source::ExtensibleChannelGroup::setPrivilegedTrack(int c) {
     assert((c <= 15) && "Channel number out of range");
     assert((m_channelNum == nullptr) && "The first channel was already set");
     m_channelNum = addField(std::make_unique<babelwires::HasStaticRange<babelwires::IntFeature, 0, 15>>(),
-                            REGISTERED_ID("ChanNo", "channel", "011e3ef1-4c06-4e40-bba4-b242dc8a3d3a"));
+                            BW_SHORT_ID("ChanNo", "channel", "011e3ef1-4c06-4e40-bba4-b242dc8a3d3a"));
     m_trackFeature = addField(std::make_unique<seqwires::TrackFeature>(),
-                                  REGISTERED_ID("Track", "track", "b48b1dff-6fa4-4c2f-8f77-bc50f44fb09a"));
+                                  BW_SHORT_ID("Track", "track", "b48b1dff-6fa4-4c2f-8f77-bc50f44fb09a"));
     m_channelNum->set(c);
 }
 
@@ -92,7 +92,7 @@ smf::source::SmfFeature::SmfFeature(const babelwires::ProjectContext& projectCon
     , m_format(f) {
     assert((f != SMF_UNKNOWN_FORMAT) && "You can only construct a format 0, 1 or 2 MIDI file");
     m_metadata = addField(std::make_unique<MidiMetadata>(),
-        REGISTERED_ID("Meta", "Metadata", "72bbbcee-2b53-4fb2-bfb8-4f5e495f9166"));
+        BW_SHORT_ID("Meta", "Metadata", "72bbbcee-2b53-4fb2-bfb8-4f5e495f9166"));
 }
 
 smf::source::SmfFeature::Format smf::source::SmfFeature::getFormat() const {
@@ -110,7 +110,7 @@ const smf::MidiMetadata& smf::source::SmfFeature::getMidiMetadata() const {
 smf::source::Format0SmfFeature::Format0SmfFeature(const babelwires::ProjectContext& projectContext)
     : SmfFeature(projectContext, SMF_FORMAT_0) {
     m_channelGroup = addField(std::make_unique<RecordChannelGroup>(),
-                              REGISTERED_ID("tracks", "tracks", "3fb0f062-4e8e-4b37-a598-edcd63f82971"));
+                              BW_SHORT_ID("tracks", "tracks", "3fb0f062-4e8e-4b37-a598-edcd63f82971"));
 }
 
 int smf::source::Format0SmfFeature::getNumMidiTracks() const {
@@ -129,7 +129,7 @@ smf::source::ChannelGroup* smf::source::Format0SmfFeature::getMidiTrack0() {
 smf::source::Format1SmfFeature::Format1SmfFeature(const babelwires::ProjectContext& projectContext)
     : SmfFeature(projectContext, SMF_FORMAT_1) {
     m_tracks = addField(std::make_unique<TrackArray>(),
-                        REGISTERED_ID("Tracks", "tracks", "3042e0e6-62a6-4a75-b886-77b873005da8"));
+                        BW_SHORT_ID("Tracks", "tracks", "3042e0e6-62a6-4a75-b886-77b873005da8"));
 }
 
 int smf::source::Format1SmfFeature::getNumMidiTracks() const {

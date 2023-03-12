@@ -46,12 +46,12 @@ seqwires::QuantizeProcessor::QuantizeProcessor(const babelwires::ProjectContext&
     : babelwires::ParallelProcessor<seqwires::TrackFeature, seqwires::TrackFeature>(projectContext) {
     m_beat =
         m_inputFeature->addField(std::make_unique<StrictlyPositiveRational>(),
-                                 REGISTERED_ID("Beat", "Beat", "1651ab49-3313-4cd3-b92d-16742b7f5921"));
-    addArrayFeature(REGISTERED_ID("Tracks", "Tracks", "e00623bf-c0f0-4fee-b6c4-4f65df896bf3"));
+                                 BW_SHORT_ID("Beat", "Beat", "1651ab49-3313-4cd3-b92d-16742b7f5921"));
+    addArrayFeature(BW_SHORT_ID("Tracks", "Tracks", "e00623bf-c0f0-4fee-b6c4-4f65df896bf3"));
 }
 
 seqwires::QuantizeProcessor::Factory::Factory()
-    : CommonProcessorFactory(REGISTERED_LONGID("QuantizeTracks", "Quantize", "1ae89077-2cfb-4071-910c-2f5dcfc85b17"),
+    : CommonProcessorFactory(BW_LONG_ID("QuantizeTracks", "Quantize", "1ae89077-2cfb-4071-910c-2f5dcfc85b17"),
                              1) {}
 
 void seqwires::QuantizeProcessor::processEntry(babelwires::UserLogger& userLogger, const seqwires::TrackFeature& input,

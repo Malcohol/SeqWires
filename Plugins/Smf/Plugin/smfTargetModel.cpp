@@ -17,9 +17,9 @@
 
 smf::target::ChannelTrackFeature::ChannelTrackFeature() {
     m_channelNum = addField(std::make_unique<babelwires::HasStaticRange<babelwires::IntFeature, 0, 15>>(),
-                            REGISTERED_ID("Chan", "channel", "cad592ef-2355-4837-a265-38b49eae7599"));
+                            BW_SHORT_ID("Chan", "channel", "cad592ef-2355-4837-a265-38b49eae7599"));
     m_trackFeature = addField(std::make_unique<seqwires::TrackFeature>(),
-                              REGISTERED_ID("Track", "track", "a6db15c9-9f29-4fb3-92c4-771746b2b97f"));
+                              BW_SHORT_ID("Track", "track", "a6db15c9-9f29-4fb3-92c4-771746b2b97f"));
 }
 
 int smf::target::ChannelTrackFeature::getChannelNumber() const {
@@ -57,9 +57,9 @@ namespace {
 smf::target::SmfFormatFeature::SmfFormatFeature()
     : UnionFeature(REGISTERED_ID_VECTOR(formatIdentifiersSource), 0) {
     m_metadata = addField(std::make_unique<MidiMetadata>(),
-                          REGISTERED_ID("Meta", "Metadata", "72bbbcee-2b53-4fb2-bfb8-4f5e495f9166"));
+                          BW_SHORT_ID("Meta", "Metadata", "72bbbcee-2b53-4fb2-bfb8-4f5e495f9166"));
     m_channelGroup = addField(std::make_unique<ArrayChannelGroup>(),
-                              REGISTERED_ID("tracks", "tracks", "1aa014da-2fb3-46e2-96df-98c7798b4a87"));
+                              BW_SHORT_ID("tracks", "tracks", "1aa014da-2fb3-46e2-96df-98c7798b4a87"));
 }
 
 const smf::MidiMetadata& smf::target::SmfFormatFeature::getMidiMetadata() const {
@@ -73,7 +73,7 @@ smf::MidiMetadata& smf::target::SmfFormatFeature::getMidiMetadata() {
 smf::target::SmfFeature::SmfFeature(const babelwires::ProjectContext& projectContext)
     : babelwires::FileFeature(projectContext, SmfSourceFormat::getThisIdentifier()) {
     m_formatFeature = addField(std::make_unique<SmfFormatFeature>(),
-                               REGISTERED_ID("Format", "Format", "1f2eaefb-b48d-484d-8793-e14f2fa0193b"));
+                               BW_SHORT_ID("Format", "Format", "1f2eaefb-b48d-484d-8793-e14f2fa0193b"));
 }
 
 int smf::target::SmfFormatFeature::getNumMidiTracks() const {

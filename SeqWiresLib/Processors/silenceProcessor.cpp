@@ -21,13 +21,13 @@
 seqwires::SilenceProcessor::SilenceProcessor(const babelwires::ProjectContext& projectContext)
 : CommonProcessor(projectContext) {
     m_duration = m_inputFeature->addField(std::make_unique<DurationFeature>(),
-                                       REGISTERED_ID("Durn", "Duration", "05d3ea91-cb90-42f5-9988-2fb2e02e231c"));
+                                       BW_SHORT_ID("Durn", "Duration", "05d3ea91-cb90-42f5-9988-2fb2e02e231c"));
     m_trackOut = m_outputFeature->addField(std::make_unique<TrackFeature>(),
-                                                REGISTERED_ID("Track", "Track", "86f3d028-a616-4a95-a566-a010ffcabb19"));
+                                                BW_SHORT_ID("Track", "Track", "86f3d028-a616-4a95-a566-a010ffcabb19"));
 }
 
 seqwires::SilenceProcessor::Factory::Factory()
-    : CommonProcessorFactory(REGISTERED_LONGID("SilentTrack", "Silence", "c59e4643-b7d8-430b-980b-bd81b5aa007b"), 1) {}
+    : CommonProcessorFactory(BW_LONG_ID("SilentTrack", "Silence", "c59e4643-b7d8-430b-980b-bd81b5aa007b"), 1) {}
 
 void seqwires::SilenceProcessor::process(babelwires::UserLogger& userLogger) {
     if (m_duration->isChanged(babelwires::Feature::Changes::SomethingChanged)) {
