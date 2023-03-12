@@ -85,7 +85,7 @@ jobs:
     - name: BabelWiresBuiltInsTest
       working-directory: build
       shell: bash
-      run: BabelWires/Tests/BabelWiresBuiltInsLib/${{ matrix.config.targetFolder }}BabelWiresBuiltInsLib${{ matrix.config.exeExtension }}
+      run: BabelWires/Tests/BabelWiresLibBuiltIns/${{ matrix.config.targetFolder }}babelWiresBuiltInsTests${{ matrix.config.exeExtension }}
 
     - name: SeqWiresLibTests
       working-directory: build

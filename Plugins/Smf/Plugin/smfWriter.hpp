@@ -16,7 +16,7 @@
 #include <ostream>
 
 namespace babelwires {
-    class UserLogger;
+    struct UserLogger;
 }
 
 namespace seqwires {
