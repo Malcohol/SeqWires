@@ -20,7 +20,7 @@ namespace seqwires {
     /// a "Cancel Chord" event is observed (three consecutive pitches).
     class FingeredChordsSustainPolicyEnum : public babelwires::Enum {
       public:
-        PRIMITIVE_TYPE("FingeredChordsPolicy", "Fingered Chords Sustain Policy", "64bb3fa9-1b77-4629-b691-431713fe2eee", 1);
+        PRIMITIVE_TYPE("FingeredPolicy", "Fingered Chords Sustain Policy", "64bb3fa9-1b77-4629-b691-431713fe2eee", 1);
         FingeredChordsSustainPolicyEnum();
 
         ENUM_DEFINE_CPP_ENUM(FINGERED_CHORDS_SUSTAIN_POLICY);

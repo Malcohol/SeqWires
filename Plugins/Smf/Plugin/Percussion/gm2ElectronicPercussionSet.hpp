@@ -15,7 +15,7 @@ namespace smf {
     /// A PercussionSet corresponding to the instruments of GM2 Electronic Percussion Set.
     class GM2ElectronicPercussionSet : public seqwires::PercussionSetWithPitchMap {
       public:
-        PRIMITIVE_TYPE("GM2ElectronicPerc", "General MIDI 2 Electronic Percussion", "cd9a66f3-baa8-49f0-844b-c41642e945d5", 1);
+        PRIMITIVE_TYPE("GM2ElecPerc", "General MIDI 2 Electronic Percussion", "cd9a66f3-baa8-49f0-844b-c41642e945d5", 1);
         GM2ElectronicPercussionSet(const seqwires::BuiltInPercussionInstruments& builtInInstruments);
     };
 } // namespace smf

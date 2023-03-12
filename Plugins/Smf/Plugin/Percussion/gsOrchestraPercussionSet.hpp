@@ -15,7 +15,7 @@ namespace smf {
     /// A PercussionSet corresponding to the instruments of GS Orchestra percussion set.
     class GsOrchestraPercussionSet : public seqwires::PercussionSetWithPitchMap {
       public:
-        PRIMITIVE_TYPE("GSOrchestraPerc", "Roland GS Orchestra Percussion", "31152c6f-c782-4c02-9125-d2cbcc49ca7e", 1);
+        PRIMITIVE_TYPE("GSOrchPerc", "Roland GS Orchestra Percussion", "31152c6f-c782-4c02-9125-d2cbcc49ca7e", 1);
 
         GsOrchestraPercussionSet(const seqwires::BuiltInPercussionInstruments& builtInInstruments);
     };

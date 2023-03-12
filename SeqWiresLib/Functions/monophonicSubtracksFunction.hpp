@@ -22,7 +22,7 @@ namespace seqwires {
     /// The enum that determines the algorithm used.
     class MonophonicSubtracksPolicyEnum : public babelwires::Enum {
       public:
-        PRIMITIVE_TYPE("MonoSubtracksPolicy", "Monophonic Subtracks Policy", "d9ae8da5-3001-45ff-b2ce-4375f7d18afd", 1);
+        PRIMITIVE_TYPE("MonoPolicy", "Monophonic Subtracks Policy", "d9ae8da5-3001-45ff-b2ce-4375f7d18afd", 1);
         MonophonicSubtracksPolicyEnum();
 
         ENUM_DEFINE_CPP_ENUM(MONOPHONIC_SUBTRACK_POLICY);
