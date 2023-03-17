@@ -26,7 +26,7 @@ namespace seqwires {
         /// A block of instruments which have contiguous pitches.
         struct InstrumentBlock {
           /// For convenience, you can directly reference built-in percussion instruments.
-          std::vector<std::variant<babelwires::Identifier, seqwires::BuiltInPercussionInstruments::Value>> m_instruments;
+          std::vector<std::variant<babelwires::ShortId, seqwires::BuiltInPercussionInstruments::Value>> m_instruments;
           seqwires::Pitch m_pitchOfLowestInstrument;
           // Only needed if values are present in m_instruments.
           const seqwires::BuiltInPercussionInstruments* m_builtInPercussionInstruments = nullptr;
@@ -40,10 +40,10 @@ namespace seqwires {
 
         /// Get the pitch of an instrument if it is in this set.
         /// The highest pitch of any duplicate instrument is returned.
-        std::optional<seqwires::Pitch> tryGetPitchFromInstrument(babelwires::Identifier identifier) const;
+        std::optional<seqwires::Pitch> tryGetPitchFromInstrument(babelwires::ShortId identifier) const;
 
         /// Get the instrument corresponding to the pitch, if it is in this set.
-        std::optional<babelwires::Identifier> tryGetInstrumentFromPitch(seqwires::Pitch pitch) const;
+        std::optional<babelwires::ShortId> tryGetInstrumentFromPitch(seqwires::Pitch pitch) const;
 
       private:
         // Private class just used to pass complex calculated arguments to the base class constructor.
@@ -52,7 +52,7 @@ namespace seqwires {
         PercussionSetWithPitchMap(ComplexConstructorArguments&& removeDuplicates);
 
       private:
-        std::unordered_map<seqwires::Pitch, babelwires::Identifier> m_pitchToInstrument;
-        std::unordered_map<babelwires::Identifier, seqwires::Pitch> m_instrumentToPitch;
+        std::unordered_map<seqwires::Pitch, babelwires::ShortId> m_pitchToInstrument;
+        std::unordered_map<babelwires::ShortId, seqwires::Pitch> m_instrumentToPitch;
     };
 }

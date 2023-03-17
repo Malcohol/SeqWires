@@ -223,8 +223,8 @@ void smf::StandardPercussionSets::ensureInstrumentSets() {
 }
 
 void smf::StandardPercussionSets::getExcludedInstruments(
-    int percussionSetIndex, const std::unordered_set<babelwires::Identifier>& instrumentsInUse,
-    std::unordered_set<babelwires::Identifier>& excludedInstrumentsOut) {
+    int percussionSetIndex, const std::unordered_set<babelwires::ShortId>& instrumentsInUse,
+    std::unordered_set<babelwires::ShortId>& excludedInstrumentsOut) {
     ensureInstrumentSets();
     for (auto instrument : instrumentsInUse) {
         if (m_instrumentSets[percussionSetIndex].find(instrument) == m_instrumentSets[percussionSetIndex].end()) {
@@ -234,11 +234,11 @@ void smf::StandardPercussionSets::getExcludedInstruments(
 }
 
 const seqwires::PercussionSetWithPitchMap* smf::StandardPercussionSets::getBestPercussionSetInRange(
-    int startIndex, int endIndex, const std::unordered_set<babelwires::Identifier>& instrumentsInUse,
-    std::unordered_set<babelwires::Identifier>& excludedInstrumentsOut) {
+    int startIndex, int endIndex, const std::unordered_set<babelwires::ShortId>& instrumentsInUse,
+    std::unordered_set<babelwires::ShortId>& excludedInstrumentsOut) {
 
     int bestFit = NOT_PERCUSSION;
-    std::unordered_set<babelwires::Identifier> candidateExclusions;
+    std::unordered_set<babelwires::ShortId> candidateExclusions;
     excludedInstrumentsOut = instrumentsInUse;
 
     for (int i = startIndex; i <= endIndex; ++i) {
@@ -254,8 +254,8 @@ const seqwires::PercussionSetWithPitchMap* smf::StandardPercussionSets::getBestP
 
 const seqwires::PercussionSetWithPitchMap*
 smf::StandardPercussionSets::getBestPercussionSet(GMSpecType::Value gmSpec, int channelNumber,
-                                                  const std::unordered_set<babelwires::Identifier>& instrumentsInUse,
-                                                  std::unordered_set<babelwires::Identifier>& excludedInstrumentsOut) {
+                                                  const std::unordered_set<babelwires::ShortId>& instrumentsInUse,
+                                                  std::unordered_set<babelwires::ShortId>& excludedInstrumentsOut) {
     if (gmSpec == GMSpecType::Value::GM) {
         if (channelNumber == 9) {
             return getBestPercussionSetInRange(GM_PERCUSSION_SET, GM_PERCUSSION_SET, instrumentsInUse,

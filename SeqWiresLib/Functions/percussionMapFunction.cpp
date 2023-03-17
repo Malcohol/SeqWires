@@ -27,7 +27,7 @@ seqwires::Track seqwires::mapPercussionFunction(const babelwires::TypeSystem& ty
     }
 
     const babelwires::EnumToIdentifierValueAdapter enumToIdentifierAdapter;
-    babelwires::UnorderedMapApplicator<babelwires::Identifier, babelwires::Identifier> mapApplicator{ percussionMapData, enumToIdentifierAdapter, enumToIdentifierAdapter };
+    babelwires::UnorderedMapApplicator<babelwires::ShortId, babelwires::ShortId> mapApplicator{ percussionMapData, enumToIdentifierAdapter, enumToIdentifierAdapter };
 
     Track trackOut;
     // If an event is dropped, then we need to carry its time forward for the next event.
@@ -38,7 +38,7 @@ seqwires::Track seqwires::mapPercussionFunction(const babelwires::TypeSystem& ty
         if (info.m_category == PercussionEvent::s_percussionEventCategory) {
             TrackEventHolder holder(*it);
             PercussionEvent& percussionEvent = static_cast<PercussionEvent&>(*holder);
-            babelwires::Identifier newInstrument = mapApplicator[percussionEvent.getInstrument()];
+            babelwires::ShortId newInstrument = mapApplicator[percussionEvent.getInstrument()];
             if (newInstrument != babelwires::AddBlankToEnum::getBlankValue()) {
                 percussionEvent.setInstrument(newInstrument);
                 percussionEvent.setTimeSinceLastEvent(holder->getTimeSinceLastEvent() + timeFromDroppedEvent);

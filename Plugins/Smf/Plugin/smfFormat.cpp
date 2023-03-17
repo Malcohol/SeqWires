@@ -20,10 +20,10 @@ namespace {
 
 smf::SmfSourceFormat::SmfSourceFormat()
     : SourceFileFormat(
-          REGISTERED_LONGID(s_formatIdentifier, "Standard MIDI file (in)", "418b8238-c184-4885-a369-b24c4e0d06ec"), 1,
+          BW_LONG_ID(s_formatIdentifier, "Standard MIDI file (in)", "418b8238-c184-4885-a369-b24c4e0d06ec"), 1,
           Extensions{"mid", "smf"}) {}
 
-babelwires::LongIdentifier smf::SmfSourceFormat::getThisIdentifier() {
+babelwires::LongId smf::SmfSourceFormat::getThisIdentifier() {
     return s_formatIdentifier;
 }
 
@@ -42,7 +42,7 @@ smf::SmfSourceFormat::loadFromFile(babelwires::DataSource& dataSource, const bab
 }
 
 smf::SmfTargetFormat::SmfTargetFormat()
-    : TargetFileFormat(REGISTERED_LONGID("SmfFile", "Standard MIDI file (out)", "f29cd3b0-8a46-4a21-bb7d-53acd6702944"),
+    : TargetFileFormat(BW_LONG_ID("SmfFile", "Standard MIDI file (out)", "f29cd3b0-8a46-4a21-bb7d-53acd6702944"),
                        1, Extensions{"mid", "smf"}) {}
 
 std::string smf::SmfTargetFormat::getManufacturerName() const {

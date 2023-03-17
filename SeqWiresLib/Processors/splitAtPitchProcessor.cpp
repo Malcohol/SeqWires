@@ -23,19 +23,19 @@
 seqwires::SplitAtPitchProcessor::SplitAtPitchProcessor(const babelwires::ProjectContext& projectContext)
 : CommonProcessor(projectContext) {
     m_pitch = m_inputFeature->addField(std::make_unique<PitchFeature>(),
-                                       REGISTERED_ID("Pitch", "Pitch", "6b721baa-084f-450b-bf35-2e08a9592958"));
+                                       BW_SHORT_ID("Pitch", "Pitch", "6b721baa-084f-450b-bf35-2e08a9592958"));
     m_trackIn = m_inputFeature->addField(std::make_unique<TrackFeature>(),
-                                              REGISTERED_ID("Input", "Input Track", "9314a43f-256a-4915-b218-f2ba37133863"));
+                                              BW_SHORT_ID("Input", "Input Track", "9314a43f-256a-4915-b218-f2ba37133863"));
     m_equalOrAboveTrackOut = m_outputFeature->addField(std::make_unique<TrackFeature>(),
-                                                REGISTERED_ID("Above", "Notes at/above", "4c65b7f1-e546-4df2-9891-23623b74bc23"));
+                                                BW_SHORT_ID("Above", "Notes at/above", "4c65b7f1-e546-4df2-9891-23623b74bc23"));
     m_belowTrackOut = m_outputFeature->addField(std::make_unique<TrackFeature>(),
-                                                REGISTERED_ID("Below", "Notes below", "ab6a1d57-8c77-4df9-baf7-4b24136d9279"));
+                                                BW_SHORT_ID("Below", "Notes below", "ab6a1d57-8c77-4df9-baf7-4b24136d9279"));
     m_otherTrackOut = m_outputFeature->addField(std::make_unique<TrackFeature>(),
-                                                REGISTERED_ID("Other", "Other", "83bf663c-2931-467f-8403-b12e18138c68"));
+                                                BW_SHORT_ID("Other", "Other", "83bf663c-2931-467f-8403-b12e18138c68"));
 }
 
 seqwires::SplitAtPitchProcessor::Factory::Factory()
-    : CommonProcessorFactory(REGISTERED_LONGID("SplitAtPitchProcessor", "Split At Pitch", "9f5076f5-42a1-4655-a71e-b6b06a4e92cc"), 1) {}
+    : CommonProcessorFactory(BW_LONG_ID("SplitAtPitchProcessor", "Split At Pitch", "9f5076f5-42a1-4655-a71e-b6b06a4e92cc"), 1) {}
 
 void seqwires::SplitAtPitchProcessor::process(babelwires::UserLogger& userLogger) {
     if (m_pitch->isChanged(babelwires::Feature::Changes::SomethingChanged) || m_trackIn->isChanged(babelwires::Feature::Changes::SomethingChanged)) {

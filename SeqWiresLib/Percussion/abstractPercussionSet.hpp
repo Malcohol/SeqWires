@@ -16,7 +16,7 @@ namespace seqwires {
     /// type (or one of its existing supertypes).
     class AbstractPercussionSet : public babelwires::Enum {
       public:
-        PRIMITIVE_TYPE("AbstractPercussionSet", "AbstractPercussionSet", "f81e2125-28e5-485a-88c0-500b5c1dc31e", 1);
+        PRIMITIVE_TYPE("AbsPercSet", "AbstractPercussionSet", "f81e2125-28e5-485a-88c0-500b5c1dc31e", 1);
 
         AbstractPercussionSet();
 

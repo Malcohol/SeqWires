@@ -31,20 +31,20 @@ seqwires::MonophonicSubtracksProcessor::MonophonicSubtracksProcessor(const babel
 : CommonProcessor(projectContext) {
     m_numSubtracks =
         m_inputFeature->addField(std::make_unique<babelwires::HasStaticRange<babelwires::IntFeature, 1, 16>>(),
-                                 REGISTERED_ID("NumTrk", "Num subtracks", "036ba53e-fdf5-4278-a2c3-7232fc10731c"));
+                                 BW_SHORT_ID("NumTrk", "Num subtracks", "036ba53e-fdf5-4278-a2c3-7232fc10731c"));
     m_policy = m_inputFeature->addField(std::make_unique<PolicyFeature>(),
-                                        REGISTERED_ID("Policy", "Policy", "6dca88e9-a6ec-4d43-adb8-78b7bfa00ab9"));
+                                        BW_SHORT_ID("Policy", "Policy", "6dca88e9-a6ec-4d43-adb8-78b7bfa00ab9"));
     m_trackIn = m_inputFeature->addField(std::make_unique<TrackFeature>(),
-                                         REGISTERED_ID("Input", "Input Track", "7e50ba70-0c5e-4493-b088-a3327d65256f"));
+                                         BW_SHORT_ID("Input", "Input Track", "7e50ba70-0c5e-4493-b088-a3327d65256f"));
     m_tracksOut =
         m_outputFeature->addField(std::make_unique<SubtrackArrayFeature>(),
-                                  REGISTERED_ID("Sbtrks", "Mono tracks", "d3e08407-a6e1-4b1f-b6f7-8fa9be6bdf5f"));
+                                  BW_SHORT_ID("Sbtrks", "Mono tracks", "d3e08407-a6e1-4b1f-b6f7-8fa9be6bdf5f"));
     m_otherTrackOut = m_outputFeature->addField(std::make_unique<TrackFeature>(),
-                                                REGISTERED_ID("Other", "Other", "bc69fa38-8727-40c3-a90e-bfe6de8ad847"));
+                                                BW_SHORT_ID("Other", "Other", "bc69fa38-8727-40c3-a90e-bfe6de8ad847"));
 }
 
 seqwires::MonophonicSubtracksProcessor::Factory::Factory()
-    : CommonProcessorFactory(REGISTERED_LONGID("MonoSubtracksProcessor", "Monophonic subtracks", "0b131aaf-91ce-4552-9206-a680615775b1"), 1) {}
+    : CommonProcessorFactory(BW_LONG_ID("MonoSubtracksProcessor", "Monophonic subtracks", "0b131aaf-91ce-4552-9206-a680615775b1"), 1) {}
 
 void seqwires::MonophonicSubtracksProcessor::process(babelwires::UserLogger& userLogger) {
     if (m_numSubtracks->isChanged(babelwires::Feature::Changes::SomethingChanged)) {

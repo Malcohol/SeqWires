@@ -69,7 +69,7 @@ TEST(SmfSaveLoadTest, cMajorScale) {
         EXPECT_EQ(channelGroup.getNumFeatures(), 1);
         const auto* trackFeature = channelGroup.getFeature(0)->as<const seqwires::TrackFeature>();
         ASSERT_NE(trackFeature, nullptr);
-        ASSERT_EQ(channelGroup.getStepToChild(trackFeature), babelwires::PathStep(babelwires::Identifier("ch2")));
+        ASSERT_EQ(channelGroup.getStepToChild(trackFeature), babelwires::PathStep(babelwires::ShortId("ch2")));
 
         testUtils::testSimpleNotes(pitches, trackFeature->get());
     }
@@ -168,7 +168,7 @@ TEST(SmfSaveLoadTest, cMajorScaleWithMetadata) {
         EXPECT_EQ(channelGroup.getNumFeatures(), 1);
         const auto* trackFeature = channelGroup.getFeature(0)->as<const seqwires::TrackFeature>();
         ASSERT_NE(trackFeature, nullptr);
-        ASSERT_EQ(channelGroup.getStepToChild(trackFeature), babelwires::PathStep(babelwires::Identifier("ch2")));
+        ASSERT_EQ(channelGroup.getStepToChild(trackFeature), babelwires::PathStep(babelwires::ShortId("ch2")));
 
         testUtils::testSimpleNotes(pitches, trackFeature->get());
     }
@@ -233,7 +233,7 @@ TEST(SmfSaveLoadTest, format0Chords) {
             const auto* trackFeature = channelGroup.getFeature(i)->as<const seqwires::TrackFeature>();
             ASSERT_NE(trackFeature, nullptr);
             ASSERT_EQ(channelGroup.getStepToChild(trackFeature),
-                      babelwires::PathStep(babelwires::Identifier(trackName[i])));
+                      babelwires::PathStep(babelwires::ShortId(trackName[i])));
             testUtils::testSimpleNotes(chordPitches[i], trackFeature->get());
         }
     }

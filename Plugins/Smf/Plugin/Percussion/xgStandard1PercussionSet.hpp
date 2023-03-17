@@ -16,7 +16,7 @@ namespace smf {
     /// This also works as the XG Standard 2 percussion set.
     class XgStandard1PercussionSet : public seqwires::PercussionSetWithPitchMap {
       public:
-        PRIMITIVE_TYPE("XGStandard1Perc", "Yamaha XG Standard 1 Percussion", "4c094420-0a8e-4dfa-b315-2bdb516d489a", 1);
+        PRIMITIVE_TYPE("XGStand1Perc", "Yamaha XG Standard 1 Percussion", "4c094420-0a8e-4dfa-b315-2bdb516d489a", 1);
 
         XgStandard1PercussionSet(const seqwires::BuiltInPercussionInstruments& builtInInstruments);
     };

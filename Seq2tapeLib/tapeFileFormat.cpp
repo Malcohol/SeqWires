@@ -7,7 +7,7 @@
  **/
 #include <Seq2tapeLib/tapeFileFormat.hpp>
 
-seq2tape::TapeFileFormat::TapeFileFormat(babelwires::LongIdentifier identifier, babelwires::VersionNumber version,
+seq2tape::TapeFileFormat::TapeFileFormat(babelwires::LongId identifier, babelwires::VersionNumber version,
                                          Extensions extensions)
     : babelwires::FileTypeEntry(identifier, 1, std::move(extensions)) {}
 

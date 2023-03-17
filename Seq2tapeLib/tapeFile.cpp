@@ -15,10 +15,10 @@
 #include <cstring>
 #include <sstream>
 
-seq2tape::TapeFile::TapeFile(babelwires::LongIdentifier formatIdentifier)
+seq2tape::TapeFile::TapeFile(babelwires::LongId formatIdentifier)
     : m_formatIdentifier(formatIdentifier) {}
 
-babelwires::LongIdentifier seq2tape::TapeFile::getFormatIdentifier() const {
+babelwires::LongId seq2tape::TapeFile::getFormatIdentifier() const {
     return m_formatIdentifier;
 }
 
@@ -88,7 +88,7 @@ namespace {
         stream << str;
     }
 
-    void writeIdentifier(std::ostream& stream, babelwires::LongIdentifier identifier) {
+    void writeIdentifier(std::ostream& stream, babelwires::LongId identifier) {
         std::ostringstream os;
         os << identifier;
         writeString(stream, os.str());
@@ -103,9 +103,9 @@ namespace {
         return result;
     }
 
-    babelwires::LongIdentifier readIdentifier(babelwires::DataSource& dataSource) {
+    babelwires::LongId readIdentifier(babelwires::DataSource& dataSource) {
         const std::string s = readString(dataSource);
-        return babelwires::LongIdentifier::deserializeFromString(s);
+        return babelwires::LongId::deserializeFromString(s);
     }
 
 } // namespace

@@ -16,7 +16,7 @@ namespace smf {
     class SmfSourceFormat : public babelwires::SourceFileFormat {
       public:
         SmfSourceFormat();
-        static babelwires::LongIdentifier getThisIdentifier();
+        static babelwires::LongId getThisIdentifier();
 
         virtual std::string getManufacturerName() const override;
         virtual std::string getProductName() const override;

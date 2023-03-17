@@ -24,9 +24,9 @@
 namespace {
     struct PercussionTestData {
         const char* m_specificationId;
-        babelwires::Identifier m_instrumentId0;
-        babelwires::Identifier m_instrumentId1;
-        babelwires::Identifier m_instrumentId2;
+        babelwires::ShortId m_instrumentId0;
+        babelwires::ShortId m_instrumentId1;
+        babelwires::ShortId m_instrumentId2;
     };
 } // namespace
 
@@ -49,7 +49,7 @@ TEST_P(SmfStandardPercussionTest, saveLoad) {
             smfFeature.getChildFromStep(babelwires::PathStep("Format")).as<smf::target::SmfFormatFeature>();
         ASSERT_NE(smfFormatFeature, nullptr);
 
-        smfFormatFeature->getMidiMetadata().getSpecFeature()->set(babelwires::Identifier(testData.m_specificationId));
+        smfFormatFeature->getMidiMetadata().getSpecFeature()->set(babelwires::ShortId(testData.m_specificationId));
 
         auto* tracks =
             smfFormatFeature->getChildFromStep(babelwires::PathStep("tracks")).as<babelwires::ArrayFeature>();
@@ -92,14 +92,14 @@ TEST_P(SmfStandardPercussionTest, saveLoad) {
         ASSERT_NE(smfFeature, nullptr);
 
         EXPECT_EQ(smfFeature->getMidiMetadata().getSpecFeature()->get(),
-                  babelwires::Identifier(testData.m_specificationId));
+                  babelwires::ShortId(testData.m_specificationId));
 
         EXPECT_EQ(smfFeature->getNumMidiTracks(), 1);
         const auto& channelGroup = dynamic_cast<const smf::source::RecordChannelGroup&>(smfFeature->getMidiTrack(0));
         EXPECT_EQ(channelGroup.getNumFeatures(), 1);
         const auto* trackFeature = channelGroup.getFeature(0)->as<const seqwires::TrackFeature>();
         ASSERT_NE(trackFeature, nullptr);
-        ASSERT_EQ(channelGroup.getStepToChild(trackFeature), babelwires::PathStep(babelwires::Identifier("ch9")));
+        ASSERT_EQ(channelGroup.getStepToChild(trackFeature), babelwires::PathStep(babelwires::ShortId("ch9")));
 
         const auto& track = trackFeature->get();
 
@@ -168,10 +168,10 @@ INSTANTIATE_TEST_SUITE_P(PercussionTest, SmfStandardPercussionTest,
 namespace {
     struct TrackAllocationTestData {
         const char* m_specificationId;
-        std::vector<babelwires::Identifier> m_instrumentsInChannel[3];
+        std::vector<babelwires::ShortId> m_instrumentsInChannel[3];
         bool m_hasNotes[3];
         // The events expected to appear in channels 8, 9 and 10.
-        std::vector<babelwires::Identifier> m_expectedInChannel[3];
+        std::vector<babelwires::ShortId> m_expectedInChannel[3];
     };
 } // namespace
 
@@ -194,7 +194,7 @@ TEST_P(SmfTrackAllocationPercussionTest, trackAllocation) {
             smfFeature.getChildFromStep(babelwires::PathStep("Format")).as<smf::target::SmfFormatFeature>();
         ASSERT_NE(smfFormatFeature, nullptr);
 
-        smfFormatFeature->getMidiMetadata().getSpecFeature()->set(babelwires::Identifier(testData.m_specificationId));
+        smfFormatFeature->getMidiMetadata().getSpecFeature()->set(babelwires::ShortId(testData.m_specificationId));
 
         auto* tracks =
             smfFormatFeature->getChildFromStep(babelwires::PathStep("tracks")).as<babelwires::ArrayFeature>();
@@ -239,7 +239,7 @@ TEST_P(SmfTrackAllocationPercussionTest, trackAllocation) {
         ASSERT_NE(smfFeature, nullptr);
 
         EXPECT_EQ(smfFeature->getMidiMetadata().getSpecFeature()->get(),
-                  babelwires::Identifier(testData.m_specificationId));
+                  babelwires::ShortId(testData.m_specificationId));
 
         EXPECT_EQ(smfFeature->getNumMidiTracks(), 1);
         const auto& channelGroup = dynamic_cast<const smf::source::RecordChannelGroup&>(smfFeature->getMidiTrack(0));
@@ -249,7 +249,7 @@ TEST_P(SmfTrackAllocationPercussionTest, trackAllocation) {
             const auto* const trackFeature = channelGroup.getFeature(i)->as<const seqwires::TrackFeature>();
             ASSERT_NE(trackFeature, nullptr);
             // ASSERT_EQ(channelGroup.getStepToChild(trackFeature),
-            // babelwires::PathStep(babelwires::Identifier("ch9")));
+            // babelwires::PathStep(babelwires::ShortId("ch9")));
 
             const auto& track = trackFeature->get();
             auto categoryMap = track.getNumEventGroupsByCategory();
@@ -262,7 +262,7 @@ TEST_P(SmfTrackAllocationPercussionTest, trackAllocation) {
                 EXPECT_EQ(categoryMap.find(seqwires::NoteEvent::s_noteEventCategory), categoryMap.end());
                 ASSERT_NE(categoryMap.find(seqwires::PercussionEvent::s_percussionEventCategory), categoryMap.end());
 
-                std::vector<babelwires::Identifier> instrumentsInTrack;
+                std::vector<babelwires::ShortId> instrumentsInTrack;
                 for (auto event : seqwires::iterateOver<seqwires::PercussionOnEvent>(track)) {
                     instrumentsInTrack.emplace_back(event.getInstrument());
                 }

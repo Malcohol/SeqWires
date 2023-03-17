@@ -23,14 +23,14 @@ seqwires::MergeProcessor::MergeProcessor(const babelwires::ProjectContext& proje
     m_tracksIn = m_inputFeature->addField(
         std::make_unique<
             babelwires::HasStaticSizeRange<babelwires::StandardArrayFeature<seqwires::TrackFeature>, 2, 16>>(),
-        REGISTERED_ID("Input", "Input tracks", "80b175ae-c954-4943-96d8-eaffcd7ed6e1"));
+        BW_SHORT_ID("Input", "Input tracks", "80b175ae-c954-4943-96d8-eaffcd7ed6e1"));
     m_trackOut =
         m_outputFeature->addField(std::make_unique<TrackFeature>(),
-                                  REGISTERED_ID("Output", "Output Track", "ab56e996-d361-42ed-a0df-44a90a73dc20"));
+                                  BW_SHORT_ID("Output", "Output Track", "ab56e996-d361-42ed-a0df-44a90a73dc20"));
 }
 
 seqwires::MergeProcessor::Factory::Factory()
-    : CommonProcessorFactory(REGISTERED_LONGID("MergeTracks", "Merge", "ed004257-0ae3-44aa-abb9-d752c2eba0c1"), 1) {}
+    : CommonProcessorFactory(BW_LONG_ID("MergeTracks", "Merge", "ed004257-0ae3-44aa-abb9-d752c2eba0c1"), 1) {}
 
 void seqwires::MergeProcessor::process(babelwires::UserLogger& userLogger) {
     bool hasChanges = false;
