@@ -6,7 +6,7 @@
 #include <SeqWiresLib/Tracks/noteEvents.hpp>
 #include <SeqWiresLib/libRegistration.hpp>
 
-#include <BabelWiresLib/Features/enumFeature.hpp>
+#include <BabelWiresLib/Enums/enumFeature.hpp>
 #include <BabelWiresLib/Features/rootFeature.hpp>
 
 #include <Tests/BabelWiresLib/TestUtils/testEnvironment.hpp>
