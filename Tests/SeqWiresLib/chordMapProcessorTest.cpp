@@ -215,7 +215,6 @@ TEST(ChordMapProcessorTest, processor) {
     testUtils::TestEnvironment testEnvironment;
     testEnvironment.m_typeSystem.addEntry<seqwires::ChordType>();
     testEnvironment.m_typeSystem.addEntry<seqwires::PitchClass>();
-    testEnvironment.m_typeSystem.addTypeConstructor<babelwires::AddBlankToEnum>();
 
     const seqwires::ChordType& chordTypeEnum =
         testEnvironment.m_typeSystem.getEntryByType<seqwires::ChordType>().is<seqwires::ChordType>();
