@@ -7,7 +7,7 @@
  **/
 #pragma once
 
-#include <BabelWiresLib/Enums/enumWithCppEnum.hpp>
+#include <BabelWiresLib/Types/Enum/enumWithCppEnum.hpp>
 #include <BabelWiresLib/TypeSystem/primitiveType.hpp>
 
 #include <Common/Math/rational.hpp>

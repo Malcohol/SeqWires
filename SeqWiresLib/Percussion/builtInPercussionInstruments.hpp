@@ -9,7 +9,7 @@
 
 #include <SeqWiresLib/musicTypes.hpp>
 
-#include <BabelWiresLib/Enums/enumWithCppEnum.hpp>
+#include <BabelWiresLib/Types/Enum/enumWithCppEnum.hpp>
 #include <BabelWiresLib/TypeSystem/primitiveType.hpp>
 
 #include <optional>

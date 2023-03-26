@@ -9,7 +9,7 @@
 
 #include <SeqWiresLib/musicTypes.hpp>
 
-#include <BabelWiresLib/Enums/enumWithCppEnum.hpp>
+#include <BabelWiresLib/Types/Enum/enumWithCppEnum.hpp>
 #include <BabelWiresLib/TypeSystem/primitiveType.hpp>
 
 /// These match the "Chord type" values from the XF Format Specifications v2.01

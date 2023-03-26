@@ -7,12 +7,12 @@
 #include <SeqWiresLib/Tracks/percussionEvents.hpp>
 #include <SeqWiresLib/Tracks/track.hpp>
 
-#include <BabelWiresLib/Enums/addBlankToEnum.hpp>
+#include <BabelWiresLib/Types/Enum/addBlankToEnum.hpp>
 #include <BabelWiresLib/Features/mapFeature.hpp>
 #include <BabelWiresLib/Maps/MapEntries/allToSameFallbackMapEntryData.hpp>
 #include <BabelWiresLib/Maps/MapEntries/oneToOneMapEntryData.hpp>
 #include <BabelWiresLib/Maps/mapData.hpp>
-#include <BabelWiresLib/Enums/enumValue.hpp>
+#include <BabelWiresLib/Types/Enum/enumValue.hpp>
 #include <BabelWiresLib/TypeSystem/typeSystem.hpp>
 
 #include <Tests/BabelWiresLib/TestUtils/testEnvironment.hpp>

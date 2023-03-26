@@ -11,7 +11,7 @@
 #include <SeqWiresLib/Functions/monophonicSubtracksFunction.hpp>
 
 #include <BabelWiresLib/Features/arrayFeature.hpp>
-#include <BabelWiresLib/Enums/enumFeature.hpp>
+#include <BabelWiresLib/Types/Enum/enumFeature.hpp>
 #include <BabelWiresLib/Features/featureMixins.hpp>
 #include <BabelWiresLib/Features/numericFeature.hpp>
 #include <BabelWiresLib/Features/rootFeature.hpp>
