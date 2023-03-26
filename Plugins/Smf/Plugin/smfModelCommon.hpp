@@ -11,7 +11,7 @@
 
 #include <SeqWiresLib/Features/tempoFeature.hpp>
 
-#include <BabelWiresLib/Features/stringFeature.hpp>
+#include <BabelWiresLib/Types/String/stringFeature.hpp>
 #include <BabelWiresLib/Features/recordWithOptionalsFeature.hpp>
 
 namespace seqwires {

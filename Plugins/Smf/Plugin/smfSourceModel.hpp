@@ -8,7 +8,7 @@
 #pragma once
 
 #include <BabelWiresLib/Features/arrayFeature.hpp>
-#include <BabelWiresLib/Features/stringFeature.hpp>
+#include <BabelWiresLib/Types/String/stringFeature.hpp>
 #include <BabelWiresLib/FileFormat/fileFeature.hpp>
 #include <BabelWiresLib/Features/recordWithOptionalsFeature.hpp>
 
