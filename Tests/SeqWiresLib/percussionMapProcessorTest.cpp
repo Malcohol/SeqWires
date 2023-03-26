@@ -114,7 +114,6 @@ TEST(PercussionMapProcessorTest, processor) {
     testUtils::TestEnvironment testEnvironment;
     testEnvironment.m_typeSystem.addEntry<seqwires::AbstractPercussionSet>();
     testEnvironment.m_typeSystem.addEntry<seqwires::BuiltInPercussionInstruments>();
-    testEnvironment.m_typeSystem.addTypeConstructor<babelwires::AddBlankToEnum>();
     testEnvironment.m_typeSystem.addRelatedTypes(seqwires::BuiltInPercussionInstruments::getThisIdentifier(),
                                                  {{}, {seqwires::AbstractPercussionSet::getThisIdentifier()}});
 
