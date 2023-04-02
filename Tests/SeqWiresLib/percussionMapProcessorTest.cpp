@@ -24,7 +24,7 @@ namespace {
         const seqwires::BuiltInPercussionInstruments& builtInPercussion =
             typeSystem.getEntryByType<seqwires::BuiltInPercussionInstruments>();
 
-        babelwires::TypeRef targetTypeRef(babelwires::AddBlankToEnum::getThisIdentifier(), {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}});
+        babelwires::TypeRef targetTypeRef(babelwires::AddBlankToEnum::getThisIdentifier(), seqwires::BuiltInPercussionInstruments::getThisIdentifier());
 
         babelwires::MapData percussionMap;
         percussionMap.setSourceTypeRef(seqwires::BuiltInPercussionInstruments::getThisIdentifier());

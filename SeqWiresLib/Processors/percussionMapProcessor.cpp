@@ -28,7 +28,7 @@ namespace {
         void getAllowedTargetTypeRefs(AllowedTypes& allowedTypesOut) const override {
             getAllPercussionTypes(allowedTypesOut);
             for (auto& typeRef : allowedTypesOut.m_typeRefs) {
-                typeRef = babelwires::TypeRef(babelwires::AddBlankToEnum::getThisIdentifier(), {{typeRef}});
+                typeRef = babelwires::TypeRef(babelwires::AddBlankToEnum::getThisIdentifier(), typeRef);
             }
         }
 
