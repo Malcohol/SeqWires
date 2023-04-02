@@ -39,23 +39,23 @@ namespace {
         sourceValue.set(builtInPercussion.getIdentifierFromValue(seqwires::BuiltInPercussionInstruments::Value::Clap));
         targetValue.set(
             builtInPercussion.getIdentifierFromValue(seqwires::BuiltInPercussionInstruments::Value::Cowbll));
-        maplet.setSourceValue(sourceValue.clone());
-        maplet.setTargetValue(targetValue.clone());
+        maplet.setSourceValue(sourceValue);
+        maplet.setTargetValue(targetValue);
         percussionMap.emplaceBack(maplet.clone());
 
         sourceValue.set(
             builtInPercussion.getIdentifierFromValue(seqwires::BuiltInPercussionInstruments::Value::Crash1));
         targetValue.set(
             builtInPercussion.getIdentifierFromValue(seqwires::BuiltInPercussionInstruments::Value::Crash2));
-        maplet.setSourceValue(sourceValue.clone());
-        maplet.setTargetValue(targetValue.clone());
+        maplet.setSourceValue(sourceValue);
+        maplet.setTargetValue(targetValue);
         percussionMap.emplaceBack(maplet.clone());
 
         sourceValue.set(
             builtInPercussion.getIdentifierFromValue(seqwires::BuiltInPercussionInstruments::Value::LFlTom));
         targetValue.set(babelwires::AddBlankToEnum::getBlankValue());
-        maplet.setSourceValue(sourceValue.clone());
-        maplet.setTargetValue(targetValue.clone());
+        maplet.setSourceValue(sourceValue);
+        maplet.setTargetValue(targetValue);
         percussionMap.emplaceBack(maplet.clone());
 
         percussionMap.emplaceBack(std::make_unique<babelwires::AllToSameFallbackMapEntryData>());

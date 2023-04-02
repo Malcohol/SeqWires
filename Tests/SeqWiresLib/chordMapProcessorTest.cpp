@@ -38,8 +38,8 @@ namespace {
             babelwires::EnumValue chordTypeTargetValue;
             chordTypeTargetValue.set(chordTypeEnum.getIdentifierFromValue(seqwires::ChordType::Value::m7));
 
-            chordTypeMaplet.setSourceValue(chordTypeSourceValue.clone());
-            chordTypeMaplet.setTargetValue(chordTypeTargetValue.clone());
+            chordTypeMaplet.setSourceValue(chordTypeSourceValue);
+            chordTypeMaplet.setTargetValue(chordTypeTargetValue);
 
             chordTypeMap.emplaceBack(chordTypeMaplet.clone());
         }
@@ -53,8 +53,8 @@ namespace {
             babelwires::EnumValue chordTypeTargetValue;
             chordTypeTargetValue.set(babelwires::AddBlankToEnum::getBlankValue());
 
-            chordTypeMaplet.setSourceValue(chordTypeSourceValue.clone());
-            chordTypeMaplet.setTargetValue(chordTypeTargetValue.clone());
+            chordTypeMaplet.setSourceValue(chordTypeSourceValue);
+            chordTypeMaplet.setTargetValue(chordTypeTargetValue);
 
             chordTypeMap.emplaceBack(chordTypeMaplet.clone());
         }
@@ -68,8 +68,8 @@ namespace {
             babelwires::EnumValue chordTypeTargetValue;
             chordTypeTargetValue.set(chordTypeEnum.getIdentifierFromValue(seqwires::ChordType::Value::m7_11));
 
-            chordTypeMaplet.setSourceValue(chordTypeSourceValue.clone());
-            chordTypeMaplet.setTargetValue(chordTypeTargetValue.clone());
+            chordTypeMaplet.setSourceValue(chordTypeSourceValue);
+            chordTypeMaplet.setTargetValue(chordTypeTargetValue);
 
             chordTypeMap.emplaceBack(chordTypeMaplet.clone());
         }
@@ -95,8 +95,8 @@ namespace {
             babelwires::EnumValue pitchClassTargetValue;
             pitchClassTargetValue.set(pitchClassEnum.getIdentifierFromValue(seqwires::PitchClass::Value::A));
 
-            chordTypeMaplet.setSourceValue(pitchClassSourceValue.clone());
-            chordTypeMaplet.setTargetValue(pitchClassTargetValue.clone());
+            chordTypeMaplet.setSourceValue(pitchClassSourceValue);
+            chordTypeMaplet.setTargetValue(pitchClassTargetValue);
 
             pitchClassMap.emplaceBack(chordTypeMaplet.clone());
         }
@@ -110,8 +110,8 @@ namespace {
             babelwires::EnumValue pitchClassTargetValue;
             pitchClassTargetValue.set(babelwires::AddBlankToEnum::getBlankValue());
 
-            chordTypeMaplet.setSourceValue(pitchClassSourceValue.clone());
-            chordTypeMaplet.setTargetValue(pitchClassTargetValue.clone());
+            chordTypeMaplet.setSourceValue(pitchClassSourceValue);
+            chordTypeMaplet.setTargetValue(pitchClassTargetValue);
 
             pitchClassMap.emplaceBack(chordTypeMaplet.clone());
         }
@@ -125,8 +125,8 @@ namespace {
             babelwires::EnumValue pitchClassTargetValue;
             pitchClassTargetValue.set(pitchClassEnum.getIdentifierFromValue(seqwires::PitchClass::Value::FSharp));
 
-            chordTypeMaplet.setSourceValue(pitchClassSourceValue.clone());
-            chordTypeMaplet.setTargetValue(pitchClassTargetValue.clone());
+            chordTypeMaplet.setSourceValue(pitchClassSourceValue);
+            chordTypeMaplet.setTargetValue(pitchClassTargetValue);
 
             pitchClassMap.emplaceBack(chordTypeMaplet.clone());
         }
