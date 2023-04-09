@@ -139,7 +139,7 @@ TEST(SmfTestSuiteTest, multichannelChords1) {
             dynamic_cast<const smf::source::ExtensibleChannelGroup&>(smfFeature->getMidiTrack(i));
         EXPECT_EQ(channelGroup.getNumFeatures(), 2);
 
-        const auto* channelNumFeature = channelGroup.getFeature(0)->as<const babelwires::IntFeature>();
+        const auto* channelNumFeature = channelGroup.getFeature(0)->as<const babelwires::IntFeature2>();
         ASSERT_NE(channelNumFeature, nullptr);
         ASSERT_EQ(channelGroup.getStepToChild(channelNumFeature),
                   babelwires::PathStep(babelwires::ShortId("ChanNo")));
@@ -179,7 +179,7 @@ TEST(SmfTestSuiteTest, multichannelChords2) {
     const auto& channelGroup0 = dynamic_cast<const smf::source::ExtensibleChannelGroup&>(smfFeature->getMidiTrack(0));
     EXPECT_EQ(channelGroup0.getNumFeatures(), 3);
 
-    const auto* channelNumFeature = channelGroup0.getFeature(0)->as<const babelwires::IntFeature>();
+    const auto* channelNumFeature = channelGroup0.getFeature(0)->as<const babelwires::IntFeature2>();
     ASSERT_NE(channelNumFeature, nullptr);
     ASSERT_EQ(channelGroup0.getStepToChild(channelNumFeature), babelwires::PathStep(babelwires::ShortId("ChanNo")));
     EXPECT_EQ(channelNumFeature->get(), 0);
@@ -197,7 +197,7 @@ TEST(SmfTestSuiteTest, multichannelChords2) {
     const auto& channelGroup1 = dynamic_cast<const smf::source::ExtensibleChannelGroup&>(smfFeature->getMidiTrack(1));
     EXPECT_EQ(channelGroup1.getNumFeatures(), 2);
 
-    const auto* channelNumFeature2 = channelGroup1.getFeature(0)->as<const babelwires::IntFeature>();
+    const auto* channelNumFeature2 = channelGroup1.getFeature(0)->as<const babelwires::IntFeature2>();
     ASSERT_NE(channelNumFeature2, nullptr);
     ASSERT_EQ(channelGroup1.getStepToChild(channelNumFeature2), babelwires::PathStep(babelwires::ShortId("ChanNo")));
     EXPECT_EQ(channelNumFeature2->get(), 2);
@@ -239,7 +239,7 @@ TEST(SmfTestSuiteTest, multichannelChords3) {
             dynamic_cast<const smf::source::ExtensibleChannelGroup&>(smfFeature->getMidiTrack(i));
         EXPECT_EQ(channelGroup.getNumFeatures(), 2);
 
-        const auto* channelNumFeature = channelGroup.getFeature(0)->as<const babelwires::IntFeature>();
+        const auto* channelNumFeature = channelGroup.getFeature(0)->as<const babelwires::IntFeature2>();
         ASSERT_NE(channelNumFeature, nullptr);
         ASSERT_EQ(channelGroup.getStepToChild(channelNumFeature),
                   babelwires::PathStep(babelwires::ShortId("ChanNo")));

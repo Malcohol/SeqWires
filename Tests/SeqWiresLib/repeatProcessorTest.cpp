@@ -5,7 +5,7 @@
 #include <SeqWiresLib/Tracks/noteEvents.hpp>
 #include <SeqWiresLib/Features/trackFeature.hpp>
 
-#include <BabelWiresLib/Features/numericFeature.hpp>
+#include <BabelWiresLib/Types/Int/intFeature.hpp>
 #include <BabelWiresLib/Features/arrayFeature.hpp>
 
 #include <Tests/TestUtils/seqTestUtils.hpp>
@@ -50,7 +50,7 @@ TEST(RepeatProcessorTest, processor) {
     processor.getInputFeature()->setToDefault();
     processor.getOutputFeature()->setToDefault();
 
-    auto* countFeature = processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Count")).as<babelwires::IntFeature>();
+    auto* countFeature = processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Count")).as<babelwires::IntFeature2>();
     auto* inputArray = processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Tracks")).as<babelwires::ArrayFeature>();
     auto* outputArray = processor.getOutputFeature()->getChildFromStep(babelwires::PathStep("Tracks")).as<babelwires::ArrayFeature>();
     ASSERT_NE(countFeature, nullptr);

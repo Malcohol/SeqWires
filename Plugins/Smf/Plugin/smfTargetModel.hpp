@@ -10,6 +10,8 @@
 #include <BabelWiresLib/Features/arrayFeature.hpp>
 #include <BabelWiresLib/FileFormat/fileFeature.hpp>
 #include <BabelWiresLib/Features/unionFeature.hpp>
+#include <BabelWiresLib/Types/Int/intFeature.hpp>
+
 #include <Plugins/Smf/Plugin/smfModelCommon.hpp>
 
 namespace seqwires {
@@ -31,7 +33,7 @@ namespace smf {
             const seqwires::Track& getTrack() const;
 
           public:
-            babelwires::IntFeature* m_channelNum;
+            babelwires::IntFeature2* m_channelNum;
             seqwires::TrackFeature* m_trackFeature;
         };
 
