@@ -12,7 +12,6 @@
 #include <BabelWiresQtUi/uiMain.hpp>
 #include <BabelWiresQtUi/uiProjectContext.hpp>
 
-#include <BabelWiresLib/Features/Utilities/featureXml.hpp>
 #include <BabelWiresLib/FileFormat/fileFeature.hpp>
 #include <BabelWiresLib/FileFormat/sourceFileFormat.hpp>
 #include <BabelWiresLib/FileFormat/targetFileFormat.hpp>
@@ -92,20 +91,7 @@ int main(int argc, char* argv[]) {
         seqwiresUi::registerLib(context);
         smf::registerLib(context);
 
-        if (options.m_mode == ProgramOptions::MODE_DUMP) {
-            if (const SourceFileFormat* format =
-                    context.m_sourceFileFormatReg.getEntryByFileName(options.m_inputFileName)) {
-                try {
-                    babelwires::FileDataSource file(options.m_inputFileName);
-                    std::shared_ptr<babelwires::FileFeature> loadedFile = format->loadFromFile(file, context, log);
-                    babelwires::featureToXml(*loadedFile, std::cout, options.m_dumpIsFullDump);
-                } catch (const babelwires::BaseException& e) {
-                    std::cerr << "Failed to load source file \"" << options.m_inputFileName << "\": " << e.what()
-                              << "\n";
-                }
-            }
-            return EXIT_SUCCESS;
-        } else if (options.m_mode == ProgramOptions::MODE_RUN_PROJECT) {
+        if (options.m_mode == ProgramOptions::MODE_RUN_PROJECT) {
             Project project(context, log);
             ProjectData projectData = ProjectSerialization::loadFromFile(options.m_inputFileName.c_str(), context, log);
             project.setProjectData(projectData);

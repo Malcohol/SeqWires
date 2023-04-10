@@ -13,7 +13,7 @@
 struct ProgramOptions {
     ProgramOptions(int argc, char* argv[]);
 
-    enum Mode { MODE_UI, MODE_DEFAULT = MODE_UI, MODE_PRINT_HELP, MODE_DUMP, MODE_RUN_PROJECT };
+    enum Mode { MODE_UI, MODE_DEFAULT = MODE_UI, MODE_PRINT_HELP, MODE_RUN_PROJECT };
 
     Mode m_mode = MODE_DEFAULT;
 
