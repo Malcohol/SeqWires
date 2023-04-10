@@ -105,7 +105,7 @@ namespace {
                                                              seqwires::getMapChordFunctionPitchClassRef());
 
             babelwires::EnumValue pitchClassSourceValue;
-            pitchClassSourceValue.set(pitchClassEnum.getIdentifierFromValue(seqwires::PitchClass::Value::GSharp));
+            pitchClassSourceValue.set(pitchClassEnum.getIdentifierFromValue(seqwires::PitchClass::Value::Gsh));
 
             babelwires::EnumValue pitchClassTargetValue;
             pitchClassTargetValue.set(babelwires::AddBlankToEnum::getBlankValue());
@@ -123,7 +123,7 @@ namespace {
             pitchClassSourceValue.set(babelwires::AddBlankToEnum::getBlankValue());
 
             babelwires::EnumValue pitchClassTargetValue;
-            pitchClassTargetValue.set(pitchClassEnum.getIdentifierFromValue(seqwires::PitchClass::Value::FSharp));
+            pitchClassTargetValue.set(pitchClassEnum.getIdentifierFromValue(seqwires::PitchClass::Value::Fsh));
 
             chordTypeMaplet.setSourceValue(pitchClassSourceValue);
             chordTypeMaplet.setTargetValue(pitchClassTargetValue);
@@ -171,22 +171,22 @@ namespace {
                                    {seqwires::PitchClass::Value::A, seqwires::ChordType::ChordType::Value::m7}},
                                   outputTrack);
         } else if (mode == Mode::SourceBlanks) {
-            testUtils::testChords({{seqwires::PitchClass::Value::FSharp, seqwires::ChordType::ChordType::Value::m7_11},
+            testUtils::testChords({{seqwires::PitchClass::Value::Fsh, seqwires::ChordType::ChordType::Value::m7_11},
                                    {seqwires::PitchClass::Value::C, seqwires::ChordType::ChordType::Value::M},
                                    {seqwires::PitchClass::Value::A, seqwires::ChordType::ChordType::Value::M},
                                    {seqwires::PitchClass::Value::C, seqwires::ChordType::ChordType::Value::M6},
                                    {seqwires::PitchClass::Value::C, seqwires::ChordType::ChordType::Value::m7},
                                    {seqwires::PitchClass::Value::A, seqwires::ChordType::ChordType::Value::m7},
-                                   {seqwires::PitchClass::Value::FSharp, seqwires::ChordType::ChordType::Value::m7_11}},
+                                   {seqwires::PitchClass::Value::Fsh, seqwires::ChordType::ChordType::Value::m7_11}},
                                   outputTrack);
         } else if (mode == Mode::SourceAndTargetBlanks) {
-            testUtils::testChords({{seqwires::PitchClass::Value::FSharp, seqwires::ChordType::ChordType::Value::m7_11},
+            testUtils::testChords({{seqwires::PitchClass::Value::Fsh, seqwires::ChordType::ChordType::Value::m7_11},
                                    {seqwires::PitchClass::Value::C, seqwires::ChordType::ChordType::Value::M},
                                    {seqwires::PitchClass::Value::A, seqwires::ChordType::ChordType::Value::M},
-                                   {seqwires::PitchClass::Value::FSharp, seqwires::ChordType::ChordType::Value::m7_11},
+                                   {seqwires::PitchClass::Value::Fsh, seqwires::ChordType::ChordType::Value::m7_11},
                                    {seqwires::PitchClass::Value::C, seqwires::ChordType::ChordType::Value::m7},
                                    {seqwires::PitchClass::Value::A, seqwires::ChordType::ChordType::Value::m7},
-                                   {seqwires::PitchClass::Value::FSharp, seqwires::ChordType::ChordType::Value::m7_11}},
+                                   {seqwires::PitchClass::Value::Fsh, seqwires::ChordType::ChordType::Value::m7_11}},
                                   outputTrack);
         }
     }

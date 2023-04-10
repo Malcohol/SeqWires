@@ -10,7 +10,7 @@
 #include <BabelWiresLib/Processors/commonProcessor.hpp>
 
 namespace babelwires {
-    class IntFeature;
+    class EnumFeature;
 } // namespace babelwires
 
 namespace seqwires {
@@ -27,7 +27,7 @@ namespace seqwires {
             Factory();
         };
       private:
-        babelwires::IntFeature* m_pitch;
+        babelwires::EnumFeature* m_pitch;
         TrackFeature* m_trackIn;
         TrackFeature* m_equalOrAboveTrackOut;
         TrackFeature* m_belowTrackOut;

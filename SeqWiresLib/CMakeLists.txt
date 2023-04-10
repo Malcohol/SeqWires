@@ -1,7 +1,6 @@
 SET( SEQWIRESLIB_SRCS
 	Utilities/musicUtilities.cpp
 	Features/trackFeature.cpp
-	Features/pitchFeature.cpp
 	Processors/fingeredChordsProcessor.cpp
 	Processors/chordMapProcessor.cpp
 	Processors/concatenateProcessor.cpp

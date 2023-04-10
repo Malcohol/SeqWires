@@ -34,6 +34,7 @@
 void seqwires::registerLib(babelwires::ProjectContext& context) {
     context.m_typeSystem.addEntry<ChordType>();
     context.m_typeSystem.addEntry<PitchClass>();
+    context.m_typeSystem.addEntry<PitchEnum>();
     context.m_typeSystem.addEntry<AbstractPercussionSet>();
     context.m_typeSystem.addEntry<BuiltInPercussionInstruments>();
     context.m_typeSystem.addEntry<MonophonicSubtracksPolicyEnum>();
