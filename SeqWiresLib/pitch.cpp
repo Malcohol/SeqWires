@@ -1,11 +1,11 @@
 /**
- * Defines a data type for pitch class.
+ * Representations of pitch in SeqWires.
  *
  * (C) 2021 Malcolm Tyrrell
  *
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
-#include <SeqWiresLib/pitchClass.hpp>
+#include <SeqWiresLib/pitch.hpp>
 
 #include <Common/Identifiers/identifierRegistry.hpp>
 #include <Common/exceptions.hpp>

@@ -1,5 +1,5 @@
 /**
- * Defines a data type for pitch class.
+ * Representations of pitch in SeqWires.
  *
  * (C) 2021 Malcolm Tyrrell
  *
@@ -48,13 +48,18 @@ namespace seqwires {
         static std::string valueToString(Value p);
     };
 
+    /// Get the PitchClass of a Pitch.
     PitchClass::Value pitchToPitchClass(Pitch p);
 
+    /// Get a string representation of a Pitch.
     std::string pitchToString(Pitch p);
+
+    /// Parse a Pitch from a string.
     Pitch stringToPitch(std::string_view s);
 
     /// An enum for the 127 supported pitch values.
     /// Octaves start at 0, so middle C is C5 in this representation.
+    // TODO: The UI dropdown presents this in a counter-intuitive order.
     class PitchEnum : public babelwires::Enum {
       public:
         PRIMITIVE_TYPE("Pitch", "Pitch", "c3acb960-b472-488b-a6da-8672b584dfb1", 1);

@@ -24,7 +24,7 @@
 #include <SeqWiresLib/Processors/splitAtPitchProcessor.hpp>
 #include <SeqWiresLib/Processors/transposeProcessor.hpp>
 #include <SeqWiresLib/chord.hpp>
-#include <SeqWiresLib/pitchClass.hpp>
+#include <SeqWiresLib/pitch.hpp>
 
 #include <BabelWiresLib/Processors/processorFactory.hpp>
 #include <BabelWiresLib/Processors/processorFactoryRegistry.hpp>

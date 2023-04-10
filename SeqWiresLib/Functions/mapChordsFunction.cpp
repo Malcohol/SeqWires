@@ -10,7 +10,7 @@
 #include <SeqWiresLib/Tracks/chordEvents.hpp>
 #include <SeqWiresLib/Tracks/trackEventHolder.hpp>
 #include <SeqWiresLib/chord.hpp>
-#include <SeqWiresLib/pitchClass.hpp>
+#include <SeqWiresLib/pitch.hpp>
 
 #include <BabelWiresLib/Features/mapFeature.hpp>
 #include <BabelWiresLib/Features/modelExceptions.hpp>

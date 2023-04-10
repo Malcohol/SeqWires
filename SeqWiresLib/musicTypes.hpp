@@ -7,7 +7,7 @@
  **/
 #pragma once
 
-#include <SeqWiresLib/pitchClass.hpp>
+#include <SeqWiresLib/pitch.hpp>
 
 #include <Common/Math/rational.hpp>
 #include <Common/types.hpp>
