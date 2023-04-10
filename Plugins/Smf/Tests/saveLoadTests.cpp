@@ -43,7 +43,7 @@ TEST(SmfSaveLoadTest, cMajorScale) {
         EXPECT_EQ(channelTrack->getNumFeatures(), 2);
 
         auto* channelFeature =
-            channelTrack->getChildFromStep(babelwires::PathStep("Chan")).as<babelwires::IntFeature2>();
+            channelTrack->getChildFromStep(babelwires::PathStep("Chan")).as<babelwires::IntFeature>();
         channelFeature->set(2);
 
         auto* trackFeature = channelTrack->getChildFromStep(babelwires::PathStep("Track")).as<seqwires::TrackFeature>();
@@ -140,7 +140,7 @@ TEST(SmfSaveLoadTest, cMajorScaleWithMetadata) {
             EXPECT_EQ(channelTrack->getNumFeatures(), 2);
 
             auto* channelFeature =
-                channelTrack->getChildFromStep(babelwires::PathStep("Chan")).as<babelwires::IntFeature2>();
+                channelTrack->getChildFromStep(babelwires::PathStep("Chan")).as<babelwires::IntFeature>();
             channelFeature->set(2);
 
             auto* trackFeature =
@@ -206,7 +206,7 @@ TEST(SmfSaveLoadTest, format0Chords) {
             ASSERT_NE(channelTrack, nullptr);
             EXPECT_EQ(channelTrack->getNumFeatures(), 2);
             auto* channelFeature =
-                channelTrack->getChildFromStep(babelwires::PathStep("Chan")).as<babelwires::IntFeature2>();
+                channelTrack->getChildFromStep(babelwires::PathStep("Chan")).as<babelwires::IntFeature>();
             channelFeature->set(i);
             auto* trackFeature =
                 channelTrack->getChildFromStep(babelwires::PathStep("Track")).as<seqwires::TrackFeature>();
@@ -272,7 +272,7 @@ TEST(SmfSaveLoadTest, format1Chords) {
             ASSERT_NE(channelTrack, nullptr);
             EXPECT_EQ(channelTrack->getNumFeatures(), 2);
             auto* channelFeature =
-                channelTrack->getChildFromStep(babelwires::PathStep("Chan")).as<babelwires::IntFeature2>();
+                channelTrack->getChildFromStep(babelwires::PathStep("Chan")).as<babelwires::IntFeature>();
             channelFeature->set(i);
             auto* trackFeature =
                 channelTrack->getChildFromStep(babelwires::PathStep("Track")).as<seqwires::TrackFeature>();
@@ -299,7 +299,7 @@ TEST(SmfSaveLoadTest, format1Chords) {
                 dynamic_cast<const smf::source::ExtensibleChannelGroup&>(smfFeature->getMidiTrack(i));
             EXPECT_EQ(channelGroup.getNumFeatures(), 2);
             const auto* channelFeature =
-                channelGroup.getChildFromStep(babelwires::PathStep("ChanNo")).as<const babelwires::IntFeature2>();
+                channelGroup.getChildFromStep(babelwires::PathStep("ChanNo")).as<const babelwires::IntFeature>();
             ASSERT_NE(channelFeature, nullptr);
             EXPECT_EQ(channelFeature->get(), i);
             const auto* trackFeature =

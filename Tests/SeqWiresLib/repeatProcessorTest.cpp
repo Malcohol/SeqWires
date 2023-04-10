@@ -50,7 +50,7 @@ TEST(RepeatProcessorTest, processor) {
     processor.getInputFeature()->setToDefault();
     processor.getOutputFeature()->setToDefault();
 
-    auto* countFeature = processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Count")).as<babelwires::IntFeature2>();
+    auto* countFeature = processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Count")).as<babelwires::IntFeature>();
     auto* inputArray = processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Tracks")).as<babelwires::ArrayFeature>();
     auto* outputArray = processor.getOutputFeature()->getChildFromStep(babelwires::PathStep("Tracks")).as<babelwires::ArrayFeature>();
     ASSERT_NE(countFeature, nullptr);

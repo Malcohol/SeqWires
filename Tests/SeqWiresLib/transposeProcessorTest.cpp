@@ -133,7 +133,7 @@ TEST(TransposeProcessorTest, processor) {
     processor.getInputFeature()->setToDefault();
     processor.getOutputFeature()->setToDefault();
 
-    auto* pitchOffsetFeature = processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Offset")).as<babelwires::IntFeature2>();
+    auto* pitchOffsetFeature = processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Offset")).as<babelwires::IntFeature>();
     auto* inputArray = processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Tracks")).as<babelwires::ArrayFeature>();
     auto* outputArray = processor.getOutputFeature()->getChildFromStep(babelwires::PathStep("Tracks")).as<babelwires::ArrayFeature>();
     ASSERT_NE(pitchOffsetFeature, nullptr);

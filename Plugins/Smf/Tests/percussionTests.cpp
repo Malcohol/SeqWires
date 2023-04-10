@@ -61,7 +61,7 @@ TEST_P(SmfStandardPercussionTest, saveLoad) {
         EXPECT_EQ(channelTrack->getNumFeatures(), 2);
 
         auto* channelFeature =
-            channelTrack->getChildFromStep(babelwires::PathStep("Chan")).as<babelwires::IntFeature2>();
+            channelTrack->getChildFromStep(babelwires::PathStep("Chan")).as<babelwires::IntFeature>();
         channelFeature->set(9);
 
         ASSERT_NE(tracks, nullptr);
@@ -207,7 +207,7 @@ TEST_P(SmfTrackAllocationPercussionTest, trackAllocation) {
             EXPECT_EQ(channelTrack->getNumFeatures(), 2);
 
             auto* channelFeature =
-                channelTrack->getChildFromStep(babelwires::PathStep("Chan")).as<babelwires::IntFeature2>();
+                channelTrack->getChildFromStep(babelwires::PathStep("Chan")).as<babelwires::IntFeature>();
             channelFeature->set(8 + i);
 
             auto* trackFeature =

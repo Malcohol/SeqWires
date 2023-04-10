@@ -28,7 +28,7 @@ namespace {
 seqwires::RepeatProcessor::RepeatProcessor(const babelwires::ProjectContext& projectContext)
     : babelwires::ParallelProcessor<seqwires::TrackFeature, seqwires::TrackFeature>(projectContext) {
     m_count = m_inputFeature->addField(
-        std::make_unique<babelwires::IntFeature2>(0, std::numeric_limits<babelwires::IntValue::NativeType>::max(), 2),
+        std::make_unique<babelwires::IntFeature>(0, std::numeric_limits<babelwires::IntValue::NativeType>::max(), 2),
         BW_SHORT_ID("Count", "Count", "f5d2ab08-4430-47fa-b26c-0ff2154826e3"));
     addArrayFeature(BW_SHORT_ID("Tracks", "Tracks", "f727937f-0215-4527-bab4-0eca269d6c5c"));
 }

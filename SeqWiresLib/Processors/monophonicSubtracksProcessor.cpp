@@ -30,7 +30,7 @@ namespace {
 seqwires::MonophonicSubtracksProcessor::MonophonicSubtracksProcessor(const babelwires::ProjectContext& projectContext)
     : CommonProcessor(projectContext) {
     m_numSubtracks =
-        m_inputFeature->addField(std::make_unique<babelwires::IntFeature2>(1, 16),
+        m_inputFeature->addField(std::make_unique<babelwires::IntFeature>(1, 16),
                                  BW_SHORT_ID("NumTrk", "Num subtracks", "036ba53e-fdf5-4278-a2c3-7232fc10731c"));
     m_policy = m_inputFeature->addField(std::make_unique<PolicyFeature>(),
                                         BW_SHORT_ID("Policy", "Policy", "6dca88e9-a6ec-4d43-adb8-78b7bfa00ab9"));

@@ -12,7 +12,7 @@
 #include <BabelWiresLib/Processors/parallelProcessor.hpp>
 
 namespace babelwires {
-    class IntFeature2;
+    class IntFeature;
     class ArrayFeature;
 } // namespace babelwires
 
@@ -29,7 +29,7 @@ namespace seqwires {
             Factory();
         };
       private:
-        babelwires::IntFeature2* m_count;
+        babelwires::IntFeature* m_count;
     };
 
 } // namespace seqwires

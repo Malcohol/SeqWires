@@ -33,7 +33,7 @@ namespace smf {
             const seqwires::Track& getTrack() const;
 
           public:
-            babelwires::IntFeature2* m_channelNum;
+            babelwires::IntFeature* m_channelNum;
             seqwires::TrackFeature* m_trackFeature;
         };
 
