@@ -5,7 +5,7 @@
 #include <SeqWiresLib/Processors/quantizeProcessor.hpp>
 #include <SeqWiresLib/Tracks/noteEvents.hpp>
 
-#include <BabelWiresLib/Features/numericFeature.hpp>
+#include <BabelWiresLib/Types/Rational/rationalFeature.hpp>
 
 #include <Tests/BabelWiresLib/TestUtils/testEnvironment.hpp>
 #include <Tests/TestUtils/seqTestUtils.hpp>

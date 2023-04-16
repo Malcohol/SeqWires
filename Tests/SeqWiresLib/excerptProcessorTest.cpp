@@ -5,9 +5,9 @@
 #include <SeqWiresLib/Processors/excerptProcessor.hpp>
 #include <SeqWiresLib/Features/trackFeature.hpp>
 
-#include <BabelWiresLib/Features/numericFeature.hpp>
 #include <BabelWiresLib/Features/arrayFeature.hpp>
 #include <BabelWiresLib/Features/rootFeature.hpp>
+#include <BabelWiresLib/Types/Rational/rationalFeature.hpp>
 
 #include <Tests/TestUtils/seqTestUtils.hpp>
 #include <Tests/BabelWiresLib/TestUtils/testEnvironment.hpp>
