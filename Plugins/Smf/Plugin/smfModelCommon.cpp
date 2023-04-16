@@ -9,8 +9,6 @@
 
 #include <Plugins/Smf/Plugin/smfFormat.hpp>
 
-#include <BabelWiresLib/Features/featureMixins.hpp>
-
 #include <SeqWiresLib/Features/trackFeature.hpp>
 
 #include <Common/Identifiers/registeredIdentifier.hpp>

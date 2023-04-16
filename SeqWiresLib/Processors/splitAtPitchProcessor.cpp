@@ -11,7 +11,6 @@
 #include <SeqWiresLib/Functions/splitAtPitchFunction.hpp>
 
 #include <BabelWiresLib/Features/arrayFeature.hpp>
-#include <BabelWiresLib/Features/featureMixins.hpp>
 #include <BabelWiresLib/Types/Enum/enumFeature.hpp>
 #include <BabelWiresLib/Features/rootFeature.hpp>
 #include <BabelWiresLib/Features/modelExceptions.hpp>

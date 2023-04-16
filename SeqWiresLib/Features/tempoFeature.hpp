@@ -7,7 +7,6 @@
  **/
 #pragma once
 
-#include <BabelWiresLib/Features/featureMixins.hpp>
 #include <BabelWiresLib/Types/Int/intFeature.hpp>
 
 namespace seqwires {

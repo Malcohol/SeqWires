@@ -11,8 +11,6 @@
 
 #include <SeqWiresLib/Features/trackFeature.hpp>
 
-#include <BabelWiresLib/Features/featureMixins.hpp>
-
 #include <Common/Identifiers/registeredIdentifier.hpp>
 
 namespace {

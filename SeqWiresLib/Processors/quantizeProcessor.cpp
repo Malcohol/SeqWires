@@ -11,7 +11,6 @@
 #include <SeqWiresLib/Functions/quantizeFunction.hpp>
 
 #include <BabelWiresLib/Features/arrayFeature.hpp>
-#include <BabelWiresLib/Features/featureMixins.hpp>
 #include <BabelWiresLib/Features/rootFeature.hpp>
 #include <BabelWiresLib/Types/Rational/rationalFeature.hpp>
 
