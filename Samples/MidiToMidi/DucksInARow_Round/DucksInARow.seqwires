@@ -5,7 +5,9 @@
             <elements>
                 <processor id="5" factory="SilentTrack'1">
                     <modifiers>
-                        <assignRational path="Durn'1" value="3 1/2"/>
+                        <assign path="Durn'1">
+                            <value typeName="rational" value="3 1/2"/>
+                        </assign>
                     </modifiers>
                     <uiData x="-98" y="577" width="250"/>
                 </processor>
@@ -23,7 +25,9 @@
                 </processor>
                 <processor id="8" factory="TrackExcerpt'1">
                     <modifiers>
-                        <assignRational path="Duratn'1" value="7"/>
+                        <assign path="Duratn'1">
+                            <value typeName="rational" value="7"/>
+                        </assign>
                         <arraySize path="Tracks'1" size="2"/>
                         <assignFrom path="Tracks'1/0" sourceId="15" sourcePath="tracks'1/ch0'1"/>
                         <assignFrom path="Tracks'1/1" sourceId="15" sourcePath="tracks'1/ch1'1"/>
@@ -35,7 +39,9 @@
                 </processor>
                 <processor id="10" factory="TransposeTracks'1">
                     <modifiers>
-                        <assignInt path="Offset'1" value="12"/>
+                        <assign path="Offset'1">
+                            <value typeName="int" value="12"/>
+                        </assign>
                         <assignFrom path="Tracks'2/0" sourceId="6" sourcePath="Output'1"/>
                     </modifiers>
                     <uiData x="791" y="480" width="265"/>
@@ -45,8 +51,12 @@
                 </processor>
                 <processor id="11" factory="TrackExcerpt'1">
                     <modifiers>
-                        <assignRational path="Duratn'1" value="1/2"/>
-                        <assignRational path="Start'1" value="7"/>
+                        <assign path="Duratn'1">
+                            <value typeName="rational" value="1/2"/>
+                        </assign>
+                        <assign path="Start'1">
+                            <value typeName="rational" value="7"/>
+                        </assign>
                         <arraySize path="Tracks'1" size="2"/>
                         <assignFrom path="Tracks'1/0" sourceId="15" sourcePath="tracks'1/ch0'1"/>
                         <assignFrom path="Tracks'1/1" sourceId="15" sourcePath="tracks'1/ch1'1"/>
@@ -78,7 +88,9 @@
                 </processor>
                 <processor id="14" factory="RepeatTracks'1">
                     <modifiers>
-                        <assignInt path="Count'1" value="2"/>
+                        <assign path="Count'1">
+                            <value typeName="int" value="2"/>
+                        </assign>
                         <arraySize path="Tracks'3" size="2"/>
                         <assignFrom path="Tracks'3/0" sourceId="8" sourcePath="Tracks'1/0"/>
                         <assignFrom path="Tracks'3/1" sourceId="8" sourcePath="Tracks'1/1"/>
@@ -108,9 +120,13 @@
                         <assignFrom path="Format'1/Meta'1/Tempo'1" sourceId="15" sourcePath="Meta'1/Tempo'1"/>
                         <arraySize path="Format'1/tracks'2" size="3"/>
                         <assignFrom path="Format'1/tracks'2/0/Track'2" sourceId="12" sourcePath="Output'1"/>
-                        <assignInt path="Format'1/tracks'2/1/Chan'1" value="1"/>
+                        <assign path="Format'1/tracks'2/1/Chan'1">
+                            <value typeName="int" value="1"/>
+                        </assign>
                         <assignFrom path="Format'1/tracks'2/1/Track'2" sourceId="13" sourcePath="Output'1"/>
-                        <assignInt path="Format'1/tracks'2/2/Chan'1" value="2"/>
+                        <assign path="Format'1/tracks'2/2/Chan'1">
+                            <value typeName="int" value="2"/>
+                        </assign>
                         <assignFrom path="Format'1/tracks'2/2/Track'2" sourceId="10" sourcePath="Tracks'2/0"/>
                     </modifiers>
                     <uiData x="1181" y="41" width="250"/>
@@ -170,15 +186,16 @@
     <serializationMetadata>
         <serializable type="activatedOptionals" version="1"/>
         <serializable type="arraySize" version="1"/>
+        <serializable type="assign" version="1"/>
         <serializable type="assignFrom" version="1"/>
-        <serializable type="assignInt" version="1"/>
-        <serializable type="assignRational" version="1"/>
         <serializable type="factory" version="1"/>
         <serializable type="identifier" version="1"/>
         <serializable type="identifierMetadata" version="1"/>
+        <serializable type="int" version="1"/>
         <serializable type="processor" version="1"/>
         <serializable type="project" version="1"/>
         <serializable type="projectData" version="1"/>
+        <serializable type="rational" version="1"/>
         <serializable type="sourceFile" version="1"/>
         <serializable type="targetFile" version="1"/>
         <serializable type="uiData" version="1"/>
