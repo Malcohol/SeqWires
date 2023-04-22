@@ -9,12 +9,11 @@
 
 #include <SeqWiresLib/Features/trackFeature.hpp>
 #include <SeqWiresLib/Functions/splitAtPitchFunction.hpp>
-#include <SeqWiresLib/Features/pitchFeature.hpp>
 
 #include <BabelWiresLib/Features/arrayFeature.hpp>
-#include <BabelWiresLib/Features/featureMixins.hpp>
-#include <BabelWiresLib/Features/numericFeature.hpp>
+#include <BabelWiresLib/Types/Enum/enumFeature.hpp>
 #include <BabelWiresLib/Features/rootFeature.hpp>
+#include <BabelWiresLib/Features/modelExceptions.hpp>
 
 #include <Common/Identifiers/registeredIdentifier.hpp>
 
@@ -22,7 +21,7 @@
 
 seqwires::SplitAtPitchProcessor::SplitAtPitchProcessor(const babelwires::ProjectContext& projectContext)
 : CommonProcessor(projectContext) {
-    m_pitch = m_inputFeature->addField(std::make_unique<PitchFeature>(),
+    m_pitch = m_inputFeature->addField(std::make_unique<babelwires::EnumFeature>(seqwires::PitchEnum::getThisIdentifier()),
                                        BW_SHORT_ID("Pitch", "Pitch", "6b721baa-084f-450b-bf35-2e08a9592958"));
     m_trackIn = m_inputFeature->addField(std::make_unique<TrackFeature>(),
                                               BW_SHORT_ID("Input", "Input Track", "9314a43f-256a-4915-b218-f2ba37133863"));
@@ -39,9 +38,14 @@ seqwires::SplitAtPitchProcessor::Factory::Factory()
 
 void seqwires::SplitAtPitchProcessor::process(babelwires::UserLogger& userLogger) {
     if (m_pitch->isChanged(babelwires::Feature::Changes::SomethingChanged) || m_trackIn->isChanged(babelwires::Feature::Changes::SomethingChanged)) {
-        auto newTracksOut = splitAtPitch(m_pitch->get(), m_trackIn->get());
-        m_equalOrAboveTrackOut->set(std::move(newTracksOut.m_equalOrAbove));
-        m_belowTrackOut->set(std::move(newTracksOut.m_below));
-        m_otherTrackOut->set(std::move(newTracksOut.m_other));
+        const int pitch = m_pitch->tryGetEnumIndex();
+        if (pitch >= 0) {
+            auto newTracksOut = splitAtPitch(Pitch(pitch), m_trackIn->get());
+            m_equalOrAboveTrackOut->set(std::move(newTracksOut.m_equalOrAbove));
+            m_belowTrackOut->set(std::move(newTracksOut.m_below));
+            m_otherTrackOut->set(std::move(newTracksOut.m_other));
+        } else {
+            throw babelwires::ModelException() << "A valid pitch value was not specified in the SplitAtPitchProcessor";
+        }
     }
 }

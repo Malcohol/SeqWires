@@ -172,10 +172,13 @@ void smf::SmfParser::parse() {
     }
 }
 
-void smf::SmfParser::readTempoEvent(seqwires::TempoFeature& tempo) {
+void smf::SmfParser::readTempoEvent(MidiMetadata* metadata) {
     const double d = readU24();
     const double bpm = 60'000'000 / d;
-    tempo.set(std::round(bpm));
+    if (metadata) {
+        seqwires::TempoFeature& tempo = metadata->getActivatedTempoFeature();
+        tempo.set(std::round(bpm));
+    }
 }
 
 class smf::SmfParser::TrackSplitter {
@@ -530,7 +533,7 @@ void smf::SmfParser::readProgramChange(unsigned int channelNumber) {
     setProgram(channelNumber, newProgram);
 }
 
-void smf::SmfParser::readTrack(int trackIndex, source::ChannelGroup& channels, MidiMetadata& metadata) {
+void smf::SmfParser::readTrack(int trackIndex, source::ChannelGroup& channels, MidiMetadata* metadata) {
     readByteSequence("MTrk");
     const std::uint32_t trackLength = readU32();
     const int currentIndex = m_dataSource.getAbsolutePosition();
@@ -600,12 +603,18 @@ void smf::SmfParser::readTrack(int trackIndex, source::ChannelGroup& channels, M
                         }
                         case 0x02: // Copyright
                         {
-                            metadata.getActivatedCopyright().set(readTextMetaEvent(length));
+                            std::string text = readTextMetaEvent(length);
+                            if (metadata) {
+                                metadata->getActivatedCopyright().set(text);
+                            }
                             break;
                         }
                         case 0x03: // Sequence or track name.
                         {
-                            metadata.getActivatedSequenceName().set(readTextMetaEvent(length));
+                            std::string text = readTextMetaEvent(length);
+                            if (metadata) {
+                                metadata->getActivatedSequenceName().set(text);
+                            }
                             break;
                         }
                         case 0x04: // Instrument name
@@ -666,7 +675,7 @@ void smf::SmfParser::readTrack(int trackIndex, source::ChannelGroup& channels, M
                                                     << "Skipping Tempo meta-event with incorrect length",
                                                 length);
                             } else {
-                                readTempoEvent(metadata.getActivatedTempoFeature());
+                                readTempoEvent(metadata);
                             }
                             break;
                         }
@@ -793,16 +802,15 @@ void smf::SmfParser::readFormat0Sequence(source::Format0SmfFeature& sequence) {
             << "A format 0 claims to have " << m_numTracks << " tracks but it should only have 1";
     }
     source::ChannelGroup* midiTrack = sequence.getMidiTrack0();
-    readTrack(0, *midiTrack, sequence.getMidiMetadata());
+    readTrack(0, *midiTrack, &sequence.getMidiMetadata());
 }
 
 void smf::SmfParser::readFormat1Sequence(source::Format1SmfFeature& sequence) {
     source::ChannelGroup* midiTrack = sequence.addMidiTrack();
-    readTrack(0, *midiTrack, sequence.getMidiMetadata());
+    readTrack(0, *midiTrack, &sequence.getMidiMetadata());
     for (int i = 1; i < m_numTracks; ++i) {
         source::ChannelGroup* midiTrack = sequence.addMidiTrack();
-        MidiMetadata dummyMetadata;
-        readTrack(i, *midiTrack, dummyMetadata);
+        readTrack(i, *midiTrack);
     }
 }
 

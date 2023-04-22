@@ -11,10 +11,10 @@
 #include <SeqWiresLib/Functions/monophonicSubtracksFunction.hpp>
 
 #include <BabelWiresLib/Features/arrayFeature.hpp>
-#include <BabelWiresLib/Features/enumFeature.hpp>
 #include <BabelWiresLib/Features/featureMixins.hpp>
-#include <BabelWiresLib/Features/numericFeature.hpp>
 #include <BabelWiresLib/Features/rootFeature.hpp>
+#include <BabelWiresLib/Types/Enum/enumFeature.hpp>
+#include <BabelWiresLib/Types/Int/intFeature.hpp>
 
 #include <Common/Identifiers/registeredIdentifier.hpp>
 
@@ -28,9 +28,9 @@ namespace {
 } // namespace
 
 seqwires::MonophonicSubtracksProcessor::MonophonicSubtracksProcessor(const babelwires::ProjectContext& projectContext)
-: CommonProcessor(projectContext) {
+    : CommonProcessor(projectContext) {
     m_numSubtracks =
-        m_inputFeature->addField(std::make_unique<babelwires::HasStaticRange<babelwires::IntFeature, 1, 16>>(),
+        m_inputFeature->addField(std::make_unique<babelwires::IntFeature>(1, 16),
                                  BW_SHORT_ID("NumTrk", "Num subtracks", "036ba53e-fdf5-4278-a2c3-7232fc10731c"));
     m_policy = m_inputFeature->addField(std::make_unique<PolicyFeature>(),
                                         BW_SHORT_ID("Policy", "Policy", "6dca88e9-a6ec-4d43-adb8-78b7bfa00ab9"));
@@ -44,7 +44,8 @@ seqwires::MonophonicSubtracksProcessor::MonophonicSubtracksProcessor(const babel
 }
 
 seqwires::MonophonicSubtracksProcessor::Factory::Factory()
-    : CommonProcessorFactory(BW_LONG_ID("MonoSubtracksProcessor", "Monophonic subtracks", "0b131aaf-91ce-4552-9206-a680615775b1"), 1) {}
+    : CommonProcessorFactory(
+          BW_LONG_ID("MonoSubtracksProcessor", "Monophonic subtracks", "0b131aaf-91ce-4552-9206-a680615775b1"), 1) {}
 
 void seqwires::MonophonicSubtracksProcessor::process(babelwires::UserLogger& userLogger) {
     if (m_numSubtracks->isChanged(babelwires::Feature::Changes::SomethingChanged)) {

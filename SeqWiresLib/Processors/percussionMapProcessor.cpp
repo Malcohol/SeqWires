@@ -11,7 +11,7 @@
 #include <SeqWiresLib/Percussion/abstractPercussionSet.hpp>
 #include <SeqWiresLib/Percussion/builtInPercussionInstruments.hpp>
 
-#include <BabelWiresLib/Enums/addBlankToEnum.hpp>
+#include <BabelWiresLib/Types/Enum/addBlankToEnum.hpp>
 #include <BabelWiresLib/Features/mapFeature.hpp>
 #include <BabelWiresLib/Features/rootFeature.hpp>
 #include <BabelWiresLib/Project/projectContext.hpp>
@@ -28,7 +28,7 @@ namespace {
         void getAllowedTargetTypeRefs(AllowedTypes& allowedTypesOut) const override {
             getAllPercussionTypes(allowedTypesOut);
             for (auto& typeRef : allowedTypesOut.m_typeRefs) {
-                typeRef = babelwires::TypeRef(babelwires::AddBlankToEnum::getThisIdentifier(), {{typeRef}});
+                typeRef = babelwires::TypeRef(babelwires::AddBlankToEnum::getThisIdentifier(), typeRef);
             }
         }
 

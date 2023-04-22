@@ -1,7 +1,6 @@
 SET( SEQWIRESLIB_SRCS
 	Utilities/musicUtilities.cpp
 	Features/trackFeature.cpp
-	Features/pitchFeature.cpp
 	Processors/fingeredChordsProcessor.cpp
 	Processors/chordMapProcessor.cpp
 	Processors/concatenateProcessor.cpp
@@ -36,7 +35,7 @@ SET( SEQWIRESLIB_SRCS
 	Percussion/abstractPercussionSet.cpp
 	Percussion/builtInPercussionInstruments.cpp
 	Percussion/percussionSetWithPitchMap.cpp
-	pitchClass.cpp
+	pitch.cpp
 	Utilities/monophonicNoteIterator.cpp
 	libRegistration.cpp
    )

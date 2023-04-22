@@ -11,8 +11,6 @@
 
 #include <SeqWiresLib/Features/trackFeature.hpp>
 
-#include <BabelWiresLib/Features/featureMixins.hpp>
-
 #include <Common/Identifiers/registeredIdentifier.hpp>
 
 namespace {
@@ -66,7 +64,7 @@ void smf::source::ExtensibleChannelGroup::setPrivilegedTrack(int c) {
     assert((0 <= c) && "Negative channel number");
     assert((c <= 15) && "Channel number out of range");
     assert((m_channelNum == nullptr) && "The first channel was already set");
-    m_channelNum = addField(std::make_unique<babelwires::HasStaticRange<babelwires::IntFeature, 0, 15>>(),
+    m_channelNum = addField(std::make_unique<babelwires::IntFeature>(0, 15),
                             BW_SHORT_ID("ChanNo", "channel", "011e3ef1-4c06-4e40-bba4-b242dc8a3d3a"));
     m_trackFeature = addField(std::make_unique<seqwires::TrackFeature>(),
                                   BW_SHORT_ID("Track", "track", "b48b1dff-6fa4-4c2f-8f77-bc50f44fb09a"));

@@ -12,8 +12,6 @@
 #include <SeqWiresLib/Functions/appendTrackFunction.hpp>
 
 #include <BabelWiresLib/Features/arrayFeature.hpp>
-#include <BabelWiresLib/Features/featureMixins.hpp>
-#include <BabelWiresLib/Features/numericFeature.hpp>
 #include <BabelWiresLib/Features/rootFeature.hpp>
 
 #include <Common/Identifiers/registeredIdentifier.hpp>

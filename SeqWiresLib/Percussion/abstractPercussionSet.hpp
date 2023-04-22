@@ -7,7 +7,7 @@
  **/
 #pragma once
 
-#include <BabelWiresLib/Enums/enum.hpp>
+#include <BabelWiresLib/Types/Enum/enum.hpp>
 #include <BabelWiresLib/TypeSystem/primitiveType.hpp>
 
 namespace seqwires {

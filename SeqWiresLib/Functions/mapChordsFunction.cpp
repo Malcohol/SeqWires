@@ -10,22 +10,23 @@
 #include <SeqWiresLib/Tracks/chordEvents.hpp>
 #include <SeqWiresLib/Tracks/trackEventHolder.hpp>
 #include <SeqWiresLib/chord.hpp>
-#include <SeqWiresLib/pitchClass.hpp>
+#include <SeqWiresLib/pitch.hpp>
 
-#include <BabelWiresLib/Enums/addBlankToEnum.hpp>
 #include <BabelWiresLib/Features/mapFeature.hpp>
 #include <BabelWiresLib/Features/modelExceptions.hpp>
 #include <BabelWiresLib/Maps/Helpers/enumSourceMapApplicator.hpp>
 #include <BabelWiresLib/Maps/Helpers/enumValueAdapters.hpp>
 #include <BabelWiresLib/TypeSystem/typeSystem.hpp>
+#include <BabelWiresLib/Types/Enum/addBlankToEnum.hpp>
 
 babelwires::TypeRef seqwires::getMapChordFunctionChordTypeRef() {
-    return babelwires::TypeRef(babelwires::AddBlankToEnum::getThisIdentifier(), {{seqwires::ChordType::getThisIdentifier()}});
+    return babelwires::TypeRef(babelwires::AddBlankToEnum::getThisIdentifier(),
+                               seqwires::ChordType::getThisIdentifier());
 }
 
 babelwires::TypeRef seqwires::getMapChordFunctionPitchClassRef() {
     return babelwires::TypeRef(babelwires::AddBlankToEnum::getThisIdentifier(),
-                               {{seqwires::PitchClass::getThisIdentifier()}});
+                               seqwires::PitchClass::getThisIdentifier());
 }
 
 seqwires::Track seqwires::mapChordsFunction(const babelwires::TypeSystem& typeSystem, const Track& sourceTrack,
@@ -42,16 +43,16 @@ seqwires::Track seqwires::mapChordsFunction(const babelwires::TypeSystem& typeSy
     const babelwires::TypeRef chordTypeWithBlankTypeRef = getMapChordFunctionChordTypeRef();
     const babelwires::Enum& chordTypeWithBlank = chordTypeWithBlankTypeRef.resolve(typeSystem).is<babelwires::Enum>();
     const babelwires::EnumToIndexValueAdapter chordTypeTargetAdapter{chordTypeWithBlank};
-    const babelwires::EnumSourceIndexMapApplicator<unsigned int> chordTypeApplicator(chordTypeMapData, chordTypeWithBlank,
-                                                                               chordTypeTargetAdapter);
+    const babelwires::EnumSourceIndexMapApplicator<unsigned int> chordTypeApplicator(
+        chordTypeMapData, chordTypeWithBlank, chordTypeTargetAdapter);
     // The blank value is always last.
     const unsigned int indexOfBlankChordValue = chordTypeWithBlank.getEnumValues().size() - 1;
 
     const babelwires::TypeRef pitchClassWithBlankTypeRef = getMapChordFunctionPitchClassRef();
     const babelwires::Enum& pitchClassWithBlank = pitchClassWithBlankTypeRef.resolve(typeSystem).is<babelwires::Enum>();
     const babelwires::EnumToIndexValueAdapter pitchClassTargetAdapter{pitchClassWithBlank};
-    const babelwires::EnumSourceIndexMapApplicator<unsigned int> pitchClassApplicator(pitchClassMapData, pitchClassWithBlank,
-                                                                                pitchClassTargetAdapter);
+    const babelwires::EnumSourceIndexMapApplicator<unsigned int> pitchClassApplicator(
+        pitchClassMapData, pitchClassWithBlank, pitchClassTargetAdapter);
     const unsigned int indexOfBlankPitchClass = pitchClassWithBlank.getEnumValues().size() - 1;
 
     Track trackOut;
@@ -60,9 +61,11 @@ seqwires::Track seqwires::mapChordsFunction(const babelwires::TypeSystem& typeSy
     // Blank source handling:
     const unsigned int noChordChordTypeIndex = chordTypeApplicator[indexOfBlankChordValue];
     const unsigned int noChordPitchClassIndex = pitchClassApplicator[indexOfBlankPitchClass];
-    const bool hasNoChordChord = (noChordChordTypeIndex != indexOfBlankChordValue) && (noChordPitchClassIndex != indexOfBlankPitchClass);
-    const Chord noChordChord{hasNoChordChord ? static_cast<PitchClass::Value>(noChordPitchClassIndex) : PitchClass::Value::C,
-                             hasNoChordChord ? static_cast<ChordType::Value>(noChordChordTypeIndex) : ChordType::Value::M};
+    const bool hasNoChordChord =
+        (noChordChordTypeIndex != indexOfBlankChordValue) && (noChordPitchClassIndex != indexOfBlankPitchClass);
+    const Chord noChordChord{
+        hasNoChordChord ? static_cast<PitchClass::Value>(noChordPitchClassIndex) : PitchClass::Value::C,
+        hasNoChordChord ? static_cast<ChordType::Value>(noChordChordTypeIndex) : ChordType::Value::M};
     bool isChordPlaying = false;
 
     // Blank target handling:

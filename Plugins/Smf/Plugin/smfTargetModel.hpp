@@ -10,6 +10,8 @@
 #include <BabelWiresLib/Features/arrayFeature.hpp>
 #include <BabelWiresLib/FileFormat/fileFeature.hpp>
 #include <BabelWiresLib/Features/unionFeature.hpp>
+#include <BabelWiresLib/Types/Int/intFeature.hpp>
+
 #include <Plugins/Smf/Plugin/smfModelCommon.hpp>
 
 namespace seqwires {

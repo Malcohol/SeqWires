@@ -1,13 +1,13 @@
 #include <gtest/gtest.h>
 
 #include <SeqWiresLib/Features/trackFeature.hpp>
-#include <SeqWiresLib/Features/pitchFeature.hpp>
 #include <SeqWiresLib/Functions/mergeFunction.hpp>
 #include <SeqWiresLib/Functions/splitAtPitchFunction.hpp>
 #include <SeqWiresLib/Processors/splitAtPitchProcessor.hpp>
 #include <SeqWiresLib/Tracks/chordEvents.hpp>
 #include <SeqWiresLib/Tracks/noteEvents.hpp>
 #include <SeqWiresLib/Tracks/trackEventHolder.hpp>
+#include <SeqWiresLib/libRegistration.hpp>
 
 #include <BabelWiresLib/Features/arrayFeature.hpp>
 #include <BabelWiresLib/Features/rootFeature.hpp>
@@ -82,13 +82,14 @@ TEST(SplitAtPitchProcessorTest, aboveAndBelowSplit) {
 
 TEST(SplitAtPitchProcessorTest, processor) {
     testUtils::TestEnvironment testEnvironment;
+    seqwires::registerLib(testEnvironment.m_projectContext);
 
     seqwires::SplitAtPitchProcessor processor(testEnvironment.m_projectContext);
 
     processor.getInputFeature()->setToDefault();
     processor.getOutputFeature()->setToDefault();
 
-    auto* pitchFeature = processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Pitch")).as<seqwires::PitchFeature>();
+    auto* pitchFeature = processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Pitch")).as<babelwires::EnumFeature>();
     auto* inputTrack = processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Input")).as<seqwires::TrackFeature>();
     auto* aboveTrack = processor.getOutputFeature()->getChildFromStep(babelwires::PathStep("Above")).as<seqwires::TrackFeature>();
     auto* belowTrack = processor.getOutputFeature()->getChildFromStep(babelwires::PathStep("Below")).as<seqwires::TrackFeature>();
@@ -99,7 +100,7 @@ TEST(SplitAtPitchProcessorTest, processor) {
     ASSERT_NE(belowTrack, nullptr);
     ASSERT_NE(otherTrack, nullptr);
 
-    pitchFeature->set(67);
+    pitchFeature->setToEnumIndex(67);
     {
         seqwires::Track track;
         testUtils::addSimpleNotes({60, 62, 64, 65, 67, 69, 71, 72}, track);
@@ -128,7 +129,7 @@ TEST(SplitAtPitchProcessorTest, processor) {
     EXPECT_EQ(otherTrack->get().getDuration(), 2);
 
     processor.getInputFeature()->clearChanges();
-    pitchFeature->set(64);
+    pitchFeature->setToEnumIndex(64);
     processor.process(testEnvironment.m_log); 
 
     expectedNotesAbove = {

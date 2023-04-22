@@ -7,12 +7,12 @@
 #include <SeqWiresLib/Tracks/percussionEvents.hpp>
 #include <SeqWiresLib/Tracks/track.hpp>
 
-#include <BabelWiresLib/Enums/addBlankToEnum.hpp>
+#include <BabelWiresLib/Types/Enum/addBlankToEnum.hpp>
 #include <BabelWiresLib/Features/mapFeature.hpp>
 #include <BabelWiresLib/Maps/MapEntries/allToSameFallbackMapEntryData.hpp>
 #include <BabelWiresLib/Maps/MapEntries/oneToOneMapEntryData.hpp>
 #include <BabelWiresLib/Maps/mapData.hpp>
-#include <BabelWiresLib/Enums/enumValue.hpp>
+#include <BabelWiresLib/Types/Enum/enumValue.hpp>
 #include <BabelWiresLib/TypeSystem/typeSystem.hpp>
 
 #include <Tests/BabelWiresLib/TestUtils/testEnvironment.hpp>
@@ -24,7 +24,7 @@ namespace {
         const seqwires::BuiltInPercussionInstruments& builtInPercussion =
             typeSystem.getEntryByType<seqwires::BuiltInPercussionInstruments>();
 
-        babelwires::TypeRef targetTypeRef(babelwires::AddBlankToEnum::getThisIdentifier(), {{seqwires::BuiltInPercussionInstruments::getThisIdentifier()}});
+        babelwires::TypeRef targetTypeRef(babelwires::AddBlankToEnum::getThisIdentifier(), seqwires::BuiltInPercussionInstruments::getThisIdentifier());
 
         babelwires::MapData percussionMap;
         percussionMap.setSourceTypeRef(seqwires::BuiltInPercussionInstruments::getThisIdentifier());
@@ -39,23 +39,23 @@ namespace {
         sourceValue.set(builtInPercussion.getIdentifierFromValue(seqwires::BuiltInPercussionInstruments::Value::Clap));
         targetValue.set(
             builtInPercussion.getIdentifierFromValue(seqwires::BuiltInPercussionInstruments::Value::Cowbll));
-        maplet.setSourceValue(sourceValue.clone());
-        maplet.setTargetValue(targetValue.clone());
+        maplet.setSourceValue(sourceValue);
+        maplet.setTargetValue(targetValue);
         percussionMap.emplaceBack(maplet.clone());
 
         sourceValue.set(
             builtInPercussion.getIdentifierFromValue(seqwires::BuiltInPercussionInstruments::Value::Crash1));
         targetValue.set(
             builtInPercussion.getIdentifierFromValue(seqwires::BuiltInPercussionInstruments::Value::Crash2));
-        maplet.setSourceValue(sourceValue.clone());
-        maplet.setTargetValue(targetValue.clone());
+        maplet.setSourceValue(sourceValue);
+        maplet.setTargetValue(targetValue);
         percussionMap.emplaceBack(maplet.clone());
 
         sourceValue.set(
             builtInPercussion.getIdentifierFromValue(seqwires::BuiltInPercussionInstruments::Value::LFlTom));
         targetValue.set(babelwires::AddBlankToEnum::getBlankValue());
-        maplet.setSourceValue(sourceValue.clone());
-        maplet.setTargetValue(targetValue.clone());
+        maplet.setSourceValue(sourceValue);
+        maplet.setTargetValue(targetValue);
         percussionMap.emplaceBack(maplet.clone());
 
         percussionMap.emplaceBack(std::make_unique<babelwires::AllToSameFallbackMapEntryData>());
@@ -114,7 +114,6 @@ TEST(PercussionMapProcessorTest, processor) {
     testUtils::TestEnvironment testEnvironment;
     testEnvironment.m_typeSystem.addEntry<seqwires::AbstractPercussionSet>();
     testEnvironment.m_typeSystem.addEntry<seqwires::BuiltInPercussionInstruments>();
-    testEnvironment.m_typeSystem.addTypeConstructor<babelwires::AddBlankToEnum>();
     testEnvironment.m_typeSystem.addRelatedTypes(seqwires::BuiltInPercussionInstruments::getThisIdentifier(),
                                                  {{}, {seqwires::AbstractPercussionSet::getThisIdentifier()}});
 

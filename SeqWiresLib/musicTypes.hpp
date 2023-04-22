@@ -7,7 +7,7 @@
  **/
 #pragma once
 
-#include <SeqWiresLib/pitchClass.hpp>
+#include <SeqWiresLib/pitch.hpp>
 
 #include <Common/Math/rational.hpp>
 #include <Common/types.hpp>
@@ -18,14 +18,6 @@
 namespace seqwires {
 
     typedef babelwires::Rational ModelDuration;
-    typedef babelwires::Byte Pitch;
     typedef babelwires::Byte Velocity;
 
-    PitchClass::Value pitchToPitchClass(Pitch p);
-
-    std::string pitchToString(Pitch p);
-    Pitch stringToPitch(std::string_view s);
-    std::string durationToString(ModelDuration d);
-
-    static constexpr ModelDuration s_maxDuration = std::numeric_limits<seqwires::ModelDuration>::max();
 } // namespace seqwires

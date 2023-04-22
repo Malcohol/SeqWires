@@ -9,14 +9,12 @@
 
 #include <Plugins/Smf/Plugin/smfFormat.hpp>
 
-#include <BabelWiresLib/Features/featureMixins.hpp>
-
 #include <SeqWiresLib/Features/trackFeature.hpp>
 
 #include <Common/Identifiers/registeredIdentifier.hpp>
 
 smf::target::ChannelTrackFeature::ChannelTrackFeature() {
-    m_channelNum = addField(std::make_unique<babelwires::HasStaticRange<babelwires::IntFeature, 0, 15>>(),
+    m_channelNum = addField(std::make_unique<babelwires::IntFeature>(0, 15),
                             BW_SHORT_ID("Chan", "channel", "cad592ef-2355-4837-a265-38b49eae7599"));
     m_trackFeature = addField(std::make_unique<seqwires::TrackFeature>(),
                               BW_SHORT_ID("Track", "track", "a6db15c9-9f29-4fb3-92c4-771746b2b97f"));

@@ -11,7 +11,7 @@
 #include <SeqWiresLib/Tracks/trackEventHolder.hpp>
 #include <SeqWiresLib/Percussion/builtInPercussionInstruments.hpp>
 
-#include <BabelWiresLib/Enums/addBlankToEnum.hpp>
+#include <BabelWiresLib/Types/Enum/addBlankToEnum.hpp>
 #include <BabelWiresLib/Features/mapFeature.hpp>
 #include <BabelWiresLib/Features/modelExceptions.hpp>
 #include <BabelWiresLib/Maps/Helpers/enumSourceMapApplicator.hpp>

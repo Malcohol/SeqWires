@@ -5,7 +5,7 @@
 #include <SeqWiresLib/Tracks/noteEvents.hpp>
 #include <SeqWiresLib/Features/trackFeature.hpp>
 
-#include <BabelWiresLib/Features/numericFeature.hpp>
+#include <BabelWiresLib/Types/Int/intFeature.hpp>
 #include <BabelWiresLib/Features/arrayFeature.hpp>
 
 #include <Tests/TestUtils/seqTestUtils.hpp>
@@ -69,7 +69,7 @@ TEST(TransposeProcessorTest, funcSimpleChordsZero) {
     testUtils::addChords({
         {seqwires::PitchClass::PitchClass::Value::C, seqwires::ChordType::ChordType::Value::M},
         {seqwires::PitchClass::PitchClass::Value::E, seqwires::ChordType::ChordType::Value::m},
-        {seqwires::PitchClass::PitchClass::Value::GSharp, seqwires::ChordType::ChordType::Value::dim},
+        {seqwires::PitchClass::PitchClass::Value::Gsh, seqwires::ChordType::ChordType::Value::dim},
         {seqwires::PitchClass::PitchClass::Value::A, seqwires::ChordType::ChordType::Value::aug},
         }, trackIn);
 
@@ -78,7 +78,7 @@ TEST(TransposeProcessorTest, funcSimpleChordsZero) {
     testUtils::testChords({
         {seqwires::PitchClass::PitchClass::Value::C, seqwires::ChordType::ChordType::Value::M},
         {seqwires::PitchClass::PitchClass::Value::E, seqwires::ChordType::ChordType::Value::m},
-        {seqwires::PitchClass::PitchClass::Value::GSharp, seqwires::ChordType::ChordType::Value::dim},
+        {seqwires::PitchClass::PitchClass::Value::Gsh, seqwires::ChordType::ChordType::Value::dim},
         {seqwires::PitchClass::PitchClass::Value::A, seqwires::ChordType::ChordType::Value::aug},
         }, trackIn);
 }
@@ -90,14 +90,14 @@ TEST(TransposeProcessorTest, funcSimpleChordsPositive) {
     testUtils::addChords({
         {seqwires::PitchClass::PitchClass::Value::C, seqwires::ChordType::ChordType::Value::M},
         {seqwires::PitchClass::PitchClass::Value::E, seqwires::ChordType::ChordType::Value::m},
-        {seqwires::PitchClass::PitchClass::Value::GSharp, seqwires::ChordType::ChordType::Value::dim},
+        {seqwires::PitchClass::PitchClass::Value::Gsh, seqwires::ChordType::ChordType::Value::dim},
         {seqwires::PitchClass::PitchClass::Value::B, seqwires::ChordType::ChordType::Value::aug},
         }, trackIn);
 
     auto trackOut = seqwires::transposeTrack(trackIn, 1);
 
     testUtils::testChords({
-        {seqwires::PitchClass::PitchClass::Value::CSharp, seqwires::ChordType::ChordType::Value::M},
+        {seqwires::PitchClass::PitchClass::Value::Csh, seqwires::ChordType::ChordType::Value::M},
         {seqwires::PitchClass::PitchClass::Value::F, seqwires::ChordType::ChordType::Value::m},
         {seqwires::PitchClass::PitchClass::Value::A, seqwires::ChordType::ChordType::Value::dim},
         {seqwires::PitchClass::PitchClass::Value::C, seqwires::ChordType::ChordType::Value::aug},
@@ -111,7 +111,7 @@ TEST(TransposeProcessorTest, funcSimpleChordsNegative) {
     testUtils::addChords({
         {seqwires::PitchClass::PitchClass::Value::C, seqwires::ChordType::ChordType::Value::M},
         {seqwires::PitchClass::PitchClass::Value::E, seqwires::ChordType::ChordType::Value::m},
-        {seqwires::PitchClass::PitchClass::Value::GSharp, seqwires::ChordType::ChordType::Value::dim},
+        {seqwires::PitchClass::PitchClass::Value::Gsh, seqwires::ChordType::ChordType::Value::dim},
         {seqwires::PitchClass::PitchClass::Value::B, seqwires::ChordType::ChordType::Value::aug},
         }, trackIn);
 
@@ -119,9 +119,9 @@ TEST(TransposeProcessorTest, funcSimpleChordsNegative) {
 
     testUtils::testChords({
         {seqwires::PitchClass::PitchClass::Value::B, seqwires::ChordType::ChordType::Value::M},
-        {seqwires::PitchClass::PitchClass::Value::DSharp, seqwires::ChordType::ChordType::Value::m},
+        {seqwires::PitchClass::PitchClass::Value::Dsh, seqwires::ChordType::ChordType::Value::m},
         {seqwires::PitchClass::PitchClass::Value::G, seqwires::ChordType::ChordType::Value::dim},
-        {seqwires::PitchClass::PitchClass::Value::ASharp, seqwires::ChordType::ChordType::Value::aug},
+        {seqwires::PitchClass::PitchClass::Value::Ash, seqwires::ChordType::ChordType::Value::aug},
         }, trackOut);
 }
 

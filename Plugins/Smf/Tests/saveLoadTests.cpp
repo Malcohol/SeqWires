@@ -10,6 +10,8 @@
 #include <SeqWiresLib/Tracks/noteEvents.hpp>
 #include <SeqWiresLib/libRegistration.hpp>
 
+#include <BabelWiresLib/libRegistration.hpp>
+
 #include <Common/IO/fileDataSource.hpp>
 
 #include <Tests/TestUtils/seqTestUtils.hpp>
