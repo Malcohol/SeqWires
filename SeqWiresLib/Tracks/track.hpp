@@ -7,9 +7,12 @@
  **/
 #pragma once
 
-#include <Common/types.hpp>
 #include <SeqWiresLib/Tracks/trackEvent.hpp>
 #include <SeqWiresLib/musicTypes.hpp>
+
+#include <BabelWiresLib/TypeSystem/value.hpp>
+
+#include <Common/types.hpp>
 
 #include <cassert>
 #include <unordered_map>
@@ -17,8 +20,10 @@
 
 namespace seqwires {
     /// A track carries a stream of TrackEvents.
-    class Track {
+    class Track : public babelwires::Value {
       public:
+        CLONEABLE(Track);
+
         /// Add a TrackEvent by moving or copying it into the track.
         template <typename EVENT, typename = std::enable_if_t<std::is_convertible_v<EVENT&, const TrackEvent&>>>
         void addEvent(EVENT&& srcEvent) {
@@ -39,12 +44,13 @@ namespace seqwires {
         ModelDuration getTotalEventDuration() const;
 
         /// Get a hash corresponding to the state of the track's contents
-        std::size_t getHash() const;
+        std::size_t getHash() const override;
+
+        std::string toString() const override;
 
         /// Determine whether the data in this track and the other are exactly the same.
         /// Note: This is unconcerned with how events are laid out in their streams.
-        bool operator==(const Track& other) const;
-        bool operator!=(const Track& other) const { return !(*this == other); }
+        bool operator==(const Value& other) const override;
 
         /// Get a summary of the track contents, by category.
         const std::unordered_map<const char*, int>& getNumEventGroupsByCategory() const;

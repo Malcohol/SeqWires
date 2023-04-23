@@ -1,8 +1,8 @@
 /**
  * Tracks describe a sequence of events, typically notes and chords.
- * 
+ *
  * (C) 2021 Malcolm Tyrrell
- * 
+ *
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
 #include <SeqWiresLib/Tracks/track.hpp>
@@ -57,27 +57,35 @@ std::size_t seqwires::Track::getHash() const {
     return m_cachedValues.m_hash;
 }
 
-bool seqwires::Track::operator==(const Track& other) const {
-    if (other.getNumEvents() != getNumEvents()) {
+std::string seqwires::Track::toString() const {
+    return m_duration.toString();
+}
+
+bool seqwires::Track::operator==(const Value& other) const {
+    const Track* const otherTrack = other.as<Track>();
+    if (!otherTrack) {
         return false;
     }
-    if (other.m_duration != m_duration) {
+    if (otherTrack->getNumEvents() != getNumEvents()) {
         return false;
     }
-    if (other.getHash() != getHash()) {
+    if (otherTrack->m_duration != m_duration) {
+        return false;
+    }
+    if (otherTrack->getHash() != getHash()) {
         return false;
     }
     auto thisIt = begin();
-    auto otherIt = other.begin();
+    auto otherIt = otherTrack->begin();
     while (thisIt != end()) {
-        assert(otherIt != other.end());
+        assert(otherIt != otherTrack->end());
         if (*thisIt != *otherIt) {
             return false;
         }
         ++thisIt;
         ++otherIt;
     }
-    assert(otherIt == other.end());
+    assert(otherIt == otherTrack->end());
     return true;
 }
 
