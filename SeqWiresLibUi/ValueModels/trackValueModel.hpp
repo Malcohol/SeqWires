@@ -18,8 +18,8 @@ namespace seqwiresUi {
 
     class TrackValueModel : public babelwires::ValueModelWithRichText {
       public:
-        QString getRichText() const;
-        // TODO virtual QVariant getTooltip() const override;
+        QString getRichText() const override;
+        QString getTooltip() const override;
     };
 
 } // namespace seqwiresUi

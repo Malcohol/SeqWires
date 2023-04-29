@@ -19,26 +19,19 @@ QString seqwiresUi::TrackValueModel::getRichText() const {
     return duration.toHtmlString().c_str();
 }
 
-/*
-QVariant seqwiresUi::TrackRowModel::getTooltip() const {
-    const seqwires::TrackFeature& trackFeature = getTrackFeature();
-    QVariant ret = RowModel::getTooltip();
-    if (ret.isNull()) {
-        const seqwires::Track& track = getTrackFeature().get();
-        const auto& numEventGroupsByCategory = track.getNumEventGroupsByCategory();
-        if (!numEventGroupsByCategory.empty()) {
-            QString summary;
-            const char* delim = "";
-            for (auto p : numEventGroupsByCategory) {
-                summary += delim;
-                summary += QString("%1: %2").arg(p.first, QString::number(p.second));
-                delim = "\n";
-            }
-            ret = summary;
-        } else {
-            return QString("No events");
+QString seqwiresUi::TrackValueModel::getTooltip() const {
+    const seqwires::Track& track = m_value->is<seqwires::Track>();
+    const auto& numEventGroupsByCategory = track.getNumEventGroupsByCategory();
+    if (!numEventGroupsByCategory.empty()) {
+        QString summary;
+        const char* delim = "";
+        for (auto p : numEventGroupsByCategory) {
+            summary += delim;
+            summary += QString("%1: %2").arg(p.first, QString::number(p.second));
+            delim = "\n";
         }
+        return summary;
+    } else {
+        return QString("No events");
     }
-    return ret;
 }
-*/
