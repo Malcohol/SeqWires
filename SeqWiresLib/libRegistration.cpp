@@ -25,6 +25,7 @@
 #include <SeqWiresLib/Processors/transposeProcessor.hpp>
 #include <SeqWiresLib/chord.hpp>
 #include <SeqWiresLib/pitch.hpp>
+#include <SeqWiresLib/Tracks/trackTypeConstructor.hpp>
 
 #include <BabelWiresLib/Processors/processorFactory.hpp>
 #include <BabelWiresLib/Processors/processorFactoryRegistry.hpp>
@@ -40,6 +41,8 @@ void seqwires::registerLib(babelwires::ProjectContext& context) {
     context.m_typeSystem.addEntry<BuiltInPercussionInstruments>();
     context.m_typeSystem.addEntry<MonophonicSubtracksPolicyEnum>();
     context.m_typeSystem.addEntry<FingeredChordsSustainPolicyEnum>();
+
+    context.m_typeSystem.addTypeConstructor<TrackTypeConstructor>();
 
     context.m_typeSystem.addRelatedTypes(BuiltInPercussionInstruments::getThisIdentifier(),
                                          {{}, {AbstractPercussionSet::getThisIdentifier()}});

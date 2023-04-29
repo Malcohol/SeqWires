@@ -17,6 +17,7 @@ SET( SEQUENCELIB_TESTS_SRCS
       splitAtPitchProcessorTest.cpp
       trackTest.cpp
       trackTraverserTest.cpp
+      trackTypeTest.cpp
       transposeProcessorTest.cpp
    )
 
