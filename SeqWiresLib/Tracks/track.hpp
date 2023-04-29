@@ -24,6 +24,10 @@ namespace seqwires {
       public:
         CLONEABLE(Track);
 
+        Track();
+        /// Create an empty track with a given duration.
+        Track(ModelDuration duration);
+
         /// Add a TrackEvent by moving or copying it into the track.
         template <typename EVENT, typename = std::enable_if_t<std::is_convertible_v<EVENT&, const TrackEvent&>>>
         void addEvent(EVENT&& srcEvent) {

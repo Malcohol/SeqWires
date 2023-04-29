@@ -13,9 +13,7 @@ seqwires::TrackType::TrackType(ModelDuration defaultDuration)
     : m_defaultDuration(defaultDuration) {}
 
 babelwires::NewValueHolder seqwires::TrackType::createValue() const {
-    auto newValueHolder = babelwires::ValueHolder::makeValue<Track>();
-    newValueHolder.m_nonConstReference.is<Track>().setDuration(m_defaultDuration);
-    return newValueHolder;
+    return babelwires::ValueHolder::makeValue<Track>(m_defaultDuration);
 }
 
 bool seqwires::TrackType::isValidValue(const babelwires::Value& v) const {

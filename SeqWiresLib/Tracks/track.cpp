@@ -9,6 +9,12 @@
 
 #include <Common/Hash/hash.hpp>
 
+seqwires::Track::Track() = default;
+
+seqwires::Track::Track(ModelDuration duration) {
+    setDuration(duration);
+}
+
 int seqwires::Track::getNumEvents() const {
     return m_blockStream.getNumEvents();
 }
