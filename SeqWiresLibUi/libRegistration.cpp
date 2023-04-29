@@ -12,7 +12,7 @@
 
 #include <SeqWiresLibUi/RowModels/trackRowModel.hpp>
 
-#include <SeqWiresLib/Features/trackFeature.hpp>
+#include <SeqWiresLib/Types/Track/trackFeature.hpp>
 
 void seqwiresUi::registerLib(babelwires::UiProjectContext& context) {
     context.m_rowModelReg.registryHandler<seqwires::TrackFeature, TrackRowModel>();

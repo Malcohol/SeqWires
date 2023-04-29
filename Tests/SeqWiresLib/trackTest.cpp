@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
-#include <SeqWiresLib/Tracks/noteEvents.hpp>
-#include <SeqWiresLib/Tracks/track.hpp>
+#include <SeqWiresLib/Types/Track/TrackEvents/noteEvents.hpp>
+#include <SeqWiresLib/Types/Track/track.hpp>
 
 #include <Tests/TestUtils/seqTestUtils.hpp>
 

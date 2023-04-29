@@ -1,6 +1,6 @@
 #include <SeqWiresLib/Functions/splitAtPitchFunction.hpp>
 
-#include <SeqWiresLib/Tracks/noteEvents.hpp>
+#include <SeqWiresLib/Types/Track/TrackEvents/noteEvents.hpp>
 #include <SeqWiresLib/Utilities/filteredTrackIterator.hpp>
 
 namespace {

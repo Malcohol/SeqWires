@@ -25,7 +25,7 @@
 #include <SeqWiresLib/Processors/transposeProcessor.hpp>
 #include <SeqWiresLib/chord.hpp>
 #include <SeqWiresLib/pitch.hpp>
-#include <SeqWiresLib/Tracks/trackTypeConstructor.hpp>
+#include <SeqWiresLib/Types/Track/trackTypeConstructor.hpp>
 
 #include <BabelWiresLib/Processors/processorFactory.hpp>
 #include <BabelWiresLib/Processors/processorFactoryRegistry.hpp>

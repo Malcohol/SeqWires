@@ -7,7 +7,7 @@
  **/
 #include <SeqWiresLib/Functions/quantizeFunction.hpp>
 
-#include <SeqWiresLib/Tracks/trackEventHolder.hpp>
+#include <SeqWiresLib/Types/Track/TrackEvents/trackEventHolder.hpp>
 #include <SeqWiresLib/Functions/sanitizingFunctions.hpp>
 
 namespace {

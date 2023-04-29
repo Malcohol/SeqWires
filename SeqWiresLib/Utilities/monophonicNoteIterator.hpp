@@ -7,7 +7,7 @@
  **/
 #pragma once
 
-#include <SeqWiresLib/Tracks/noteEvents.hpp>
+#include <SeqWiresLib/Types/Track/TrackEvents/noteEvents.hpp>
 #include <SeqWiresLib/Utilities/filteredTrackIterator.hpp>
 
 namespace seqwires {

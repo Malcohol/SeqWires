@@ -7,7 +7,7 @@
  **/
 #include <SeqWiresLib/Processors/splitAtPitchProcessor.hpp>
 
-#include <SeqWiresLib/Features/trackFeature.hpp>
+#include <SeqWiresLib/Types/Track/trackFeature.hpp>
 #include <SeqWiresLib/Functions/splitAtPitchFunction.hpp>
 
 #include <BabelWiresLib/Features/arrayFeature.hpp>

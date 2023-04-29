@@ -7,7 +7,7 @@
  **/
 #pragma once
 
-#include <SeqWiresLib/Tracks/trackType.hpp>
+#include <SeqWiresLib/Types/Track/trackType.hpp>
 #include <SeqWiresLib/musicTypes.hpp>
 
 #include <BabelWiresLib/TypeSystem/typeConstructor.hpp>

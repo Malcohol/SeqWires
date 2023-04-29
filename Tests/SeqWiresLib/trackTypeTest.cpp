@@ -1,9 +1,9 @@
 #include <gtest/gtest.h>
 
-#include <SeqWiresLib/Tracks/noteEvents.hpp>
-#include <SeqWiresLib/Tracks/track.hpp>
-#include <SeqWiresLib/Tracks/trackType.hpp>
-#include <SeqWiresLib/Tracks/trackTypeConstructor.hpp>
+#include <SeqWiresLib/Types/Track/TrackEvents/noteEvents.hpp>
+#include <SeqWiresLib/Types/Track/track.hpp>
+#include <SeqWiresLib/Types/Track/trackType.hpp>
+#include <SeqWiresLib/Types/Track/trackTypeConstructor.hpp>
 
 #include <BabelWiresLib/Types/Rational/rationalValue.hpp>
 

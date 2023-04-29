@@ -7,7 +7,7 @@
  **/
 #include <SeqWiresLib/Utilities/musicUtilities.hpp>
 
-#include <SeqWiresLib/Tracks/track.hpp>
+#include <SeqWiresLib/Types/Track/track.hpp>
 
 int seqwires::getMinimumDenominator(const Track& track) {
     int denominator = 1;

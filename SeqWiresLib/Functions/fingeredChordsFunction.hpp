@@ -7,7 +7,7 @@
  **/
 #include <BabelWiresLib/TypeSystem/primitiveType.hpp>
 
-#include <SeqWiresLib/Tracks/track.hpp>
+#include <SeqWiresLib/Types/Track/track.hpp>
 
 namespace seqwires {
 #define FINGERED_CHORDS_SUSTAIN_POLICY(X)                                                                             \

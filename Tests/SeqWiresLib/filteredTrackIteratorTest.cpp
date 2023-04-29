@@ -2,7 +2,7 @@
 
 #include <SeqWiresLib/Utilities/filteredTrackIterator.hpp>
 
-#include <SeqWiresLib/Tracks/trackEvent.hpp>
+#include <SeqWiresLib/Types/Track/TrackEvents/trackEvent.hpp>
 
 namespace {
     struct TestEvent : seqwires::TrackEvent {

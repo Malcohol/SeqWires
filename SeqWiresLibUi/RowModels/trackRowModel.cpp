@@ -7,7 +7,7 @@
  **/
 #include <SeqWiresLibUi/RowModels/trackRowModel.hpp>
 
-#include <SeqWiresLib/Features/trackFeature.hpp>
+#include <SeqWiresLib/Types/Track/trackFeature.hpp>
 
 #include <QString>
 

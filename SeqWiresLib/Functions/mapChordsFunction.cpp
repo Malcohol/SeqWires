@@ -7,8 +7,8 @@
  **/
 #include <SeqWiresLib/Functions/mapChordsFunction.hpp>
 
-#include <SeqWiresLib/Tracks/chordEvents.hpp>
-#include <SeqWiresLib/Tracks/trackEventHolder.hpp>
+#include <SeqWiresLib/Types/Track/TrackEvents/chordEvents.hpp>
+#include <SeqWiresLib/Types/Track/TrackEvents/trackEventHolder.hpp>
 #include <SeqWiresLib/chord.hpp>
 #include <SeqWiresLib/pitch.hpp>
 

@@ -1,10 +1,10 @@
 #include <gtest/gtest.h>
 
-#include <SeqWiresLib/Features/trackFeature.hpp>
+#include <SeqWiresLib/Types/Track/trackFeature.hpp>
 #include <SeqWiresLib/Functions/monophonicSubtracksFunction.hpp>
-#include <SeqWiresLib/Tracks/chordEvents.hpp>
-#include <SeqWiresLib/Tracks/noteEvents.hpp>
-#include <SeqWiresLib/Tracks/trackEventHolder.hpp>
+#include <SeqWiresLib/Types/Track/TrackEvents/chordEvents.hpp>
+#include <SeqWiresLib/Types/Track/TrackEvents/noteEvents.hpp>
+#include <SeqWiresLib/Types/Track/TrackEvents/trackEventHolder.hpp>
 
 #include <BabelWiresLib/Features/arrayFeature.hpp>
 

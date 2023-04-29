@@ -11,8 +11,8 @@
 #include <Plugins/Smf/Plugin/Percussion/gmPercussionSet.hpp>
 #include <Plugins/Smf/Plugin/gmSpec.hpp>
 
-#include <SeqWiresLib/Features/trackFeature.hpp>
-#include <SeqWiresLib/Tracks/percussionEvents.hpp>
+#include <SeqWiresLib/Types/Track/trackFeature.hpp>
+#include <SeqWiresLib/Types/Track/TrackEvents/percussionEvents.hpp>
 #include <SeqWiresLib/Utilities/filteredTrackIterator.hpp>
 #include <SeqWiresLib/Utilities/musicUtilities.hpp>
 #include <SeqWiresLib/Utilities/trackTraverser.hpp>

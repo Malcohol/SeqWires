@@ -1,7 +1,7 @@
 #pragma once
 
 #include <SeqWiresLib/musicTypes.hpp>
-#include <SeqWiresLib/Tracks/trackEventHolder.hpp>
+#include <SeqWiresLib/Types/Track/TrackEvents/trackEventHolder.hpp>
 #include <SeqWiresLib/chord.hpp>
 
 #include <vector>

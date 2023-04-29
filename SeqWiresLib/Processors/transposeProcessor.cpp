@@ -7,7 +7,7 @@
  **/
 #include <SeqWiresLib/Processors/transposeProcessor.hpp>
 
-#include <SeqWiresLib/Features/trackFeature.hpp>
+#include <SeqWiresLib/Types/Track/trackFeature.hpp>
 #include <SeqWiresLib/Functions/transposeFunction.hpp>
 
 #include <BabelWiresLib/Features/arrayFeature.hpp>

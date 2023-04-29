@@ -1,9 +1,9 @@
 #include <gtest/gtest.h>
 
 #include <SeqWiresLib/Functions/excerptFunction.hpp>
-#include <SeqWiresLib/Tracks/noteEvents.hpp>
+#include <SeqWiresLib/Types/Track/TrackEvents/noteEvents.hpp>
 #include <SeqWiresLib/Processors/excerptProcessor.hpp>
-#include <SeqWiresLib/Features/trackFeature.hpp>
+#include <SeqWiresLib/Types/Track/trackFeature.hpp>
 
 #include <BabelWiresLib/Features/arrayFeature.hpp>
 #include <BabelWiresLib/Features/rootFeature.hpp>

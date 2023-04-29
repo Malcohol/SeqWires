@@ -7,7 +7,7 @@
  **/
 #include <SeqWiresLib/Functions/mergeFunction.hpp>
 
-#include <SeqWiresLib/Tracks/trackEventHolder.hpp>
+#include <SeqWiresLib/Types/Track/TrackEvents/trackEventHolder.hpp>
 #include <SeqWiresLib/Utilities/trackTraverser.hpp>
 
 #include <BabelWiresLib/Features/modelExceptions.hpp>

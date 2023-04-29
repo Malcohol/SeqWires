@@ -7,8 +7,8 @@
  **/
 #include <SeqWiresLib/Functions/percussionMapFunction.hpp>
 
-#include <SeqWiresLib/Tracks/percussionEvents.hpp>
-#include <SeqWiresLib/Tracks/trackEventHolder.hpp>
+#include <SeqWiresLib/Types/Track/TrackEvents/percussionEvents.hpp>
+#include <SeqWiresLib/Types/Track/TrackEvents/trackEventHolder.hpp>
 #include <SeqWiresLib/Percussion/builtInPercussionInstruments.hpp>
 
 #include <BabelWiresLib/Types/Enum/addBlankToEnum.hpp>

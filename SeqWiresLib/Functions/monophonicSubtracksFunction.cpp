@@ -7,8 +7,8 @@
  **/
 #include <SeqWiresLib/Functions/monophonicSubtracksFunction.hpp>
 
-#include <SeqWiresLib/Tracks/noteEvents.hpp>
-#include <SeqWiresLib/Tracks/trackEventHolder.hpp>
+#include <SeqWiresLib/Types/Track/TrackEvents/noteEvents.hpp>
+#include <SeqWiresLib/Types/Track/TrackEvents/trackEventHolder.hpp>
 
 #include <Common/Identifiers/registeredIdentifier.hpp>
 

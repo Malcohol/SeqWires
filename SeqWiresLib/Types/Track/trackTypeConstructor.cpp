@@ -5,7 +5,7 @@
  *
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
-#include <SeqWiresLib/Tracks/trackTypeConstructor.hpp>
+#include <SeqWiresLib/Types/Track/trackTypeConstructor.hpp>
 
 #include <BabelWiresLib/TypeSystem/typeSystemException.hpp>
 #include <BabelWiresLib/Types/Rational/rationalValue.hpp>

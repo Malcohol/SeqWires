@@ -5,7 +5,7 @@
  * 
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
-#include <SeqWiresLib/Tracks/percussionEvents.hpp>
+#include <SeqWiresLib/Types/Track/TrackEvents/percussionEvents.hpp>
 
 #include <Common/Hash/hash.hpp>
 

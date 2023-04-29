@@ -1,9 +1,9 @@
 #include <gtest/gtest.h>
 
-#include <SeqWiresLib/Features/trackFeature.hpp>
+#include <SeqWiresLib/Types/Track/trackFeature.hpp>
 #include <SeqWiresLib/Functions/quantizeFunction.hpp>
 #include <SeqWiresLib/Processors/quantizeProcessor.hpp>
-#include <SeqWiresLib/Tracks/noteEvents.hpp>
+#include <SeqWiresLib/Types/Track/TrackEvents/noteEvents.hpp>
 
 #include <BabelWiresLib/Types/Rational/rationalFeature.hpp>
 

@@ -7,7 +7,7 @@
  **/
 #include <SeqWiresLib/Functions/fingeredChordsFunction.hpp>
 
-#include <SeqWiresLib/Tracks/chordEvents.hpp>
+#include <SeqWiresLib/Types/Track/TrackEvents/chordEvents.hpp>
 #include <SeqWiresLib/Utilities/filteredTrackIterator.hpp>
 
 #include <algorithm>

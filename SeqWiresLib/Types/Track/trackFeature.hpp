@@ -9,8 +9,8 @@
 
 #include <BabelWiresLib/Features/simpleValueFeature.hpp>
 
-#include <SeqWiresLib/Tracks/track.hpp>
-#include <SeqWiresLib/Tracks/trackType.hpp>
+#include <SeqWiresLib/Types/Track/track.hpp>
+#include <SeqWiresLib/Types/Track/trackType.hpp>
 
 namespace seqwires {
 

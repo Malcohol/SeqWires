@@ -1,5 +1,5 @@
 #include <SeqWiresLib/Processors/fingeredChordsProcessor.hpp>
-#include <SeqWiresLib/Features/trackFeature.hpp>
+#include <SeqWiresLib/Types/Track/trackFeature.hpp>
 #include <SeqWiresLib/Functions/fingeredChordsFunction.hpp>
 
 #include <BabelWiresLib/Features/rootFeature.hpp>

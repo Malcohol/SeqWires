@@ -2,9 +2,9 @@
 
 #include <SeqWiresLib/Functions/mapChordsFunction.hpp>
 #include <SeqWiresLib/Processors/chordMapProcessor.hpp>
-#include <SeqWiresLib/Tracks/chordEvents.hpp>
-#include <SeqWiresLib/Tracks/track.hpp>
-#include <SeqWiresLib/Tracks/trackType.hpp>
+#include <SeqWiresLib/Types/Track/TrackEvents/chordEvents.hpp>
+#include <SeqWiresLib/Types/Track/track.hpp>
+#include <SeqWiresLib/Types/Track/trackType.hpp>
 #include <SeqWiresLib/chord.hpp>
 
 #include <BabelWiresLib/Types/Enum/addBlankToEnum.hpp>

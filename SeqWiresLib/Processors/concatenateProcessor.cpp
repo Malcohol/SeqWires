@@ -7,7 +7,7 @@
  **/
 #include <SeqWiresLib/Processors/concatenateProcessor.hpp>
 
-#include <SeqWiresLib/Features/trackFeature.hpp>
+#include <SeqWiresLib/Types/Track/trackFeature.hpp>
 #include <SeqWiresLib/Functions/appendTrackFunction.hpp>
 
 #include <BabelWiresLib/Features/arrayFeature.hpp>

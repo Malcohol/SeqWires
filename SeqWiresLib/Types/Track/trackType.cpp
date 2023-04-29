@@ -5,9 +5,9 @@
  *
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
-#include <SeqWiresLib/Tracks/trackType.hpp>
+#include <SeqWiresLib/Types/Track/trackType.hpp>
 
-#include <SeqWiresLib/Tracks/track.hpp>
+#include <SeqWiresLib/Types/Track/track.hpp>
 
 seqwires::TrackType::TrackType(ModelDuration defaultDuration)
     : m_defaultDuration(defaultDuration) {}
