@@ -25,7 +25,7 @@ seqwires::FingeredChordsProcessor::Factory::Factory()
 void seqwires::FingeredChordsProcessor::process(babelwires::UserLogger& userLogger) {
     if (m_trackIn->isChanged(babelwires::Feature::Changes::SomethingChanged) || m_sustainPolicy->isChanged(babelwires::Feature::Changes::SomethingChanged)) {
         const auto sustainPolicy = static_cast<const PolicyFeature*>(m_sustainPolicy)->getAsValue();
-        m_trackOut->set(std::make_unique<Track>(fingeredChordsFunction(m_trackIn->get(), sustainPolicy)));
+        m_trackOut->set(fingeredChordsFunction(m_trackIn->get(), sustainPolicy));
     }
 }
 

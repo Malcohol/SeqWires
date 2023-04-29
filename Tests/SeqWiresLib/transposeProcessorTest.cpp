@@ -127,6 +127,7 @@ TEST(TransposeProcessorTest, funcSimpleChordsNegative) {
 
 TEST(TransposeProcessorTest, processor) {
     testUtils::TestEnvironment testEnvironment;
+    testEnvironment.m_typeSystem.addEntry<seqwires::DefaultTrackType>();
 
     seqwires::TransposeProcessor processor(testEnvironment.m_projectContext);
 

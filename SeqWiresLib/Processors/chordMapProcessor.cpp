@@ -11,11 +11,11 @@
 #include <SeqWiresLib/chord.hpp>
 #include <SeqWiresLib/pitch.hpp>
 
-#include <BabelWiresLib/Types/Enum/addBlankToEnum.hpp>
 #include <BabelWiresLib/Features/mapFeature.hpp>
 #include <BabelWiresLib/Features/rootFeature.hpp>
 #include <BabelWiresLib/Project/projectContext.hpp>
 #include <BabelWiresLib/TypeSystem/typeSystem.hpp>
+#include <BabelWiresLib/Types/Enum/addBlankToEnum.hpp>
 
 #include <Common/Identifiers/registeredIdentifier.hpp>
 
@@ -51,13 +51,12 @@ seqwires::ChordMapProcessor::ChordMapProcessor(const babelwires::ProjectContext&
 }
 
 seqwires::ChordMapProcessor::Factory::Factory()
-    : CommonProcessorFactory(
-          BW_LONG_ID("ChordMapProcessor", "Chord Map", "b7227130-8274-4451-bd60-8fe34a74c4b6"), 1) {}
+    : CommonProcessorFactory(BW_LONG_ID("ChordMapProcessor", "Chord Map", "b7227130-8274-4451-bd60-8fe34a74c4b6"), 1) {}
 
 void seqwires::ChordMapProcessor::processEntry(babelwires::UserLogger& userLogger, const seqwires::TrackFeature& input,
                                                seqwires::TrackFeature& output) const {
     const babelwires::ProjectContext& context = babelwires::RootFeature::getProjectContextAt(*m_chordTypeMapFeature);
 
-    output.set(std::make_unique<Track>(mapChordsFunction(context.m_typeSystem, input.get(),
-                                                         m_chordTypeMapFeature->get(), m_pitchClassMapFeature->get())));
+    output.set(mapChordsFunction(context.m_typeSystem, input.get(), m_chordTypeMapFeature->get(),
+                                 m_pitchClassMapFeature->get()));
 }

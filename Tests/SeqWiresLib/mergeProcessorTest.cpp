@@ -64,6 +64,7 @@ TEST(MergeProcessorTest, simpleFunction) {
 
 TEST(MergeProcessorTest, processor) {
     testUtils::TestEnvironment testEnvironment;
+    testEnvironment.m_typeSystem.addEntry<seqwires::DefaultTrackType>();
 
     seqwires::MergeProcessor processor(testEnvironment.m_projectContext);
 

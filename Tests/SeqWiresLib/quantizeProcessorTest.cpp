@@ -70,6 +70,7 @@ TEST(QuantizeProcessorTest, funcCollapsedGroup) {
 
 TEST(QuantizeProcessorTest, processor) {
     testUtils::TestEnvironment testEnvironment;
+    testEnvironment.m_typeSystem.addEntry<seqwires::DefaultTrackType>();
 
     seqwires::QuantizeProcessor processor(testEnvironment.m_projectContext);
 

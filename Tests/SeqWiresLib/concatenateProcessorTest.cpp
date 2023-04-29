@@ -64,6 +64,7 @@ TEST(ConcatenateProcessorTest, appendFuncGaps) {
 
 TEST(ConcatenateProcessorTest, processor) {
     testUtils::TestEnvironment testEnvironment;
+    testEnvironment.m_typeSystem.addEntry<seqwires::DefaultTrackType>();
 
     seqwires::ConcatenateProcessor processor(testEnvironment.m_projectContext);
 

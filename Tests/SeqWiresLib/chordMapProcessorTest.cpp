@@ -4,6 +4,7 @@
 #include <SeqWiresLib/Processors/chordMapProcessor.hpp>
 #include <SeqWiresLib/Tracks/chordEvents.hpp>
 #include <SeqWiresLib/Tracks/track.hpp>
+#include <SeqWiresLib/Tracks/trackType.hpp>
 #include <SeqWiresLib/chord.hpp>
 
 #include <BabelWiresLib/Types/Enum/addBlankToEnum.hpp>
@@ -213,6 +214,8 @@ TEST(ChordMapProcessorTest, simpleFunction) {
 
 TEST(ChordMapProcessorTest, processor) {
     testUtils::TestEnvironment testEnvironment;
+    
+    testEnvironment.m_typeSystem.addEntry<seqwires::DefaultTrackType>();
     testEnvironment.m_typeSystem.addEntry<seqwires::ChordType>();
     testEnvironment.m_typeSystem.addEntry<seqwires::PitchClass>();
 

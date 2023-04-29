@@ -47,11 +47,11 @@ void seqwires::ConcatenateProcessor::process(babelwires::UserLogger& userLogger)
         return;
     }
 
-    auto trackOut = std::make_unique<Track>();
+    Track trackOut;
 
     for (int i = 0; i < m_tracksIn->getNumFeatures(); ++i) {
         auto trackFeatureIn = static_cast<const TrackFeature*>(m_tracksIn->getFeature(i));
-        appendTrack(*trackOut, trackFeatureIn->get());
+        appendTrack(trackOut, trackFeatureIn->get());
     }
 
     m_trackOut->set(std::move(trackOut));

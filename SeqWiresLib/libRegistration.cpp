@@ -32,6 +32,7 @@
 #include <BabelWiresLib/TypeSystem/typeSystem.hpp>
 
 void seqwires::registerLib(babelwires::ProjectContext& context) {
+    context.m_typeSystem.addEntry<DefaultTrackType>();
     context.m_typeSystem.addEntry<ChordType>();
     context.m_typeSystem.addEntry<PitchClass>();
     context.m_typeSystem.addEntry<PitchEnum>();

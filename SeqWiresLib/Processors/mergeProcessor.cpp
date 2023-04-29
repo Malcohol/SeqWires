@@ -52,5 +52,5 @@ void seqwires::MergeProcessor::process(babelwires::UserLogger& userLogger) {
         tracksIn.emplace_back(&static_cast<const TrackFeature*>(m_tracksIn->getFeature(i))->get());
     }
 
-    m_trackOut->set(std::make_unique<Track>(mergeTracks(tracksIn)));
+    m_trackOut->set(mergeTracks(tracksIn));
 }

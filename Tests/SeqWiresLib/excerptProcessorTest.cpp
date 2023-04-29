@@ -125,6 +125,7 @@ TEST(ExcerptProcessorTest, funcGaps) {
 
 TEST(ExcerptProcessorTest, processor) {
     testUtils::TestEnvironment testEnvironment;
+    testEnvironment.m_typeSystem.addEntry<seqwires::DefaultTrackType>();
 
     seqwires::ExcerptProcessor processor(testEnvironment.m_projectContext);
 

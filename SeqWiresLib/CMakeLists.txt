@@ -30,6 +30,7 @@ SET( SEQWIRESLIB_SRCS
 	Tracks/percussionEvents.cpp
 	Tracks/trackEvent.cpp
 	Tracks/track.cpp
+	Tracks/trackType.cpp
 	chord.cpp
 	musicTypes.cpp
 	Percussion/abstractPercussionSet.cpp

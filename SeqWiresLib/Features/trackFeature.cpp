@@ -7,6 +7,15 @@
  **/
 #include <SeqWiresLib/Features/trackFeature.hpp>
 
-std::string seqwires::TrackFeature::doGetValueType() const {
-    return "trk";
+seqwires::TrackFeature::TrackFeature()
+    : SimpleValueFeature(DefaultTrackType::getThisIdentifier())
+{
+}
+
+const seqwires::Track& seqwires::TrackFeature::get() const {
+    return getValue().is<Track>();
+}
+
+void seqwires::TrackFeature::set(Track track) {
+    setValue(std::move(track));
 }

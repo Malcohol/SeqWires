@@ -29,8 +29,8 @@ seqwires::SilenceProcessor::Factory::Factory()
 
 void seqwires::SilenceProcessor::process(babelwires::UserLogger& userLogger) {
     if (m_duration->isChanged(babelwires::Feature::Changes::SomethingChanged)) {
-        auto trackOut = std::make_unique<Track>();
-        trackOut->setDuration(m_duration->get());
+        Track trackOut;
+        trackOut.setDuration(m_duration->get());
         m_trackOut->set(std::move(trackOut));
     }
 }

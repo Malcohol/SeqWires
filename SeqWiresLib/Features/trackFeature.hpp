@@ -7,15 +7,20 @@
  **/
 #pragma once
 
-#include <BabelWiresLib/Features/heavyValueFeature.hpp>
+#include <BabelWiresLib/Features/simpleValueFeature.hpp>
+
 #include <SeqWiresLib/Tracks/track.hpp>
+#include <SeqWiresLib/Tracks/trackType.hpp>
 
 namespace seqwires {
 
     /// A features which carries a track.
-    class TrackFeature : public babelwires::HeavyValueFeature<Track> {
-      protected:
-        std::string doGetValueType() const override;
+    class TrackFeature : public babelwires::SimpleValueFeature {
+      public:
+        TrackFeature();
+
+        const Track& get() const;
+        void set(Track track);
     };
 
 } // namespace seqwires

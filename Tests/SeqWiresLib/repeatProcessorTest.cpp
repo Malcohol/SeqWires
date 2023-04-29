@@ -44,6 +44,7 @@ TEST(RepeatProcessorTest, funcSimpleTwice) {
 
 TEST(RepeatProcessorTest, processor) {
     testUtils::TestEnvironment testEnvironment;
+    testEnvironment.m_typeSystem.addEntry<seqwires::DefaultTrackType>();
 
     seqwires::RepeatProcessor processor(testEnvironment.m_projectContext);
 
