@@ -9,6 +9,7 @@
 #include <SeqWiresExe/seqWiresOptions.hpp>
 
 #include <BabelWiresQtUi/ModelBridge/RowModels/rowModelRegistry.hpp>
+#include <BabelWiresQtUi/ValueModels/valueModelRegistry.hpp>
 #include <BabelWiresQtUi/uiMain.hpp>
 #include <BabelWiresQtUi/uiProjectContext.hpp>
 
@@ -72,6 +73,7 @@ int main(int argc, char* argv[]) {
         ProcessorFactoryRegistry processorReg;
         babelwires::AutomaticDeserializationRegistry deserializationRegistry;
         babelwires::RowModelRegistry rowModelRegistry;
+        babelwires::ValueModelRegistry valueModelRegistry;
         babelwires::TypeSystem typeSystem;
 
         const unsigned int seed = std::chrono::system_clock::now().time_since_epoch().count();
@@ -80,7 +82,7 @@ int main(int argc, char* argv[]) {
 
         babelwires::UiProjectContext context{
             deserializationRegistry, sourceFileFormatReg, targetFileFormatReg, processorReg, typeSystem, randomEngine,
-            rowModelRegistry};
+            rowModelRegistry, valueModelRegistry};
 
         context.m_applicationIdentity.m_applicationTitle = "Seqwires";
         context.m_applicationIdentity.m_projectExtension = ".seqwires";

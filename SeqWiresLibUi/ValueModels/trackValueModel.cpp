@@ -5,30 +5,21 @@
  *
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
-#include <SeqWiresLibUi/RowModels/trackRowModel.hpp>
+#include <SeqWiresLibUi/ValueModels/trackValueModel.hpp>
 
-#include <SeqWiresLib/Types/Track/trackFeature.hpp>
+#include <SeqWiresLib/Types/Track/track.hpp>
 
 #include <QString>
 
 #include <cassert>
 
-const seqwires::TrackFeature& seqwiresUi::TrackRowModel::getTrackFeature() const {
-    // Favour output here, since tracks cannot be directly edited.
-    assert(getOutputThenInputFeature()->as<const seqwires::TrackFeature>() && "Wrong type of feature stored");
-    return *static_cast<const seqwires::TrackFeature*>(getOutputThenInputFeature());
+QString seqwiresUi::TrackValueModel::getRichText() const {
+    const seqwires::Track& value = m_value->is<seqwires::Track>();
+    const babelwires::Rational duration = value.getDuration();
+    return duration.toHtmlString().c_str();
 }
 
-QVariant seqwiresUi::TrackRowModel::getValueDisplayData() const {
-    const seqwires::TrackFeature& trackFeature = getTrackFeature();
-    const babelwires::Rational duration = trackFeature.get().getDuration();
-    if (isFeatureModified()) {
-        return QString("<b>") + QString(duration.toHtmlString().c_str()) + QString("</b>");
-    } else {
-        return QString(duration.toHtmlString().c_str());
-    }
-}
-
+/*
 QVariant seqwiresUi::TrackRowModel::getTooltip() const {
     const seqwires::TrackFeature& trackFeature = getTrackFeature();
     QVariant ret = RowModel::getTooltip();
@@ -50,3 +41,4 @@ QVariant seqwiresUi::TrackRowModel::getTooltip() const {
     }
     return ret;
 }
+*/

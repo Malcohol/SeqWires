@@ -8,12 +8,15 @@
 #include <SeqWiresLibUi/libRegistration.hpp>
 
 #include <BabelWiresQtUi/ModelBridge/RowModels/rowModelRegistry.hpp>
+#include <BabelWiresQtUi/ValueModels/valueModelRegistry.hpp>
 #include <BabelWiresQtUi/uiProjectContext.hpp>
 
-#include <SeqWiresLibUi/RowModels/trackRowModel.hpp>
+#include <SeqWiresLib/Types/Track/trackType.hpp>
+
+#include <SeqWiresLibUi/ValueModels/trackValueModel.hpp>
 
 #include <SeqWiresLib/Types/Track/trackFeature.hpp>
 
 void seqwiresUi::registerLib(babelwires::UiProjectContext& context) {
-    context.m_rowModelReg.registryHandler<seqwires::TrackFeature, TrackRowModel>();
+    context.m_valueModelReg.registryHandler<seqwires::TrackType, TrackValueModel>();
 }
