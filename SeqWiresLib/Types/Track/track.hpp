@@ -1,8 +1,8 @@
 /**
- * Tracks describe a sequence of events, typically notes and chords.
- * 
+ * A Track is a value which describe a sequence of events, typically notes and chords.
+ *
  * (C) 2021 Malcolm Tyrrell
- * 
+ *
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
 #pragma once
@@ -20,6 +20,8 @@
 
 namespace seqwires {
     /// A track carries a stream of TrackEvents.
+    /// Tracks are not editable: they can be manipulated only using Processors and can be serialized/deserialized only
+    /// using SourceFileFormats and TargetFileFormats formats.
     class Track : public babelwires::Value {
       public:
         CLONEABLE(Track);
@@ -73,6 +75,10 @@ namespace seqwires {
         void onNewEvent(const TrackEvent& event);
 
         /// Ensure the cached values are up-to-date.
+        /// TODO: This is not thread-safe and will be dangerous when we multithread the project.
+        /// TODO: Might be important to distinguish data which is only needed for the UI (e.g.
+        /// m_numEventGroupsByCategory) since the UI will probably remain single-threaded) from those needed for
+        /// processing (m_totalEventDuration and hash).
         void ensureCache() const;
 
       protected:
