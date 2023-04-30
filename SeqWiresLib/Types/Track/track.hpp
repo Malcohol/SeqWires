@@ -1,15 +1,18 @@
 /**
- * Tracks describe a sequence of events, typically notes and chords.
- * 
+ * A Track is a value which describe a sequence of events, typically notes and chords.
+ *
  * (C) 2021 Malcolm Tyrrell
- * 
+ *
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
 #pragma once
 
-#include <Common/types.hpp>
-#include <SeqWiresLib/Tracks/trackEvent.hpp>
+#include <SeqWiresLib/Types/Track/TrackEvents/trackEvent.hpp>
 #include <SeqWiresLib/musicTypes.hpp>
+
+#include <BabelWiresLib/TypeSystem/value.hpp>
+
+#include <Common/types.hpp>
 
 #include <cassert>
 #include <unordered_map>
@@ -17,8 +20,16 @@
 
 namespace seqwires {
     /// A track carries a stream of TrackEvents.
-    class Track {
+    /// Tracks are not editable: they can be manipulated only using Processors and can be serialized/deserialized only
+    /// using SourceFileFormats and TargetFileFormats formats.
+    class Track : public babelwires::Value {
       public:
+        CLONEABLE(Track);
+
+        Track();
+        /// Create an empty track with a given duration.
+        Track(ModelDuration duration);
+
         /// Add a TrackEvent by moving or copying it into the track.
         template <typename EVENT, typename = std::enable_if_t<std::is_convertible_v<EVENT&, const TrackEvent&>>>
         void addEvent(EVENT&& srcEvent) {
@@ -39,12 +50,13 @@ namespace seqwires {
         ModelDuration getTotalEventDuration() const;
 
         /// Get a hash corresponding to the state of the track's contents
-        std::size_t getHash() const;
+        std::size_t getHash() const override;
+
+        std::string toString() const override;
 
         /// Determine whether the data in this track and the other are exactly the same.
         /// Note: This is unconcerned with how events are laid out in their streams.
-        bool operator==(const Track& other) const;
-        bool operator!=(const Track& other) const { return !(*this == other); }
+        bool operator==(const Value& other) const override;
 
         /// Get a summary of the track contents, by category.
         const std::unordered_map<const char*, int>& getNumEventGroupsByCategory() const;
@@ -63,6 +75,10 @@ namespace seqwires {
         void onNewEvent(const TrackEvent& event);
 
         /// Ensure the cached values are up-to-date.
+        /// TODO: This is not thread-safe and will be dangerous when we multithread the project.
+        /// TODO: Might be important to distinguish data which is only needed for the UI (e.g.
+        /// m_numEventGroupsByCategory) since the UI will probably remain single-threaded) from those needed for
+        /// processing (m_totalEventDuration and hash).
         void ensureCache() const;
 
       protected:

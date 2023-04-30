@@ -1,12 +1,12 @@
 #include <gtest/gtest.h>
 
-#include <SeqWiresLib/Features/trackFeature.hpp>
+#include <SeqWiresLib/Types/Track/trackFeature.hpp>
 #include <SeqWiresLib/Functions/mergeFunction.hpp>
 #include <SeqWiresLib/Functions/splitAtPitchFunction.hpp>
 #include <SeqWiresLib/Processors/splitAtPitchProcessor.hpp>
-#include <SeqWiresLib/Tracks/chordEvents.hpp>
-#include <SeqWiresLib/Tracks/noteEvents.hpp>
-#include <SeqWiresLib/Tracks/trackEventHolder.hpp>
+#include <SeqWiresLib/Types/Track/TrackEvents/chordEvents.hpp>
+#include <SeqWiresLib/Types/Track/TrackEvents/noteEvents.hpp>
+#include <SeqWiresLib/Types/Track/TrackEvents/trackEventHolder.hpp>
 #include <SeqWiresLib/libRegistration.hpp>
 
 #include <BabelWiresLib/Features/arrayFeature.hpp>

@@ -7,7 +7,7 @@
  **/
 #include <SeqWiresLib/Processors/quantizeProcessor.hpp>
 
-#include <SeqWiresLib/Features/trackFeature.hpp>
+#include <SeqWiresLib/Types/Track/trackFeature.hpp>
 #include <SeqWiresLib/Functions/quantizeFunction.hpp>
 
 #include <BabelWiresLib/Features/arrayFeature.hpp>

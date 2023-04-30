@@ -7,7 +7,7 @@
  **/
 #include <SeqWiresLib/Processors/mergeProcessor.hpp>
 
-#include <SeqWiresLib/Features/trackFeature.hpp>
+#include <SeqWiresLib/Types/Track/trackFeature.hpp>
 #include <SeqWiresLib/Functions/mergeFunction.hpp>
 
 #include <BabelWiresLib/Features/arrayFeature.hpp>
@@ -52,5 +52,5 @@ void seqwires::MergeProcessor::process(babelwires::UserLogger& userLogger) {
         tracksIn.emplace_back(&static_cast<const TrackFeature*>(m_tracksIn->getFeature(i))->get());
     }
 
-    m_trackOut->set(std::make_unique<Track>(mergeTracks(tracksIn)));
+    m_trackOut->set(mergeTracks(tracksIn));
 }

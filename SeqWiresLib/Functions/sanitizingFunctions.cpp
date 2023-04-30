@@ -7,7 +7,7 @@
  **/
 #include <SeqWiresLib/Functions/sanitizingFunctions.hpp>
 
-#include <SeqWiresLib/Tracks/trackEventHolder.hpp>
+#include <SeqWiresLib/Types/Track/TrackEvents/trackEventHolder.hpp>
 
 #include <set>
 

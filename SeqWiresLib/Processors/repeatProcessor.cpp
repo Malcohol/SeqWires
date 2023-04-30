@@ -7,7 +7,7 @@
  **/
 #include <SeqWiresLib/Processors/repeatProcessor.hpp>
 
-#include <SeqWiresLib/Features/trackFeature.hpp>
+#include <SeqWiresLib/Types/Track/trackFeature.hpp>
 #include <SeqWiresLib/Functions/appendTrackFunction.hpp>
 
 #include <BabelWiresLib/Features/arrayFeature.hpp>
@@ -38,11 +38,11 @@ seqwires::RepeatProcessor::Factory::Factory()
 
 void seqwires::RepeatProcessor::processEntry(babelwires::UserLogger& userLogger, const seqwires::TrackFeature& input,
                                              seqwires::TrackFeature& output) const {
-    auto trackOut = std::make_unique<Track>();
+    Track trackOut;
 
     const Track& trackIn = input.get();
     for (int i = 0; i < m_count->get(); ++i) {
-        appendTrack(*trackOut, trackIn);
+        appendTrack(trackOut, trackIn);
     }
     output.set(std::move(trackOut));
 }

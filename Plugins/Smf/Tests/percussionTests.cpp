@@ -6,9 +6,9 @@
 #include <Plugins/Smf/Plugin/smfTargetModel.hpp>
 #include <Plugins/Smf/Plugin/smfWriter.hpp>
 
-#include <SeqWiresLib/Features/trackFeature.hpp>
-#include <SeqWiresLib/Tracks/noteEvents.hpp>
-#include <SeqWiresLib/Tracks/percussionEvents.hpp>
+#include <SeqWiresLib/Types/Track/trackFeature.hpp>
+#include <SeqWiresLib/Types/Track/TrackEvents/noteEvents.hpp>
+#include <SeqWiresLib/Types/Track/TrackEvents/percussionEvents.hpp>
 #include <SeqWiresLib/Utilities/filteredTrackIterator.hpp>
 #include <SeqWiresLib/libRegistration.hpp>
 
@@ -68,14 +68,14 @@ TEST_P(SmfStandardPercussionTest, saveLoad) {
 
         auto* trackFeature = channelTrack->getChildFromStep(babelwires::PathStep("Track")).as<seqwires::TrackFeature>();
 
-        auto track = std::make_unique<seqwires::Track>();
+        seqwires::Track track;
 
-        track->addEvent(seqwires::PercussionOnEvent{0, testData.m_instrumentId0});
-        track->addEvent(seqwires::PercussionOffEvent{babelwires::Rational(1, 4), testData.m_instrumentId0});
-        track->addEvent(seqwires::PercussionOnEvent{0, testData.m_instrumentId1});
-        track->addEvent(seqwires::PercussionOffEvent{babelwires::Rational(1, 4), testData.m_instrumentId1});
-        track->addEvent(seqwires::PercussionOnEvent{0, testData.m_instrumentId2});
-        track->addEvent(seqwires::PercussionOffEvent{babelwires::Rational(1, 4), testData.m_instrumentId2});
+        track.addEvent(seqwires::PercussionOnEvent{0, testData.m_instrumentId0});
+        track.addEvent(seqwires::PercussionOffEvent{babelwires::Rational(1, 4), testData.m_instrumentId0});
+        track.addEvent(seqwires::PercussionOnEvent{0, testData.m_instrumentId1});
+        track.addEvent(seqwires::PercussionOffEvent{babelwires::Rational(1, 4), testData.m_instrumentId1});
+        track.addEvent(seqwires::PercussionOnEvent{0, testData.m_instrumentId2});
+        track.addEvent(seqwires::PercussionOffEvent{babelwires::Rational(1, 4), testData.m_instrumentId2});
 
         trackFeature->set(std::move(track));
 
@@ -213,14 +213,14 @@ TEST_P(SmfTrackAllocationPercussionTest, trackAllocation) {
             auto* trackFeature =
                 channelTrack->getChildFromStep(babelwires::PathStep("Track")).as<seqwires::TrackFeature>();
 
-            auto track = std::make_unique<seqwires::Track>();
+            seqwires::Track track;
 
-            track->addEvent(seqwires::NoteOnEvent{0, 65});
-            track->addEvent(seqwires::NoteOffEvent{babelwires::Rational(1, 4), 65});
+            track.addEvent(seqwires::NoteOnEvent{0, 65});
+            track.addEvent(seqwires::NoteOffEvent{babelwires::Rational(1, 4), 65});
 
             for (auto instrument : testData.m_instrumentsInChannel[i]) {
-                track->addEvent(seqwires::PercussionOnEvent{0, instrument});
-                track->addEvent(seqwires::PercussionOffEvent{babelwires::Rational(1, 4), instrument});
+                track.addEvent(seqwires::PercussionOnEvent{0, instrument});
+                track.addEvent(seqwires::PercussionOffEvent{babelwires::Rational(1, 4), instrument});
             }
 
             trackFeature->set(std::move(track));

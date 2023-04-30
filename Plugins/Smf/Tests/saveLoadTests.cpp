@@ -6,8 +6,8 @@
 #include <Plugins/Smf/Plugin/smfTargetModel.hpp>
 #include <Plugins/Smf/Plugin/smfWriter.hpp>
 
-#include <SeqWiresLib/Features/trackFeature.hpp>
-#include <SeqWiresLib/Tracks/noteEvents.hpp>
+#include <SeqWiresLib/Types/Track/trackFeature.hpp>
+#include <SeqWiresLib/Types/Track/TrackEvents/noteEvents.hpp>
 #include <SeqWiresLib/libRegistration.hpp>
 
 #include <BabelWiresLib/libRegistration.hpp>
@@ -48,9 +48,9 @@ TEST(SmfSaveLoadTest, cMajorScale) {
 
         auto* trackFeature = channelTrack->getChildFromStep(babelwires::PathStep("Track")).as<seqwires::TrackFeature>();
 
-        auto track = std::make_unique<seqwires::Track>();
+        seqwires::Track track;
 
-        testUtils::addSimpleNotes(pitches, *track);
+        testUtils::addSimpleNotes(pitches, track);
 
         trackFeature->set(std::move(track));
 
@@ -146,9 +146,9 @@ TEST(SmfSaveLoadTest, cMajorScaleWithMetadata) {
             auto* trackFeature =
                 channelTrack->getChildFromStep(babelwires::PathStep("Track")).as<seqwires::TrackFeature>();
 
-            auto track = std::make_unique<seqwires::Track>();
+            seqwires::Track track;
 
-            testUtils::addSimpleNotes(pitches, *track);
+            testUtils::addSimpleNotes(pitches, track);
 
             trackFeature->set(std::move(track));
 
@@ -210,8 +210,8 @@ TEST(SmfSaveLoadTest, format0Chords) {
             channelFeature->set(i);
             auto* trackFeature =
                 channelTrack->getChildFromStep(babelwires::PathStep("Track")).as<seqwires::TrackFeature>();
-            auto track = std::make_unique<seqwires::Track>();
-            testUtils::addSimpleNotes(chordPitches[i], *track);
+            seqwires::Track track;
+            testUtils::addSimpleNotes(chordPitches[i], track);
             trackFeature->set(std::move(track));
         }
 
@@ -276,8 +276,8 @@ TEST(SmfSaveLoadTest, format1Chords) {
             channelFeature->set(i);
             auto* trackFeature =
                 channelTrack->getChildFromStep(babelwires::PathStep("Track")).as<seqwires::TrackFeature>();
-            auto track = std::make_unique<seqwires::Track>();
-            testUtils::addSimpleNotes(chordPitches[i], *track);
+            seqwires::Track track;
+            testUtils::addSimpleNotes(chordPitches[i], track);
             trackFeature->set(std::move(track));
         }
 

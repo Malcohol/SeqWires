@@ -7,7 +7,7 @@
  **/
 #pragma once
 
-#include <SeqWiresLib/Tracks/track.hpp>
+#include <SeqWiresLib/Types/Track/track.hpp>
 
 namespace seqwires {
     /// Add the events of sourceTrack to the end of targetTrack.

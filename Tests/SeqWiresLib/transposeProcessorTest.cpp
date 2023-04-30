@@ -2,8 +2,8 @@
 
 #include <SeqWiresLib/Functions/transposeFunction.hpp>
 #include <SeqWiresLib/Processors/transposeProcessor.hpp>
-#include <SeqWiresLib/Tracks/noteEvents.hpp>
-#include <SeqWiresLib/Features/trackFeature.hpp>
+#include <SeqWiresLib/Types/Track/TrackEvents/noteEvents.hpp>
+#include <SeqWiresLib/Types/Track/trackFeature.hpp>
 
 #include <BabelWiresLib/Types/Int/intFeature.hpp>
 #include <BabelWiresLib/Features/arrayFeature.hpp>
@@ -127,6 +127,7 @@ TEST(TransposeProcessorTest, funcSimpleChordsNegative) {
 
 TEST(TransposeProcessorTest, processor) {
     testUtils::TestEnvironment testEnvironment;
+    testEnvironment.m_typeSystem.addEntry<seqwires::DefaultTrackType>();
 
     seqwires::TransposeProcessor processor(testEnvironment.m_projectContext);
 

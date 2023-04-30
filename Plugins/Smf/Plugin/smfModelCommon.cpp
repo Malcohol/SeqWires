@@ -9,7 +9,7 @@
 
 #include <Plugins/Smf/Plugin/smfFormat.hpp>
 
-#include <SeqWiresLib/Features/trackFeature.hpp>
+#include <SeqWiresLib/Types/Track/trackFeature.hpp>
 
 #include <Common/Identifiers/registeredIdentifier.hpp>
 

@@ -8,7 +8,7 @@
 #pragma once
 
 #include <Common/BlockStream/streamEventHolder.hpp>
-#include <SeqWiresLib/Tracks/track.hpp>
+#include <SeqWiresLib/Types/Track/track.hpp>
 
 #include <functional>
 

@@ -10,9 +10,9 @@
 #include <Plugins/Smf/Plugin/Percussion/gm2StandardPercussionSet.hpp>
 #include <Plugins/Smf/Plugin/Percussion/gmPercussionSet.hpp>
 
-#include <SeqWiresLib/Features/trackFeature.hpp>
-#include <SeqWiresLib/Tracks/noteEvents.hpp>
-#include <SeqWiresLib/Tracks/percussionEvents.hpp>
+#include <SeqWiresLib/Types/Track/trackFeature.hpp>
+#include <SeqWiresLib/Types/Track/TrackEvents/noteEvents.hpp>
+#include <SeqWiresLib/Types/Track/TrackEvents/percussionEvents.hpp>
 #include <SeqWiresLib/Percussion/builtInPercussionInstruments.hpp>
 
 #include <BabelWiresLib/Project/projectContext.hpp>

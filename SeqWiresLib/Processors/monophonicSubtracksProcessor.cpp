@@ -7,7 +7,7 @@
  **/
 #include <SeqWiresLib/Processors/monophonicSubtracksProcessor.hpp>
 
-#include <SeqWiresLib/Features/trackFeature.hpp>
+#include <SeqWiresLib/Types/Track/trackFeature.hpp>
 #include <SeqWiresLib/Functions/monophonicSubtracksFunction.hpp>
 
 #include <BabelWiresLib/Features/arrayFeature.hpp>

@@ -1,5 +1,5 @@
 SET( SEQWIRESLIB_UI_SRCS
-    RowModels/trackRowModel.cpp
+    ValueModels/trackValueModel.cpp
     libRegistration.cpp
 )
 

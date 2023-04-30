@@ -7,8 +7,8 @@
  **/
 #pragma once
 
-#include <SeqWiresLib/Tracks/noteEvents.hpp>
-#include <SeqWiresLib/Tracks/track.hpp>
+#include <SeqWiresLib/Types/Track/TrackEvents/noteEvents.hpp>
+#include <SeqWiresLib/Types/Track/track.hpp>
 
 #include <Common/BlockStream/streamEventHolder.hpp>
 #include <Common/types.hpp>

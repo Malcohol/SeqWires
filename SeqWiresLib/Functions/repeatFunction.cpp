@@ -8,7 +8,7 @@
 #include <SeqWiresLib/Functions/repeatFunction.hpp>
 
 #include <SeqWiresLib/Functions/appendTrackFunction.hpp>
-#include <SeqWiresLib/Tracks/trackEventHolder.hpp>
+#include <SeqWiresLib/Types/Track/TrackEvents/trackEventHolder.hpp>
 
 #include <BabelWiresLib/Features/modelExceptions.hpp>
 

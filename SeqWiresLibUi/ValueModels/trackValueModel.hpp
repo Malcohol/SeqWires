@@ -8,6 +8,7 @@
 #pragma once
 
 #include <BabelWiresQtUi/ModelBridge/RowModels/rowModelWithRichText.hpp>
+#include <BabelWiresQtUi/ValueModels/valueModelWithRichText.hpp>
 
 namespace seqwires {
     class TrackFeature;
@@ -15,13 +16,10 @@ namespace seqwires {
 
 namespace seqwiresUi {
 
-    class TrackRowModel : public babelwires::RowModelWithRichText {
+    class TrackValueModel : public babelwires::ValueModelWithRichText {
       public:
-        virtual QVariant getValueDisplayData() const override;
-        virtual QVariant getTooltip() const override;
-
-      public:
-        const seqwires::TrackFeature& getTrackFeature() const;
+        QString getRichText() const override;
+        QString getTooltip() const override;
     };
 
 } // namespace seqwiresUi

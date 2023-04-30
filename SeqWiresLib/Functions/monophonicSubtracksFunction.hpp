@@ -7,7 +7,7 @@
  **/
 #pragma once
 
-#include <SeqWiresLib/Tracks/track.hpp>
+#include <SeqWiresLib/Types/Track/track.hpp>
 
 #include <BabelWiresLib/Types/Enum/enumWithCppEnum.hpp>
 #include <BabelWiresLib/TypeSystem/primitiveType.hpp>

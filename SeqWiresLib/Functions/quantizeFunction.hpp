@@ -5,7 +5,7 @@
  *
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
-#include <SeqWiresLib/Tracks/track.hpp>
+#include <SeqWiresLib/Types/Track/track.hpp>
 
 namespace seqwires {
     /// Move the time at which events occur to the nearest beat.

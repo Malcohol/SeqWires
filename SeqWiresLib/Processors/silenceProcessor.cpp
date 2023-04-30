@@ -7,7 +7,7 @@
  **/
 #include <SeqWiresLib/Processors/silenceProcessor.hpp>
 
-#include <SeqWiresLib/Features/trackFeature.hpp>
+#include <SeqWiresLib/Types/Track/trackFeature.hpp>
 #include <SeqWiresLib/Features/durationFeature.hpp>
 #include <SeqWiresLib/Functions/appendTrackFunction.hpp>
 
@@ -29,8 +29,6 @@ seqwires::SilenceProcessor::Factory::Factory()
 
 void seqwires::SilenceProcessor::process(babelwires::UserLogger& userLogger) {
     if (m_duration->isChanged(babelwires::Feature::Changes::SomethingChanged)) {
-        auto trackOut = std::make_unique<Track>();
-        trackOut->setDuration(m_duration->get());
-        m_trackOut->set(std::move(trackOut));
+        m_trackOut->set(Track(m_duration->get()));
     }
 }

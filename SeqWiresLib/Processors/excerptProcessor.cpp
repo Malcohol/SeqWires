@@ -7,7 +7,7 @@
  **/
 #include <SeqWiresLib/Processors/excerptProcessor.hpp>
 #include <SeqWiresLib/Features/durationFeature.hpp>
-#include <SeqWiresLib/Features/trackFeature.hpp>
+#include <SeqWiresLib/Types/Track/trackFeature.hpp>
 #include <SeqWiresLib/Functions/excerptFunction.hpp>
 
 #include <BabelWiresLib/Features/arrayFeature.hpp>

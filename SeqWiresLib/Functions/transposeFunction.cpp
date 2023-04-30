@@ -7,7 +7,7 @@
  **/
 #include <SeqWiresLib/Functions/transposeFunction.hpp>
 
-#include <SeqWiresLib/Tracks/trackEventHolder.hpp>
+#include <SeqWiresLib/Types/Track/TrackEvents/trackEventHolder.hpp>
 
 #include <BabelWiresLib/Features/modelExceptions.hpp>
 

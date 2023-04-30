@@ -1,6 +1,5 @@
 SET( SEQWIRESLIB_SRCS
 	Utilities/musicUtilities.cpp
-	Features/trackFeature.cpp
 	Processors/fingeredChordsProcessor.cpp
 	Processors/chordMapProcessor.cpp
 	Processors/concatenateProcessor.cpp
@@ -25,11 +24,14 @@ SET( SEQWIRESLIB_SRCS
 	Functions/sanitizingFunctions.cpp
 	Functions/splitAtPitchFunction.cpp
 	Functions/transposeFunction.cpp
-	Tracks/chordEvents.cpp
-	Tracks/noteEvents.cpp
-	Tracks/percussionEvents.cpp
-	Tracks/trackEvent.cpp
-	Tracks/track.cpp
+	Types/Track/TrackEvents/chordEvents.cpp
+	Types/Track/TrackEvents/noteEvents.cpp
+	Types/Track/TrackEvents/percussionEvents.cpp
+	Types/Track/TrackEvents/trackEvent.cpp
+	Types/Track/track.cpp
+	Types/Track/trackFeature.cpp
+	Types/Track/trackType.cpp
+	Types/Track/trackTypeConstructor.cpp
 	chord.cpp
 	musicTypes.cpp
 	Percussion/abstractPercussionSet.cpp

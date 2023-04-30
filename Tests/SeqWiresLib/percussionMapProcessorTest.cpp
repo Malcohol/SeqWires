@@ -4,8 +4,8 @@
 #include <SeqWiresLib/Percussion/abstractPercussionSet.hpp>
 #include <SeqWiresLib/Percussion/builtInPercussionInstruments.hpp>
 #include <SeqWiresLib/Processors/percussionMapProcessor.hpp>
-#include <SeqWiresLib/Tracks/percussionEvents.hpp>
-#include <SeqWiresLib/Tracks/track.hpp>
+#include <SeqWiresLib/Types/Track/TrackEvents/percussionEvents.hpp>
+#include <SeqWiresLib/Types/Track/track.hpp>
 
 #include <BabelWiresLib/Types/Enum/addBlankToEnum.hpp>
 #include <BabelWiresLib/Features/mapFeature.hpp>
@@ -112,6 +112,7 @@ TEST(PercussionMapProcessorTest, funcSimple) {
 
 TEST(PercussionMapProcessorTest, processor) {
     testUtils::TestEnvironment testEnvironment;
+    testEnvironment.m_typeSystem.addEntry<seqwires::DefaultTrackType>();
     testEnvironment.m_typeSystem.addEntry<seqwires::AbstractPercussionSet>();
     testEnvironment.m_typeSystem.addEntry<seqwires::BuiltInPercussionInstruments>();
     testEnvironment.m_typeSystem.addRelatedTypes(seqwires::BuiltInPercussionInstruments::getThisIdentifier(),
