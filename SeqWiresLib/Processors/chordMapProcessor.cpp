@@ -26,7 +26,7 @@ namespace {
                                              seqwires::getMapChordFunctionChordTypeRef()) {}
 
         babelwires::MapData getDefaultMapData() const override {
-            return getStandardDefaultMapData(babelwires::MapEntryData::Kind::AllToSame);
+            return getStandardDefaultMapData(babelwires::MapEntryData::Kind::All2Sm);
         }
     };
 
@@ -36,7 +36,7 @@ namespace {
                                              seqwires::getMapChordFunctionPitchClassRef()) {}
 
         babelwires::MapData getDefaultMapData() const override {
-            return getStandardDefaultMapData(babelwires::MapEntryData::Kind::AllToSame);
+            return getStandardDefaultMapData(babelwires::MapEntryData::Kind::All2Sm);
         }
     };
 } // namespace
