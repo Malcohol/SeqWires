@@ -45,7 +45,7 @@ TEST(TrackType, constructedTrackTypeCreateValue) {
 
     const babelwires::Type* const type = trackTypeRef.tryResolve(testEnvironment.m_typeSystem);
 
-    babelwires::ValueHolder newValue = type->createValue();
+    babelwires::ValueHolder newValue = type->createValue(testEnvironment.m_typeSystem);
     EXPECT_TRUE(newValue);
 
     const auto* const newTrack = newValue->as<seqwires::Track>();
