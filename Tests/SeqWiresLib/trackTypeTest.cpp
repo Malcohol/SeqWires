@@ -23,12 +23,13 @@ TEST(TrackType, defaultTrackTypeCreateValue) {
 }
 
 TEST(TrackType, defaultTrackTypeIsValidValue) {
+    babelwires::TypeSystem typeSystem;
     seqwires::DefaultTrackType trackType;
 
     seqwires::Track track(8);
 
-    EXPECT_TRUE(trackType.isValidValue(track));
-    EXPECT_FALSE(trackType.isValidValue(babelwires::RationalValue(3)));
+    EXPECT_TRUE(trackType.isValidValue(typeSystem, track));
+    EXPECT_FALSE(trackType.isValidValue(typeSystem, babelwires::RationalValue(3)));
 }
 
 TEST(TrackType, defaultIntTypeGetKind) {

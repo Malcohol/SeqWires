@@ -19,7 +19,7 @@ namespace seqwires {
 
         babelwires::NewValueHolder createValue(const babelwires::TypeSystem& typeSystem) const override;
 
-        bool isValidValue(const babelwires::Value& v) const override;
+        bool isValidValue(const babelwires::TypeSystem& typeSystem, const babelwires::Value& v) const override;
 
         std::string getKind() const override;
       private:

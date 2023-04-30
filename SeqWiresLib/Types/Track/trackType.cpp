@@ -16,7 +16,7 @@ babelwires::NewValueHolder seqwires::TrackType::createValue(const babelwires::Ty
     return babelwires::ValueHolder::makeValue<Track>(m_defaultDuration);
 }
 
-bool seqwires::TrackType::isValidValue(const babelwires::Value& v) const {
+bool seqwires::TrackType::isValidValue(const babelwires::TypeSystem& typeSystem, const babelwires::Value& v) const {
     return v.as<Track>();
 }
 
