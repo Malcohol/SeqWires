@@ -19,7 +19,7 @@ namespace seqwires {
         /// Note that the we don't represent the default in the name.
         TYPE_CONSTRUCTOR("Track", "Track", "bba2f18c-9ff1-406c-b39c-47a2e4047caa", 1);
 
-        std::unique_ptr<babelwires::Type> constructType(babelwires::TypeRef newTypeRef, const std::vector<const babelwires::Type*>& typeArguments,
+        std::unique_ptr<babelwires::Type> constructType(const babelwires::TypeSystem& typeSystem, babelwires::TypeRef newTypeRef, const std::vector<const babelwires::Type*>& typeArguments,
                                             const std::vector<babelwires::EditableValueHolder>& valueArguments) const override;
 
         babelwires::SubtypeOrder compareSubtypeHelper(const babelwires::TypeSystem& typeSystem, const babelwires::TypeConstructorArguments& argumentsA,
