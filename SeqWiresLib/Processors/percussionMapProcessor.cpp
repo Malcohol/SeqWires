@@ -32,8 +32,8 @@ namespace {
             }
         }
 
-        babelwires::MapData getDefaultMapData() const override {
-            return getStandardDefaultMapData(babelwires::MapEntryData::Kind::All2Sm);
+        babelwires::MapValue getDefaultMapValue() const override {
+            return getStandardDefaultMapValue(babelwires::MapEntryData::Kind::All2Sm);
         }
 
         void getAllPercussionTypes(AllowedTypes& allowedTypesOut) const {

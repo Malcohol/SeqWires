@@ -8,11 +8,11 @@
 #include <SeqWiresLib/Types/Track/track.hpp>
 
 namespace babelwires {
-    class MapData;
+    class MapValue;
     class TypeSystem;
 }
 
 namespace seqwires {
     /// 
-    Track mapPercussionFunction(const babelwires::TypeSystem& typeSystem, const Track& sourceTrack, const babelwires::MapData& percussionMapData);
+    Track mapPercussionFunction(const babelwires::TypeSystem& typeSystem, const Track& sourceTrack, const babelwires::MapValue& percussionMapValue);
 }

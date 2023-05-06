@@ -25,8 +25,8 @@ namespace {
             : babelwires::StandardMapFeature(seqwires::getMapChordFunctionChordTypeRef(),
                                              seqwires::getMapChordFunctionChordTypeRef()) {}
 
-        babelwires::MapData getDefaultMapData() const override {
-            return getStandardDefaultMapData(babelwires::MapEntryData::Kind::All2Sm);
+        babelwires::MapValue getDefaultMapValue() const override {
+            return getStandardDefaultMapValue(babelwires::MapEntryData::Kind::All2Sm);
         }
     };
 
@@ -35,8 +35,8 @@ namespace {
             : babelwires::StandardMapFeature(seqwires::getMapChordFunctionPitchClassRef(),
                                              seqwires::getMapChordFunctionPitchClassRef()) {}
 
-        babelwires::MapData getDefaultMapData() const override {
-            return getStandardDefaultMapData(babelwires::MapEntryData::Kind::All2Sm);
+        babelwires::MapValue getDefaultMapValue() const override {
+            return getStandardDefaultMapValue(babelwires::MapEntryData::Kind::All2Sm);
         }
     };
 } // namespace

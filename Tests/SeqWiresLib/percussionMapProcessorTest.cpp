@@ -11,7 +11,7 @@
 #include <BabelWiresLib/Features/mapFeature.hpp>
 #include <BabelWiresLib/Types/Map/MapEntries/allToSameFallbackMapEntryData.hpp>
 #include <BabelWiresLib/Types/Map/MapEntries/oneToOneMapEntryData.hpp>
-#include <BabelWiresLib/Types/Map/mapData.hpp>
+#include <BabelWiresLib/Types/Map/mapValue.hpp>
 #include <BabelWiresLib/Types/Enum/enumValue.hpp>
 #include <BabelWiresLib/TypeSystem/typeSystem.hpp>
 
@@ -20,13 +20,13 @@
 #include <Tests/TestUtils/testLog.hpp>
 
 namespace {
-    babelwires::MapData getTestPercussionMap(const babelwires::TypeSystem& typeSystem) {
+    babelwires::MapValue getTestPercussionMap(const babelwires::TypeSystem& typeSystem) {
         const seqwires::BuiltInPercussionInstruments& builtInPercussion =
             typeSystem.getEntryByType<seqwires::BuiltInPercussionInstruments>();
 
         babelwires::TypeRef targetTypeRef(babelwires::AddBlankToEnum::getThisIdentifier(), seqwires::BuiltInPercussionInstruments::getThisIdentifier());
 
-        babelwires::MapData percussionMap;
+        babelwires::MapValue percussionMap;
         percussionMap.setSourceTypeRef(seqwires::BuiltInPercussionInstruments::getThisIdentifier());
         percussionMap.setTargetTypeRef(targetTypeRef);
 
@@ -102,9 +102,9 @@ TEST(PercussionMapProcessorTest, funcSimple) {
         typeSystem.addEntry<seqwires::BuiltInPercussionInstruments>();
     typeSystem.addTypeConstructor<babelwires::AddBlankToEnum>();
 
-    const babelwires::MapData mapData = getTestPercussionMap(typeSystem);
+    const babelwires::MapValue mapValue = getTestPercussionMap(typeSystem);
     const seqwires::Track inputTrack = getTestInputTrack();
-    const seqwires::Track outputTrack = seqwires::mapPercussionFunction(typeSystem, inputTrack, mapData);
+    const seqwires::Track outputTrack = seqwires::mapPercussionFunction(typeSystem, inputTrack, mapValue);
     const seqwires::Track expectedOutputTrack = getTestOutputTrack();
 
     EXPECT_EQ(outputTrack, expectedOutputTrack);

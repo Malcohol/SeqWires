@@ -20,14 +20,14 @@
 #include <BabelWiresLib/TypeSystem/typeSystem.hpp>
 
 seqwires::Track seqwires::mapPercussionFunction(const babelwires::TypeSystem& typeSystem, const Track& trackIn,
-                                                const babelwires::MapData& percussionMapData) {
+                                                const babelwires::MapValue& percussionMapValue) {
 
-    if (!percussionMapData.isValid(typeSystem)) {
+    if (!percussionMapValue.isValid(typeSystem)) {
         throw babelwires::ModelException() << "The Percussion Map is not valid.";
     }
 
     const babelwires::EnumToIdentifierValueAdapter enumToIdentifierAdapter;
-    babelwires::UnorderedMapApplicator<babelwires::ShortId, babelwires::ShortId> mapApplicator{ percussionMapData, enumToIdentifierAdapter, enumToIdentifierAdapter };
+    babelwires::UnorderedMapApplicator<babelwires::ShortId, babelwires::ShortId> mapApplicator{ percussionMapValue, enumToIdentifierAdapter, enumToIdentifierAdapter };
 
     Track trackOut;
     // If an event is dropped, then we need to carry its time forward for the next event.

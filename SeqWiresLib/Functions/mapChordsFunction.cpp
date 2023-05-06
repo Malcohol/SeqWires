@@ -30,13 +30,13 @@ babelwires::TypeRef seqwires::getMapChordFunctionPitchClassRef() {
 }
 
 seqwires::Track seqwires::mapChordsFunction(const babelwires::TypeSystem& typeSystem, const Track& sourceTrack,
-                                            const babelwires::MapData& chordTypeMapData,
-                                            const babelwires::MapData& pitchClassMapData) {
+                                            const babelwires::MapValue& chordTypeMapValue,
+                                            const babelwires::MapValue& pitchClassMapValue) {
 
-    if (!chordTypeMapData.isValid(typeSystem)) {
+    if (!chordTypeMapValue.isValid(typeSystem)) {
         throw babelwires::ModelException() << "The Chord Type Map is not valid.";
     }
-    if (!pitchClassMapData.isValid(typeSystem)) {
+    if (!pitchClassMapValue.isValid(typeSystem)) {
         throw babelwires::ModelException() << "The Pitch Class Map is not valid.";
     }
 
@@ -44,7 +44,7 @@ seqwires::Track seqwires::mapChordsFunction(const babelwires::TypeSystem& typeSy
     const babelwires::Enum& chordTypeWithBlank = chordTypeWithBlankTypeRef.resolve(typeSystem).is<babelwires::Enum>();
     const babelwires::EnumToIndexValueAdapter chordTypeTargetAdapter{chordTypeWithBlank};
     const babelwires::EnumSourceIndexMapApplicator<unsigned int> chordTypeApplicator(
-        chordTypeMapData, chordTypeWithBlank, chordTypeTargetAdapter);
+        chordTypeMapValue, chordTypeWithBlank, chordTypeTargetAdapter);
     // The blank value is always last.
     const unsigned int indexOfBlankChordValue = chordTypeWithBlank.getEnumValues().size() - 1;
 
@@ -52,7 +52,7 @@ seqwires::Track seqwires::mapChordsFunction(const babelwires::TypeSystem& typeSy
     const babelwires::Enum& pitchClassWithBlank = pitchClassWithBlankTypeRef.resolve(typeSystem).is<babelwires::Enum>();
     const babelwires::EnumToIndexValueAdapter pitchClassTargetAdapter{pitchClassWithBlank};
     const babelwires::EnumSourceIndexMapApplicator<unsigned int> pitchClassApplicator(
-        pitchClassMapData, pitchClassWithBlank, pitchClassTargetAdapter);
+        pitchClassMapValue, pitchClassWithBlank, pitchClassTargetAdapter);
     const unsigned int indexOfBlankPitchClass = pitchClassWithBlank.getEnumValues().size() - 1;
 
     Track trackOut;

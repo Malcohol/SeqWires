@@ -11,7 +11,7 @@
 #include <BabelWiresLib/Features/mapFeature.hpp>
 #include <BabelWiresLib/Types/Map/MapEntries/allToSameFallbackMapEntryData.hpp>
 #include <BabelWiresLib/Types/Map/MapEntries/oneToOneMapEntryData.hpp>
-#include <BabelWiresLib/Types/Map/mapData.hpp>
+#include <BabelWiresLib/Types/Map/mapValue.hpp>
 #include <BabelWiresLib/Types/Enum/enumValue.hpp>
 #include <BabelWiresLib/TypeSystem/typeSystem.hpp>
 
@@ -22,10 +22,10 @@
 namespace {
     enum class Mode { NoBlanks, SourceBlanks, TargetBlanks, SourceAndTargetBlanks };
 
-    babelwires::MapData getTestChordTypeMap(const babelwires::TypeSystem& typeSystem, Mode mode = Mode::NoBlanks) {
+    babelwires::MapValue getTestChordTypeMap(const babelwires::TypeSystem& typeSystem, Mode mode = Mode::NoBlanks) {
         const seqwires::ChordType& chordTypeEnum = typeSystem.getEntryByType<seqwires::ChordType>();
 
-        babelwires::MapData chordTypeMap;
+        babelwires::MapValue chordTypeMap;
         chordTypeMap.setSourceTypeRef(seqwires::getMapChordFunctionChordTypeRef());
         chordTypeMap.setTargetTypeRef(seqwires::getMapChordFunctionChordTypeRef());
 
@@ -78,11 +78,11 @@ namespace {
         return chordTypeMap;
     }
 
-    babelwires::MapData getTestPitchClassMap(const babelwires::TypeSystem& typeSystem, Mode mode = Mode::NoBlanks) {
+    babelwires::MapValue getTestPitchClassMap(const babelwires::TypeSystem& typeSystem, Mode mode = Mode::NoBlanks) {
         const seqwires::PitchClass& pitchClassEnum =
             typeSystem.getEntryByType<seqwires::PitchClass>().is<seqwires::PitchClass>();
 
-        babelwires::MapData pitchClassMap;
+        babelwires::MapValue pitchClassMap;
         pitchClassMap.setSourceTypeRef(seqwires::getMapChordFunctionPitchClassRef());
         pitchClassMap.setTargetTypeRef(seqwires::getMapChordFunctionPitchClassRef());
 
@@ -203,8 +203,8 @@ TEST(ChordMapProcessorTest, simpleFunction) {
 
     for (auto mode :
          std::array<Mode, 4>{Mode::NoBlanks, Mode::TargetBlanks, Mode::SourceBlanks, Mode::SourceAndTargetBlanks}) {
-        babelwires::MapData chordTypeMap = getTestChordTypeMap(typeSystem, mode);
-        babelwires::MapData pitchClassMap = getTestPitchClassMap(typeSystem, mode);
+        babelwires::MapValue chordTypeMap = getTestChordTypeMap(typeSystem, mode);
+        babelwires::MapValue pitchClassMap = getTestPitchClassMap(typeSystem, mode);
 
         seqwires::Track inputTrack = getTestInputTrack();
         seqwires::Track outputTrack = seqwires::mapChordsFunction(typeSystem, inputTrack, chordTypeMap, pitchClassMap);
