@@ -21,7 +21,7 @@ namespace seqwires {
     /// used when converting to pitches.
     /// PercussionSets should use as many instruments from the BuiltInPercussionInstruments Enum as possible,
     /// although instruments registered elsewhere are also supported.
-    class PercussionSetWithPitchMap : public babelwires::Enum {
+    class PercussionSetWithPitchMap : public babelwires::EnumType {
       public:
         /// A block of instruments which have contiguous pitches.
         struct InstrumentBlock {

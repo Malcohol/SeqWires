@@ -38,7 +38,7 @@ namespace seqwires {
     typedef babelwires::Byte Pitch;
 
     /// An Enum corresponding to the twelve pitch classes of the western scale.
-    class PitchClass : public babelwires::Enum {
+    class PitchClass : public babelwires::EnumType {
       public:
         PRIMITIVE_TYPE("PitchClass", "Pitch Class", "0c7fed24-9923-42d3-9ad1-5879bf1c8af6", 1);
         PitchClass();
@@ -60,7 +60,7 @@ namespace seqwires {
     /// An enum for the 127 supported pitch values.
     /// Octaves start at 0, so middle C is C5 in this representation.
     // TODO: The UI dropdown presents this in a counter-intuitive order.
-    class PitchEnum : public babelwires::Enum {
+    class PitchEnum : public babelwires::EnumType {
       public:
         PRIMITIVE_TYPE("Pitch", "Pitch", "c3acb960-b472-488b-a6da-8672b584dfb1", 1);
         PitchEnum();

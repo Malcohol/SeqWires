@@ -18,7 +18,7 @@ namespace seqwires {
     /// The "Notes" policy means that the duration of chords is defined exactly by the note events.
     /// The "Hold" policy means that chords are sustained until the next recognized chord, or until 
     /// a "Cancel Chord" event is observed (three consecutive pitches).
-    class FingeredChordsSustainPolicyEnum : public babelwires::Enum {
+    class FingeredChordsSustainPolicyEnum : public babelwires::EnumType {
       public:
         PRIMITIVE_TYPE("FingeredPolicy", "Fingered Chords Sustain Policy", "64bb3fa9-1b77-4629-b691-431713fe2eee", 1);
         FingeredChordsSustainPolicyEnum();

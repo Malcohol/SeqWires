@@ -18,7 +18,7 @@
 ENUM_DEFINE_ENUM_VALUE_SOURCE(MONOPHONIC_SUBTRACK_POLICY);
 
 seqwires::MonophonicSubtracksPolicyEnum::MonophonicSubtracksPolicyEnum()
-    : babelwires::Enum(ENUM_IDENTIFIER_VECTOR(MONOPHONIC_SUBTRACK_POLICY), 0) {}
+    : babelwires::EnumType(ENUM_IDENTIFIER_VECTOR(MONOPHONIC_SUBTRACK_POLICY), 0) {}
 
 namespace {
     struct TrackInfo {

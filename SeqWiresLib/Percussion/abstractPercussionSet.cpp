@@ -10,7 +10,7 @@
 #include <Common/Identifiers/registeredIdentifier.hpp>
 
 seqwires::AbstractPercussionSet::AbstractPercussionSet()
-    : babelwires::Enum({}, 0) {}
+    : babelwires::EnumType({}, 0) {}
 
 bool seqwires::AbstractPercussionSet::isAbstract() const {
     return true;

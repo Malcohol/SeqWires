@@ -216,7 +216,7 @@ void smf::StandardPercussionSets::ensureInstrumentSets() {
         return;
     }
     for (int i = 0; i < NUM_KNOWN_PERCUSSION_SETS; ++i) {
-        const babelwires::Enum::EnumValues& instruments = m_knownSets[i]->getEnumValues();
+        const babelwires::EnumType::EnumValues& instruments = m_knownSets[i]->getEnumValues();
         std::for_each(instruments.begin(), instruments.end(),
                       [this, i](auto instrument) { m_instrumentSets[i].insert(instrument); });
     }
