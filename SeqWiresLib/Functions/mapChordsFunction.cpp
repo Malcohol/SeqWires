@@ -46,14 +46,14 @@ seqwires::Track seqwires::mapChordsFunction(const babelwires::TypeSystem& typeSy
     const babelwires::EnumSourceIndexMapApplicator<unsigned int> chordTypeApplicator(
         chordTypeMapValue, chordTypeWithBlank, chordTypeTargetAdapter);
     // The blank value is always last.
-    const unsigned int indexOfBlankChordValue = chordTypeWithBlank.getEnumValues().size() - 1;
+    const unsigned int indexOfBlankChordValue = chordTypeWithBlank.getValueSet().size() - 1;
 
     const babelwires::TypeRef pitchClassWithBlankTypeRef = getMapChordFunctionPitchClassRef();
     const babelwires::EnumType& pitchClassWithBlank = pitchClassWithBlankTypeRef.resolve(typeSystem).is<babelwires::EnumType>();
     const babelwires::EnumToIndexValueAdapter pitchClassTargetAdapter{pitchClassWithBlank};
     const babelwires::EnumSourceIndexMapApplicator<unsigned int> pitchClassApplicator(
         pitchClassMapValue, pitchClassWithBlank, pitchClassTargetAdapter);
-    const unsigned int indexOfBlankPitchClass = pitchClassWithBlank.getEnumValues().size() - 1;
+    const unsigned int indexOfBlankPitchClass = pitchClassWithBlank.getValueSet().size() - 1;
 
     Track trackOut;
     ModelDuration totalEventDuration;

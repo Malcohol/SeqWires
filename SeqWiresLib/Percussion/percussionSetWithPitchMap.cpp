@@ -11,7 +11,7 @@
 
 class seqwires::PercussionSetWithPitchMap::ComplexConstructorArguments {
   public:
-    babelwires::EnumType::EnumValues m_enumValues;
+    babelwires::EnumType::ValueSet m_enumValues;
     std::unordered_map<seqwires::Pitch, babelwires::ShortId> m_pitchToInstrument;
     std::unordered_map<babelwires::ShortId, seqwires::Pitch> m_instrumentToPitch;
     int m_indexOfDefaultValue = -1;
