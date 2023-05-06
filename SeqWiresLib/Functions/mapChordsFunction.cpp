@@ -14,8 +14,8 @@
 
 #include <BabelWiresLib/Features/mapFeature.hpp>
 #include <BabelWiresLib/Features/modelExceptions.hpp>
-#include <BabelWiresLib/Maps/Helpers/enumSourceMapApplicator.hpp>
-#include <BabelWiresLib/Maps/Helpers/enumValueAdapters.hpp>
+#include <BabelWiresLib/Types/Map/Helpers/enumSourceMapApplicator.hpp>
+#include <BabelWiresLib/Types/Map/Helpers/enumValueAdapters.hpp>
 #include <BabelWiresLib/TypeSystem/typeSystem.hpp>
 #include <BabelWiresLib/Types/Enum/addBlankToEnum.hpp>
 

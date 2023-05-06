@@ -9,9 +9,9 @@
 
 #include <BabelWiresLib/Types/Enum/addBlankToEnum.hpp>
 #include <BabelWiresLib/Features/mapFeature.hpp>
-#include <BabelWiresLib/Maps/MapEntries/allToSameFallbackMapEntryData.hpp>
-#include <BabelWiresLib/Maps/MapEntries/oneToOneMapEntryData.hpp>
-#include <BabelWiresLib/Maps/mapData.hpp>
+#include <BabelWiresLib/Types/Map/MapEntries/allToSameFallbackMapEntryData.hpp>
+#include <BabelWiresLib/Types/Map/MapEntries/oneToOneMapEntryData.hpp>
+#include <BabelWiresLib/Types/Map/mapData.hpp>
 #include <BabelWiresLib/Types/Enum/enumValue.hpp>
 #include <BabelWiresLib/TypeSystem/typeSystem.hpp>
 

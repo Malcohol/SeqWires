@@ -14,9 +14,9 @@
 #include <BabelWiresLib/Types/Enum/addBlankToEnum.hpp>
 #include <BabelWiresLib/Features/mapFeature.hpp>
 #include <BabelWiresLib/Features/modelExceptions.hpp>
-#include <BabelWiresLib/Maps/Helpers/enumSourceMapApplicator.hpp>
-#include <BabelWiresLib/Maps/Helpers/unorderedMapApplicator.hpp>
-#include <BabelWiresLib/Maps/Helpers/enumValueAdapters.hpp>
+#include <BabelWiresLib/Types/Map/Helpers/enumSourceMapApplicator.hpp>
+#include <BabelWiresLib/Types/Map/Helpers/unorderedMapApplicator.hpp>
+#include <BabelWiresLib/Types/Map/Helpers/enumValueAdapters.hpp>
 #include <BabelWiresLib/TypeSystem/typeSystem.hpp>
 
 seqwires::Track seqwires::mapPercussionFunction(const babelwires::TypeSystem& typeSystem, const Track& trackIn,
