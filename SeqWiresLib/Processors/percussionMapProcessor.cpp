@@ -11,16 +11,21 @@
 #include <SeqWiresLib/Percussion/abstractPercussionSet.hpp>
 #include <SeqWiresLib/Percussion/builtInPercussionInstruments.hpp>
 
-#include <BabelWiresLib/Features/mapFeature.hpp>
 #include <BabelWiresLib/Features/rootFeature.hpp>
 #include <BabelWiresLib/Project/projectContext.hpp>
 #include <BabelWiresLib/TypeSystem/typeSystem.hpp>
 #include <BabelWiresLib/Types/Enum/addBlankToEnum.hpp>
+#include <BabelWiresLib/Types/Map/mapFeature.hpp>
 
 #include <Common/Identifiers/registeredIdentifier.hpp>
 
 namespace {
-    struct PercussionTypeMap : babelwires::MapFeature {
+    struct PercussionTypeMap : babelwires::MapFeature2 {
+        PercussionTypeMap()
+            : babelwires::MapFeature2(seqwires::AbstractPercussionSet::getThisIdentifier(),
+                                      seqwires::AbstractPercussionSet::getThisIdentifier(),
+                                      babelwires::MapEntryData::Kind::All2Sm) {}
+        /*
         void getAllowedSourceTypeRefs(AllowedTypes& allowedTypesOut) const override {
             getAllPercussionTypes(allowedTypesOut);
         }
@@ -50,6 +55,7 @@ namespace {
             assert(it != allowedTypesOut.m_typeRefs.end());
             allowedTypesOut.m_indexOfDefault = std::distance(allowedTypesOut.m_typeRefs.begin(), it);
         }
+        */
     };
 } // namespace
 

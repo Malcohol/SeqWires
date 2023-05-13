@@ -11,7 +11,9 @@
 
 #include <BabelWiresLib/Processors/parallelProcessor.hpp>
 
-namespace babelwires { class MapFeature; }
+namespace babelwires {
+    class MapFeature2;
+} // namespace babelwires
 
 namespace seqwires {
 
@@ -19,14 +21,15 @@ namespace seqwires {
       public:
         ChordMapProcessor(const babelwires::ProjectContext& context);
 
-        void processEntry(babelwires::UserLogger& userLogger, const seqwires::TrackFeature& input, seqwires::TrackFeature& output) const override;
+        void processEntry(babelwires::UserLogger& userLogger, const seqwires::TrackFeature& input,
+                          seqwires::TrackFeature& output) const override;
 
         struct Factory : public babelwires::CommonProcessorFactory<ChordMapProcessor> {
             Factory();
         };
 
       private:
-        babelwires::MapFeature* m_chordTypeMapFeature;
-        babelwires::MapFeature* m_pitchClassMapFeature;
+        babelwires::MapFeature2* m_chordTypeMapFeature;
+        babelwires::MapFeature2* m_pitchClassMapFeature;
     };
 } // namespace seqwires
