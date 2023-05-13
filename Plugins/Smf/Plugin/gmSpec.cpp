@@ -9,7 +9,7 @@
 
 #include <Common/Identifiers/identifierRegistry.hpp>
 
-ENUM_DEFINE_ENUM_VALUE_SOURCE(GM_SPEC_VALUES);
+ENUM_DEFINE_ENUM_VALUE_SOURCE(smf::GMSpecType, GM_SPEC_VALUES);
 
 smf::GMSpecType::GMSpecType()
-    : EnumType(ENUM_IDENTIFIER_VECTOR(GM_SPEC_VALUES), 1) {}
+    : EnumType(getStaticValueSet(), 1) {}

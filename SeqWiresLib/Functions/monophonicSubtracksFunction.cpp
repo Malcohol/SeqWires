@@ -15,10 +15,10 @@
 #include <algorithm>
 #include <set>
 
-ENUM_DEFINE_ENUM_VALUE_SOURCE(MONOPHONIC_SUBTRACK_POLICY);
+ENUM_DEFINE_ENUM_VALUE_SOURCE(seqwires::MonophonicSubtracksPolicyEnum, MONOPHONIC_SUBTRACK_POLICY);
 
 seqwires::MonophonicSubtracksPolicyEnum::MonophonicSubtracksPolicyEnum()
-    : babelwires::EnumType(ENUM_IDENTIFIER_VECTOR(MONOPHONIC_SUBTRACK_POLICY), 0) {}
+    : babelwires::EnumType(getStaticValueSet(), 0) {}
 
 namespace {
     struct TrackInfo {
