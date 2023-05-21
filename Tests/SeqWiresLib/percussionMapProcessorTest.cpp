@@ -8,10 +8,10 @@
 #include <SeqWiresLib/Types/Track/track.hpp>
 
 #include <BabelWiresLib/Types/Enum/addBlankToEnum.hpp>
-#include <BabelWiresLib/Features/mapFeature.hpp>
 #include <BabelWiresLib/Types/Map/MapEntries/allToSameFallbackMapEntryData.hpp>
 #include <BabelWiresLib/Types/Map/MapEntries/oneToOneMapEntryData.hpp>
 #include <BabelWiresLib/Types/Map/mapValue.hpp>
+#include <BabelWiresLib/Types/Map/mapFeature.hpp>
 #include <BabelWiresLib/Types/Enum/enumValue.hpp>
 #include <BabelWiresLib/TypeSystem/typeSystem.hpp>
 
@@ -124,7 +124,7 @@ TEST(PercussionMapProcessorTest, processor) {
     processor.getOutputFeature()->setToDefault();
 
     auto* percussionMapFeature =
-        processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Map")).as<babelwires::MapFeature>();
+        processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Map")).as<babelwires::MapFeature2>();
     auto* inputArray =
         processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Tracks")).as<babelwires::ArrayFeature>();
     auto* outputArray =
@@ -144,7 +144,7 @@ TEST(PercussionMapProcessorTest, processor) {
     ASSERT_NE(getInputTrack(0), nullptr);
     ASSERT_NE(getOutputTrack(0), nullptr);
 
-    percussionMapFeature->set(getTestPercussionMap(testEnvironment.m_typeSystem));
+    percussionMapFeature->setValue(getTestPercussionMap(testEnvironment.m_typeSystem));
     getInputTrack(0)->set(getTestInputTrack());
 
     processor.process(testEnvironment.m_log);

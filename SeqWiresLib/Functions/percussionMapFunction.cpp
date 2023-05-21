@@ -12,7 +12,6 @@
 #include <SeqWiresLib/Percussion/builtInPercussionInstruments.hpp>
 
 #include <BabelWiresLib/Types/Enum/addBlankToEnum.hpp>
-#include <BabelWiresLib/Features/mapFeature.hpp>
 #include <BabelWiresLib/Features/modelExceptions.hpp>
 #include <BabelWiresLib/Types/Map/Helpers/enumSourceMapApplicator.hpp>
 #include <BabelWiresLib/Types/Map/Helpers/unorderedMapApplicator.hpp>

@@ -8,10 +8,10 @@
 #include <SeqWiresLib/chord.hpp>
 
 #include <BabelWiresLib/Types/Enum/addBlankToEnum.hpp>
-#include <BabelWiresLib/Features/mapFeature.hpp>
 #include <BabelWiresLib/Types/Map/MapEntries/allToSameFallbackMapEntryData.hpp>
 #include <BabelWiresLib/Types/Map/MapEntries/oneToOneMapEntryData.hpp>
 #include <BabelWiresLib/Types/Map/mapValue.hpp>
+#include <BabelWiresLib/Types/Map/mapFeature.hpp>
 #include <BabelWiresLib/Types/Enum/enumValue.hpp>
 #include <BabelWiresLib/TypeSystem/typeSystem.hpp>
 
@@ -230,9 +230,9 @@ TEST(ChordMapProcessorTest, processor) {
     processor.getOutputFeature()->setToDefault();
 
     auto* chordTypeMapFeature =
-        processor.getInputFeature()->getChildFromStep(babelwires::PathStep("TypMap")).as<babelwires::MapFeature>();
+        processor.getInputFeature()->getChildFromStep(babelwires::PathStep("TypMap")).as<babelwires::MapFeature2>();
     auto* pitchClassMapFeature =
-        processor.getInputFeature()->getChildFromStep(babelwires::PathStep("RtMap")).as<babelwires::MapFeature>();
+        processor.getInputFeature()->getChildFromStep(babelwires::PathStep("RtMap")).as<babelwires::MapFeature2>();
     auto* inputArray =
         processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Tracks")).as<babelwires::ArrayFeature>();
     auto* outputArray =
@@ -253,8 +253,8 @@ TEST(ChordMapProcessorTest, processor) {
     ASSERT_NE(getInputTrack(0), nullptr);
     ASSERT_NE(getOutputTrack(0), nullptr);
 
-    chordTypeMapFeature->set(getTestChordTypeMap(testEnvironment.m_typeSystem));
-    pitchClassMapFeature->set(getTestPitchClassMap(testEnvironment.m_typeSystem));
+    chordTypeMapFeature->setValue(getTestChordTypeMap(testEnvironment.m_typeSystem));
+    pitchClassMapFeature->setValue(getTestPitchClassMap(testEnvironment.m_typeSystem));
     getInputTrack(0)->set(getTestInputTrack());
 
     processor.process(testEnvironment.m_log);
