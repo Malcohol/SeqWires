@@ -12,7 +12,7 @@
 #include <BabelWiresLib/Processors/parallelProcessor.hpp>
 
 namespace babelwires {
-    class MapFeature2;
+    class MapFeature;
 } // namespace babelwires
 
 namespace seqwires {
@@ -29,7 +29,7 @@ namespace seqwires {
         };
 
       private:
-        babelwires::MapFeature2* m_chordTypeMapFeature;
-        babelwires::MapFeature2* m_pitchClassMapFeature;
+        babelwires::MapFeature* m_chordTypeMapFeature;
+        babelwires::MapFeature* m_pitchClassMapFeature;
     };
 } // namespace seqwires

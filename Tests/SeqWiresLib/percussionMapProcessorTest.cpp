@@ -124,7 +124,7 @@ TEST(PercussionMapProcessorTest, processor) {
     processor.getOutputFeature()->setToDefault();
 
     auto* percussionMapFeature =
-        processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Map")).as<babelwires::MapFeature2>();
+        processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Map")).as<babelwires::MapFeature>();
     auto* inputArray =
         processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Tracks")).as<babelwires::ArrayFeature>();
     auto* outputArray =

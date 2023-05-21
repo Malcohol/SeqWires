@@ -230,9 +230,9 @@ TEST(ChordMapProcessorTest, processor) {
     processor.getOutputFeature()->setToDefault();
 
     auto* chordTypeMapFeature =
-        processor.getInputFeature()->getChildFromStep(babelwires::PathStep("TypMap")).as<babelwires::MapFeature2>();
+        processor.getInputFeature()->getChildFromStep(babelwires::PathStep("TypMap")).as<babelwires::MapFeature>();
     auto* pitchClassMapFeature =
-        processor.getInputFeature()->getChildFromStep(babelwires::PathStep("RtMap")).as<babelwires::MapFeature2>();
+        processor.getInputFeature()->getChildFromStep(babelwires::PathStep("RtMap")).as<babelwires::MapFeature>();
     auto* inputArray =
         processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Tracks")).as<babelwires::ArrayFeature>();
     auto* outputArray =

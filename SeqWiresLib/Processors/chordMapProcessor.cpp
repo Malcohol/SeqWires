@@ -20,16 +20,16 @@
 #include <Common/Identifiers/registeredIdentifier.hpp>
 
 namespace {
-    struct ChordTypeMap : babelwires::MapFeature2 {
+    struct ChordTypeMap : babelwires::MapFeature {
         ChordTypeMap()
-            : babelwires::MapFeature2(seqwires::getMapChordFunctionChordTypeRef(),
+            : babelwires::MapFeature(seqwires::getMapChordFunctionChordTypeRef(),
                                       seqwires::getMapChordFunctionChordTypeRef(),
                                       babelwires::MapEntryData::Kind::All2Sm) {}
     };
 
-    struct PitchClassMap : babelwires::MapFeature2 {
+    struct PitchClassMap : babelwires::MapFeature {
         PitchClassMap()
-            : babelwires::MapFeature2(seqwires::getMapChordFunctionPitchClassRef(),
+            : babelwires::MapFeature(seqwires::getMapChordFunctionPitchClassRef(),
                                              seqwires::getMapChordFunctionPitchClassRef(),
                                       babelwires::MapEntryData::Kind::All2Sm) {}
     };

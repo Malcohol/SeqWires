@@ -20,9 +20,9 @@
 #include <Common/Identifiers/registeredIdentifier.hpp>
 
 namespace {
-    struct PercussionTypeMap : babelwires::MapFeature2 {
+    struct PercussionTypeMap : babelwires::MapFeature {
         PercussionTypeMap()
-            : babelwires::MapFeature2(seqwires::AbstractPercussionSet::getThisIdentifier(),
+            : babelwires::MapFeature(seqwires::AbstractPercussionSet::getThisIdentifier(),
                                       seqwires::AbstractPercussionSet::getThisIdentifier(),
                                       babelwires::MapEntryData::Kind::All2Sm) {}
         /*
