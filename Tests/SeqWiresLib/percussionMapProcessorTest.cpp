@@ -6,6 +6,7 @@
 #include <SeqWiresLib/Processors/percussionMapProcessor.hpp>
 #include <SeqWiresLib/Types/Track/TrackEvents/percussionEvents.hpp>
 #include <SeqWiresLib/Types/Track/track.hpp>
+#include <SeqWiresLib/libRegistration.hpp>
 
 #include <BabelWiresLib/Types/Enum/addBlankToEnum.hpp>
 #include <BabelWiresLib/Types/Map/MapEntries/allToSameFallbackMapEntryData.hpp>
@@ -112,11 +113,7 @@ TEST(PercussionMapProcessorTest, funcSimple) {
 
 TEST(PercussionMapProcessorTest, processor) {
     testUtils::TestEnvironment testEnvironment;
-    testEnvironment.m_typeSystem.addEntry<seqwires::DefaultTrackType>();
-    testEnvironment.m_typeSystem.addEntry<seqwires::AbstractPercussionSet>();
-    testEnvironment.m_typeSystem.addEntry<seqwires::BuiltInPercussionInstruments>();
-    testEnvironment.m_typeSystem.addRelatedTypes(seqwires::BuiltInPercussionInstruments::getThisIdentifier(),
-                                                 {{}, {seqwires::AbstractPercussionSet::getThisIdentifier()}});
+    seqwires::registerLib(testEnvironment.m_projectContext);
 
     seqwires::PercussionMapProcessor processor(testEnvironment.m_projectContext);
 
@@ -124,7 +121,7 @@ TEST(PercussionMapProcessorTest, processor) {
     processor.getOutputFeature()->setToDefault();
 
     auto* percussionMapFeature =
-        processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Map")).as<babelwires::MapFeature>();
+        processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Map")).as<babelwires::SimpleValueFeature>();
     auto* inputArray =
         processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Tracks")).as<babelwires::ArrayFeature>();
     auto* outputArray =
