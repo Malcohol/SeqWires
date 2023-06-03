@@ -6,12 +6,13 @@
 #include <SeqWiresLib/Processors/percussionMapProcessor.hpp>
 #include <SeqWiresLib/Types/Track/TrackEvents/percussionEvents.hpp>
 #include <SeqWiresLib/Types/Track/track.hpp>
+#include <SeqWiresLib/libRegistration.hpp>
 
 #include <BabelWiresLib/Types/Enum/addBlankToEnum.hpp>
-#include <BabelWiresLib/Features/mapFeature.hpp>
-#include <BabelWiresLib/Maps/MapEntries/allToSameFallbackMapEntryData.hpp>
-#include <BabelWiresLib/Maps/MapEntries/oneToOneMapEntryData.hpp>
-#include <BabelWiresLib/Maps/mapData.hpp>
+#include <BabelWiresLib/Types/Map/MapEntries/allToSameFallbackMapEntryData.hpp>
+#include <BabelWiresLib/Types/Map/MapEntries/oneToOneMapEntryData.hpp>
+#include <BabelWiresLib/Types/Map/mapValue.hpp>
+#include <BabelWiresLib/Types/Map/mapFeature.hpp>
 #include <BabelWiresLib/Types/Enum/enumValue.hpp>
 #include <BabelWiresLib/TypeSystem/typeSystem.hpp>
 
@@ -20,13 +21,13 @@
 #include <Tests/TestUtils/testLog.hpp>
 
 namespace {
-    babelwires::MapData getTestPercussionMap(const babelwires::TypeSystem& typeSystem) {
+    babelwires::MapValue getTestPercussionMap(const babelwires::TypeSystem& typeSystem) {
         const seqwires::BuiltInPercussionInstruments& builtInPercussion =
             typeSystem.getEntryByType<seqwires::BuiltInPercussionInstruments>();
 
         babelwires::TypeRef targetTypeRef(babelwires::AddBlankToEnum::getThisIdentifier(), seqwires::BuiltInPercussionInstruments::getThisIdentifier());
 
-        babelwires::MapData percussionMap;
+        babelwires::MapValue percussionMap;
         percussionMap.setSourceTypeRef(seqwires::BuiltInPercussionInstruments::getThisIdentifier());
         percussionMap.setTargetTypeRef(targetTypeRef);
 
@@ -102,9 +103,9 @@ TEST(PercussionMapProcessorTest, funcSimple) {
         typeSystem.addEntry<seqwires::BuiltInPercussionInstruments>();
     typeSystem.addTypeConstructor<babelwires::AddBlankToEnum>();
 
-    const babelwires::MapData mapData = getTestPercussionMap(typeSystem);
+    const babelwires::MapValue mapValue = getTestPercussionMap(typeSystem);
     const seqwires::Track inputTrack = getTestInputTrack();
-    const seqwires::Track outputTrack = seqwires::mapPercussionFunction(typeSystem, inputTrack, mapData);
+    const seqwires::Track outputTrack = seqwires::mapPercussionFunction(typeSystem, inputTrack, mapValue);
     const seqwires::Track expectedOutputTrack = getTestOutputTrack();
 
     EXPECT_EQ(outputTrack, expectedOutputTrack);
@@ -112,11 +113,7 @@ TEST(PercussionMapProcessorTest, funcSimple) {
 
 TEST(PercussionMapProcessorTest, processor) {
     testUtils::TestEnvironment testEnvironment;
-    testEnvironment.m_typeSystem.addEntry<seqwires::DefaultTrackType>();
-    testEnvironment.m_typeSystem.addEntry<seqwires::AbstractPercussionSet>();
-    testEnvironment.m_typeSystem.addEntry<seqwires::BuiltInPercussionInstruments>();
-    testEnvironment.m_typeSystem.addRelatedTypes(seqwires::BuiltInPercussionInstruments::getThisIdentifier(),
-                                                 {{}, {seqwires::AbstractPercussionSet::getThisIdentifier()}});
+    seqwires::registerLib(testEnvironment.m_projectContext);
 
     seqwires::PercussionMapProcessor processor(testEnvironment.m_projectContext);
 
@@ -124,7 +121,7 @@ TEST(PercussionMapProcessorTest, processor) {
     processor.getOutputFeature()->setToDefault();
 
     auto* percussionMapFeature =
-        processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Map")).as<babelwires::MapFeature>();
+        processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Map")).as<babelwires::SimpleValueFeature>();
     auto* inputArray =
         processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Tracks")).as<babelwires::ArrayFeature>();
     auto* outputArray =
@@ -144,7 +141,7 @@ TEST(PercussionMapProcessorTest, processor) {
     ASSERT_NE(getInputTrack(0), nullptr);
     ASSERT_NE(getOutputTrack(0), nullptr);
 
-    percussionMapFeature->set(getTestPercussionMap(testEnvironment.m_typeSystem));
+    percussionMapFeature->setValue(getTestPercussionMap(testEnvironment.m_typeSystem));
     getInputTrack(0)->set(getTestInputTrack());
 
     processor.process(testEnvironment.m_log);

@@ -11,33 +11,27 @@
 #include <SeqWiresLib/chord.hpp>
 #include <SeqWiresLib/pitch.hpp>
 
-#include <BabelWiresLib/Features/mapFeature.hpp>
 #include <BabelWiresLib/Features/rootFeature.hpp>
 #include <BabelWiresLib/Project/projectContext.hpp>
 #include <BabelWiresLib/TypeSystem/typeSystem.hpp>
 #include <BabelWiresLib/Types/Enum/addBlankToEnum.hpp>
+#include <BabelWiresLib/Types/Map/mapFeature.hpp>
 
 #include <Common/Identifiers/registeredIdentifier.hpp>
 
 namespace {
-    struct ChordTypeMap : babelwires::StandardMapFeature {
+    struct ChordTypeMap : babelwires::MapFeature {
         ChordTypeMap()
-            : babelwires::StandardMapFeature(seqwires::getMapChordFunctionChordTypeRef(),
-                                             seqwires::getMapChordFunctionChordTypeRef()) {}
-
-        babelwires::MapData getDefaultMapData() const override {
-            return getStandardDefaultMapData(babelwires::MapEntryData::Kind::AllToSame);
-        }
+            : babelwires::MapFeature(seqwires::getMapChordFunctionChordTypeRef(),
+                                      seqwires::getMapChordFunctionChordTypeRef(),
+                                      babelwires::MapEntryData::Kind::All2Sm) {}
     };
 
-    struct PitchClassMap : babelwires::StandardMapFeature {
+    struct PitchClassMap : babelwires::MapFeature {
         PitchClassMap()
-            : babelwires::StandardMapFeature(seqwires::getMapChordFunctionPitchClassRef(),
-                                             seqwires::getMapChordFunctionPitchClassRef()) {}
-
-        babelwires::MapData getDefaultMapData() const override {
-            return getStandardDefaultMapData(babelwires::MapEntryData::Kind::AllToSame);
-        }
+            : babelwires::MapFeature(seqwires::getMapChordFunctionPitchClassRef(),
+                                             seqwires::getMapChordFunctionPitchClassRef(),
+                                      babelwires::MapEntryData::Kind::All2Sm) {}
     };
 } // namespace
 

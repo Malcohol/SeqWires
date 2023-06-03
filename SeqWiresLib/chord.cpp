@@ -9,7 +9,7 @@
 
 #include <Common/Identifiers/identifierRegistry.hpp>
 
-ENUM_DEFINE_ENUM_VALUE_SOURCE(CHORD_TYPE_VALUES);
+ENUM_DEFINE_ENUM_VALUE_SOURCE(seqwires::ChordType, CHORD_TYPE_VALUES);
 
 seqwires::ChordType::ChordType()
-    : Enum(ENUM_IDENTIFIER_VECTOR(CHORD_TYPE_VALUES), 0) {}
+    : EnumType(getStaticValueSet(), 0) {}

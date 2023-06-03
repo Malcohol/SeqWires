@@ -33,11 +33,11 @@ TEST(PercussionSetWithPitchMapTest, oneInstrumentBlockAllBuiltIn) {
 
     TestPercussionSet percussionSet(block, 41);
 
-    EXPECT_TRUE(testUtils::areEqualSets(percussionSet.getEnumValues(), {"HBongo", "Claves", "Bass1"}));
-    EXPECT_EQ(percussionSet.getEnumValues().size(), 3);
-    EXPECT_EQ(percussionSet.getEnumValues()[0], "HBongo");
-    EXPECT_EQ(percussionSet.getEnumValues()[1], "Claves");
-    EXPECT_EQ(percussionSet.getEnumValues()[2], "Bass1");
+    EXPECT_TRUE(testUtils::areEqualSets(percussionSet.getValueSet(), {"HBongo", "Claves", "Bass1"}));
+    EXPECT_EQ(percussionSet.getValueSet().size(), 3);
+    EXPECT_EQ(percussionSet.getValueSet()[0], "HBongo");
+    EXPECT_EQ(percussionSet.getValueSet()[1], "Claves");
+    EXPECT_EQ(percussionSet.getValueSet()[2], "Bass1");
     EXPECT_EQ(percussionSet.getIndexOfDefaultValue(), 1);
     EXPECT_EQ(percussionSet.tryGetIndexFromIdentifier("HBongo"), 0);
     EXPECT_EQ(percussionSet.tryGetIndexFromIdentifier("Claves"), 1);
@@ -61,10 +61,10 @@ TEST(PercussionSetWithPitchMapTest, oneInstrumentBlockAllNew) {
 
     TestPercussionSet percussionSet(block, 50);
 
-    EXPECT_TRUE(testUtils::areEqualSets(percussionSet.getEnumValues(), {"Bar", "Boo"}));
-    EXPECT_EQ(percussionSet.getEnumValues().size(), 2);
-    EXPECT_EQ(percussionSet.getEnumValues()[0], "Bar");
-    EXPECT_EQ(percussionSet.getEnumValues()[1], "Boo");
+    EXPECT_TRUE(testUtils::areEqualSets(percussionSet.getValueSet(), {"Bar", "Boo"}));
+    EXPECT_EQ(percussionSet.getValueSet().size(), 2);
+    EXPECT_EQ(percussionSet.getValueSet()[0], "Bar");
+    EXPECT_EQ(percussionSet.getValueSet()[1], "Boo");
     EXPECT_EQ(percussionSet.getIndexOfDefaultValue(), 0);
     EXPECT_EQ(percussionSet.tryGetIndexFromIdentifier("Bar"), 0);
     EXPECT_EQ(percussionSet.tryGetIndexFromIdentifier("Boo"), 1);
@@ -89,10 +89,10 @@ TEST(PercussionSetWithPitchMapTest, oneInstrumentBlockMixed) {
 
     TestPercussionSet percussionSet(block, 50);
 
-    EXPECT_TRUE(testUtils::areEqualSets(percussionSet.getEnumValues(), {"Bar", "Claves"}));
-    EXPECT_EQ(percussionSet.getEnumValues().size(), 2);
-    EXPECT_EQ(percussionSet.getEnumValues()[0], "Bar");
-    EXPECT_EQ(percussionSet.getEnumValues()[1], "Claves");
+    EXPECT_TRUE(testUtils::areEqualSets(percussionSet.getValueSet(), {"Bar", "Claves"}));
+    EXPECT_EQ(percussionSet.getValueSet().size(), 2);
+    EXPECT_EQ(percussionSet.getValueSet()[0], "Bar");
+    EXPECT_EQ(percussionSet.getValueSet()[1], "Claves");
     EXPECT_EQ(percussionSet.getIndexOfDefaultValue(), 0);
     EXPECT_EQ(percussionSet.tryGetIndexFromIdentifier("Bar"), 0);
     EXPECT_EQ(percussionSet.tryGetIndexFromIdentifier("Claves"), 1);
@@ -122,13 +122,13 @@ TEST(PercussionSetWithPitchMapTest, twoInstrumentBlocks) {
 
     TestPercussionSet percussionSet({ block0, block1 }, 41);
 
-    EXPECT_TRUE(testUtils::areEqualSets(percussionSet.getEnumValues(), {"HBongo", "Claves", "Bass1", "Bar", "Boo"}));
-    EXPECT_EQ(percussionSet.getEnumValues().size(), 5);
-    EXPECT_EQ(percussionSet.getEnumValues()[0], "HBongo");
-    EXPECT_EQ(percussionSet.getEnumValues()[1], "Claves");
-    EXPECT_EQ(percussionSet.getEnumValues()[2], "Bass1");
-    EXPECT_EQ(percussionSet.getEnumValues()[3], "Bar");
-    EXPECT_EQ(percussionSet.getEnumValues()[4], "Boo");
+    EXPECT_TRUE(testUtils::areEqualSets(percussionSet.getValueSet(), {"HBongo", "Claves", "Bass1", "Bar", "Boo"}));
+    EXPECT_EQ(percussionSet.getValueSet().size(), 5);
+    EXPECT_EQ(percussionSet.getValueSet()[0], "HBongo");
+    EXPECT_EQ(percussionSet.getValueSet()[1], "Claves");
+    EXPECT_EQ(percussionSet.getValueSet()[2], "Bass1");
+    EXPECT_EQ(percussionSet.getValueSet()[3], "Bar");
+    EXPECT_EQ(percussionSet.getValueSet()[4], "Boo");
     EXPECT_EQ(percussionSet.getIndexOfDefaultValue(), 1);
     EXPECT_EQ(percussionSet.tryGetIndexFromIdentifier("HBongo"), 0);
     EXPECT_EQ(percussionSet.tryGetIndexFromIdentifier("Claves"), 1);
@@ -171,12 +171,12 @@ TEST(PercussionSetWithPitchMapTest, duplicates) {
 
     TestPercussionSet percussionSet({ block0, block1 }, 41);
 
-    EXPECT_TRUE(testUtils::areEqualSets(percussionSet.getEnumValues(), {"HBongo", "Claves", "Bass1", "Bar"}));
-    EXPECT_EQ(percussionSet.getEnumValues().size(), 4);
-    EXPECT_EQ(percussionSet.getEnumValues()[0], "HBongo");
-    EXPECT_EQ(percussionSet.getEnumValues()[1], "Claves");
-    EXPECT_EQ(percussionSet.getEnumValues()[2], "Bass1");
-    EXPECT_EQ(percussionSet.getEnumValues()[3], "Bar");
+    EXPECT_TRUE(testUtils::areEqualSets(percussionSet.getValueSet(), {"HBongo", "Claves", "Bass1", "Bar"}));
+    EXPECT_EQ(percussionSet.getValueSet().size(), 4);
+    EXPECT_EQ(percussionSet.getValueSet()[0], "HBongo");
+    EXPECT_EQ(percussionSet.getValueSet()[1], "Claves");
+    EXPECT_EQ(percussionSet.getValueSet()[2], "Bass1");
+    EXPECT_EQ(percussionSet.getValueSet()[3], "Bar");
     EXPECT_EQ(percussionSet.getIndexOfDefaultValue(), 1);
     EXPECT_EQ(percussionSet.tryGetIndexFromIdentifier("HBongo"), 0);
     EXPECT_EQ(percussionSet.tryGetIndexFromIdentifier("Claves"), 1);

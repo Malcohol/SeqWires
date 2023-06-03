@@ -344,7 +344,7 @@ TEST(SmfTestSuiteTest, testAllGMPercussion) {
     const auto& gm2StandardPercussionSet = testEnvironment.m_typeSystem.getEntryByType<smf::GM2StandardPercussionSet>();
 
     // The file has each percussion instrument playing three times.
-    const auto& percussionInstruments = gm2StandardPercussionSet.getEnumValues();
+    const auto& percussionInstruments = gm2StandardPercussionSet.getValueSet();
     int eventIndex = 0;
     for (const auto& percussionEvent : seqwires::iterateOver<seqwires::PercussionEvent>(track)) {
         const int instrumentIndex = eventIndex / 6;

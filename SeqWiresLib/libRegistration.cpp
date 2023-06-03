@@ -9,6 +9,7 @@
 
 #include <SeqWiresLib/Functions/fingeredChordsFunction.hpp>
 #include <SeqWiresLib/Functions/monophonicSubtracksFunction.hpp>
+#include <SeqWiresLib/Functions/percussionMapFunction.hpp>
 #include <SeqWiresLib/Percussion/abstractPercussionSet.hpp>
 #include <SeqWiresLib/Percussion/builtInPercussionInstruments.hpp>
 #include <SeqWiresLib/Processors/chordMapProcessor.hpp>
@@ -43,6 +44,7 @@ void seqwires::registerLib(babelwires::ProjectContext& context) {
     context.m_typeSystem.addEntry<FingeredChordsSustainPolicyEnum>();
 
     context.m_typeSystem.addTypeConstructor<TrackTypeConstructor>();
+    context.m_typeSystem.addTypeConstructor<PercussionMapType>();
 
     context.m_typeSystem.addRelatedTypes(BuiltInPercussionInstruments::getThisIdentifier(),
                                          {{}, {AbstractPercussionSet::getThisIdentifier()}});

@@ -227,7 +227,7 @@ namespace seqwires {
     /// All percussion instruments built into SeqWires.
     /// This is just a holder of instruments. It cannot be used as a PercussionSet because the values do not have a 1-1
     /// mapping to pitch values.
-    class BuiltInPercussionInstruments : public babelwires::Enum {
+    class BuiltInPercussionInstruments : public babelwires::EnumType {
       public:
         PRIMITIVE_TYPE("BuiltInPerc", "Built In Percussion", "c67f1a9e-653d-42b5-bf73-1fdc2f8a9b1a", 1);
 

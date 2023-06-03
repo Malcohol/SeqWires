@@ -17,9 +17,9 @@ namespace seqwires {
       public:
         TrackType(ModelDuration defaultDuration = 0);
 
-        babelwires::NewValueHolder createValue() const override;
+        babelwires::NewValueHolder createValue(const babelwires::TypeSystem& typeSystem) const override;
 
-        bool isValidValue(const babelwires::Value& v) const override;
+        bool isValidValue(const babelwires::TypeSystem& typeSystem, const babelwires::Value& v) const override;
 
         std::string getKind() const override;
       private:

@@ -7,27 +7,76 @@
  **/
 #include <SeqWiresLib/Functions/percussionMapFunction.hpp>
 
+#include <SeqWiresLib/Percussion/abstractPercussionSet.hpp>
+#include <SeqWiresLib/Percussion/builtInPercussionInstruments.hpp>
 #include <SeqWiresLib/Types/Track/TrackEvents/percussionEvents.hpp>
 #include <SeqWiresLib/Types/Track/TrackEvents/trackEventHolder.hpp>
-#include <SeqWiresLib/Percussion/builtInPercussionInstruments.hpp>
 
-#include <BabelWiresLib/Types/Enum/addBlankToEnum.hpp>
-#include <BabelWiresLib/Features/mapFeature.hpp>
 #include <BabelWiresLib/Features/modelExceptions.hpp>
-#include <BabelWiresLib/Maps/Helpers/enumSourceMapApplicator.hpp>
-#include <BabelWiresLib/Maps/Helpers/unorderedMapApplicator.hpp>
-#include <BabelWiresLib/Maps/Helpers/enumValueAdapters.hpp>
 #include <BabelWiresLib/TypeSystem/typeSystem.hpp>
+#include <BabelWiresLib/Types/Enum/addBlankToEnum.hpp>
+#include <BabelWiresLib/Types/Map/Helpers/enumSourceMapApplicator.hpp>
+#include <BabelWiresLib/Types/Map/Helpers/enumValueAdapters.hpp>
+#include <BabelWiresLib/Types/Map/Helpers/unorderedMapApplicator.hpp>
+#include <BabelWiresLib/Types/Map/mapTypeConstructor.hpp>
+#include <BabelWiresLib/Types/Map/SumOfMaps/sumOfMapsType.hpp>
+
+std::unique_ptr<babelwires::Type>
+seqwires::PercussionMapType::constructType(const babelwires::TypeSystem& typeSystem, babelwires::TypeRef newTypeRef,
+                                           const std::vector<const babelwires::Type*>& typeArguments,
+                                           const std::vector<babelwires::EditableValueHolder>& valueArguments) const {
+
+    std::vector<babelwires::TypeRef> sourceSummands;
+    auto superTypes = typeSystem.getAllSupertypes(seqwires::AbstractPercussionSet::getThisIdentifier());
+    std::for_each(superTypes.begin(), superTypes.end(),
+                  [&sourceSummands](babelwires::PrimitiveTypeId typeId) { sourceSummands.emplace_back(typeId); });
+
+    // Maybe remove the abstract types here.
+    const auto it =
+        std::find(sourceSummands.begin(), sourceSummands.end(), seqwires::BuiltInPercussionInstruments::getThisIdentifier());
+    assert(it != sourceSummands.end());
+    unsigned int indexOfDefault = std::distance(sourceSummands.begin(), it);
+
+    std::vector<babelwires::TypeRef> targetSummands;
+    targetSummands.reserve(sourceSummands.size());
+    for (const auto& s : sourceSummands) {
+        targetSummands.emplace_back(babelwires::TypeRef(babelwires::AddBlankToEnum::getThisIdentifier(), s));
+    }
+
+    return std::make_unique<babelwires::ConstructedType<babelwires::SumOfMapsType>>(std::move(newTypeRef),
+                                                                              std::move(sourceSummands), std::move(targetSummands), indexOfDefault, indexOfDefault);
+}
+
+babelwires::SubtypeOrder
+seqwires::PercussionMapType::compareSubtypeHelper(const babelwires::TypeSystem& typeSystem,
+                                                  const babelwires::TypeConstructorArguments& argumentsA,
+                                                  const babelwires::TypeConstructorArguments& argumentsB) const {
+    // TODO
+    return babelwires::SubtypeOrder::IsUnrelated;
+}
+
+babelwires::SubtypeOrder
+seqwires::PercussionMapType::compareSubtypeHelper(const babelwires::TypeSystem& typeSystem,
+                                                  const babelwires::TypeConstructorArguments& arguments,
+                                                  const babelwires::TypeRef& other) const {
+    // TODO
+    return babelwires::SubtypeOrder::IsUnrelated;
+}
+
+babelwires::TypeRef seqwires::getPercussionMapType() {
+    return babelwires::TypeRef(PercussionMapType::getThisIdentifier(), babelwires::TypeConstructorArguments{});
+}
 
 seqwires::Track seqwires::mapPercussionFunction(const babelwires::TypeSystem& typeSystem, const Track& trackIn,
-                                                const babelwires::MapData& percussionMapData) {
+                                                const babelwires::MapValue& percussionMapValue) {
 
-    if (!percussionMapData.isValid(typeSystem)) {
+    if (!percussionMapValue.isValid(typeSystem)) {
         throw babelwires::ModelException() << "The Percussion Map is not valid.";
     }
 
     const babelwires::EnumToIdentifierValueAdapter enumToIdentifierAdapter;
-    babelwires::UnorderedMapApplicator<babelwires::ShortId, babelwires::ShortId> mapApplicator{ percussionMapData, enumToIdentifierAdapter, enumToIdentifierAdapter };
+    babelwires::UnorderedMapApplicator<babelwires::ShortId, babelwires::ShortId> mapApplicator{
+        percussionMapValue, enumToIdentifierAdapter, enumToIdentifierAdapter};
 
     Track trackOut;
     // If an event is dropped, then we need to carry its time forward for the next event.

@@ -16,10 +16,10 @@
 #include <sstream>
 #include <iomanip>
 
-ENUM_DEFINE_ENUM_VALUE_SOURCE(PITCH_CLASS_VALUES);
+ENUM_DEFINE_ENUM_VALUE_SOURCE(seqwires::PitchClass, PITCH_CLASS_VALUES);
 
 seqwires::PitchClass::PitchClass()
-    : Enum(ENUM_IDENTIFIER_VECTOR(PITCH_CLASS_VALUES), 0) {}
+    : EnumType(getStaticValueSet(), 0) {}
 
 #define JUST_IDENTIFIERS(A, B, C) #A,
 #define JUST_NAMES(A, B, C) B,
@@ -156,4 +156,4 @@ namespace {
 } // namespace
 
 seqwires::PitchEnum::PitchEnum()
-    : Enum(getPitchEnumValues(), 60) {}
+    : EnumType(getPitchEnumValues(), 60) {}

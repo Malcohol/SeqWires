@@ -13,10 +13,10 @@
 #include <algorithm>
 #include <array>
 
-ENUM_DEFINE_ENUM_VALUE_SOURCE(FINGERED_CHORDS_SUSTAIN_POLICY);
+ENUM_DEFINE_ENUM_VALUE_SOURCE(seqwires::FingeredChordsSustainPolicyEnum, FINGERED_CHORDS_SUSTAIN_POLICY);
 
 seqwires::FingeredChordsSustainPolicyEnum::FingeredChordsSustainPolicyEnum()
-    : babelwires::Enum(ENUM_IDENTIFIER_VECTOR(FINGERED_CHORDS_SUSTAIN_POLICY), 0) {}
+    : babelwires::EnumType(getStaticValueSet(), 0) {}
 
 namespace {
     using IntervalSet = std::uint16_t;

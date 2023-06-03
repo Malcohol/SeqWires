@@ -7,12 +7,41 @@
  **/
 #include <SeqWiresLib/Types/Track/track.hpp>
 
+#include <BabelWiresLib/TypeSystem/typeConstructor.hpp>
+#include <BabelWiresLib/Types/Sum/sumType.hpp>
+
 namespace babelwires {
-    class MapData;
+    class MapValue;
     class TypeSystem;
-}
+} // namespace babelwires
 
 namespace seqwires {
-    /// 
-    Track mapPercussionFunction(const babelwires::TypeSystem& typeSystem, const Track& sourceTrack, const babelwires::MapData& percussionMapData);
-}
+
+    /// A 0-ary type constructor which constructs a sum type of all registered percussion types.
+    /// A type constructor is used, since when the SumType itself is built, we know all the percussion types should
+    /// be registered already.
+    class PercussionMapType : public babelwires::TypeConstructor {
+      public:
+        TYPE_CONSTRUCTOR("PercMaps", "Percussion Map Types", "c6d3d105-5823-4764-a4bb-5a9b12abab03", 1);
+
+        std::unique_ptr<babelwires::Type>
+        constructType(const babelwires::TypeSystem& typeSystem, babelwires::TypeRef newTypeRef,
+                      const std::vector<const babelwires::Type*>& typeArguments,
+                      const std::vector<babelwires::EditableValueHolder>& valueArguments) const override;
+
+        babelwires::SubtypeOrder
+        compareSubtypeHelper(const babelwires::TypeSystem& typeSystem,
+                             const babelwires::TypeConstructorArguments& argumentsA,
+                             const babelwires::TypeConstructorArguments& argumentsB) const override;
+
+        babelwires::SubtypeOrder compareSubtypeHelper(const babelwires::TypeSystem& typeSystem,
+                                                      const babelwires::TypeConstructorArguments& arguments,
+                                                      const babelwires::TypeRef& other) const override;
+    };
+
+    babelwires::TypeRef getPercussionMapType();
+
+    ///
+    Track mapPercussionFunction(const babelwires::TypeSystem& typeSystem, const Track& sourceTrack,
+                                const babelwires::MapValue& percussionMapValue);
+} // namespace seqwires

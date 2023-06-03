@@ -12,10 +12,9 @@
 #include <SeqWiresLib/chord.hpp>
 #include <SeqWiresLib/pitch.hpp>
 
-#include <BabelWiresLib/Features/mapFeature.hpp>
 #include <BabelWiresLib/Features/modelExceptions.hpp>
-#include <BabelWiresLib/Maps/Helpers/enumSourceMapApplicator.hpp>
-#include <BabelWiresLib/Maps/Helpers/enumValueAdapters.hpp>
+#include <BabelWiresLib/Types/Map/Helpers/enumSourceMapApplicator.hpp>
+#include <BabelWiresLib/Types/Map/Helpers/enumValueAdapters.hpp>
 #include <BabelWiresLib/TypeSystem/typeSystem.hpp>
 #include <BabelWiresLib/Types/Enum/addBlankToEnum.hpp>
 
@@ -30,30 +29,30 @@ babelwires::TypeRef seqwires::getMapChordFunctionPitchClassRef() {
 }
 
 seqwires::Track seqwires::mapChordsFunction(const babelwires::TypeSystem& typeSystem, const Track& sourceTrack,
-                                            const babelwires::MapData& chordTypeMapData,
-                                            const babelwires::MapData& pitchClassMapData) {
+                                            const babelwires::MapValue& chordTypeMapValue,
+                                            const babelwires::MapValue& pitchClassMapValue) {
 
-    if (!chordTypeMapData.isValid(typeSystem)) {
+    if (!chordTypeMapValue.isValid(typeSystem)) {
         throw babelwires::ModelException() << "The Chord Type Map is not valid.";
     }
-    if (!pitchClassMapData.isValid(typeSystem)) {
+    if (!pitchClassMapValue.isValid(typeSystem)) {
         throw babelwires::ModelException() << "The Pitch Class Map is not valid.";
     }
 
     const babelwires::TypeRef chordTypeWithBlankTypeRef = getMapChordFunctionChordTypeRef();
-    const babelwires::Enum& chordTypeWithBlank = chordTypeWithBlankTypeRef.resolve(typeSystem).is<babelwires::Enum>();
+    const babelwires::EnumType& chordTypeWithBlank = chordTypeWithBlankTypeRef.resolve(typeSystem).is<babelwires::EnumType>();
     const babelwires::EnumToIndexValueAdapter chordTypeTargetAdapter{chordTypeWithBlank};
     const babelwires::EnumSourceIndexMapApplicator<unsigned int> chordTypeApplicator(
-        chordTypeMapData, chordTypeWithBlank, chordTypeTargetAdapter);
+        chordTypeMapValue, chordTypeWithBlank, chordTypeTargetAdapter);
     // The blank value is always last.
-    const unsigned int indexOfBlankChordValue = chordTypeWithBlank.getEnumValues().size() - 1;
+    const unsigned int indexOfBlankChordValue = chordTypeWithBlank.getValueSet().size() - 1;
 
     const babelwires::TypeRef pitchClassWithBlankTypeRef = getMapChordFunctionPitchClassRef();
-    const babelwires::Enum& pitchClassWithBlank = pitchClassWithBlankTypeRef.resolve(typeSystem).is<babelwires::Enum>();
+    const babelwires::EnumType& pitchClassWithBlank = pitchClassWithBlankTypeRef.resolve(typeSystem).is<babelwires::EnumType>();
     const babelwires::EnumToIndexValueAdapter pitchClassTargetAdapter{pitchClassWithBlank};
     const babelwires::EnumSourceIndexMapApplicator<unsigned int> pitchClassApplicator(
-        pitchClassMapData, pitchClassWithBlank, pitchClassTargetAdapter);
-    const unsigned int indexOfBlankPitchClass = pitchClassWithBlank.getEnumValues().size() - 1;
+        pitchClassMapValue, pitchClassWithBlank, pitchClassTargetAdapter);
+    const unsigned int indexOfBlankPitchClass = pitchClassWithBlank.getValueSet().size() - 1;
 
     Track trackOut;
     ModelDuration totalEventDuration;

@@ -11,9 +11,10 @@
 #include <Tests/BabelWiresLib/TestUtils/testEnvironment.hpp>
 
 TEST(TrackType, defaultTrackTypeCreateValue) {
+    babelwires::TypeSystem typeSystem;
     seqwires::DefaultTrackType trackType;
 
-    babelwires::ValueHolder newValue = trackType.createValue();
+    babelwires::ValueHolder newValue = trackType.createValue(typeSystem);
     EXPECT_TRUE(newValue);
 
     const auto* const newTrackValue = newValue->as<seqwires::Track>();
@@ -22,12 +23,13 @@ TEST(TrackType, defaultTrackTypeCreateValue) {
 }
 
 TEST(TrackType, defaultTrackTypeIsValidValue) {
+    babelwires::TypeSystem typeSystem;
     seqwires::DefaultTrackType trackType;
 
     seqwires::Track track(8);
 
-    EXPECT_TRUE(trackType.isValidValue(track));
-    EXPECT_FALSE(trackType.isValidValue(babelwires::RationalValue(3)));
+    EXPECT_TRUE(trackType.isValidValue(typeSystem, track));
+    EXPECT_FALSE(trackType.isValidValue(typeSystem, babelwires::RationalValue(3)));
 }
 
 TEST(TrackType, defaultIntTypeGetKind) {
@@ -44,7 +46,7 @@ TEST(TrackType, constructedTrackTypeCreateValue) {
 
     const babelwires::Type* const type = trackTypeRef.tryResolve(testEnvironment.m_typeSystem);
 
-    babelwires::ValueHolder newValue = type->createValue();
+    babelwires::ValueHolder newValue = type->createValue(testEnvironment.m_typeSystem);
     EXPECT_TRUE(newValue);
 
     const auto* const newTrack = newValue->as<seqwires::Track>();

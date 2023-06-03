@@ -24,7 +24,7 @@ seqwires::ModelDuration seqwires::TrackTypeConstructor::extractValueArguments(
     }
 }
 
-std::unique_ptr<babelwires::Type> seqwires::TrackTypeConstructor::constructType(
+std::unique_ptr<babelwires::Type> seqwires::TrackTypeConstructor::constructType(const babelwires::TypeSystem& typeSystem, 
     babelwires::TypeRef newTypeRef, const std::vector<const babelwires::Type*>& typeArguments,
     const std::vector<babelwires::EditableValueHolder>& valueArguments) const {
     if (typeArguments.size() != 0) {

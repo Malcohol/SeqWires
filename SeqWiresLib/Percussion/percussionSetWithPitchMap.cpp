@@ -11,7 +11,7 @@
 
 class seqwires::PercussionSetWithPitchMap::ComplexConstructorArguments {
   public:
-    babelwires::Enum::EnumValues m_enumValues;
+    babelwires::EnumType::ValueSet m_enumValues;
     std::unordered_map<seqwires::Pitch, babelwires::ShortId> m_pitchToInstrument;
     std::unordered_map<babelwires::ShortId, seqwires::Pitch> m_instrumentToPitch;
     int m_indexOfDefaultValue = -1;
@@ -60,7 +60,7 @@ class seqwires::PercussionSetWithPitchMap::ComplexConstructorArguments {
 };
 
 seqwires::PercussionSetWithPitchMap::PercussionSetWithPitchMap(ComplexConstructorArguments&& removeDuplicates)
-    : Enum(std::move(removeDuplicates.m_enumValues), removeDuplicates.m_indexOfDefaultValue)
+    : EnumType(std::move(removeDuplicates.m_enumValues), removeDuplicates.m_indexOfDefaultValue)
     , m_pitchToInstrument(std::move(removeDuplicates.m_pitchToInstrument))
     , m_instrumentToPitch(std::move(removeDuplicates.m_instrumentToPitch)) {}
 

@@ -7,8 +7,8 @@
  **/
 #include <SeqWiresLib/Percussion/builtInPercussionInstruments.hpp>
 
-ENUM_DEFINE_ENUM_VALUE_SOURCE(BUILT_IN_PERCUSSION_INSTRUMENTS);
+ENUM_DEFINE_ENUM_VALUE_SOURCE(seqwires::BuiltInPercussionInstruments, BUILT_IN_PERCUSSION_INSTRUMENTS);
 
 seqwires::BuiltInPercussionInstruments::BuiltInPercussionInstruments()
-    : Enum(ENUM_IDENTIFIER_VECTOR(BUILT_IN_PERCUSSION_INSTRUMENTS), 0) {}
+    : EnumType(getStaticValueSet(), 0) {}
 
