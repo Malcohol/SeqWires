@@ -30,6 +30,6 @@ namespace seqwires {
         };
 
       private:
-        babelwires::MapFeature* m_percussionMapFeature;
+        babelwires::SimpleValueFeature* m_percussionMapFeature;
     };
 } // namespace seqwires

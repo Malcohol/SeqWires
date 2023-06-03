@@ -20,42 +20,9 @@
 #include <Common/Identifiers/registeredIdentifier.hpp>
 
 namespace {
-    struct PercussionTypeMap : babelwires::MapFeature {
+    struct PercussionTypeMap : babelwires::SimpleValueFeature {
         PercussionTypeMap()
-            : babelwires::MapFeature(seqwires::AbstractPercussionSet::getThisIdentifier(),
-                                      seqwires::AbstractPercussionSet::getThisIdentifier(),
-                                      babelwires::MapEntryData::Kind::All2Sm) {}
-        /*
-        void getAllowedSourceTypeRefs(AllowedTypes& allowedTypesOut) const override {
-            getAllPercussionTypes(allowedTypesOut);
-        }
-
-        void getAllowedTargetTypeRefs(AllowedTypes& allowedTypesOut) const override {
-            getAllPercussionTypes(allowedTypesOut);
-            for (auto& typeRef : allowedTypesOut.m_typeRefs) {
-                typeRef = babelwires::TypeRef(babelwires::AddBlankToEnum::getThisIdentifier(), typeRef);
-            }
-        }
-
-        babelwires::MapValue getDefaultMapValue() const override {
-            return getStandardDefaultMapValue(babelwires::MapEntryData::Kind::All2Sm);
-        }
-
-        void getAllPercussionTypes(AllowedTypes& allowedTypesOut) const {
-            const babelwires::ProjectContext& context = babelwires::RootFeature::getProjectContextAt(*this);
-            auto superTypes =
-                context.m_typeSystem.getAllSupertypes(seqwires::AbstractPercussionSet::getThisIdentifier());
-            std::for_each(superTypes.begin(), superTypes.end(), [&allowedTypesOut](babelwires::PrimitiveTypeId typeId) {
-                allowedTypesOut.m_typeRefs.emplace_back(typeId);
-            });
-
-            // Maybe remove the abstract types here.
-            const auto it = std::find(allowedTypesOut.m_typeRefs.begin(), allowedTypesOut.m_typeRefs.end(),
-                                      seqwires::BuiltInPercussionInstruments::getThisIdentifier());
-            assert(it != allowedTypesOut.m_typeRefs.end());
-            allowedTypesOut.m_indexOfDefault = std::distance(allowedTypesOut.m_typeRefs.begin(), it);
-        }
-        */
+            : babelwires::SimpleValueFeature(seqwires::getPercussionMapType()) {}
     };
 } // namespace
 
@@ -75,5 +42,5 @@ void seqwires::PercussionMapProcessor::processEntry(babelwires::UserLogger& user
                                                     seqwires::TrackFeature& output) const {
     const babelwires::ProjectContext& context = babelwires::RootFeature::getProjectContextAt(*m_percussionMapFeature);
 
-    output.set(mapPercussionFunction(context.m_typeSystem, input.get(), m_percussionMapFeature->get()));
+    output.set(mapPercussionFunction(context.m_typeSystem, input.get(), m_percussionMapFeature->getValue().is<babelwires::MapValue>()));
 }
