@@ -253,8 +253,8 @@ TEST(ChordMapProcessorTest, processor) {
     ASSERT_NE(getInputTrack(0), nullptr);
     ASSERT_NE(getOutputTrack(0), nullptr);
 
-    chordTypeMapFeature->setValue(getTestChordTypeMap(testEnvironment.m_typeSystem));
-    pitchClassMapFeature->setValue(getTestPitchClassMap(testEnvironment.m_typeSystem));
+    chordTypeMapFeature->setValueHolder(getTestChordTypeMap(testEnvironment.m_typeSystem));
+    pitchClassMapFeature->setValueHolder(getTestPitchClassMap(testEnvironment.m_typeSystem));
     getInputTrack(0)->set(getTestInputTrack());
 
     processor.process(testEnvironment.m_log);

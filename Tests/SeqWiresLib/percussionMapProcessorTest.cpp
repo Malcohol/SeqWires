@@ -141,7 +141,7 @@ TEST(PercussionMapProcessorTest, processor) {
     ASSERT_NE(getInputTrack(0), nullptr);
     ASSERT_NE(getOutputTrack(0), nullptr);
 
-    percussionMapFeature->setValue(getTestPercussionMap(testEnvironment.m_typeSystem));
+    percussionMapFeature->setValueHolder(getTestPercussionMap(testEnvironment.m_typeSystem));
     getInputTrack(0)->set(getTestInputTrack());
 
     processor.process(testEnvironment.m_log);
