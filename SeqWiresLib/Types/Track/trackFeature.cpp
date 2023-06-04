@@ -13,7 +13,7 @@ seqwires::TrackFeature::TrackFeature()
 }
 
 const seqwires::Track& seqwires::TrackFeature::get() const {
-    return getValue().is<Track>();
+    return getValueHolder()->is<Track>();
 }
 
 void seqwires::TrackFeature::set(Track track) {
