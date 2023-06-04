@@ -13,9 +13,9 @@ seqwires::TrackFeature::TrackFeature()
 }
 
 const seqwires::Track& seqwires::TrackFeature::get() const {
-    return getValueHolder()->is<Track>();
+    return getValue()->is<Track>();
 }
 
 void seqwires::TrackFeature::set(Track track) {
-    setValueHolder(std::move(track));
+    setValue(std::move(track));
 }

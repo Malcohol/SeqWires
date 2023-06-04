@@ -42,5 +42,5 @@ void seqwires::PercussionMapProcessor::processEntry(babelwires::UserLogger& user
                                                     seqwires::TrackFeature& output) const {
     const babelwires::ProjectContext& context = babelwires::RootFeature::getProjectContextAt(*m_percussionMapFeature);
 
-    output.set(mapPercussionFunction(context.m_typeSystem, input.get(), m_percussionMapFeature->getValueHolder()->is<babelwires::MapValue>()));
+    output.set(mapPercussionFunction(context.m_typeSystem, input.get(), m_percussionMapFeature->getValue()->is<babelwires::MapValue>()));
 }
