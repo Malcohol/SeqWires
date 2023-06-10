@@ -38,11 +38,10 @@ However, even when I do so, there will be still be a use-case for the stand-alon
 
 [![SeqWires build and test pipeline](https://github.com/Malcohol/SeqWires/actions/workflows/ci.yml/badge.svg)](https://github.com/Malcohol/SeqWires/actions/workflows/ci.yml)
 
-SeqWires is under active development, but please do not expect development to be rapid.
-I have very limited time to devote to this.
+SeqWires is intended to be cross platform. It should build on GNU/Linux, Windows and Mac OS but quality is inconsistent: see the table at [BabelWires status](https://github.com/Malcohol/BabelWires/blob/main/README.md#Status) for more details.
 
 Right now the SMF plugin only supports note on/off events.
-Extending it will be very easy, but my current priority is on getting the infrastructure right.
+My current priority is on getting the infrastructure right.
 
 ## Downloading and Building
 
@@ -53,9 +52,6 @@ git clone --recurse-submodules https://github.com/Malcohol/SeqWires.git
 ```
 
 SeqWires is implemented using the [BabelWires](https://github.com/Malcohol/BabelWires) framework (which in turn makes heavy use of the [QT Node Editor](https://github.com/paceholder/nodeeditor) project). 
-SeqWires is intended to be cross platform.
-I primarily work in a GNU/Linux environment, but I'll try to ensure the Windows build works too.
-Building in other environments is untested.
 
 # License
 

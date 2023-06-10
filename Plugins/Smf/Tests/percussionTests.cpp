@@ -79,7 +79,7 @@ TEST_P(SmfStandardPercussionTest, saveLoad) {
 
         trackFeature->set(std::move(track));
 
-        std::ofstream os(tempFile, std::ios_base::binary);
+        std::ofstream os = tempFile.openForWriting(std::ios_base::binary);
         smf::writeToSmf(testEnvironment.m_projectContext, testEnvironment.m_log, smfFeature.getFormatFeature(), os);
     }
 
@@ -226,7 +226,7 @@ TEST_P(SmfTrackAllocationPercussionTest, trackAllocation) {
             trackFeature->set(std::move(track));
         }
 
-        std::ofstream os(tempFile, std::ios_base::binary);
+        std::ofstream os = tempFile.openForWriting(std::ios_base::binary);
         smf::writeToSmf(testEnvironment.m_projectContext, testEnvironment.m_log, smfFeature.getFormatFeature(), os);
     }
 
