@@ -27,11 +27,10 @@ seqwires::PercussionMapType::constructType(const babelwires::TypeSystem& typeSys
                                            const std::vector<babelwires::EditableValueHolder>& valueArguments) const {
 
     std::vector<babelwires::TypeRef> sourceSummands;
-    auto superTypes = typeSystem.getAllSupertypes(seqwires::AbstractPercussionSet::getThisIdentifier());
-    std::for_each(superTypes.begin(), superTypes.end(),
+    auto percussionTypes = typeSystem.getTaggedPrimitiveTypes(seqwires::percussionTypeTag());
+    std::for_each(percussionTypes.begin(), percussionTypes.end(),
                   [&sourceSummands](babelwires::PrimitiveTypeId typeId) { sourceSummands.emplace_back(typeId); });
 
-    // Maybe remove the abstract types here.
     const auto it =
         std::find(sourceSummands.begin(), sourceSummands.end(), seqwires::BuiltInPercussionInstruments::getThisIdentifier());
     assert(it != sourceSummands.end());

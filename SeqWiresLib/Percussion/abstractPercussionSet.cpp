@@ -9,6 +9,10 @@
 
 #include <Common/Identifiers/registeredIdentifier.hpp>
 
+babelwires::Type::Tag seqwires::percussionTypeTag() {
+    return BW_MEDIUM_ID("PercussionTag", "Percussion Type", "116e6017-9710-42e0-9464-daae91c3fc12");
+}
+
 seqwires::AbstractPercussionSet::AbstractPercussionSet()
     : babelwires::EnumType({}, 0) {}
 
