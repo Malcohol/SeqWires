@@ -5,7 +5,7 @@
  *
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
-#include <SeqWiresLib/Percussion/abstractPercussionSet.hpp>
+#include <SeqWiresLib/Percussion/percussionTypeTag.hpp>
 
 #include <Common/Identifiers/registeredIdentifier.hpp>
 

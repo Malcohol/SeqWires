@@ -8,7 +8,6 @@
 #include <Plugins/Smf/Plugin/libRegistration.hpp>
 
 #include <SeqWiresLib/Percussion/builtInPercussionInstruments.hpp>
-#include <SeqWiresLib/Percussion/abstractPercussionSet.hpp>
 
 #include <BabelWiresLib/Project/projectContext.hpp>
 #include <BabelWiresLib/TypeSystem/typeSystem.hpp>

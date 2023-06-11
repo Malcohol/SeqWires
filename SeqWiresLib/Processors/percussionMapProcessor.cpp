@@ -8,7 +8,6 @@
 #include <SeqWiresLib/Processors/percussionMapProcessor.hpp>
 
 #include <SeqWiresLib/Functions/percussionMapFunction.hpp>
-#include <SeqWiresLib/Percussion/abstractPercussionSet.hpp>
 #include <SeqWiresLib/Percussion/builtInPercussionInstruments.hpp>
 
 #include <BabelWiresLib/Features/rootFeature.hpp>

@@ -7,7 +7,7 @@
  **/
 #include <SeqWiresLib/Percussion/percussionSetWithPitchMap.hpp>
 
-#include <SeqWiresLib/Percussion/abstractPercussionSet.hpp>
+#include <SeqWiresLib/Percussion/percussionTypeTag.hpp>
 
 #include <unordered_set>
 

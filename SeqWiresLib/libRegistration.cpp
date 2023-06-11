@@ -10,7 +10,6 @@
 #include <SeqWiresLib/Functions/fingeredChordsFunction.hpp>
 #include <SeqWiresLib/Functions/monophonicSubtracksFunction.hpp>
 #include <SeqWiresLib/Functions/percussionMapFunction.hpp>
-#include <SeqWiresLib/Percussion/abstractPercussionSet.hpp>
 #include <SeqWiresLib/Percussion/builtInPercussionInstruments.hpp>
 #include <SeqWiresLib/Processors/chordMapProcessor.hpp>
 #include <SeqWiresLib/Processors/concatenateProcessor.hpp>
