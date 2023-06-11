@@ -28,15 +28,6 @@ namespace seqwires {
         constructType(const babelwires::TypeSystem& typeSystem, babelwires::TypeRef newTypeRef,
                       const std::vector<const babelwires::Type*>& typeArguments,
                       const std::vector<babelwires::EditableValueHolder>& valueArguments) const override;
-
-        babelwires::SubtypeOrder
-        compareSubtypeHelper(const babelwires::TypeSystem& typeSystem,
-                             const babelwires::TypeConstructorArguments& argumentsA,
-                             const babelwires::TypeConstructorArguments& argumentsB) const override;
-
-        babelwires::SubtypeOrder compareSubtypeHelper(const babelwires::TypeSystem& typeSystem,
-                                                      const babelwires::TypeConstructorArguments& arguments,
-                                                      const babelwires::TypeRef& other) const override;
     };
 
     babelwires::TypeRef getPercussionMapType();

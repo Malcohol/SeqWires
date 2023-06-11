@@ -7,8 +7,12 @@
  **/
 #include <SeqWiresLib/Percussion/builtInPercussionInstruments.hpp>
 
+#include <SeqWiresLib/Percussion/percussionTypeTag.hpp>
+
 ENUM_DEFINE_ENUM_VALUE_SOURCE(seqwires::BuiltInPercussionInstruments, BUILT_IN_PERCUSSION_INSTRUMENTS);
 
 seqwires::BuiltInPercussionInstruments::BuiltInPercussionInstruments()
-    : EnumType(getStaticValueSet(), 0) {}
+    : EnumType(getStaticValueSet(), 0) {
+        addTag(percussionTypeTag());
+    }
 

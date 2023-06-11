@@ -7,7 +7,7 @@
  **/
 #include <SeqWiresLib/Functions/percussionMapFunction.hpp>
 
-#include <SeqWiresLib/Percussion/abstractPercussionSet.hpp>
+#include <SeqWiresLib/Percussion/percussionTypeTag.hpp>
 #include <SeqWiresLib/Percussion/builtInPercussionInstruments.hpp>
 #include <SeqWiresLib/Types/Track/TrackEvents/percussionEvents.hpp>
 #include <SeqWiresLib/Types/Track/TrackEvents/trackEventHolder.hpp>
@@ -27,11 +27,10 @@ seqwires::PercussionMapType::constructType(const babelwires::TypeSystem& typeSys
                                            const std::vector<babelwires::EditableValueHolder>& valueArguments) const {
 
     std::vector<babelwires::TypeRef> sourceSummands;
-    auto superTypes = typeSystem.getAllSupertypes(seqwires::AbstractPercussionSet::getThisIdentifier());
-    std::for_each(superTypes.begin(), superTypes.end(),
+    auto percussionTypes = typeSystem.getTaggedPrimitiveTypes(seqwires::percussionTypeTag());
+    std::for_each(percussionTypes.begin(), percussionTypes.end(),
                   [&sourceSummands](babelwires::PrimitiveTypeId typeId) { sourceSummands.emplace_back(typeId); });
 
-    // Maybe remove the abstract types here.
     const auto it =
         std::find(sourceSummands.begin(), sourceSummands.end(), seqwires::BuiltInPercussionInstruments::getThisIdentifier());
     assert(it != sourceSummands.end());
@@ -45,22 +44,6 @@ seqwires::PercussionMapType::constructType(const babelwires::TypeSystem& typeSys
 
     return std::make_unique<babelwires::ConstructedType<babelwires::SumOfMapsType>>(std::move(newTypeRef),
                                                                               std::move(sourceSummands), std::move(targetSummands), indexOfDefault, indexOfDefault);
-}
-
-babelwires::SubtypeOrder
-seqwires::PercussionMapType::compareSubtypeHelper(const babelwires::TypeSystem& typeSystem,
-                                                  const babelwires::TypeConstructorArguments& argumentsA,
-                                                  const babelwires::TypeConstructorArguments& argumentsB) const {
-    // TODO
-    return babelwires::SubtypeOrder::IsUnrelated;
-}
-
-babelwires::SubtypeOrder
-seqwires::PercussionMapType::compareSubtypeHelper(const babelwires::TypeSystem& typeSystem,
-                                                  const babelwires::TypeConstructorArguments& arguments,
-                                                  const babelwires::TypeRef& other) const {
-    // TODO
-    return babelwires::SubtypeOrder::IsUnrelated;
 }
 
 babelwires::TypeRef seqwires::getPercussionMapType() {

@@ -7,6 +7,8 @@
  **/
 #include <SeqWiresLib/Percussion/percussionSetWithPitchMap.hpp>
 
+#include <SeqWiresLib/Percussion/percussionTypeTag.hpp>
+
 #include <unordered_set>
 
 class seqwires::PercussionSetWithPitchMap::ComplexConstructorArguments {
@@ -62,7 +64,9 @@ class seqwires::PercussionSetWithPitchMap::ComplexConstructorArguments {
 seqwires::PercussionSetWithPitchMap::PercussionSetWithPitchMap(ComplexConstructorArguments&& removeDuplicates)
     : EnumType(std::move(removeDuplicates.m_enumValues), removeDuplicates.m_indexOfDefaultValue)
     , m_pitchToInstrument(std::move(removeDuplicates.m_pitchToInstrument))
-    , m_instrumentToPitch(std::move(removeDuplicates.m_instrumentToPitch)) {}
+    , m_instrumentToPitch(std::move(removeDuplicates.m_instrumentToPitch)) {
+    addTag(percussionTypeTag());
+}
 
 seqwires::PercussionSetWithPitchMap::PercussionSetWithPitchMap(InstrumentBlock instruments,
                                                                seqwires::Pitch pitchOfDefaultInstrument)

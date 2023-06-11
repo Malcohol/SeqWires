@@ -10,7 +10,6 @@
 #include <SeqWiresLib/Functions/fingeredChordsFunction.hpp>
 #include <SeqWiresLib/Functions/monophonicSubtracksFunction.hpp>
 #include <SeqWiresLib/Functions/percussionMapFunction.hpp>
-#include <SeqWiresLib/Percussion/abstractPercussionSet.hpp>
 #include <SeqWiresLib/Percussion/builtInPercussionInstruments.hpp>
 #include <SeqWiresLib/Processors/chordMapProcessor.hpp>
 #include <SeqWiresLib/Processors/concatenateProcessor.hpp>
@@ -38,16 +37,12 @@ void seqwires::registerLib(babelwires::ProjectContext& context) {
     context.m_typeSystem.addEntry<ChordType>();
     context.m_typeSystem.addEntry<PitchClass>();
     context.m_typeSystem.addEntry<PitchEnum>();
-    context.m_typeSystem.addEntry<AbstractPercussionSet>();
     context.m_typeSystem.addEntry<BuiltInPercussionInstruments>();
     context.m_typeSystem.addEntry<MonophonicSubtracksPolicyEnum>();
     context.m_typeSystem.addEntry<FingeredChordsSustainPolicyEnum>();
 
     context.m_typeSystem.addTypeConstructor<TrackTypeConstructor>();
     context.m_typeSystem.addTypeConstructor<PercussionMapType>();
-
-    context.m_typeSystem.addRelatedTypes(BuiltInPercussionInstruments::getThisIdentifier(),
-                                         {{}, {AbstractPercussionSet::getThisIdentifier()}});
 
     context.m_processorReg.addEntry<ChordMapProcessor::Factory>();
     context.m_processorReg.addEntry<ConcatenateProcessor::Factory>();

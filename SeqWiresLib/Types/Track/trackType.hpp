@@ -22,6 +22,8 @@ namespace seqwires {
         bool isValidValue(const babelwires::TypeSystem& typeSystem, const babelwires::Value& v) const override;
 
         std::string getKind() const override;
+
+        babelwires::SubtypeOrder compareSubtypeHelper(const babelwires::TypeSystem& typeSystem, const babelwires::Type& other) const override;
       private:
         ModelDuration m_defaultDuration;
     };

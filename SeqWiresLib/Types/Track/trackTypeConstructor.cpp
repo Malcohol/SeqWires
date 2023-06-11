@@ -35,20 +35,3 @@ std::unique_ptr<babelwires::Type> seqwires::TrackTypeConstructor::constructType(
     return std::make_unique<babelwires::ConstructedType<TrackType>>(std::move(newTypeRef), initialDuration);
 }
 
-babelwires::SubtypeOrder
-seqwires::TrackTypeConstructor::compareSubtypeHelper(const babelwires::TypeSystem& typeSystem,
-                                                     const babelwires::TypeConstructorArguments& argumentsA,
-                                                     const babelwires::TypeConstructorArguments& argumentsB) const {
-    return babelwires::SubtypeOrder::IsEquivalent;
-}
-
-babelwires::SubtypeOrder
-seqwires::TrackTypeConstructor::compareSubtypeHelper(const babelwires::TypeSystem& typeSystem,
-                                                     const babelwires::TypeConstructorArguments& arguments,
-                                                     const babelwires::TypeRef& other) const {
-    const babelwires::Type* const type = other.tryResolve(typeSystem);
-    if (!type) {
-        return babelwires::SubtypeOrder::IsUnrelated;
-    }
-    return type->as<TrackType>() ? babelwires::SubtypeOrder::IsEquivalent : babelwires::SubtypeOrder::IsUnrelated;
-}
