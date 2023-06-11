@@ -22,12 +22,6 @@ namespace seqwires {
         std::unique_ptr<babelwires::Type> constructType(const babelwires::TypeSystem& typeSystem, babelwires::TypeRef newTypeRef, const std::vector<const babelwires::Type*>& typeArguments,
                                             const std::vector<babelwires::EditableValueHolder>& valueArguments) const override;
 
-        babelwires::SubtypeOrder compareSubtypeHelper(const babelwires::TypeSystem& typeSystem, const babelwires::TypeConstructorArguments& argumentsA,
-                                          const babelwires::TypeConstructorArguments& argumentsB) const override;
-
-        babelwires::SubtypeOrder compareSubtypeHelper(const babelwires::TypeSystem& typeSystem, const babelwires::TypeConstructorArguments& arguments,
-                                          const babelwires::TypeRef& other) const override;
-
       private:
         /// Throws a TypeSystem exception if the arguments are not of the expect type.
         static ModelDuration

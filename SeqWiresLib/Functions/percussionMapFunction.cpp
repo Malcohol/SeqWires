@@ -47,22 +47,6 @@ seqwires::PercussionMapType::constructType(const babelwires::TypeSystem& typeSys
                                                                               std::move(sourceSummands), std::move(targetSummands), indexOfDefault, indexOfDefault);
 }
 
-babelwires::SubtypeOrder
-seqwires::PercussionMapType::compareSubtypeHelper(const babelwires::TypeSystem& typeSystem,
-                                                  const babelwires::TypeConstructorArguments& argumentsA,
-                                                  const babelwires::TypeConstructorArguments& argumentsB) const {
-    // TODO
-    return babelwires::SubtypeOrder::IsUnrelated;
-}
-
-babelwires::SubtypeOrder
-seqwires::PercussionMapType::compareSubtypeHelper(const babelwires::TypeSystem& typeSystem,
-                                                  const babelwires::TypeConstructorArguments& arguments,
-                                                  const babelwires::TypeRef& other) const {
-    // TODO
-    return babelwires::SubtypeOrder::IsUnrelated;
-}
-
 babelwires::TypeRef seqwires::getPercussionMapType() {
     return babelwires::TypeRef(PercussionMapType::getThisIdentifier(), babelwires::TypeConstructorArguments{});
 }
