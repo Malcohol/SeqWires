@@ -66,8 +66,10 @@ void smf::source::ExtensibleChannelGroup::setPrivilegedTrack(int c) {
     assert((m_channelNum == nullptr) && "The first channel was already set");
     m_channelNum = addField(std::make_unique<babelwires::IntFeature>(0, 15),
                             BW_SHORT_ID("ChanNo", "channel", "011e3ef1-4c06-4e40-bba4-b242dc8a3d3a"));
+    m_channelNum->setToDefault();
     m_trackFeature = addField(std::make_unique<seqwires::TrackFeature>(),
                                   BW_SHORT_ID("Track", "track", "b48b1dff-6fa4-4c2f-8f77-bc50f44fb09a"));
+    m_trackFeature->setToDefault();
     m_channelNum->set(c);
 }
 
