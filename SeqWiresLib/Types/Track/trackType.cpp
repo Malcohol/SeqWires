@@ -34,3 +34,8 @@ seqwires::TrackType::compareSubtypeHelper(const babelwires::TypeSystem& typeSyst
     }
     return babelwires::SubtypeOrder::IsEquivalent;
 }
+
+std::string seqwires::TrackType::valueToString(const babelwires::TypeSystem& typeSystem, const babelwires::ValueHolder& v) const { 
+    const Track& track = v->is<Track>();
+    return track.getDuration().toString();
+}

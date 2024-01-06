@@ -52,8 +52,6 @@ namespace seqwires {
         /// Get a hash corresponding to the state of the track's contents
         std::size_t getHash() const override;
 
-        std::string toString() const override;
-
         /// Determine whether the data in this track and the other are exactly the same.
         /// Note: This is unconcerned with how events are laid out in their streams.
         bool operator==(const Value& other) const override;

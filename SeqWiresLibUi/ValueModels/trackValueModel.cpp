@@ -14,13 +14,13 @@
 #include <cassert>
 
 QString seqwiresUi::TrackValueModel::getRichText() const {
-    const seqwires::Track& value = m_value->is<seqwires::Track>();
+    const seqwires::Track& value = getValue()->is<seqwires::Track>();
     const babelwires::Rational duration = value.getDuration();
     return duration.toHtmlString().c_str();
 }
 
 QString seqwiresUi::TrackValueModel::getTooltip() const {
-    const seqwires::Track& track = m_value->is<seqwires::Track>();
+    const seqwires::Track& track = getValue()->is<seqwires::Track>();
     const auto& numEventGroupsByCategory = track.getNumEventGroupsByCategory();
     if (!numEventGroupsByCategory.empty()) {
         QString summary;
