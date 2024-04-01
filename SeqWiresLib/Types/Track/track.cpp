@@ -63,10 +63,6 @@ std::size_t seqwires::Track::getHash() const {
     return m_cachedValues.m_hash;
 }
 
-std::string seqwires::Track::toString() const {
-    return m_duration.toString();
-}
-
 bool seqwires::Track::operator==(const Value& other) const {
     const Track* const otherTrack = other.as<Track>();
     if (!otherTrack) {
