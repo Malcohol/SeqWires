@@ -54,8 +54,8 @@ namespace smf {
           public:
             SmfFormatFeature();
 
-            const MidiMetadata& getMidiMetadata() const;
-            MidiMetadata& getMidiMetadata();
+            const MidiMetadataFeature& getMidiMetadata() const;
+            MidiMetadataFeature& getMidiMetadata();
 
             // Convenience: Dispatches to the ArrayChannelGroup.
             int getNumMidiTracks() const;
@@ -64,7 +64,7 @@ namespace smf {
             Style getStyle() const override;
 
           protected:
-            MidiMetadata* m_metadata;
+            MidiMetadataFeature* m_metadata;
             babelwires::StringFeature* m_sequenceName;
             babelwires::StringFeature* m_copyright;
             seqwires::TempoFeature* m_tempo;

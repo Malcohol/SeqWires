@@ -21,7 +21,7 @@ namespace seqwires {
 namespace smf {
     class GmSpecTypeFeature : public babelwires::EnumWithCppEnumFeature<GMSpecType> {};
 
-    class MidiMetadata : public babelwires::RecordWithOptionalsFeature {
+    class MidiMetadataFeature : public babelwires::RecordWithOptionalsFeature {
       public:
         MidiMetadata();
 

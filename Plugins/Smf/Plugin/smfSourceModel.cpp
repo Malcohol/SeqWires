@@ -91,7 +91,7 @@ smf::source::SmfFeature::SmfFeature(const babelwires::ProjectContext& projectCon
     : babelwires::FileFeature(projectContext, SmfSourceFormat::getThisIdentifier())
     , m_format(f) {
     assert((f != SMF_UNKNOWN_FORMAT) && "You can only construct a format 0, 1 or 2 MIDI file");
-    m_metadata = addField(std::make_unique<MidiMetadata>(),
+    m_metadata = addField(std::make_unique<MidiMetadataFeature>(),
         BW_SHORT_ID("Meta", "Metadata", "72bbbcee-2b53-4fb2-bfb8-4f5e495f9166"));
 }
 
@@ -99,11 +99,11 @@ smf::source::SmfFeature::Format smf::source::SmfFeature::getFormat() const {
     return m_format;
 }
 
-smf::MidiMetadata& smf::source::SmfFeature::getMidiMetadata() {
+smf::MidiMetadataFeature& smf::source::SmfFeature::getMidiMetadata() {
     return *m_metadata;
 }
 
-const smf::MidiMetadata& smf::source::SmfFeature::getMidiMetadata() const {
+const smf::MidiMetadataFeature& smf::source::SmfFeature::getMidiMetadata() const {
     return *m_metadata;
 }
 

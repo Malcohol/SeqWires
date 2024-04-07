@@ -172,7 +172,7 @@ void smf::SmfParser::parse() {
     }
 }
 
-void smf::SmfParser::readTempoEvent(MidiMetadata* metadata) {
+void smf::SmfParser::readTempoEvent(MidiMetadataFeature* metadata) {
     const double d = readU24();
     const double bpm = 60'000'000 / d;
     if (metadata) {
@@ -533,7 +533,7 @@ void smf::SmfParser::readProgramChange(unsigned int channelNumber) {
     setProgram(channelNumber, newProgram);
 }
 
-void smf::SmfParser::readTrack(int trackIndex, source::ChannelGroup& channels, MidiMetadata* metadata) {
+void smf::SmfParser::readTrack(int trackIndex, source::ChannelGroup& channels, MidiMetadataFeature* metadata) {
     readByteSequence("MTrk");
     const std::uint32_t trackLength = readU32();
     const int currentIndex = m_dataSource.getAbsolutePosition();

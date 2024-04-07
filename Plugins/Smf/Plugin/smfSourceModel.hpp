@@ -75,15 +75,15 @@ namespace smf {
             virtual int getNumMidiTracks() const = 0;
             virtual const ChannelGroup& getMidiTrack(int i) const = 0;
 
-            MidiMetadata& getMidiMetadata();
-            const MidiMetadata& getMidiMetadata() const;
+            MidiMetadataFeature& getMidiMetadata();
+            const MidiMetadataFeature& getMidiMetadata() const;
 
           protected:
             SmfFeature(const babelwires::ProjectContext& projectContext, Format f);
 
           protected:
             Format m_format;
-            MidiMetadata* m_metadata;
+            MidiMetadataFeature* m_metadata;
             babelwires::StringFeature* m_sequenceName;
             babelwires::StringFeature* m_copyright;
             seqwires::TempoFeature* m_tempo;

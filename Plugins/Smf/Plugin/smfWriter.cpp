@@ -245,7 +245,7 @@ template <std::size_t N> void smf::SmfWriter::writeMessage(const std::array<std:
 }
 
 void smf::SmfWriter::writeGlobalSetup() {
-    const MidiMetadata& metadata = m_smfFormatFeature.getMidiMetadata();
+    const MidiMetadataFeature& metadata = m_smfFormatFeature.getMidiMetadata();
 
     switch (metadata.getSpecFeature()->getAsValue()) {
         case GMSpecType::Value::GM:

@@ -54,17 +54,17 @@ namespace {
 
 smf::target::SmfFormatFeature::SmfFormatFeature()
     : UnionFeature(REGISTERED_ID_VECTOR(formatIdentifiersSource), 0) {
-    m_metadata = addField(std::make_unique<MidiMetadata>(),
+    m_metadata = addField(std::make_unique<MidiMetadataFeature>(),
                           BW_SHORT_ID("Meta", "Metadata", "72bbbcee-2b53-4fb2-bfb8-4f5e495f9166"));
     m_channelGroup = addField(std::make_unique<ArrayChannelGroup>(),
                               BW_SHORT_ID("tracks", "tracks", "1aa014da-2fb3-46e2-96df-98c7798b4a87"));
 }
 
-const smf::MidiMetadata& smf::target::SmfFormatFeature::getMidiMetadata() const {
+const smf::MidiMetadataFeature& smf::target::SmfFormatFeature::getMidiMetadata() const {
     return *m_metadata;
 }
 
-smf::MidiMetadata& smf::target::SmfFormatFeature::getMidiMetadata() {
+smf::MidiMetadataFeature& smf::target::SmfFormatFeature::getMidiMetadata() {
     return *m_metadata;
 }
 

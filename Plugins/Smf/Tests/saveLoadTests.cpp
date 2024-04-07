@@ -82,7 +82,7 @@ namespace {
     enum MetadataFlags { HAS_SEQUENCE_NAME = 0b001, HAS_COPYRIGHT = 0b010, HAS_TEMPO = 0b100 };
 
     void addMetadata(smf::target::SmfFormatFeature& smfFeature, std::uint8_t flags) {
-        auto* metadata = smfFeature.getChildFromStep(babelwires::PathStep("Meta")).as<smf::MidiMetadata>();
+        auto* metadata = smfFeature.getChildFromStep(babelwires::PathStep("Meta")).as<smf::MidiMetadataFeature>();
         if (flags & HAS_SEQUENCE_NAME) {
             metadata->getActivatedSequenceName().set("Test Sequence Name");
         }
@@ -95,7 +95,7 @@ namespace {
     }
 
     void checkMetadata(const smf::source::SmfFeature& smfFeature, std::uint8_t flags) {
-        const auto* metadata = smfFeature.getChildFromStep(babelwires::PathStep("Meta")).as<smf::MidiMetadata>();
+        const auto* metadata = smfFeature.getChildFromStep(babelwires::PathStep("Meta")).as<smf::MidiMetadataFeature>();
         if (flags & HAS_SEQUENCE_NAME) {
             ASSERT_NE(metadata->getSequenceName(), nullptr);
             EXPECT_EQ(metadata->getSequenceName()->get(), "Test Sequence Name");

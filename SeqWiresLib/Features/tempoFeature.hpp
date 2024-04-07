@@ -7,17 +7,20 @@
  **/
 #pragma once
 
-#include <BabelWiresLib/Types/Int/intFeature.hpp>
+#include <BabelWiresLib/Features/simpleValueFeature.hpp>
+
+#include <SeqWiresLib/Types/tempo.hpp>
 
 namespace seqwires {
 
+    // TODO Remove: No longer necessary.
     /// The TempoFeature is an IntFeature for holding a tempo value in bpm.
     /// Tempos are limited to integral bpm.
     /// The default tempo is 120.
-    class TempoFeature : public babelwires::IntFeature {
+    class TempoFeature : public babelwires::SimpleValueFeature {
       public:
         TempoFeature()
-            : babelwires::IntFeature(0, 255, 120) {}
+            : babelwires::SimpleValueFeature(Tempo::getThisIdentifier()) {}
     };
 
 } // namespace seqwires

@@ -54,11 +54,11 @@ namespace smf {
         void readFormat0Sequence(source::Format0SmfFeature& sequence);
         void readFormat1Sequence(source::Format1SmfFeature& sequence);
 
-        void readTrack(int trackIndex, source::ChannelGroup& tracks, MidiMetadata* metadata = nullptr);
+        void readTrack(int trackIndex, source::ChannelGroup& tracks, MidiMetadataFeature* metadata = nullptr);
 
         seqwires::ModelDuration readModelDuration();
 
-        void readTempoEvent(MidiMetadata* metadata);
+        void readTempoEvent(MidiMetadataFeature* metadata);
 
         std::string readTextMetaEvent(int length);
 
