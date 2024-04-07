@@ -13,6 +13,7 @@
 
 #include <BabelWiresLib/Types/String/stringFeature.hpp>
 #include <BabelWiresLib/Features/recordWithOptionalsFeature.hpp>
+#include <BabelWiresLib/Types/Record/recordType.hpp>
 
 namespace seqwires {
     class TrackFeature;
@@ -21,9 +22,19 @@ namespace seqwires {
 namespace smf {
     class GmSpecTypeFeature : public babelwires::EnumWithCppEnumFeature<GMSpecType> {};
 
+    class MidiMetadata : public babelwires::RecordType {
+      public:
+        PRIMITIVE_TYPE("midiMetadata", "MidiMetadata", "5032054f-d1b7-4cb4-8bac-2de60a1bc078", 1);
+
+        MidiMetadata();
+
+        GMSpecType::Value getSpec(const babelwires::TypeSystem& typeSystem, const babelwires::ValueHolder& spec) const;
+        void setSpec(const babelwires::TypeSystem& typeSystem, babelwires::ValueHolder& value, GMSpecType::Value newSpec) const;
+    };
+
     class MidiMetadataFeature : public babelwires::RecordWithOptionalsFeature {
       public:
-        MidiMetadata();
+        MidiMetadataFeature();
 
         const GmSpecTypeFeature* getSpecFeature() const;        
         const seqwires::TempoFeature* getTempoFeature() const;
