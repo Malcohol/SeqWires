@@ -12,8 +12,12 @@
 #include <SeqWiresLib/Types/Track/trackFeature.hpp>
 #include <SeqWiresLib/Types/tempo.hpp>
 
-#include <BabelWiresLib/Types/String/stringType.hpp>
+#include <BabelWiresLib/TypeSystem/typeSystem.hpp>
 #include <BabelWiresLib/Types/Enum/enumValue.hpp>
+#include <BabelWiresLib/Types/Enum/enumWithCppEnum.hpp>
+#include <BabelWiresLib/Types/Int/intFeature.hpp>
+#include <BabelWiresLib/Types/String/stringType.hpp>
+#include <BabelWiresLib/Types/String/stringValue.hpp>
 
 #include <Common/Identifiers/registeredIdentifier.hpp>
 
@@ -27,89 +31,103 @@ namespace {
 smf::MidiMetadata::MidiMetadata()
     : babelwires::RecordType(
           {{BW_SHORT_ID(specMetadataId, "MIDI Spec", "15a9fa85-f2c6-4e68-8691-fefd64ca1233"),
-            GMSpecType::getThisIdentifier()},
-           {BW_SHORT_ID(tempoMetadataId, "Tempo", "3ef804e9-e34a-4a25-b6bf-ce7597d9d90b"),
-            seqwires::Tempo::getThisIdentifier(), babelwires::RecordType::Optionality::optionalDefaultInactive},
-           {BW_SHORT_ID(nameMetadataId, "Name", "c2e4910f-d006-4a93-97a7-ae5973157ec8"),
-            babelwires::StringType::getThisIdentifier(), babelwires::RecordType::Optionality::optionalDefaultInactive},
-           {BW_SHORT_ID(copyrightMetadataId, "Copyright", "a59dc914-d060-4f03-be83-5804fc4d6b6a"),
-            babelwires::StringType::getThisIdentifier(),
-            babelwires::RecordType::Optionality::optionalDefaultInactive}}) {}
+           GMSpecType::getThisIdentifier()},
+          {BW_SHORT_ID(tempoMetadataId, "Tempo", "3ef804e9-e34a-4a25-b6bf-ce7597d9d90b"),
+           seqwires::Tempo::getThisIdentifier(), babelwires::RecordType::Optionality::optionalDefaultInactive},
+          {BW_SHORT_ID(nameMetadataId, "Name", "c2e4910f-d006-4a93-97a7-ae5973157ec8"),
+           babelwires::StringType::getThisIdentifier(), babelwires::RecordType::Optionality::optionalDefaultInactive},
+          {BW_SHORT_ID(copyrightMetadataId, "Copyright", "a59dc914-d060-4f03-be83-5804fc4d6b6a"),
+           babelwires::StringType::getThisIdentifier(),
+           babelwires::RecordType::Optionality::optionalDefaultInactive}}) {}
 
-smf::GMSpecType::Value smf::MidiMetadata::getSpec(const babelwires::TypeSystem& typeSystem, const babelwires::ValueHolder& spec) const {
-    const int index = getChildIndexFromStep(spec, babelwires::PathStep(specMetadataId));
+const babelwires::ValueFeature& smf::MidiMetadata::getChild(const babelwires::ValueFeature& recordFeature,
+                                                            babelwires::ShortId id) {
+    const int index = recordFeature.getChildIndexFromStep(babelwires::PathStep(id));
     assert(index >= 0);
-    const auto& [childValue, _, childTypeRef] = getChild(spec, index);
-    const GMSpecType& childType = childTypeRef.resolve(typeSystem).is<GMSpecType>();
-    const babelwires::EnumValue& enumValue = (*childValue)->is<babelwires::EnumValue>();
-    const babelwires::ShortId enumId = enumValue.get();
-    return childType.getValueFromIdentifier(enumId);
+    return recordFeature.getFeature(index)->is<babelwires::ValueFeature>();
 }
 
-void smf::MidiMetadata::setSpec(const babelwires::TypeSystem& typeSystem, babelwires::ValueHolder& value, GMSpecType::Value newSpec) const {
-    if (!isActivated(value, specMetadataId)) {
-        activateField(typeSystem, value, specMetadataId);
-    }
-    const int index = getChildIndexFromStep(value, babelwires::PathStep(specMetadataId));
+babelwires::ValueFeature& smf::MidiMetadata::getChild(babelwires::ValueFeature& recordFeature, babelwires::ShortId id) {
+    const int index = recordFeature.getChildIndexFromStep(babelwires::PathStep(id));
     assert(index >= 0);
-    auto childInfo = getChildNonConst(value, index);
-    babelwires::ValueHolder& newValue = *std::get<0>(childInfo);
-    babelwires::EnumValue& enumValue = newValue.copyContentsAndGetNonConst().is<babelwires::EnumValue>();
-    const GMSpecType& childType = std::get<2>(childInfo).resolve(typeSystem).is<GMSpecType>();
-    const babelwires::ShortId newEnumId = childType.getIdentifierFromValue(newSpec);
-    enumValue.set(newEnumId);
+    return recordFeature.getFeature(index)->is<babelwires::ValueFeature>();
 }
 
-
-smf::MidiMetadataFeature::MidiMetadataFeature() {
-    m_specFeature = addField(std::make_unique<GmSpecTypeFeature>(),
-                             BW_SHORT_ID("Spec", "MIDI Spec", "15a9fa85-f2c6-4e68-8691-fefd64ca1233"));
-    m_tempo = addOptionalField(std::make_unique<seqwires::TempoFeature>(),
-                               BW_SHORT_ID(tempoMetadataId, "Tempo", "3ef804e9-e34a-4a25-b6bf-ce7597d9d90b"));
-    m_sequenceName = addOptionalField(std::make_unique<babelwires::StringFeature>(),
-                                      BW_SHORT_ID(nameMetadataId, "Name", "c2e4910f-d006-4a93-97a7-ae5973157ec8"));
-    m_copyright =
-        addOptionalField(std::make_unique<babelwires::StringFeature>(),
-                         BW_SHORT_ID(copyrightMetadataId, "Copyright", "a59dc914-d060-4f03-be83-5804fc4d6b6a"));
-}
-
-const smf::GmSpecTypeFeature* smf::MidiMetadataFeature::getSpecFeature() const {
-    return m_specFeature;
-}
-
-smf::GmSpecTypeFeature* smf::MidiMetadataFeature::getSpecFeature() {
-    return m_specFeature;
-}
-
-seqwires::TempoFeature& smf::MidiMetadataFeature::getActivatedTempoFeature() {
-    if (!isActivated(tempoMetadataId)) {
-        activateField(tempoMetadataId);
+const babelwires::ValueFeature* smf::MidiMetadata::tryGetChild(const babelwires::ValueFeature& recordFeature,
+                                                               babelwires::ShortId id) {
+    const int index = recordFeature.getChildIndexFromStep(babelwires::PathStep(id));
+    if (index >= 0) {
+        return &recordFeature.getFeature(index)->is<babelwires::ValueFeature>();
+    } else {
+        return nullptr;
     }
-    return *m_tempo;
 }
 
-const babelwires::StringFeature* smf::MidiMetadataFeature::getCopyright() const {
-    return isActivated(copyrightMetadataId) ? m_copyright : nullptr;
-}
-
-const babelwires::StringFeature* smf::MidiMetadataFeature::getSequenceName() const {
-    return isActivated(nameMetadataId) ? m_sequenceName : nullptr;
-}
-
-const seqwires::TempoFeature* smf::MidiMetadataFeature::getTempoFeature() const {
-    return isActivated(tempoMetadataId) ? m_tempo : nullptr;
-}
-
-babelwires::StringFeature& smf::MidiMetadataFeature::getActivatedCopyright() {
-    if (!isActivated(copyrightMetadataId)) {
-        activateField(copyrightMetadataId);
+babelwires::ValueFeature& smf::MidiMetadata::activateAndGetChild(babelwires::ValueFeature& recordFeature,
+                                                                 babelwires::ShortId id) {
+    const babelwires::TypeSystem& typeSystem = babelwires::RootFeature::getTypeSystemAt(recordFeature);
+    const auto& recordType = typeSystem.getEntryByType<MidiMetadata>();
+    babelwires::ValueHolder recordValue = recordFeature.getValue();
+    if (recordType.isActivated(recordValue, id)) {
+        recordType.activateField(typeSystem, recordValue, id);
+        recordFeature.setValue(recordValue);
     }
-    return *m_copyright;
+    return getChild(recordFeature, id);
 }
 
-babelwires::StringFeature& smf::MidiMetadataFeature::getActivatedSequenceName() {
-    if (!isActivated(nameMetadataId)) {
-        activateField(nameMetadataId);
-    }
-    return *m_sequenceName;
+smf::GMSpecType::Value smf::MidiMetadata::getSpecValue(const babelwires::ValueFeature& midiMetadataFeature) {
+    const auto& childFeature = getChild(midiMetadataFeature, specMetadataId);
+    const auto& enumFeature = childFeature.is<babelwires::EnumWithCppEnumFeature<GMSpecType>>();
+    return enumFeature.getAsValue();
 }
+
+void smf::MidiMetadata::setSpecValue(babelwires::ValueFeature& midiMetadataFeature, GMSpecType::Value newSpec) {
+    auto& childFeature = getChild(midiMetadataFeature, specMetadataId);
+    auto& enumFeature = childFeature.is<babelwires::EnumWithCppEnumFeature<GMSpecType>>();
+    enumFeature.setFromValue(newSpec);
+}
+
+std::optional<int> smf::MidiMetadata::tryGetTempo(const babelwires::ValueFeature& midiMetadataFeature) {
+    if (const auto* childFeature = tryGetChild(midiMetadataFeature, specMetadataId)) {
+        const auto& intFeature = childFeature->is<babelwires::IntFeature>();
+        return intFeature.get();
+    }
+    return {};
+}
+
+void smf::MidiMetadata::setTempo(babelwires::ValueFeature& midiMetadataFeature, int newTempo) {
+    auto& childFeature = activateAndGetChild(midiMetadataFeature, specMetadataId);
+    auto& intFeature = childFeature.is<babelwires::IntFeature>();
+    intFeature.set(newTempo);
+}
+
+std::optional<std::string> smf::MidiMetadata::tryGetCopyright(const babelwires::ValueFeature& midiMetadataFeature) {
+    if (const auto* childFeature = tryGetChild(midiMetadataFeature, copyrightMetadataId)) {
+        const auto& stringFeature = childFeature->is<babelwires::StringFeature>();
+        return stringFeature.get();
+    }
+    return {};
+}
+
+void smf::MidiMetadata::setCopyright(babelwires::ValueFeature& midiMetadataFeature, std::string newCopyright) {
+    auto& childFeature = activateAndGetChild(midiMetadataFeature, copyrightMetadataId);
+    auto& intFeature = childFeature.is<babelwires::StringFeature>();
+    intFeature.set(newCopyright);
+}
+
+std::optional<std::string> smf::MidiMetadata::tryGetSequenceName(const babelwires::ValueFeature& midiMetadataFeature) {
+    if (const auto* childFeature = tryGetChild(midiMetadataFeature, nameMetadataId)) {
+        const auto& stringFeature = childFeature->is<babelwires::StringFeature>();
+        return stringFeature.get();
+    }
+    return {};
+}
+
+void smf::MidiMetadata::setSequenceName(babelwires::ValueFeature& midiMetadataFeature, std::string newSequenceName) {
+    auto& childFeature = activateAndGetChild(midiMetadataFeature, nameMetadataId);
+    auto& intFeature = childFeature.is<babelwires::StringFeature>();
+    intFeature.set(newSequenceName);
+}
+
+smf::MidiMetadataFeature::MidiMetadataFeature()
+    : babelwires::SimpleValueFeature(MidiMetadata::getThisIdentifier()) {}

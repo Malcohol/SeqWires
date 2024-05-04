@@ -176,8 +176,7 @@ void smf::SmfParser::readTempoEvent(MidiMetadataFeature* metadata) {
     const double d = readU24();
     const double bpm = 60'000'000 / d;
     if (metadata) {
-        seqwires::TempoFeature& tempo = metadata->getActivatedTempoFeature();
-        tempo.set(std::round(bpm));
+        MidiMetadata::setTempo(*metadata, std::round(bpm));
     }
 }
 
@@ -605,7 +604,7 @@ void smf::SmfParser::readTrack(int trackIndex, source::ChannelGroup& channels, M
                         {
                             std::string text = readTextMetaEvent(length);
                             if (metadata) {
-                                metadata->getActivatedCopyright().set(text);
+                                MidiMetadata::setCopyright(*metadata, text);
                             }
                             break;
                         }
@@ -613,7 +612,7 @@ void smf::SmfParser::readTrack(int trackIndex, source::ChannelGroup& channels, M
                         {
                             std::string text = readTextMetaEvent(length);
                             if (metadata) {
-                                metadata->getActivatedSequenceName().set(text);
+                                MidiMetadata::setSequenceName(*metadata, text);
                             }
                             break;
                         }
@@ -815,14 +814,14 @@ void smf::SmfParser::readFormat1Sequence(source::Format1SmfFeature& sequence) {
 }
 
 smf::GMSpecType::Value smf::SmfParser::getGMSpec() const {
-    return m_result->getMidiMetadata().getSpecFeature()->getAsValue();
+    return MidiMetadata::getSpecValue(m_result->getMidiMetadata());
 }
 
 void smf::SmfParser::setGMSpec(GMSpecType::Value gmSpec) {
     for (int i = 0; i < 16; ++i) {
         m_channelSetup[i].m_kitIfPercussion = m_standardPercussionSets.getDefaultPercussionSet(gmSpec, i);
     }
-    m_result->getMidiMetadata().getSpecFeature()->setFromValue(gmSpec);
+    MidiMetadata::setSpecValue(m_result->getMidiMetadata(), gmSpec);
 }
 
 void smf::SmfParser::setBankMSB(unsigned int channelNumber, const babelwires::Byte msbValue) {

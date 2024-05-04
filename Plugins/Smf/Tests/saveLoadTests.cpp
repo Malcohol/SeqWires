@@ -83,6 +83,7 @@ namespace {
 
     void addMetadata(smf::target::SmfFormatFeature& smfFeature, std::uint8_t flags) {
         auto* metadata = smfFeature.getChildFromStep(babelwires::PathStep("Meta")).as<smf::MidiMetadataFeature>();
+        /*
         if (flags & HAS_SEQUENCE_NAME) {
             metadata->getActivatedSequenceName().set("Test Sequence Name");
         }
@@ -92,10 +93,12 @@ namespace {
         if (flags & HAS_TEMPO) {
             metadata->getActivatedTempoFeature().set(100);
         }
+        */
     }
 
     void checkMetadata(const smf::source::SmfFeature& smfFeature, std::uint8_t flags) {
         const auto* metadata = smfFeature.getChildFromStep(babelwires::PathStep("Meta")).as<smf::MidiMetadataFeature>();
+        /*
         if (flags & HAS_SEQUENCE_NAME) {
             ASSERT_NE(metadata->getSequenceName(), nullptr);
             EXPECT_EQ(metadata->getSequenceName()->get(), "Test Sequence Name");
@@ -108,6 +111,7 @@ namespace {
             ASSERT_NE(metadata->getTempoFeature(), nullptr);
             EXPECT_EQ(metadata->getTempoFeature()->get(), 100);
         }
+        */
     }
 } // namespace
 

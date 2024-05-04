@@ -1,8 +1,8 @@
 /**
  * Representation of a Standard MIDI File as a tree of Features.
- * 
+ *
  * (C) 2021 Malcolm Tyrrell
- * 
+ *
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
 #pragma once
@@ -11,9 +11,11 @@
 
 #include <SeqWiresLib/Features/tempoFeature.hpp>
 
-#include <BabelWiresLib/Types/String/stringFeature.hpp>
 #include <BabelWiresLib/Features/recordWithOptionalsFeature.hpp>
 #include <BabelWiresLib/Types/Record/recordType.hpp>
+#include <BabelWiresLib/Types/String/stringFeature.hpp>
+
+#include <optional>
 
 namespace seqwires {
     class TrackFeature;
@@ -28,29 +30,27 @@ namespace smf {
 
         MidiMetadata();
 
-        GMSpecType::Value getSpec(const babelwires::TypeSystem& typeSystem, const babelwires::ValueHolder& spec) const;
-        void setSpec(const babelwires::TypeSystem& typeSystem, babelwires::ValueHolder& value, GMSpecType::Value newSpec) const;
+        // TODO Move into a new RecordTypeFeature class.
+        static const babelwires::ValueFeature& getChild(const babelwires::ValueFeature& recordFeature, babelwires::ShortId id);
+        static babelwires::ValueFeature& getChild(babelwires::ValueFeature& recordFeature, babelwires::ShortId id);
+        static const babelwires::ValueFeature* tryGetChild(const babelwires::ValueFeature& recordFeature, babelwires::ShortId id);
+        static babelwires::ValueFeature& activateAndGetChild(babelwires::ValueFeature& recordFeature, babelwires::ShortId id);
+        
+        static GMSpecType::Value getSpecValue(const babelwires::ValueFeature& midiMetadataFeature);
+        static void setSpecValue(babelwires::ValueFeature& midiMetadataFeature, GMSpecType::Value newSpec);
+
+        static std::optional<int> tryGetTempo(const babelwires::ValueFeature& midiMetadataFeature);
+        static void setTempo(babelwires::ValueFeature& midiMetadataFeature, int newTempo);
+
+        static std::optional<std::string> tryGetCopyright(const babelwires::ValueFeature& midiMetadataFeature);
+        static void setCopyright(babelwires::ValueFeature& midiMetadataFeature, std::string newCopyright);
+
+        static std::optional<std::string> tryGetSequenceName(const babelwires::ValueFeature& midiMetadataFeature);
+        static void setSequenceName(babelwires::ValueFeature& midiMetadataFeature, std::string newSequenceName);
     };
 
-    class MidiMetadataFeature : public babelwires::RecordWithOptionalsFeature {
+    class MidiMetadataFeature : public babelwires::SimpleValueFeature {
       public:
         MidiMetadataFeature();
-
-        const GmSpecTypeFeature* getSpecFeature() const;        
-        const seqwires::TempoFeature* getTempoFeature() const;
-        const babelwires::StringFeature* getCopyright() const;
-        const babelwires::StringFeature* getSequenceName() const;
-
-        GmSpecTypeFeature* getSpecFeature();
-
-        seqwires::TempoFeature& getActivatedTempoFeature();
-        babelwires::StringFeature& getActivatedCopyright();
-        babelwires::StringFeature& getActivatedSequenceName();
-
-      protected:
-        GmSpecTypeFeature* m_specFeature;
-        babelwires::StringFeature* m_sequenceName;
-        babelwires::StringFeature* m_copyright;
-        seqwires::TempoFeature* m_tempo;
     };
-}
+} // namespace smf
