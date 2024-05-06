@@ -68,7 +68,7 @@ babelwires::ValueFeature& smf::MidiMetadata::activateAndGetChild(babelwires::Val
     const babelwires::TypeSystem& typeSystem = babelwires::RootFeature::getTypeSystemAt(recordFeature);
     const auto& recordType = typeSystem.getEntryByType<MidiMetadata>();
     babelwires::ValueHolder recordValue = recordFeature.getValue();
-    if (recordType.isActivated(recordValue, id)) {
+    if (!recordType.isActivated(recordValue, id)) {
         recordType.activateField(typeSystem, recordValue, id);
         recordFeature.setValue(recordValue);
     }
@@ -77,56 +77,54 @@ babelwires::ValueFeature& smf::MidiMetadata::activateAndGetChild(babelwires::Val
 
 smf::GMSpecType::Value smf::MidiMetadata::getSpecValue(const babelwires::ValueFeature& midiMetadataFeature) {
     const auto& childFeature = getChild(midiMetadataFeature, specMetadataId);
-    const auto& enumFeature = childFeature.is<babelwires::EnumWithCppEnumFeature<GMSpecType>>();
-    return enumFeature.getAsValue();
+    const babelwires::EnumValue& enumValue = childFeature.getValue()->is<babelwires::EnumValue>();
+    const GMSpecType& enumType = childFeature.getType().is<GMSpecType>();
+    return enumType.getValueFromIdentifier(enumValue.get());
 }
 
 void smf::MidiMetadata::setSpecValue(babelwires::ValueFeature& midiMetadataFeature, GMSpecType::Value newSpec) {
     auto& childFeature = getChild(midiMetadataFeature, specMetadataId);
-    auto& enumFeature = childFeature.is<babelwires::EnumWithCppEnumFeature<GMSpecType>>();
-    enumFeature.setFromValue(newSpec);
+    const GMSpecType& enumType = childFeature.getType().is<GMSpecType>();
+    childFeature.setValue(babelwires::EnumValue(enumType.getIdentifierFromValue(newSpec)));
 }
 
 std::optional<int> smf::MidiMetadata::tryGetTempo(const babelwires::ValueFeature& midiMetadataFeature) {
-    if (const auto* childFeature = tryGetChild(midiMetadataFeature, specMetadataId)) {
-        const auto& intFeature = childFeature->is<babelwires::IntFeature>();
-        return intFeature.get();
+    if (const auto* childFeature = tryGetChild(midiMetadataFeature, tempoMetadataId)) {
+        const auto& intValue = childFeature->getValue()->is<babelwires::IntValue>();
+        return intValue.get();
     }
     return {};
 }
 
 void smf::MidiMetadata::setTempo(babelwires::ValueFeature& midiMetadataFeature, int newTempo) {
-    auto& childFeature = activateAndGetChild(midiMetadataFeature, specMetadataId);
-    auto& intFeature = childFeature.is<babelwires::IntFeature>();
-    intFeature.set(newTempo);
+    auto& childFeature = activateAndGetChild(midiMetadataFeature, tempoMetadataId);
+    childFeature.setValue(babelwires::IntValue(newTempo));
 }
 
 std::optional<std::string> smf::MidiMetadata::tryGetCopyright(const babelwires::ValueFeature& midiMetadataFeature) {
     if (const auto* childFeature = tryGetChild(midiMetadataFeature, copyrightMetadataId)) {
-        const auto& stringFeature = childFeature->is<babelwires::StringFeature>();
-        return stringFeature.get();
+        const auto& stringValue = childFeature->getValue()->is<babelwires::StringValue>();
+        return stringValue.get();
     }
     return {};
 }
 
 void smf::MidiMetadata::setCopyright(babelwires::ValueFeature& midiMetadataFeature, std::string newCopyright) {
     auto& childFeature = activateAndGetChild(midiMetadataFeature, copyrightMetadataId);
-    auto& intFeature = childFeature.is<babelwires::StringFeature>();
-    intFeature.set(newCopyright);
+    childFeature.setValue(babelwires::StringValue(newCopyright));
 }
 
 std::optional<std::string> smf::MidiMetadata::tryGetSequenceName(const babelwires::ValueFeature& midiMetadataFeature) {
     if (const auto* childFeature = tryGetChild(midiMetadataFeature, nameMetadataId)) {
-        const auto& stringFeature = childFeature->is<babelwires::StringFeature>();
-        return stringFeature.get();
+        const auto& stringValue = childFeature->getValue()->is<babelwires::StringValue>();
+        return stringValue.get();
     }
     return {};
 }
 
 void smf::MidiMetadata::setSequenceName(babelwires::ValueFeature& midiMetadataFeature, std::string newSequenceName) {
     auto& childFeature = activateAndGetChild(midiMetadataFeature, nameMetadataId);
-    auto& intFeature = childFeature.is<babelwires::StringFeature>();
-    intFeature.set(newSequenceName);
+    childFeature.setValue(babelwires::StringValue(newSequenceName));
 }
 
 smf::MidiMetadataFeature::MidiMetadataFeature()

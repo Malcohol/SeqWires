@@ -41,16 +41,18 @@
 #include <Plugins/Smf/Plugin/Percussion/xgSFX1PercussionSet.hpp>
 #include <Plugins/Smf/Plugin/Percussion/xgSFX2PercussionSet.hpp>
 #include <Plugins/Smf/Plugin/Percussion/xgStandard1PercussionSet.hpp>
+#include <Plugins/Smf/Plugin/smfModelCommon.hpp>
 #include <Plugins/Smf/Plugin/gmSpec.hpp>
 #include <Plugins/Smf/Plugin/smfFormat.hpp>
 
 void smf::registerLib(babelwires::ProjectContext& context) {
     // Formats
-    context.m_sourceFileFormatReg.addEntry(std::make_unique<smf::SmfSourceFormat>());
-    context.m_targetFileFormatReg.addEntry(std::make_unique<smf::SmfTargetFormat>());
+    context.m_sourceFileFormatReg.addEntry(std::make_unique<SmfSourceFormat>());
+    context.m_targetFileFormatReg.addEntry(std::make_unique<SmfTargetFormat>());
 
     // Types
-    context.m_typeSystem.addEntry<smf::GMSpecType>();
+    context.m_typeSystem.addEntry<GMSpecType>();
+    context.m_typeSystem.addEntry<MidiMetadata>();
 
     // Percussion types
     const seqwires::BuiltInPercussionInstruments& builtInPercussion =
