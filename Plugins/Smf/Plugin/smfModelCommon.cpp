@@ -18,6 +18,7 @@
 #include <BabelWiresLib/Types/Int/intFeature.hpp>
 #include <BabelWiresLib/Types/String/stringType.hpp>
 #include <BabelWiresLib/Types/String/stringValue.hpp>
+#include <BabelWiresLib/Types/Record/recordFeatureUtils.hpp>
 
 #include <Common/Identifiers/registeredIdentifier.hpp>
 
@@ -40,56 +41,21 @@ smf::MidiMetadata::MidiMetadata()
            babelwires::StringType::getThisIdentifier(),
            babelwires::RecordType::Optionality::optionalDefaultInactive}}) {}
 
-const babelwires::ValueFeature& smf::MidiMetadata::getChild(const babelwires::ValueFeature& recordFeature,
-                                                            babelwires::ShortId id) {
-    const int index = recordFeature.getChildIndexFromStep(babelwires::PathStep(id));
-    assert(index >= 0);
-    return recordFeature.getFeature(index)->is<babelwires::ValueFeature>();
-}
-
-babelwires::ValueFeature& smf::MidiMetadata::getChild(babelwires::ValueFeature& recordFeature, babelwires::ShortId id) {
-    const int index = recordFeature.getChildIndexFromStep(babelwires::PathStep(id));
-    assert(index >= 0);
-    return recordFeature.getFeature(index)->is<babelwires::ValueFeature>();
-}
-
-const babelwires::ValueFeature* smf::MidiMetadata::tryGetChild(const babelwires::ValueFeature& recordFeature,
-                                                               babelwires::ShortId id) {
-    const int index = recordFeature.getChildIndexFromStep(babelwires::PathStep(id));
-    if (index >= 0) {
-        return &recordFeature.getFeature(index)->is<babelwires::ValueFeature>();
-    } else {
-        return nullptr;
-    }
-}
-
-babelwires::ValueFeature& smf::MidiMetadata::activateAndGetChild(babelwires::ValueFeature& recordFeature,
-                                                                 babelwires::ShortId id) {
-    const babelwires::TypeSystem& typeSystem = babelwires::RootFeature::getTypeSystemAt(recordFeature);
-    const auto& recordType = typeSystem.getEntryByType<MidiMetadata>();
-    babelwires::ValueHolder recordValue = recordFeature.getValue();
-    if (!recordType.isActivated(recordValue, id)) {
-        recordType.activateField(typeSystem, recordValue, id);
-        recordFeature.setValue(recordValue);
-    }
-    return getChild(recordFeature, id);
-}
-
 smf::GMSpecType::Value smf::MidiMetadata::getSpecValue(const babelwires::ValueFeature& midiMetadataFeature) {
-    const auto& childFeature = getChild(midiMetadataFeature, specMetadataId);
+    const auto& childFeature = babelwires::RecordFeatureUtils::getChild(midiMetadataFeature, specMetadataId);
     const babelwires::EnumValue& enumValue = childFeature.getValue()->is<babelwires::EnumValue>();
     const GMSpecType& enumType = childFeature.getType().is<GMSpecType>();
     return enumType.getValueFromIdentifier(enumValue.get());
 }
 
 void smf::MidiMetadata::setSpecValue(babelwires::ValueFeature& midiMetadataFeature, GMSpecType::Value newSpec) {
-    auto& childFeature = getChild(midiMetadataFeature, specMetadataId);
+    auto& childFeature = babelwires::RecordFeatureUtils::getChild(midiMetadataFeature, specMetadataId);
     const GMSpecType& enumType = childFeature.getType().is<GMSpecType>();
     childFeature.setValue(babelwires::EnumValue(enumType.getIdentifierFromValue(newSpec)));
 }
 
 std::optional<int> smf::MidiMetadata::tryGetTempo(const babelwires::ValueFeature& midiMetadataFeature) {
-    if (const auto* childFeature = tryGetChild(midiMetadataFeature, tempoMetadataId)) {
+    if (const auto* childFeature = babelwires::RecordFeatureUtils::tryGetChild(midiMetadataFeature, tempoMetadataId)) {
         const auto& intValue = childFeature->getValue()->is<babelwires::IntValue>();
         return intValue.get();
     }
@@ -97,12 +63,12 @@ std::optional<int> smf::MidiMetadata::tryGetTempo(const babelwires::ValueFeature
 }
 
 void smf::MidiMetadata::setTempo(babelwires::ValueFeature& midiMetadataFeature, int newTempo) {
-    auto& childFeature = activateAndGetChild(midiMetadataFeature, tempoMetadataId);
+    auto& childFeature = babelwires::RecordFeatureUtils::activateAndGetChild(midiMetadataFeature, tempoMetadataId);
     childFeature.setValue(babelwires::IntValue(newTempo));
 }
 
 std::optional<std::string> smf::MidiMetadata::tryGetCopyright(const babelwires::ValueFeature& midiMetadataFeature) {
-    if (const auto* childFeature = tryGetChild(midiMetadataFeature, copyrightMetadataId)) {
+    if (const auto* childFeature = babelwires::RecordFeatureUtils::tryGetChild(midiMetadataFeature, copyrightMetadataId)) {
         const auto& stringValue = childFeature->getValue()->is<babelwires::StringValue>();
         return stringValue.get();
     }
@@ -110,12 +76,12 @@ std::optional<std::string> smf::MidiMetadata::tryGetCopyright(const babelwires::
 }
 
 void smf::MidiMetadata::setCopyright(babelwires::ValueFeature& midiMetadataFeature, std::string newCopyright) {
-    auto& childFeature = activateAndGetChild(midiMetadataFeature, copyrightMetadataId);
+    auto& childFeature = babelwires::RecordFeatureUtils::activateAndGetChild(midiMetadataFeature, copyrightMetadataId);
     childFeature.setValue(babelwires::StringValue(newCopyright));
 }
 
 std::optional<std::string> smf::MidiMetadata::tryGetSequenceName(const babelwires::ValueFeature& midiMetadataFeature) {
-    if (const auto* childFeature = tryGetChild(midiMetadataFeature, nameMetadataId)) {
+    if (const auto* childFeature = babelwires::RecordFeatureUtils::tryGetChild(midiMetadataFeature, nameMetadataId)) {
         const auto& stringValue = childFeature->getValue()->is<babelwires::StringValue>();
         return stringValue.get();
     }
@@ -123,7 +89,7 @@ std::optional<std::string> smf::MidiMetadata::tryGetSequenceName(const babelwire
 }
 
 void smf::MidiMetadata::setSequenceName(babelwires::ValueFeature& midiMetadataFeature, std::string newSequenceName) {
-    auto& childFeature = activateAndGetChild(midiMetadataFeature, nameMetadataId);
+    auto& childFeature = babelwires::RecordFeatureUtils::activateAndGetChild(midiMetadataFeature, nameMetadataId);
     childFeature.setValue(babelwires::StringValue(newSequenceName));
 }
 

@@ -30,12 +30,6 @@ namespace smf {
 
         MidiMetadata();
 
-        // TODO Move into a new RecordTypeFeature class.
-        static const babelwires::ValueFeature& getChild(const babelwires::ValueFeature& recordFeature, babelwires::ShortId id);
-        static babelwires::ValueFeature& getChild(babelwires::ValueFeature& recordFeature, babelwires::ShortId id);
-        static const babelwires::ValueFeature* tryGetChild(const babelwires::ValueFeature& recordFeature, babelwires::ShortId id);
-        static babelwires::ValueFeature& activateAndGetChild(babelwires::ValueFeature& recordFeature, babelwires::ShortId id);
-        
         static GMSpecType::Value getSpecValue(const babelwires::ValueFeature& midiMetadataFeature);
         static void setSpecValue(babelwires::ValueFeature& midiMetadataFeature, GMSpecType::Value newSpec);
 
