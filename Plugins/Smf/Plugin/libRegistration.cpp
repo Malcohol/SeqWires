@@ -41,7 +41,7 @@
 #include <Plugins/Smf/Plugin/Percussion/xgSFX1PercussionSet.hpp>
 #include <Plugins/Smf/Plugin/Percussion/xgSFX2PercussionSet.hpp>
 #include <Plugins/Smf/Plugin/Percussion/xgStandard1PercussionSet.hpp>
-#include <Plugins/Smf/Plugin/smfModelCommon.hpp>
+#include <Plugins/Smf/Plugin/midiMetadata.hpp>
 #include <Plugins/Smf/Plugin/gmSpec.hpp>
 #include <Plugins/Smf/Plugin/smfFormat.hpp>
 

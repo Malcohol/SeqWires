@@ -14,15 +14,7 @@
 #include <BabelWiresLib/Types/Record/recordType.hpp>
 #include <BabelWiresLib/Types/Record/recordFeatureUtils.hpp>
 
-#include <optional>
-
-namespace seqwires {
-    class TrackFeature;
-}
-
 namespace smf {
-    class GmSpecTypeFeature : public babelwires::EnumWithCppEnumFeature<GMSpecType> {};
-
     class MidiMetadata : public babelwires::RecordType {
       public:
         PRIMITIVE_TYPE("midiMetadata", "MidiMetadata", "5032054f-d1b7-4cb4-8bac-2de60a1bc078", 1);

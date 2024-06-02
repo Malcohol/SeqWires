@@ -5,7 +5,7 @@
  *
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
-#include <Plugins/Smf/Plugin/smfModelCommon.hpp>
+#include <Plugins/Smf/Plugin/midiMetadata.hpp>
 
 #include <Plugins/Smf/Plugin/smfFormat.hpp>
 

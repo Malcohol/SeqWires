@@ -15,7 +15,7 @@
 
 #include <SeqWiresLib/Features/tempoFeature.hpp>
 
-#include <Plugins/Smf/Plugin/smfModelCommon.hpp>
+#include <Plugins/Smf/Plugin/midiMetadata.hpp>
 
 namespace seqwires {
     class TrackFeature;
