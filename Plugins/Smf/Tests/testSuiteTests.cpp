@@ -58,10 +58,10 @@ TEST(SmfTestSuiteTest, cMajorScale) {
     ASSERT_NE(smfFeature, nullptr);
 
     const auto& metadata = smfFeature->getMidiMetadata();
-    ASSERT_TRUE(smf::MidiMetadata::tryGetSequenceName(metadata).has_value());
-    EXPECT_EQ(*smf::MidiMetadata::tryGetSequenceName(metadata), "C Major Scale Test");
-    ASSERT_TRUE(smf::MidiMetadata::tryGetCopyright(metadata).has_value());
-    EXPECT_EQ(*smf::MidiMetadata::tryGetCopyright(metadata), "https://jazz-soft.net");
+    ASSERT_TRUE(smf::MidiMetadata::tryGetName(metadata).has_value());
+    EXPECT_EQ(*smf::MidiMetadata::tryGetName(metadata), "C Major Scale Test");
+    ASSERT_TRUE(smf::MidiMetadata::tryGetCopyR(metadata).has_value());
+    EXPECT_EQ(*smf::MidiMetadata::tryGetCopyR(metadata), "https://jazz-soft.net");
 
     EXPECT_EQ(smfFeature->getNumMidiTracks(), 1);
     const auto& channelGroup = dynamic_cast<const smf::source::RecordChannelGroup&>(smfFeature->getMidiTrack(0));
@@ -92,8 +92,8 @@ TEST(SmfTestSuiteTest, multichannelChords0) {
     ASSERT_NE(smfFeature, nullptr);
 
     const auto& metadata = smfFeature->getMidiMetadata();
-    ASSERT_TRUE(smf::MidiMetadata::tryGetSequenceName(metadata).has_value());
-    EXPECT_EQ(*smf::MidiMetadata::tryGetSequenceName(metadata), "Multi-channel chords Test 0");
+    ASSERT_TRUE(smf::MidiMetadata::tryGetName(metadata).has_value());
+    EXPECT_EQ(*smf::MidiMetadata::tryGetName(metadata), "Multi-channel chords Test 0");
 
     EXPECT_EQ(smfFeature->getNumMidiTracks(), 1);
     const auto& channelGroup = dynamic_cast<const smf::source::RecordChannelGroup&>(smfFeature->getMidiTrack(0));
@@ -127,8 +127,8 @@ TEST(SmfTestSuiteTest, multichannelChords1) {
     ASSERT_NE(smfFeature, nullptr);
 
     const auto& metadata = smfFeature->getMidiMetadata();
-    ASSERT_TRUE(smf::MidiMetadata::tryGetSequenceName(metadata).has_value());
-    EXPECT_EQ(*smf::MidiMetadata::tryGetSequenceName(metadata), "Multi-channel chords Test 1");
+    ASSERT_TRUE(smf::MidiMetadata::tryGetName(metadata).has_value());
+    EXPECT_EQ(*smf::MidiMetadata::tryGetName(metadata), "Multi-channel chords Test 1");
 
     EXPECT_EQ(smfFeature->getNumMidiTracks(), 3);
 
@@ -169,8 +169,8 @@ TEST(SmfTestSuiteTest, multichannelChords2) {
     ASSERT_NE(smfFeature, nullptr);
 
     const auto& metadata = smfFeature->getMidiMetadata();
-    ASSERT_TRUE(smf::MidiMetadata::tryGetSequenceName(metadata).has_value());
-    EXPECT_EQ(*smf::MidiMetadata::tryGetSequenceName(metadata), "Multi-channel chords Test 2");
+    ASSERT_TRUE(smf::MidiMetadata::tryGetName(metadata).has_value());
+    EXPECT_EQ(*smf::MidiMetadata::tryGetName(metadata), "Multi-channel chords Test 2");
 
     EXPECT_EQ(smfFeature->getNumMidiTracks(), 2);
 
@@ -225,8 +225,8 @@ TEST(SmfTestSuiteTest, multichannelChords3) {
     ASSERT_NE(smfFeature, nullptr);
 
     const auto& metadata = smfFeature->getMidiMetadata();
-    ASSERT_TRUE(smf::MidiMetadata::tryGetSequenceName(metadata).has_value());
-    EXPECT_EQ(*smf::MidiMetadata::tryGetSequenceName(metadata), "Multi-channel chords Test 3");
+    ASSERT_TRUE(smf::MidiMetadata::tryGetName(metadata).has_value());
+    EXPECT_EQ(*smf::MidiMetadata::tryGetName(metadata), "Multi-channel chords Test 3");
 
     EXPECT_EQ(smfFeature->getNumMidiTracks(), 3);
 
@@ -291,8 +291,8 @@ TEST(SmfTestSuiteTest, tempoTest) {
     ASSERT_NE(smfFeature, nullptr);
 
     const auto& metadata = smfFeature->getMidiMetadata();
-    ASSERT_TRUE(smf::MidiMetadata::tryGetSequenceName(metadata).has_value());
-    EXPECT_EQ(*smf::MidiMetadata::tryGetSequenceName(metadata), "Karaoke .KAR Test");
+    ASSERT_TRUE(smf::MidiMetadata::tryGetName(metadata).has_value());
+    EXPECT_EQ(*smf::MidiMetadata::tryGetName(metadata), "Karaoke .KAR Test");
     ASSERT_TRUE(smf::MidiMetadata::tryGetTempo(metadata).has_value());
     EXPECT_EQ(*smf::MidiMetadata::tryGetTempo(metadata), 90);
 }

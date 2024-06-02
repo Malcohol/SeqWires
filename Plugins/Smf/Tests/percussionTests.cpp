@@ -51,7 +51,7 @@ TEST_P(SmfStandardPercussionTest, saveLoad) {
             smfFeature.getChildFromStep(babelwires::PathStep("Format")).as<smf::target::SmfFormatFeature>();
         ASSERT_NE(smfFormatFeature, nullptr);
 
-        smf::MidiMetadata::setSpecValue(smfFormatFeature->getMidiMetadata(), testData.m_specificationId);
+        smf::MidiMetadata::setSpec(smfFormatFeature->getMidiMetadata(), testData.m_specificationId);
 
         auto* tracks =
             smfFormatFeature->getChildFromStep(babelwires::PathStep("tracks")).as<babelwires::ArrayFeature>();
@@ -93,7 +93,7 @@ TEST_P(SmfStandardPercussionTest, saveLoad) {
         auto smfFeature = feature.get()->as<const smf::source::Format0SmfFeature>();
         ASSERT_NE(smfFeature, nullptr);
 
-        EXPECT_EQ(smf::MidiMetadata::getSpecValue(smfFeature->getMidiMetadata()), testData.m_specificationId);
+        EXPECT_EQ(smf::MidiMetadata::getSpec(smfFeature->getMidiMetadata()), testData.m_specificationId);
 
         EXPECT_EQ(smfFeature->getNumMidiTracks(), 1);
         const auto& channelGroup = dynamic_cast<const smf::source::RecordChannelGroup&>(smfFeature->getMidiTrack(0));
@@ -197,7 +197,7 @@ TEST_P(SmfTrackAllocationPercussionTest, trackAllocation) {
             smfFeature.getChildFromStep(babelwires::PathStep("Format")).as<smf::target::SmfFormatFeature>();
         ASSERT_NE(smfFormatFeature, nullptr);
 
-        smf::MidiMetadata::setSpecValue(smfFormatFeature->getMidiMetadata(), testData.m_specificationId);
+        smf::MidiMetadata::setSpec(smfFormatFeature->getMidiMetadata(), testData.m_specificationId);
 
         auto* tracks =
             smfFormatFeature->getChildFromStep(babelwires::PathStep("tracks")).as<babelwires::ArrayFeature>();
@@ -241,7 +241,7 @@ TEST_P(SmfTrackAllocationPercussionTest, trackAllocation) {
         auto smfFeature = feature.get()->as<const smf::source::Format0SmfFeature>();
         ASSERT_NE(smfFeature, nullptr);
 
-        EXPECT_EQ(smf::MidiMetadata::getSpecValue(smfFeature->getMidiMetadata()), testData.m_specificationId);
+        EXPECT_EQ(smf::MidiMetadata::getSpec(smfFeature->getMidiMetadata()), testData.m_specificationId);
 
         EXPECT_EQ(smfFeature->getNumMidiTracks(), 1);
         const auto& channelGroup = dynamic_cast<const smf::source::RecordChannelGroup&>(smfFeature->getMidiTrack(0));

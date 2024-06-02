@@ -247,7 +247,7 @@ template <std::size_t N> void smf::SmfWriter::writeMessage(const std::array<std:
 void smf::SmfWriter::writeGlobalSetup() {
     const MidiMetadataFeature& metadata = m_smfFormatFeature.getMidiMetadata();
 
-    switch (MidiMetadata::getSpecValue(metadata)) {
+    switch (MidiMetadata::getSpec(metadata)) {
         case GMSpecType::Value::GM:
             writeModelDuration(0);
             writeMessage(std::array<std::uint8_t, 7>{0b11110000, 0x05, 0x7E, 0x7F, 0x09, 0x01, 0xF7});
@@ -270,12 +270,12 @@ void smf::SmfWriter::writeGlobalSetup() {
             break;
     }
 
-    if (const auto& copyright = MidiMetadata::tryGetCopyright(metadata)) {
+    if (const auto& copyright = MidiMetadata::tryGetCopyR(metadata)) {
         if (!copyright->empty()) {
             writeTextMetaEvent(2, *copyright);
         }
     }
-    if (const auto& sequenceOrTrackName = MidiMetadata::tryGetSequenceName(metadata)) {
+    if (const auto& sequenceOrTrackName = MidiMetadata::tryGetName(metadata)) {
         if (!sequenceOrTrackName->empty()) {
             writeTextMetaEvent(3, *sequenceOrTrackName);
         }
@@ -297,7 +297,7 @@ void smf::SmfWriter::writeTrack(const std::vector<const target::ChannelTrackFeat
     }
 
     if (tracks) {
-        const GMSpecType::Value gmSpec = MidiMetadata::getSpecValue(m_smfFormatFeature.getMidiMetadata());
+        const GMSpecType::Value gmSpec = MidiMetadata::getSpec(m_smfFormatFeature.getMidiMetadata());
 
         for (int i = 0; i < tracks->size(); ++i) {
             const target::ChannelTrackFeature& channelTrack = *(*tracks)[i];
@@ -354,7 +354,7 @@ void smf::SmfWriter::writeTrack(const std::vector<const target::ChannelTrackFeat
 
 void smf::SmfWriter::setUpPercussionKit(const std::unordered_set<babelwires::ShortId>& instrumentsInUse,
                                         int channelNumber) {
-    const GMSpecType::Value gmSpec = MidiMetadata::getSpecValue(m_smfFormatFeature.getMidiMetadata());
+    const GMSpecType::Value gmSpec = MidiMetadata::getSpec(m_smfFormatFeature.getMidiMetadata());
     std::unordered_set<babelwires::ShortId> excludedInstruments;
     m_channelSetup[channelNumber].m_kitIfPercussion =
         m_standardPercussionSets.getBestPercussionSet(gmSpec, channelNumber, instrumentsInUse, excludedInstruments);

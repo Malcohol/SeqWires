@@ -604,7 +604,7 @@ void smf::SmfParser::readTrack(int trackIndex, source::ChannelGroup& channels, M
                         {
                             std::string text = readTextMetaEvent(length);
                             if (metadata) {
-                                MidiMetadata::setCopyright(*metadata, text);
+                                MidiMetadata::setCopyR(*metadata, text);
                             }
                             break;
                         }
@@ -612,7 +612,7 @@ void smf::SmfParser::readTrack(int trackIndex, source::ChannelGroup& channels, M
                         {
                             std::string text = readTextMetaEvent(length);
                             if (metadata) {
-                                MidiMetadata::setSequenceName(*metadata, text);
+                                MidiMetadata::setName(*metadata, text);
                             }
                             break;
                         }
@@ -814,14 +814,14 @@ void smf::SmfParser::readFormat1Sequence(source::Format1SmfFeature& sequence) {
 }
 
 smf::GMSpecType::Value smf::SmfParser::getGMSpec() const {
-    return MidiMetadata::getSpecValue(m_result->getMidiMetadata());
+    return MidiMetadata::getSpec(m_result->getMidiMetadata());
 }
 
 void smf::SmfParser::setGMSpec(GMSpecType::Value gmSpec) {
     for (int i = 0; i < 16; ++i) {
         m_channelSetup[i].m_kitIfPercussion = m_standardPercussionSets.getDefaultPercussionSet(gmSpec, i);
     }
-    MidiMetadata::setSpecValue(m_result->getMidiMetadata(), gmSpec);
+    MidiMetadata::setSpec(m_result->getMidiMetadata(), gmSpec);
 }
 
 void smf::SmfParser::setBankMSB(unsigned int channelNumber, const babelwires::Byte msbValue) {

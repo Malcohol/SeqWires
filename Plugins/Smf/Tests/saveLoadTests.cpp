@@ -104,8 +104,8 @@ namespace {
             EXPECT_EQ(metadata->getSequenceName()->get(), "Test Sequence Name");
         }
         if (flags & HAS_COPYRIGHT) {
-            ASSERT_NE(metadata->getCopyright(), nullptr);
-            EXPECT_EQ(metadata->getCopyright()->get(), "(C)2021 Test Copyright");
+            ASSERT_NE(metadata->getCopyR(), nullptr);
+            EXPECT_EQ(metadata->getCopyR()->get(), "(C)2021 Test Copyright");
         }
         if (flags & HAS_TEMPO) {
             ASSERT_NE(metadata->getTempoFeature(), nullptr);

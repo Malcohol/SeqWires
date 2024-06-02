@@ -18,7 +18,6 @@
 #include <BabelWiresLib/Types/Int/intFeature.hpp>
 #include <BabelWiresLib/Types/String/stringType.hpp>
 #include <BabelWiresLib/Types/String/stringValue.hpp>
-#include <BabelWiresLib/Types/Record/recordFeatureUtils.hpp>
 
 #include <Common/Identifiers/registeredIdentifier.hpp>
 
@@ -32,66 +31,14 @@ namespace {
 smf::MidiMetadata::MidiMetadata()
     : babelwires::RecordType(
           {{BW_SHORT_ID(specMetadataId, "MIDI Spec", "15a9fa85-f2c6-4e68-8691-fefd64ca1233"),
-           GMSpecType::getThisIdentifier()},
-          {BW_SHORT_ID(tempoMetadataId, "Tempo", "3ef804e9-e34a-4a25-b6bf-ce7597d9d90b"),
-           seqwires::Tempo::getThisIdentifier(), babelwires::RecordType::Optionality::optionalDefaultInactive},
-          {BW_SHORT_ID(nameMetadataId, "Name", "c2e4910f-d006-4a93-97a7-ae5973157ec8"),
-           babelwires::StringType::getThisIdentifier(), babelwires::RecordType::Optionality::optionalDefaultInactive},
-          {BW_SHORT_ID(copyrightMetadataId, "Copyright", "a59dc914-d060-4f03-be83-5804fc4d6b6a"),
-           babelwires::StringType::getThisIdentifier(),
-           babelwires::RecordType::Optionality::optionalDefaultInactive}}) {}
-
-smf::GMSpecType::Value smf::MidiMetadata::getSpecValue(const babelwires::ValueFeature& midiMetadataFeature) {
-    const auto& childFeature = babelwires::RecordFeatureUtils::getChild(midiMetadataFeature, specMetadataId);
-    const babelwires::EnumValue& enumValue = childFeature.getValue()->is<babelwires::EnumValue>();
-    const GMSpecType& enumType = childFeature.getType().is<GMSpecType>();
-    return enumType.getValueFromIdentifier(enumValue.get());
-}
-
-void smf::MidiMetadata::setSpecValue(babelwires::ValueFeature& midiMetadataFeature, GMSpecType::Value newSpec) {
-    auto& childFeature = babelwires::RecordFeatureUtils::getChild(midiMetadataFeature, specMetadataId);
-    const GMSpecType& enumType = childFeature.getType().is<GMSpecType>();
-    childFeature.setValue(babelwires::EnumValue(enumType.getIdentifierFromValue(newSpec)));
-}
-
-std::optional<int> smf::MidiMetadata::tryGetTempo(const babelwires::ValueFeature& midiMetadataFeature) {
-    if (const auto* childFeature = babelwires::RecordFeatureUtils::tryGetChild(midiMetadataFeature, tempoMetadataId)) {
-        const auto& intValue = childFeature->getValue()->is<babelwires::IntValue>();
-        return intValue.get();
-    }
-    return {};
-}
-
-void smf::MidiMetadata::setTempo(babelwires::ValueFeature& midiMetadataFeature, int newTempo) {
-    auto& childFeature = babelwires::RecordFeatureUtils::activateAndGetChild(midiMetadataFeature, tempoMetadataId);
-    childFeature.setValue(babelwires::IntValue(newTempo));
-}
-
-std::optional<std::string> smf::MidiMetadata::tryGetCopyright(const babelwires::ValueFeature& midiMetadataFeature) {
-    if (const auto* childFeature = babelwires::RecordFeatureUtils::tryGetChild(midiMetadataFeature, copyrightMetadataId)) {
-        const auto& stringValue = childFeature->getValue()->is<babelwires::StringValue>();
-        return stringValue.get();
-    }
-    return {};
-}
-
-void smf::MidiMetadata::setCopyright(babelwires::ValueFeature& midiMetadataFeature, std::string newCopyright) {
-    auto& childFeature = babelwires::RecordFeatureUtils::activateAndGetChild(midiMetadataFeature, copyrightMetadataId);
-    childFeature.setValue(babelwires::StringValue(newCopyright));
-}
-
-std::optional<std::string> smf::MidiMetadata::tryGetSequenceName(const babelwires::ValueFeature& midiMetadataFeature) {
-    if (const auto* childFeature = babelwires::RecordFeatureUtils::tryGetChild(midiMetadataFeature, nameMetadataId)) {
-        const auto& stringValue = childFeature->getValue()->is<babelwires::StringValue>();
-        return stringValue.get();
-    }
-    return {};
-}
-
-void smf::MidiMetadata::setSequenceName(babelwires::ValueFeature& midiMetadataFeature, std::string newSequenceName) {
-    auto& childFeature = babelwires::RecordFeatureUtils::activateAndGetChild(midiMetadataFeature, nameMetadataId);
-    childFeature.setValue(babelwires::StringValue(newSequenceName));
-}
+            GMSpecType::getThisIdentifier()},
+           {BW_SHORT_ID(tempoMetadataId, "Tempo", "3ef804e9-e34a-4a25-b6bf-ce7597d9d90b"),
+            seqwires::Tempo::getThisIdentifier(), babelwires::RecordType::Optionality::optionalDefaultInactive},
+           {BW_SHORT_ID(nameMetadataId, "Name", "c2e4910f-d006-4a93-97a7-ae5973157ec8"),
+            babelwires::StringType::getThisIdentifier(), babelwires::RecordType::Optionality::optionalDefaultInactive},
+           {BW_SHORT_ID(copyrightMetadataId, "Copyright", "a59dc914-d060-4f03-be83-5804fc4d6b6a"),
+            babelwires::StringType::getThisIdentifier(),
+            babelwires::RecordType::Optionality::optionalDefaultInactive}}) {}
 
 smf::MidiMetadataFeature::MidiMetadataFeature()
     : babelwires::SimpleValueFeature(MidiMetadata::getThisIdentifier()) {}
