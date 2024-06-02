@@ -65,7 +65,6 @@ namespace smf {
 
           protected:
             MidiMetadataFeature* m_metadata;
-            seqwires::TempoFeature* m_tempo;
             ArrayChannelGroup* m_channelGroup;
         };
 
