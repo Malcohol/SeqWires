@@ -84,9 +84,6 @@ namespace smf {
           protected:
             Format m_format;
             MidiMetadataFeature* m_metadata;
-            babelwires::StringFeature* m_sequenceName;
-            babelwires::StringFeature* m_copyright;
-            seqwires::TempoFeature* m_tempo;
         };
 
         /// All note data for each channel is mixed into one midi track.
