@@ -1,5 +1,5 @@
 /**
- *
+ * MidiChannel is an int type constrained to the legal range of a MIDI channel (0-15).
  *
  * (C) 2021 Malcolm Tyrrell
  *
@@ -11,11 +11,10 @@
 #include <BabelWiresLib/Types/Int/intType.hpp>
 
 namespace smf {
-    /// Carries the enum of GM Spec values.
+    /// An 
     class MidiChannel : public babelwires::IntType {
       public:
-        PRIMITIVE_TYPE("MidiChannel", "Midi Channel", "85f19ba3-f5be-4c81-9632-9227f85baa4e", 1);
-        MidiChannel()
-            : IntType({1, 16}, 1) {}
+        PRIMITIVE_TYPE("MidiChannel", "MIDI Channel", "85f19ba3-f5be-4c81-9632-9227f85baa4e", 1);
+        MidiChannel();
     };
 } // namespace smf

@@ -1,5 +1,5 @@
 /**
- * 
+ * MidiTrackAndChannel pairs a track with its MIDI channel.
  *
  * (C) 2021 Malcolm Tyrrell
  *

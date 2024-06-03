@@ -29,8 +29,8 @@
 #include <Plugins/Smf/Plugin/Percussion/gsOrchestraPercussionSet.hpp>
 #include <Plugins/Smf/Plugin/Percussion/gsPowerPercussionSet.hpp>
 #include <Plugins/Smf/Plugin/Percussion/gsRoomPercussionSet.hpp>
-#include <Plugins/Smf/Plugin/Percussion/gsStandard1PercussionSet.hpp>
 #include <Plugins/Smf/Plugin/Percussion/gsSFXPercussionSet.hpp>
+#include <Plugins/Smf/Plugin/Percussion/gsStandard1PercussionSet.hpp>
 #include <Plugins/Smf/Plugin/Percussion/xgAnalogPercussionSet.hpp>
 #include <Plugins/Smf/Plugin/Percussion/xgBrushPercussionSet.hpp>
 #include <Plugins/Smf/Plugin/Percussion/xgClassicPercussionSet.hpp>
@@ -41,8 +41,11 @@
 #include <Plugins/Smf/Plugin/Percussion/xgSFX1PercussionSet.hpp>
 #include <Plugins/Smf/Plugin/Percussion/xgSFX2PercussionSet.hpp>
 #include <Plugins/Smf/Plugin/Percussion/xgStandard1PercussionSet.hpp>
-#include <Plugins/Smf/Plugin/midiMetadata.hpp>
 #include <Plugins/Smf/Plugin/gmSpec.hpp>
+#include <Plugins/Smf/Plugin/midiChannel.hpp>
+#include <Plugins/Smf/Plugin/midiMetadata.hpp>
+#include <Plugins/Smf/Plugin/midiTrackAndChannel.hpp>
+#include <Plugins/Smf/Plugin/midiTrackAndChannelArray.hpp>
 #include <Plugins/Smf/Plugin/smfFormat.hpp>
 
 void smf::registerLib(babelwires::ProjectContext& context) {
@@ -53,6 +56,9 @@ void smf::registerLib(babelwires::ProjectContext& context) {
     // Types
     context.m_typeSystem.addEntry<GMSpecType>();
     context.m_typeSystem.addEntry<MidiMetadata>();
+    context.m_typeSystem.addEntry<MidiChannel>();
+    context.m_typeSystem.addEntry<MidiTrackAndChannel>();
+    context.m_typeSystem.addEntry<MidiTrackAndChannelArray>();
 
     // Percussion types
     const seqwires::BuiltInPercussionInstruments& builtInPercussion =

@@ -1,8 +1,10 @@
 SET( SMFLIB_SRCS
 	libRegistration.cpp
 	gmSpec.cpp
+	midiChannel.cpp
 	midiMetadata.cpp
 	midiTrackAndChannel.cpp
+	midiTrackAndChannelArray.cpp
 	Percussion/gmPercussionSet.cpp
 	Percussion/gm2AnalogPercussionSet.cpp
 	Percussion/gm2BrushPercussionSet.cpp
