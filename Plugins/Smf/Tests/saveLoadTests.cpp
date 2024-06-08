@@ -1,13 +1,15 @@
 #include <gtest/gtest.h>
 
 #include <Plugins/Smf/Plugin/libRegistration.hpp>
+#include <Plugins/Smf/Plugin/midiTrackAndChannel.hpp>
+#include <Plugins/Smf/Plugin/midiTrackAndChannelArray.hpp>
 #include <Plugins/Smf/Plugin/smfParser.hpp>
 #include <Plugins/Smf/Plugin/smfSourceModel.hpp>
 #include <Plugins/Smf/Plugin/smfTargetModel.hpp>
 #include <Plugins/Smf/Plugin/smfWriter.hpp>
 
-#include <SeqWiresLib/Types/Track/trackFeature.hpp>
 #include <SeqWiresLib/Types/Track/TrackEvents/noteEvents.hpp>
+#include <SeqWiresLib/Types/Track/trackFeature.hpp>
 #include <SeqWiresLib/libRegistration.hpp>
 
 #include <BabelWiresLib/libRegistration.hpp>
@@ -32,27 +34,19 @@ TEST(SmfSaveLoadTest, cMajorScale) {
         smf::target::SmfFeature smfFeature(testEnvironment.m_projectContext);
         smfFeature.setToDefault();
 
-        auto* tracks = babelwires::FeaturePath::deserializeFromString("Format/tracks")
-                           .follow(smfFeature)
-                           .as<babelwires::ArrayFeature>();
-        ASSERT_NE(tracks, nullptr);
-        EXPECT_EQ(tracks->getNumFeatures(), 1);
+        auto* channelFeature = babelwires::FeaturePath::deserializeFromString("Format/tracks/0/Chan")
+                                   .follow(smfFeature)
+                                   .as<babelwires::ValueFeature>();
 
-        auto* channelTrack = tracks->getFeature(0)->as<babelwires::RecordFeature>();
-        ASSERT_NE(channelTrack, nullptr);
-        EXPECT_EQ(channelTrack->getNumFeatures(), 2);
+        channelFeature->setValue(babelwires::IntValue(2));
 
-        auto* channelFeature =
-            channelTrack->getChildFromStep(babelwires::PathStep("Chan")).as<babelwires::IntFeature>();
-        channelFeature->set(2);
-
-        auto* trackFeature = channelTrack->getChildFromStep(babelwires::PathStep("Track")).as<seqwires::TrackFeature>();
+        auto* trackFeature = babelwires::FeaturePath::deserializeFromString("Format/tracks/0/Track")
+                                 .follow(smfFeature)
+                                 .as<babelwires::ValueFeature>();
 
         seqwires::Track track;
-
         testUtils::addSimpleNotes(pitches, track);
-
-        trackFeature->set(std::move(track));
+        trackFeature->setValue(std::move(track));
 
         std::ofstream os = tempFile.openForWriting(std::ios_base::binary);
         smf::writeToSmf(testEnvironment.m_projectContext, testEnvironment.m_log, smfFeature.getFormatFeature(), os);
@@ -128,33 +122,19 @@ TEST(SmfSaveLoadTest, cMajorScaleWithMetadata) {
             smf::target::SmfFeature smfFeature(testEnvironment.m_projectContext);
             smfFeature.setToDefault();
 
-            auto* smfFormatFeature =
-                smfFeature.getChildFromStep(babelwires::PathStep("Format")).as<smf::target::SmfFormatFeature>();
-            ASSERT_NE(smfFormatFeature, nullptr);
+            auto* channelFeature = babelwires::FeaturePath::deserializeFromString("Format/tracks/0/Chan")
+                                       .follow(smfFeature)
+                                       .as<babelwires::ValueFeature>();
 
-            addMetadata(*smfFormatFeature, metadata);
+            channelFeature->setValue(babelwires::IntValue(2));
 
-            auto* tracks =
-                smfFormatFeature->getChildFromStep(babelwires::PathStep("tracks")).as<babelwires::ArrayFeature>();
-            ASSERT_NE(tracks, nullptr);
-            EXPECT_EQ(tracks->getNumFeatures(), 1);
-
-            auto* channelTrack = tracks->getFeature(0)->as<babelwires::RecordFeature>();
-            ASSERT_NE(channelTrack, nullptr);
-            EXPECT_EQ(channelTrack->getNumFeatures(), 2);
-
-            auto* channelFeature =
-                channelTrack->getChildFromStep(babelwires::PathStep("Chan")).as<babelwires::IntFeature>();
-            channelFeature->set(2);
-
-            auto* trackFeature =
-                channelTrack->getChildFromStep(babelwires::PathStep("Track")).as<seqwires::TrackFeature>();
+            auto* trackFeature = babelwires::FeaturePath::deserializeFromString("Format/tracks/0/Track")
+                                     .follow(smfFeature)
+                                     .as<babelwires::ValueFeature>();
 
             seqwires::Track track;
-
             testUtils::addSimpleNotes(pitches, track);
-
-            trackFeature->set(std::move(track));
+            trackFeature->setValue(std::move(track));
 
             std::ofstream os = tempFile.openForWriting(std::ios_base::binary);
             smf::writeToSmf(testEnvironment.m_projectContext, testEnvironment.m_log, smfFeature.getFormatFeature(), os);
@@ -197,26 +177,18 @@ TEST(SmfSaveLoadTest, format0Chords) {
         smf::target::SmfFeature smfFeature(testEnvironment.m_projectContext);
         smfFeature.setToDefault();
 
-        auto* tracks = babelwires::FeaturePath::deserializeFromString("Format/tracks")
+        auto* tracksFeature = babelwires::FeaturePath::deserializeFromString("Format/tracks")
                            .follow(smfFeature)
-                           .as<babelwires::ArrayFeature>();
-        ASSERT_NE(tracks, nullptr);
-        tracks->addEntry();
-        tracks->addEntry();
-        EXPECT_EQ(tracks->getNumFeatures(), 3);
+                           .as<babelwires::ValueFeature>();
+
+        smf::MidiTrackAndChannelArray::setArraySize(*tracksFeature, 3);
 
         for (int i = 0; i < 3; ++i) {
-            auto* channelTrack = tracks->getFeature(i)->as<babelwires::RecordFeature>();
-            ASSERT_NE(channelTrack, nullptr);
-            EXPECT_EQ(channelTrack->getNumFeatures(), 2);
-            auto* channelFeature =
-                channelTrack->getChildFromStep(babelwires::PathStep("Chan")).as<babelwires::IntFeature>();
-            channelFeature->set(i);
-            auto* trackFeature =
-                channelTrack->getChildFromStep(babelwires::PathStep("Track")).as<seqwires::TrackFeature>();
+            auto* midiTrackAndChannel = tracksFeature->getFeature(i)->as<babelwires::ValueFeature>();
+            smf::MidiTrackAndChannel::setChan(*midiTrackAndChannel, i);
             seqwires::Track track;
             testUtils::addSimpleNotes(chordPitches[i], track);
-            trackFeature->set(std::move(track));
+            smf::MidiTrackAndChannel::setTrack(*midiTrackAndChannel, std::move(track));
         }
 
         std::ofstream os = tempFile.openForWriting(std::ios_base::binary);
@@ -263,26 +235,18 @@ TEST(SmfSaveLoadTest, format1Chords) {
 
         smfFormatFeature->selectTag("SMF1");
 
-        auto* tracks =
-            smfFormatFeature->getChildFromStep(babelwires::PathStep("tracks")).as<babelwires::ArrayFeature>();
+        auto* tracksFeature = babelwires::FeaturePath::deserializeFromString("Format/tracks")
+                           .follow(smfFeature)
+                           .as<babelwires::ValueFeature>();
 
-        ASSERT_NE(tracks, nullptr);
-        tracks->addEntry();
-        tracks->addEntry();
-        EXPECT_EQ(tracks->getNumFeatures(), 3);
+        smf::MidiTrackAndChannelArray::setArraySize(*tracksFeature, 3);
 
         for (int i = 0; i < 3; ++i) {
-            auto* channelTrack = tracks->getFeature(i)->as<babelwires::RecordFeature>();
-            ASSERT_NE(channelTrack, nullptr);
-            EXPECT_EQ(channelTrack->getNumFeatures(), 2);
-            auto* channelFeature =
-                channelTrack->getChildFromStep(babelwires::PathStep("Chan")).as<babelwires::IntFeature>();
-            channelFeature->set(i);
-            auto* trackFeature =
-                channelTrack->getChildFromStep(babelwires::PathStep("Track")).as<seqwires::TrackFeature>();
+            auto* midiTrackAndChannel = tracksFeature->getFeature(i)->as<babelwires::ValueFeature>();
+            smf::MidiTrackAndChannel::setChan(*midiTrackAndChannel, i);
             seqwires::Track track;
             testUtils::addSimpleNotes(chordPitches[i], track);
-            trackFeature->set(std::move(track));
+            smf::MidiTrackAndChannel::setTrack(*midiTrackAndChannel, std::move(track));
         }
 
         std::ofstream os = tempFile.openForWriting(std::ios_base::binary);
