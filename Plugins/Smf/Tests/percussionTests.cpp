@@ -6,6 +6,7 @@
 #include <Plugins/Smf/Plugin/smfSourceModel.hpp>
 #include <Plugins/Smf/Plugin/smfTargetModel.hpp>
 #include <Plugins/Smf/Plugin/smfWriter.hpp>
+#include <Plugins/Smf/Plugin/midiTrackAndChannel.hpp>
 
 #include <SeqWiresLib/Types/Track/TrackEvents/noteEvents.hpp>
 #include <SeqWiresLib/Types/Track/TrackEvents/percussionEvents.hpp>
@@ -47,28 +48,15 @@ TEST_P(SmfStandardPercussionTest, saveLoad) {
         smf::target::SmfFeature smfFeature(testEnvironment.m_projectContext);
         smfFeature.setToDefault();
 
-        auto* smfFormatFeature =
-            smfFeature.getChildFromStep(babelwires::PathStep("Format")).as<smf::target::SmfFormatFeature>();
-        ASSERT_NE(smfFormatFeature, nullptr);
+        auto& formatFeature = smfFeature.getFormatFeature();
 
-        smf::MidiMetadata::setSpec(smfFormatFeature->getMidiMetadata(), testData.m_specificationId);
+        smf::MidiMetadata::setSpec(formatFeature.getMidiMetadata(), testData.m_specificationId);
 
-        auto* tracks =
-            smfFormatFeature->getChildFromStep(babelwires::PathStep("tracks")).as<babelwires::ArrayFeature>();
+        auto* midiTrackAndChannelFeature = babelwires::FeaturePath::deserializeFromString("Format/tracks/0")
+                                 .follow(smfFeature)
+                                 .as<babelwires::ValueFeature>();
 
-        EXPECT_EQ(tracks->getNumFeatures(), 1);
-
-        auto* channelTrack = tracks->getFeature(0)->as<babelwires::RecordFeature>();
-        ASSERT_NE(channelTrack, nullptr);
-        EXPECT_EQ(channelTrack->getNumFeatures(), 2);
-
-        auto* channelFeature =
-            channelTrack->getChildFromStep(babelwires::PathStep("Chan")).as<babelwires::IntFeature>();
-        channelFeature->set(9);
-
-        ASSERT_NE(tracks, nullptr);
-
-        auto* trackFeature = channelTrack->getChildFromStep(babelwires::PathStep("Track")).as<seqwires::TrackFeature>();
+        smf::MidiTrackAndChannel::setChan(*midiTrackAndChannelFeature, 9);
 
         seqwires::Track track;
 
@@ -79,7 +67,7 @@ TEST_P(SmfStandardPercussionTest, saveLoad) {
         track.addEvent(seqwires::PercussionOnEvent{0, testData.m_instrumentId2});
         track.addEvent(seqwires::PercussionOffEvent{babelwires::Rational(1, 4), testData.m_instrumentId2});
 
-        trackFeature->set(std::move(track));
+        smf::MidiTrackAndChannel::setTrack(*midiTrackAndChannelFeature, std::move(track));
 
         std::ofstream os = tempFile.openForWriting(std::ios_base::binary);
         smf::writeToSmf(testEnvironment.m_projectContext, testEnvironment.m_log, smfFeature.getFormatFeature(), os);
