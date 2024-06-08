@@ -76,36 +76,34 @@ namespace {
     enum MetadataFlags { HAS_SEQUENCE_NAME = 0b001, HAS_COPYRIGHT = 0b010, HAS_TEMPO = 0b100 };
 
     void addMetadata(smf::target::SmfFormatFeature& smfFeature, std::uint8_t flags) {
-        auto* metadata = smfFeature.getChildFromStep(babelwires::PathStep("Meta")).as<smf::MidiMetadataFeature>();
-        /*
+        auto& metadataFeature = smfFeature.getMidiMetadata();
+
         if (flags & HAS_SEQUENCE_NAME) {
-            metadata->getActivatedSequenceName().set("Test Sequence Name");
+            smf::MidiMetadata::setName(metadataFeature, "Test Sequence Name");
         }
         if (flags & HAS_COPYRIGHT) {
-            metadata->getActivatedCopyright().set("(C)2021 Test Copyright");
+            smf::MidiMetadata::setCopyR(metadataFeature, "(C)2021 Test Copyright");
         }
         if (flags & HAS_TEMPO) {
-            metadata->getActivatedTempoFeature().set(100);
+            smf::MidiMetadata::setTempo(metadataFeature, 100);
         }
-        */
     }
 
     void checkMetadata(const smf::source::SmfFeature& smfFeature, std::uint8_t flags) {
-        const auto* metadata = smfFeature.getChildFromStep(babelwires::PathStep("Meta")).as<smf::MidiMetadataFeature>();
-        /*
+        const auto& metadataFeature = smfFeature.getMidiMetadata();
+
         if (flags & HAS_SEQUENCE_NAME) {
-            ASSERT_NE(metadata->getSequenceName(), nullptr);
-            EXPECT_EQ(metadata->getSequenceName()->get(), "Test Sequence Name");
+            ASSERT_TRUE(smf::MidiMetadata::tryGetName(metadataFeature));
+            EXPECT_EQ(*smf::MidiMetadata::tryGetName(metadataFeature), "Test Sequence Name");
         }
         if (flags & HAS_COPYRIGHT) {
-            ASSERT_NE(metadata->getCopyR(), nullptr);
-            EXPECT_EQ(metadata->getCopyR()->get(), "(C)2021 Test Copyright");
+            ASSERT_TRUE(smf::MidiMetadata::tryGetCopyR(metadataFeature));
+            EXPECT_EQ(smf::MidiMetadata::tryGetCopyR(metadataFeature), "(C)2021 Test Copyright");
         }
         if (flags & HAS_TEMPO) {
-            ASSERT_NE(metadata->getTempoFeature(), nullptr);
-            EXPECT_EQ(metadata->getTempoFeature()->get(), 100);
+            ASSERT_TRUE(smf::MidiMetadata::tryGetTempo(metadataFeature));
+            EXPECT_EQ(smf::MidiMetadata::tryGetTempo(metadataFeature), 100);
         }
-        */
     }
 } // namespace
 
@@ -121,6 +119,8 @@ TEST(SmfSaveLoadTest, cMajorScaleWithMetadata) {
         {
             smf::target::SmfFeature smfFeature(testEnvironment.m_projectContext);
             smfFeature.setToDefault();
+
+            addMetadata(smfFeature.getFormatFeature(), metadata);
 
             auto* channelFeature = babelwires::FeaturePath::deserializeFromString("Format/tracks/0/Chan")
                                        .follow(smfFeature)

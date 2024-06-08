@@ -49,6 +49,7 @@ namespace smf {
             SmfFeature(const babelwires::ProjectContext& projectContext);
 
             const SmfFormatFeature& getFormatFeature() const;
+            SmfFormatFeature& getFormatFeature();
 
           protected:
             SmfFormatFeature* m_formatFeature;
