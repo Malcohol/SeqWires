@@ -181,28 +181,18 @@ TEST_P(SmfTrackAllocationPercussionTest, trackAllocation) {
         smf::target::SmfFeature smfFeature(testEnvironment.m_projectContext);
         smfFeature.setToDefault();
 
-        auto* smfFormatFeature =
-            smfFeature.getChildFromStep(babelwires::PathStep("Format")).as<smf::target::SmfFormatFeature>();
-        ASSERT_NE(smfFormatFeature, nullptr);
+        auto& smfFormatFeature = smfFeature.getFormatFeature();
 
-        smf::MidiMetadata::setSpec(smfFormatFeature->getMidiMetadata(), testData.m_specificationId);
+        smf::MidiMetadata::setSpec(smfFormatFeature.getMidiMetadata(), testData.m_specificationId);
 
         auto* tracks =
-            smfFormatFeature->getChildFromStep(babelwires::PathStep("tracks")).as<babelwires::ArrayFeature>();
+            smfFormatFeature.getChildFromStep(babelwires::PathStep("tracks")).as<babelwires::ValueFeature>();
 
-        tracks->setSize(3);
+        smf::MidiTrackAndChannelArray::setArraySize(*tracks, 3);
 
         for (int i = 0; i < 3; ++i) {
-            auto* channelTrack = tracks->getFeature(i)->as<babelwires::RecordFeature>();
-            ASSERT_NE(channelTrack, nullptr);
-            EXPECT_EQ(channelTrack->getNumFeatures(), 2);
-
-            auto* channelFeature =
-                channelTrack->getChildFromStep(babelwires::PathStep("Chan")).as<babelwires::IntFeature>();
-            channelFeature->set(8 + i);
-
-            auto* trackFeature =
-                channelTrack->getChildFromStep(babelwires::PathStep("Track")).as<seqwires::TrackFeature>();
+            auto& midiTrackAndChannel = smf::MidiTrackAndChannelArray::getChild(*tracks, i);
+            smf::MidiTrackAndChannel::setChan(midiTrackAndChannel, 8+i);
 
             seqwires::Track track;
 
@@ -214,7 +204,7 @@ TEST_P(SmfTrackAllocationPercussionTest, trackAllocation) {
                 track.addEvent(seqwires::PercussionOffEvent{babelwires::Rational(1, 4), instrument});
             }
 
-            trackFeature->set(std::move(track));
+            smf::MidiTrackAndChannel::setTrack(midiTrackAndChannel, std::move(track));
         }
 
         std::ofstream os = tempFile.openForWriting(std::ios_base::binary);

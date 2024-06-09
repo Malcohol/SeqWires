@@ -23,7 +23,10 @@ namespace smf {
         static unsigned int getArraySize(const babelwires::ValueFeature& arrayFeature);
         static const babelwires::ValueFeature& getChild(const babelwires::ValueFeature& arrayFeature,
                                                         unsigned int index);
+        static babelwires::ValueFeature& getChild(babelwires::ValueFeature& arrayFeature,
+                                                        unsigned int index);
         static void setArraySize(babelwires::ValueFeature& arrayFeature, unsigned int newSize);
-        static void setChild(babelwires::ValueFeature& arrayFeature, unsigned int index, babelwires::ValueHolder newValue);
+        static void setChild(babelwires::ValueFeature& arrayFeature, unsigned int index,
+                             babelwires::ValueHolder newValue);
     };
 } // namespace smf

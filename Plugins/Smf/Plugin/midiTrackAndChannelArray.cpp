@@ -22,6 +22,10 @@ const babelwires::ValueFeature& smf::MidiTrackAndChannelArray::getChild(const ba
     return arrayFeature.getFeature(index)->is<babelwires::ValueFeature>();
 }
 
+babelwires::ValueFeature& smf::MidiTrackAndChannelArray::getChild(babelwires::ValueFeature& arrayFeature, unsigned int index) {
+    return arrayFeature.getFeature(index)->is<babelwires::ValueFeature>();
+}
+
 void smf::MidiTrackAndChannelArray::setArraySize(babelwires::ValueFeature& arrayFeature, unsigned int newSize) {
     const auto& type = arrayFeature.getType().is<smf::MidiTrackAndChannelArray>();
     const auto& typeSystem = babelwires::RootFeature::getTypeSystemAt(arrayFeature);

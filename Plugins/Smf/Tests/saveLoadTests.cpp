@@ -34,19 +34,17 @@ TEST(SmfSaveLoadTest, cMajorScale) {
         smf::target::SmfFeature smfFeature(testEnvironment.m_projectContext);
         smfFeature.setToDefault();
 
-        auto* channelFeature = babelwires::FeaturePath::deserializeFromString("Format/tracks/0/Chan")
-                                   .follow(smfFeature)
-                                   .as<babelwires::ValueFeature>();
+        auto& formatFeature = smfFeature.getFormatFeature();
 
-        channelFeature->setValue(babelwires::IntValue(2));
-
-        auto* trackFeature = babelwires::FeaturePath::deserializeFromString("Format/tracks/0/Track")
+        auto* midiTrackAndChannelFeature = babelwires::FeaturePath::deserializeFromString("Format/tracks/0")
                                  .follow(smfFeature)
                                  .as<babelwires::ValueFeature>();
 
+        smf::MidiTrackAndChannel::setChan(*midiTrackAndChannelFeature, 2);
+
         seqwires::Track track;
         testUtils::addSimpleNotes(pitches, track);
-        trackFeature->setValue(std::move(track));
+        smf::MidiTrackAndChannel::setTrack(*midiTrackAndChannelFeature, std::move(track));
 
         std::ofstream os = tempFile.openForWriting(std::ios_base::binary);
         smf::writeToSmf(testEnvironment.m_projectContext, testEnvironment.m_log, smfFeature.getFormatFeature(), os);
@@ -122,19 +120,15 @@ TEST(SmfSaveLoadTest, cMajorScaleWithMetadata) {
 
             addMetadata(smfFeature.getFormatFeature(), metadata);
 
-            auto* channelFeature = babelwires::FeaturePath::deserializeFromString("Format/tracks/0/Chan")
-                                       .follow(smfFeature)
-                                       .as<babelwires::ValueFeature>();
+            auto* midiTrackAndChannelFeature = babelwires::FeaturePath::deserializeFromString("Format/tracks/0")
+                                    .follow(smfFeature)
+                                    .as<babelwires::ValueFeature>();
 
-            channelFeature->setValue(babelwires::IntValue(2));
-
-            auto* trackFeature = babelwires::FeaturePath::deserializeFromString("Format/tracks/0/Track")
-                                     .follow(smfFeature)
-                                     .as<babelwires::ValueFeature>();
+            smf::MidiTrackAndChannel::setChan(*midiTrackAndChannelFeature, 2);
 
             seqwires::Track track;
             testUtils::addSimpleNotes(pitches, track);
-            trackFeature->setValue(std::move(track));
+            smf::MidiTrackAndChannel::setTrack(*midiTrackAndChannelFeature, std::move(track));
 
             std::ofstream os = tempFile.openForWriting(std::ios_base::binary);
             smf::writeToSmf(testEnvironment.m_projectContext, testEnvironment.m_log, smfFeature.getFormatFeature(), os);
