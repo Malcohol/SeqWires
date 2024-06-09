@@ -13,6 +13,7 @@
 #include <SeqWiresLib/Types/Track/trackFeature.hpp>
 
 #include <BabelWiresLib/Features/simpleValueFeature.hpp>
+#include <BabelWiresLib/Types/Array/arrayFeatureUtils.hpp>
 
 #include <Common/Identifiers/registeredIdentifier.hpp>
 namespace {
@@ -43,11 +44,11 @@ smf::target::SmfFeature::SmfFeature(const babelwires::ProjectContext& projectCon
 }
 
 int smf::target::SmfFormatFeature::getNumMidiTracks() const {
-    return MidiTrackAndChannelArray::getArraySize(*m_midiTrackAndChannelArray);
+    return babelwires::ArrayFeatureUtils::getArraySize(*m_midiTrackAndChannelArray);
 }
 
 const babelwires::ValueFeature& smf::target::SmfFormatFeature::getMidiTrack(int index) const {
-    return MidiTrackAndChannelArray::getChild(*m_midiTrackAndChannelArray, index);
+    return babelwires::ArrayFeatureUtils::getChild(*m_midiTrackAndChannelArray, index);
 }
 
 const smf::target::SmfFormatFeature& smf::target::SmfFeature::getFormatFeature() const {

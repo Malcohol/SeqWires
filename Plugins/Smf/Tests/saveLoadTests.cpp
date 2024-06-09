@@ -13,6 +13,7 @@
 #include <SeqWiresLib/libRegistration.hpp>
 
 #include <BabelWiresLib/libRegistration.hpp>
+#include <BabelWiresLib/Types/Array/arrayFeatureUtils.hpp>
 
 #include <Common/IO/fileDataSource.hpp>
 
@@ -175,7 +176,7 @@ TEST(SmfSaveLoadTest, format0Chords) {
                            .follow(smfFeature)
                            .as<babelwires::ValueFeature>();
 
-        smf::MidiTrackAndChannelArray::setArraySize(*tracksFeature, 3);
+        babelwires::ArrayFeatureUtils::setArraySize(*tracksFeature, 3);
 
         for (int i = 0; i < 3; ++i) {
             auto* midiTrackAndChannel = tracksFeature->getFeature(i)->as<babelwires::ValueFeature>();
@@ -233,7 +234,7 @@ TEST(SmfSaveLoadTest, format1Chords) {
                            .follow(smfFeature)
                            .as<babelwires::ValueFeature>();
 
-        smf::MidiTrackAndChannelArray::setArraySize(*tracksFeature, 3);
+        babelwires::ArrayFeatureUtils::setArraySize(*tracksFeature, 3);
 
         for (int i = 0; i < 3; ++i) {
             auto* midiTrackAndChannel = tracksFeature->getFeature(i)->as<babelwires::ValueFeature>();

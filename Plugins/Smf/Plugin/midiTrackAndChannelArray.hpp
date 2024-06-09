@@ -17,15 +17,5 @@ namespace smf {
       public:
         PRIMITIVE_TYPE("MidiTrackArray", "MIDI Track and Channels", "b5462658-be68-4570-b0a5-d2dcb03f4d8e", 1);
         MidiTrackAndChannelArray();
-
-        // TODO These could be generic array util methods.
-
-        static unsigned int getArraySize(const babelwires::ValueFeature& arrayFeature);
-        static void setArraySize(babelwires::ValueFeature& arrayFeature, unsigned int newSize);
-
-        static const babelwires::ValueFeature& getChild(const babelwires::ValueFeature& arrayFeature,
-                                                        unsigned int index);
-        static babelwires::ValueFeature& getChild(babelwires::ValueFeature& arrayFeature,
-                                                        unsigned int index);
     };
 } // namespace smf

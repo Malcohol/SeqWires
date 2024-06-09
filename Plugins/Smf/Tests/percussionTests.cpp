@@ -14,6 +14,8 @@
 #include <SeqWiresLib/Utilities/filteredTrackIterator.hpp>
 #include <SeqWiresLib/libRegistration.hpp>
 
+#include <BabelWiresLib/Types/Array/arrayFeatureUtils.hpp>
+
 #include <Common/IO/fileDataSource.hpp>
 
 #include <Tests/TestUtils/seqTestUtils.hpp>
@@ -188,10 +190,10 @@ TEST_P(SmfTrackAllocationPercussionTest, trackAllocation) {
         auto* tracks =
             smfFormatFeature.getChildFromStep(babelwires::PathStep("tracks")).as<babelwires::ValueFeature>();
 
-        smf::MidiTrackAndChannelArray::setArraySize(*tracks, 3);
+        babelwires::ArrayFeatureUtils::setArraySize(*tracks, 3);
 
         for (int i = 0; i < 3; ++i) {
-            auto& midiTrackAndChannel = smf::MidiTrackAndChannelArray::getChild(*tracks, i);
+            auto& midiTrackAndChannel = babelwires::ArrayFeatureUtils::getChild(*tracks, i);
             smf::MidiTrackAndChannel::setChan(midiTrackAndChannel, 8+i);
 
             seqwires::Track track;
