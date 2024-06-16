@@ -9,6 +9,8 @@
 
 #include <BabelWiresLib/Types/Enum/enumWithCppEnum.hpp>
 #include <BabelWiresLib/TypeSystem/primitiveType.hpp>
+#include <BabelWiresLib/Types/Enum/enumFeatureWrapper.hpp>
+#include <BabelWiresLib/TypeSystem/featureWrapper.hpp>
 
 #define GM_SPEC_VALUES(X)                                                                                              \
     X(NONE, "No Specification", "0d8e86c7-3d0c-4a6c-8fb0-3aaa0410dfc1")                                                \
@@ -25,5 +27,9 @@ namespace smf {
         GMSpecType();
 
         ENUM_DEFINE_CPP_ENUM(GM_SPEC_VALUES);
+
+        FEATURE_WRAPPER_BEGIN(GMSpecType)
+        FEATURE_WRAPPER_CPP_ENUM(GMSpecType)
+        FEATURE_WRAPPER_END()
     };
 } // namespace smf

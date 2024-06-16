@@ -11,7 +11,7 @@
 #include <BabelWiresLib/Types/Int/intType.hpp>
 
 namespace smf {
-    /// An 
+    /// An int type constrained to the legal range of a MIDI channel (0-15).
     class MidiChannel : public babelwires::IntType {
       public:
         PRIMITIVE_TYPE("MidiChannel", "MIDI Channel", "85f19ba3-f5be-4c81-9632-9227f85baa4e", 1);

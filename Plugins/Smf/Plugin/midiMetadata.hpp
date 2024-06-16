@@ -13,6 +13,7 @@
 
 #include <BabelWiresLib/Types/Record/recordType.hpp>
 #include <BabelWiresLib/Types/Record/recordFeatureUtils.hpp>
+#include <BabelWiresLib/TypeSystem/featureWrapperCommon.hpp>
 
 namespace smf {
     class MidiMetadata : public babelwires::RecordType {
@@ -25,6 +26,13 @@ namespace smf {
         FIELD_INT_OPTIONAL(Tempo)
         FIELD_STRING_OPTIONAL(Name)
         FIELD_STRING_OPTIONAL(CopyR)
+
+        FEATURE_WRAPPER_BEGIN(MidiMetadata)
+        FEATURE_WRAPPER_FIELD(Spec, GMSpecType)
+        FEATURE_WRAPPER_FIELD(Tempo, seqwires::Tempo)
+        FEATURE_WRAPPER_FIELD(Name, babelwires::StringType)
+        FEATURE_WRAPPER_FIELD(CopyR, babelwires::StringType)
+        FEATURE_WRAPPER_END()
     };
 
     class MidiMetadataFeature : public babelwires::SimpleValueFeature {
