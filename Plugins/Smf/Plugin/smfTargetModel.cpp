@@ -56,13 +56,13 @@ smf::target::SmfFeature::SmfFeature(const babelwires::ProjectContext& projectCon
 
     // Temporary testing code showing the desired API of wrappers.
 
-    SmfType::FeatureWrapper<babelwires::ValueFeature> isNonConst(*m_smfTypeFeature);
+    SmfType::FeatureWrapper<babelwires::ValueFeature> isNonConst(m_smfTypeFeature);
     isNonConst.getMeta().getSpec().get();
 
     MidiMetadata::FeatureWrapper<babelwires::ValueFeature> foo = isNonConst.getMeta();
     isNonConst.getMeta().getSpec().set(smf::GMSpecType::Value::GM);
 
-    SmfType::FeatureWrapper<const babelwires::ValueFeature> isConst(*m_smfTypeFeature);
+    SmfType::FeatureWrapper<const babelwires::ValueFeature> isConst(m_smfTypeFeature);
     isConst.getMeta().getSpec().get();
     //isConst.getMeta().getSpec().set(smf::GMSpecType::Value::GM); // Should not compile.
 }

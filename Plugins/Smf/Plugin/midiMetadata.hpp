@@ -29,9 +29,9 @@ namespace smf {
 
         FEATURE_WRAPPER_BEGIN(MidiMetadata)
         FEATURE_WRAPPER_FIELD(Spec, GMSpecType)
-        FEATURE_WRAPPER_FIELD(Tempo, seqwires::Tempo)
-        FEATURE_WRAPPER_FIELD(Name, babelwires::StringType)
-        FEATURE_WRAPPER_FIELD(CopyR, babelwires::StringType)
+        FEATURE_WRAPPER_FIELD_OPTIONAL(Tempo, seqwires::Tempo)
+        FEATURE_WRAPPER_FIELD_OPTIONAL(Name, babelwires::StringType)
+        FEATURE_WRAPPER_FIELD_OPTIONAL(CopyR, babelwires::StringType)
         FEATURE_WRAPPER_END()
     };
 
