@@ -255,7 +255,7 @@ namespace {
         std::filesystem::path outputFileName;
         outputFileName = std::filesystem::temp_directory_path() / (testName + ".wav");
         std::cerr << "Test wavefile written to " << outputFileName << std::endl;
-        std::unique_ptr<babelwires::AudioDest> audioDest = reg.createFileAudioDest(outputFileName/*.u8string()*/.c_str(), 1);
+        std::unique_ptr<babelwires::AudioDest> audioDest = reg.createFileAudioDest(babelwires::pathToString(outputFileName).c_str(), 1);
         assert(audioDest);
         const babelwires::Duration targetFrequency = audioDest->getFrequency();
         // If the frequencies did not agree, we'd have to resample, which would mean the output files did not accurately reflect the data being tested.
