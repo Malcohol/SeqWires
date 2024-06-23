@@ -37,9 +37,8 @@ namespace smf {
 
         FEATURE_WRAPPER_BEGIN(SmfType)
         FEATURE_WRAPPER_FIELD(Meta, MidiMetadata)
+        FEATURE_WRAPPER_FIELD(Tracks, MidiTrackAndChannelArray);
         FEATURE_WRAPPER_END()
-
-        // FIELD_VALUE(Tracks, MidiTrackAndChannelArray);
     };
 
     namespace target {

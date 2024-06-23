@@ -7,7 +7,6 @@
  **/
 #include <Plugins/Smf/Plugin/midiTrackAndChannel.hpp>
 
-#include <Plugins/Smf/Plugin/midiChannel.hpp>
 
 #include <SeqWiresLib/Types/Track/trackType.hpp>
 

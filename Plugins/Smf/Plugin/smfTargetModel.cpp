@@ -13,7 +13,6 @@
 #include <SeqWiresLib/Types/Track/trackFeature.hpp>
 
 #include <BabelWiresLib/Features/simpleValueFeature.hpp>
-#include <BabelWiresLib/Types/Array/arrayFeatureUtils.hpp>
 
 #include <Common/Identifiers/registeredIdentifier.hpp>
 namespace {
@@ -33,10 +32,10 @@ smf::SmfType::SmfType()
 smf::target::SmfFormatFeature::SmfFormatFeature()
     : UnionFeature(REGISTERED_ID_VECTOR(formatIdentifiersSource), 0) {
     m_metadata = addField(std::make_unique<MidiMetadataFeature>(),
-                          BW_SHORT_ID("Meta", "Metadata", "72bbbcee-2b53-4fb2-bfb8-4f5e495f9166"));
+                          BW_SHORT_ID("Meta", "Metadata", "98531e43-a0db-46f2-a36d-a2fa8f5fd860"));
     m_midiTrackAndChannelArray =
         addField(std::make_unique<babelwires::SimpleValueFeature>(MidiTrackAndChannelArray::getThisIdentifier()),
-                 BW_SHORT_ID("tracks", "tracks", "38ae4e20-1468-4dce-890b-981454e6dbe0"));
+                 BW_SHORT_ID("tracks", "tracks", "d7e52f73-5ad0-413d-99b8-d118b950546d"));
 }
 
 const smf::MidiMetadataFeature& smf::target::SmfFormatFeature::getMidiMetadata() const {
@@ -53,18 +52,6 @@ smf::target::SmfFeature::SmfFeature(const babelwires::ProjectContext& projectCon
                                BW_SHORT_ID("Format", "Format", "1f2eaefb-b48d-484d-8793-e14f2fa0193b"));
     m_smfTypeFeature = addField(std::make_unique<babelwires::SimpleValueFeature>(SmfType::getThisIdentifier()),
                               BW_SHORT_ID("Smf", "Format", "3c918862-5835-4cbf-ade6-af6f7ab7821d"));
-
-    // Temporary testing code showing the desired API of wrappers.
-
-    SmfType::FeatureWrapper<babelwires::ValueFeature> isNonConst(m_smfTypeFeature);
-    isNonConst.getMeta().getSpec().get();
-
-    MidiMetadata::FeatureWrapper<babelwires::ValueFeature> foo = isNonConst.getMeta();
-    isNonConst.getMeta().getSpec().set(smf::GMSpecType::Value::GM);
-
-    SmfType::FeatureWrapper<const babelwires::ValueFeature> isConst(m_smfTypeFeature);
-    isConst.getMeta().getSpec().get();
-    //isConst.getMeta().getSpec().set(smf::GMSpecType::Value::GM); // Should not compile.
 }
 
 int smf::target::SmfFormatFeature::getNumMidiTracks() const {
@@ -81,6 +68,14 @@ const smf::target::SmfFormatFeature& smf::target::SmfFeature::getFormatFeature()
 
 smf::target::SmfFormatFeature& smf::target::SmfFeature::getFormatFeature() {
     return *m_formatFeature;
+}
+
+smf::SmfType::FeatureWrapper<const babelwires::ValueFeature> smf::target::SmfFeature::getSmfTypeFeature() const {
+    return m_smfTypeFeature;
+}
+
+smf::SmfType::FeatureWrapper<babelwires::ValueFeature> smf::target::SmfFeature::getSmfTypeFeature() {
+    return m_smfTypeFeature;
 }
 
 babelwires::Feature::Style smf::target::SmfFormatFeature::getStyle() const {

@@ -7,11 +7,15 @@
  **/
 #pragma once
 
-#include <SeqWiresLib/Types/Track/track.hpp>
-
+#include <BabelWiresLib/TypeSystem/standardFeatureWrappers.hpp>
 #include <BabelWiresLib/TypeSystem/primitiveType.hpp>
 #include <BabelWiresLib/Types/Record/recordFeatureUtils.hpp>
 #include <BabelWiresLib/Types/Record/recordType.hpp>
+
+#include <SeqWiresLib/Types/Track/trackType.hpp>
+#include <SeqWiresLib/Types/Track/trackFeatureWrapper.hpp>
+
+#include <Plugins/Smf/Plugin/midiChannel.hpp>
 
 namespace smf {
 
@@ -22,5 +26,10 @@ namespace smf {
 
         FIELD_INT(Chan);
         FIELD_VALUE(Track, seqwires::Track);
+
+        FEATURE_WRAPPER_BEGIN(MidiTrackAndChannel)
+        FEATURE_WRAPPER_FIELD(Chan, MidiChannel)
+        FEATURE_WRAPPER_FIELD(Track, seqwires::TrackType);
+        FEATURE_WRAPPER_END()
     };
 } // namespace smf

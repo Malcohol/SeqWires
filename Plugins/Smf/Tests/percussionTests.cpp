@@ -14,8 +14,6 @@
 #include <SeqWiresLib/Utilities/filteredTrackIterator.hpp>
 #include <SeqWiresLib/libRegistration.hpp>
 
-#include <BabelWiresLib/Types/Array/arrayFeatureUtils.hpp>
-
 #include <Common/IO/fileDataSource.hpp>
 
 #include <Tests/TestUtils/seqTestUtils.hpp>
@@ -50,9 +48,7 @@ TEST_P(SmfStandardPercussionTest, saveLoad) {
         smf::target::SmfFeature smfFeature(testEnvironment.m_projectContext);
         smfFeature.setToDefault();
 
-        auto& formatFeature = smfFeature.getFormatFeature();
-
-        smf::MidiMetadata::setSpec(formatFeature.getMidiMetadata(), testData.m_specificationId);
+        smfFeature.getSmfTypeFeature().getMeta().getSpec().set(testData.m_specificationId);
 
         auto* midiTrackAndChannelFeature = babelwires::FeaturePath::deserializeFromString("Format/tracks/0")
                                  .follow(smfFeature)
@@ -183,18 +179,13 @@ TEST_P(SmfTrackAllocationPercussionTest, trackAllocation) {
         smf::target::SmfFeature smfFeature(testEnvironment.m_projectContext);
         smfFeature.setToDefault();
 
-        auto& smfFormatFeature = smfFeature.getFormatFeature();
-
-        smf::MidiMetadata::setSpec(smfFormatFeature.getMidiMetadata(), testData.m_specificationId);
-
-        auto* tracks =
-            smfFormatFeature.getChildFromStep(babelwires::PathStep("tracks")).as<babelwires::ValueFeature>();
-
-        babelwires::ArrayFeatureUtils::setArraySize(*tracks, 3);
+        smfFeature.getSmfTypeFeature().getMeta().getSpec().set(testData.m_specificationId);
+        auto tracks = smfFeature.getSmfTypeFeature().getTracks();
+        tracks.setArraySize(3);
 
         for (int i = 0; i < 3; ++i) {
-            auto& midiTrackAndChannel = babelwires::ArrayFeatureUtils::getChild(*tracks, i);
-            smf::MidiTrackAndChannel::setChan(midiTrackAndChannel, 8+i);
+            auto midiTrackAndChannel = tracks.getArrayChild(i);
+            midiTrackAndChannel.getChan().set(8+i);
 
             seqwires::Track track;
 
@@ -206,7 +197,7 @@ TEST_P(SmfTrackAllocationPercussionTest, trackAllocation) {
                 track.addEvent(seqwires::PercussionOffEvent{babelwires::Rational(1, 4), instrument});
             }
 
-            smf::MidiTrackAndChannel::setTrack(midiTrackAndChannel, std::move(track));
+            midiTrackAndChannel.getTrack().set(std::move(track));
         }
 
         std::ofstream os = tempFile.openForWriting(std::ios_base::binary);

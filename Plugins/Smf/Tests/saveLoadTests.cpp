@@ -13,7 +13,7 @@
 #include <SeqWiresLib/libRegistration.hpp>
 
 #include <BabelWiresLib/libRegistration.hpp>
-#include <BabelWiresLib/Types/Array/arrayFeatureUtils.hpp>
+#include <BabelWiresLib/Types/Array/arrayFeatureWrapper.hpp>
 
 #include <Common/IO/fileDataSource.hpp>
 

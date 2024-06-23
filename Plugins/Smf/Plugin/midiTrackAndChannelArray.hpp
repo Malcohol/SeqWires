@@ -10,6 +10,7 @@
 #include <BabelWiresLib/Features/valueFeature.hpp>
 #include <BabelWiresLib/TypeSystem/primitiveType.hpp>
 #include <BabelWiresLib/Types/Array/arrayType.hpp>
+#include <Plugins/Smf/Plugin/midiTrackAndChannel.hpp>
 
 namespace smf {
     // an array of MidiTrackAndChannel records.
@@ -17,5 +18,7 @@ namespace smf {
       public:
         PRIMITIVE_TYPE("MidiTrackArray", "MIDI Track and Channels", "b5462658-be68-4570-b0a5-d2dcb03f4d8e", 1);
         MidiTrackAndChannelArray();
+
+        ARRAY_FEATURE_WRAPPER(MidiTrackAndChannel);
     };
 } // namespace smf
