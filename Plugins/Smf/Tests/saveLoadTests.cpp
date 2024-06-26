@@ -48,7 +48,7 @@ TEST(SmfSaveLoadTest, cMajorScale) {
         smf::MidiTrackAndChannel::setTrack(*midiTrackAndChannelFeature, std::move(track));
 
         std::ofstream os = tempFile.openForWriting(std::ios_base::binary);
-        smf::writeToSmf(testEnvironment.m_projectContext, testEnvironment.m_log, smfFeature.getFormatFeature(), os);
+        smf::writeToSmf(testEnvironment.m_projectContext, testEnvironment.m_log, smfFeature, os);
     }
 
     {
@@ -132,7 +132,7 @@ TEST(SmfSaveLoadTest, cMajorScaleWithMetadata) {
             smf::MidiTrackAndChannel::setTrack(*midiTrackAndChannelFeature, std::move(track));
 
             std::ofstream os = tempFile.openForWriting(std::ios_base::binary);
-            smf::writeToSmf(testEnvironment.m_projectContext, testEnvironment.m_log, smfFeature.getFormatFeature(), os);
+            smf::writeToSmf(testEnvironment.m_projectContext, testEnvironment.m_log, smfFeature, os);
         }
 
         babelwires::FileDataSource midiFile(tempFile);
@@ -187,7 +187,7 @@ TEST(SmfSaveLoadTest, format0Chords) {
         }
 
         std::ofstream os = tempFile.openForWriting(std::ios_base::binary);
-        smf::writeToSmf(testEnvironment.m_projectContext, testEnvironment.m_log, smfFeature.getFormatFeature(), os);
+        smf::writeToSmf(testEnvironment.m_projectContext, testEnvironment.m_log, smfFeature, os);
     }
 
     {
@@ -245,7 +245,7 @@ TEST(SmfSaveLoadTest, format1Chords) {
         }
 
         std::ofstream os = tempFile.openForWriting(std::ios_base::binary);
-        smf::writeToSmf(testEnvironment.m_projectContext, testEnvironment.m_log, smfFeature.getFormatFeature(), os);
+        smf::writeToSmf(testEnvironment.m_projectContext, testEnvironment.m_log, smfFeature, os);
     }
 
     {

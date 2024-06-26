@@ -95,6 +95,6 @@ namespace smf {
     };
 
     void writeToSmf(const babelwires::ProjectContext& projectContext, babelwires::UserLogger& userLogger,
-                    const target::SmfFormatFeature& smfFormatFeature, std::ostream& output);
+                    const target::SmfFeature& smfFeature, std::ostream& output);
 
 } // namespace smf

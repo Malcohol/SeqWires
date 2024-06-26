@@ -405,7 +405,7 @@ void smf::SmfWriter::write() {
 }
 
 void smf::writeToSmf(const babelwires::ProjectContext& projectContext, babelwires::UserLogger& userLogger,
-                     const target::SmfFormatFeature& smfFormatFeature, std::ostream& output) {
-    smf::SmfWriter writer(projectContext, userLogger, smfFormatFeature, output);
+                     const target::SmfFeature& smfFeature, std::ostream& output) {
+    smf::SmfWriter writer(projectContext, userLogger, smfFeature.getFormatFeature(), output);
     writer.write();
 }

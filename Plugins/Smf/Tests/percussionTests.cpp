@@ -68,7 +68,7 @@ TEST_P(SmfStandardPercussionTest, saveLoad) {
         smf::MidiTrackAndChannel::setTrack(*midiTrackAndChannelFeature, std::move(track));
 
         std::ofstream os = tempFile.openForWriting(std::ios_base::binary);
-        smf::writeToSmf(testEnvironment.m_projectContext, testEnvironment.m_log, smfFeature.getFormatFeature(), os);
+        smf::writeToSmf(testEnvironment.m_projectContext, testEnvironment.m_log, smfFeature, os);
     }
 
     {
@@ -201,7 +201,7 @@ TEST_P(SmfTrackAllocationPercussionTest, trackAllocation) {
         }
 
         std::ofstream os = tempFile.openForWriting(std::ios_base::binary);
-        smf::writeToSmf(testEnvironment.m_projectContext, testEnvironment.m_log, smfFeature.getFormatFeature(), os);
+        smf::writeToSmf(testEnvironment.m_projectContext, testEnvironment.m_log, smfFeature, os);
     }
 
     {
