@@ -48,13 +48,11 @@ TEST_P(SmfStandardPercussionTest, saveLoad) {
         smf::target::SmfFeature smfFeature(testEnvironment.m_projectContext);
         smfFeature.setToDefault();
 
-        smfFeature.getSmfTypeFeature().getMeta().getSpec().set(testData.m_specificationId);
+        auto smfType = smfFeature.getSmfTypeFeature();
+        smfType.getMeta().getSpec().set(testData.m_specificationId);
 
-        auto* midiTrackAndChannelFeature = babelwires::FeaturePath::deserializeFromString("Format/tracks/0")
-                                 .follow(smfFeature)
-                                 .as<babelwires::ValueFeature>();
-
-        smf::MidiTrackAndChannel::setChan(*midiTrackAndChannelFeature, 9);
+        auto trackAndChan = smfType.getTracks().getEntry(0);
+        trackAndChan.getChan().set(9);
 
         seqwires::Track track;
 
@@ -65,7 +63,7 @@ TEST_P(SmfStandardPercussionTest, saveLoad) {
         track.addEvent(seqwires::PercussionOnEvent{0, testData.m_instrumentId2});
         track.addEvent(seqwires::PercussionOffEvent{babelwires::Rational(1, 4), testData.m_instrumentId2});
 
-        smf::MidiTrackAndChannel::setTrack(*midiTrackAndChannelFeature, std::move(track));
+        trackAndChan.getTrack().set(std::move(track));
 
         std::ofstream os = tempFile.openForWriting(std::ios_base::binary);
         smf::writeToSmf(testEnvironment.m_projectContext, testEnvironment.m_log, smfFeature, os);

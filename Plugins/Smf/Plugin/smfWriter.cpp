@@ -115,7 +115,7 @@ void smf::SmfWriter::writeHeaderChunk() {
     assert((m_division < (2 << 15)) && "division is too large");
 
 
-    const unsigned int tagIndex = smfType.getInstanceType().getIndexOfTag(smfType.getInstanceType().getSelectedTag(smfType.getInstanceValue()));
+    const unsigned int tagIndex = smfType.getInstanceType().getIndexOfTag(smfType.getSelectedTag());
 
     m_os->write("MThd", 4);
     writeUint32(6);
@@ -380,7 +380,7 @@ void smf::SmfWriter::setUpPercussionSets() {
     for (int i = 0; i < numTracks; ++i) {
         const auto& trackAndChannel = tracks.getEntry(i);
         const seqwires::Track& track = trackAndChannel.getTrack().get();
-        const int channelNumber = trackAndChannel.getChan();
+        const int channelNumber = trackAndChannel.getChan().get();
         getPercussionInstrumentsInUse(track, instrumentsInUse[channelNumber]);
     }
     for (int i = 0; i < 16; ++i) {
@@ -399,7 +399,7 @@ void smf::SmfWriter::write() {
     const auto& tracks = smfType.getTracks();
     const int numTracks = tracks.getSize();
 
-    if (smfType.getInstanceType().getIndexOfTag(smfType.getInstanceType().getSelectedTag(smfType.getInstanceValue())) == 0) {
+    if (smfType.getInstanceType().getIndexOfTag(smfType.getSelectedTag()) == 0) {
         for (int i = 0; i < numTracks; ++i) {
             channelAndTrackValues.emplace_back(tracks.getEntry(i));
         }
