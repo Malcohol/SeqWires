@@ -26,9 +26,9 @@ namespace babelwires {
         }
         operator bool() const { return m_valueFeature; }
 
-        typename seqwires::Track& get() const {
+        const typename seqwires::Track& get() const {
             assert(m_valueFeature);
-            return m_valueFeature.getValue()->template is<seqwires::Track>();
+            return m_valueFeature->getValue()->template is<seqwires::Track>();
         }
         template <typename VALUE_FEATURE_M = VALUE_FEATURE>
         std::enable_if_t<!std::is_const_v<VALUE_FEATURE_M>, void> set(babelwires::ValueHolder newValue) {

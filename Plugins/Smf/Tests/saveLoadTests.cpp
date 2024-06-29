@@ -74,17 +74,17 @@ namespace {
 
     enum MetadataFlags { HAS_SEQUENCE_NAME = 0b001, HAS_COPYRIGHT = 0b010, HAS_TEMPO = 0b100 };
 
-    void addMetadata(smf::target::SmfFormatFeature& smfFeature, std::uint8_t flags) {
-        auto& metadataFeature = smfFeature.getMidiMetadata();
+    void addMetadata(smf::target::SmfFeature& smfFeature, std::uint8_t flags) {
+        auto metadata = smfFeature.getSmfTypeFeature().getMeta();
 
         if (flags & HAS_SEQUENCE_NAME) {
-            smf::MidiMetadata::setName(metadataFeature, "Test Sequence Name");
+            metadata.getName().set("Test Sequence Name");
         }
         if (flags & HAS_COPYRIGHT) {
-            smf::MidiMetadata::setCopyR(metadataFeature, "(C)2021 Test Copyright");
+            metadata.getCopyR().set("(C)2021 Test Copyright");
         }
         if (flags & HAS_TEMPO) {
-            smf::MidiMetadata::setTempo(metadataFeature, 100);
+            metadata.getTempo().set(100);
         }
     }
 
@@ -119,7 +119,7 @@ TEST(SmfSaveLoadTest, cMajorScaleWithMetadata) {
             smf::target::SmfFeature smfFeature(testEnvironment.m_projectContext);
             smfFeature.setToDefault();
 
-            addMetadata(smfFeature.getFormatFeature(), metadata);
+            addMetadata(smfFeature, metadata);
 
             auto* midiTrackAndChannelFeature = babelwires::FeaturePath::deserializeFromString("Format/tracks/0")
                                     .follow(smfFeature)
@@ -224,11 +224,8 @@ TEST(SmfSaveLoadTest, format1Chords) {
         smf::target::SmfFeature smfFeature(testEnvironment.m_projectContext);
         smfFeature.setToDefault();
 
-        auto* smfFormatFeature =
-            smfFeature.getChildFromStep(babelwires::PathStep("Format")).as<smf::target::SmfFormatFeature>();
-        ASSERT_NE(smfFormatFeature, nullptr);
-
-        smfFormatFeature->selectTag("SMF1");
+        auto smfType = smfFeature.getSmfTypeFeature();
+        smfType.selectTag("SMF1");
 
         auto* tracksFeature = babelwires::FeaturePath::deserializeFromString("Format/tracks")
                            .follow(smfFeature)

@@ -16,7 +16,7 @@
 #include <BabelWiresLib/Types/Array/arrayType.hpp>
 #include <BabelWiresLib/Types/Int/intFeature.hpp>
 #include <BabelWiresLib/Types/RecordWithVariants/recordWithVariantsType.hpp>
-#include <BabelWiresLib/Types/Record/recordFeatureWrapper.hpp>
+#include <BabelWiresLib/Types/RecordWithVariants/recordWithVariantsFeatureWrapper.hpp>
 #include <BabelWiresLib/TypeSystem/featureWrapper.hpp>
 
 #include <BabelWiresLib/Features/valueFeature.hpp>
@@ -35,10 +35,10 @@ namespace smf {
         PRIMITIVE_TYPE("SmfType", "Standard MIDI File", "d4c70fb2-fb67-4e69-82ca-328ec242b0a8", 1);
         SmfType();
 
-        FEATURE_WRAPPER_BEGIN(SmfType)
+        RECORD_WITH_VARIANTS_BEGIN(SmfType)
         FEATURE_WRAPPER_FIELD(Meta, MidiMetadata)
         FEATURE_WRAPPER_FIELD(Tracks, MidiTrackAndChannelArray);
-        FEATURE_WRAPPER_END()
+        RECORD_WITH_VARIANTS_END()
     };
 
     namespace target {

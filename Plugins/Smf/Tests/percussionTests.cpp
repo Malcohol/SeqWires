@@ -181,10 +181,10 @@ TEST_P(SmfTrackAllocationPercussionTest, trackAllocation) {
 
         smfFeature.getSmfTypeFeature().getMeta().getSpec().set(testData.m_specificationId);
         auto tracks = smfFeature.getSmfTypeFeature().getTracks();
-        tracks.setArraySize(3);
+        tracks.setSize(3);
 
         for (int i = 0; i < 3; ++i) {
-            auto midiTrackAndChannel = tracks.getArrayChild(i);
+            auto midiTrackAndChannel = tracks.getEntry(i);
             midiTrackAndChannel.getChan().set(8+i);
 
             seqwires::Track track;
