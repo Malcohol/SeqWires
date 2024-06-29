@@ -24,7 +24,6 @@ namespace babelwires {
             : m_valueFeature(valueFeature) {
             assert(!valueFeature || valueFeature->getType().template as<seqwires::TrackType>());
         }
-        operator bool() const { return m_valueFeature; }
 
         const typename seqwires::Track& get() const {
             assert(m_valueFeature);

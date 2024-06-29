@@ -275,18 +275,18 @@ void smf::SmfWriter::writeGlobalSetup() {
     }
 
     if (const auto& copyright = metadata.tryGetCopyR()) {
-        if (!copyright.get().empty()) {
-            writeTextMetaEvent(2, copyright.get());
+        if (!copyright->get().empty()) {
+            writeTextMetaEvent(2, copyright->get());
         }
     }
     if (const auto& sequenceOrTrackName = metadata.tryGetName()) {
-        if (!sequenceOrTrackName.get().empty()) {
-            writeTextMetaEvent(3, sequenceOrTrackName.get());
+        if (!sequenceOrTrackName->get().empty()) {
+            writeTextMetaEvent(3, sequenceOrTrackName->get());
         }
     }
 
     if (const auto& tempo = metadata.tryGetTempo()) {
-        writeTempoEvent(tempo.get());
+        writeTempoEvent(tempo->get());
     }
 }
 
