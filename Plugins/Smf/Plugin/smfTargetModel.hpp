@@ -42,27 +42,6 @@ namespace smf {
     };
 
     namespace target {
-
-        /// This is a UnionFeature in expectation of exploiting a structural difference
-        /// between format 0 and 1 files. For now, the structure is the same.
-        class SmfFormatFeature : public babelwires::UnionFeature {
-          public:
-            SmfFormatFeature();
-
-            const MidiMetadataFeature& getMidiMetadata() const;
-            MidiMetadataFeature& getMidiMetadata();
-
-            // Convenience: Dispatches to the MidiTrackAndChannelArray.
-            int getNumMidiTracks() const;
-            const babelwires::ValueFeature& getMidiTrack(int index) const;
-
-            Style getStyle() const override;
-
-          protected:
-            MidiMetadataFeature* m_metadata;
-            babelwires::ValueFeature* m_midiTrackAndChannelArray;
-        };
-
         /// Common to all formats of SmfFeature.
         class SmfFeature : public babelwires::FileFeature {
           public:
@@ -71,11 +50,7 @@ namespace smf {
             SmfType::FeatureWrapper<const babelwires::ValueFeature> getSmfTypeFeature() const;
             SmfType::FeatureWrapper<babelwires::ValueFeature> getSmfTypeFeature();
 
-            const SmfFormatFeature& getFormatFeature() const;
-            SmfFormatFeature& getFormatFeature();
-
           protected:
-            SmfFormatFeature* m_formatFeature;
             babelwires::ValueFeature* m_smfTypeFeature;
         };
     } // namespace target

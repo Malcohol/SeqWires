@@ -29,45 +29,10 @@ smf::SmfType::SmfType()
                                            MidiTrackAndChannelArray::getThisIdentifier(),
                                            {}}}) {}
 
-smf::target::SmfFormatFeature::SmfFormatFeature()
-    : UnionFeature(REGISTERED_ID_VECTOR(formatIdentifiersSource), 0) {
-    m_metadata = addField(std::make_unique<MidiMetadataFeature>(),
-                          BW_SHORT_ID("Meta", "Metadata", "98531e43-a0db-46f2-a36d-a2fa8f5fd860"));
-    m_midiTrackAndChannelArray =
-        addField(std::make_unique<babelwires::SimpleValueFeature>(MidiTrackAndChannelArray::getThisIdentifier()),
-                 BW_SHORT_ID("tracks", "tracks", "d7e52f73-5ad0-413d-99b8-d118b950546d"));
-}
-
-const smf::MidiMetadataFeature& smf::target::SmfFormatFeature::getMidiMetadata() const {
-    return *m_metadata;
-}
-
-smf::MidiMetadataFeature& smf::target::SmfFormatFeature::getMidiMetadata() {
-    return *m_metadata;
-}
-
 smf::target::SmfFeature::SmfFeature(const babelwires::ProjectContext& projectContext)
     : babelwires::FileFeature(projectContext, SmfSourceFormat::getThisIdentifier()) {
-    m_formatFeature = addField(std::make_unique<SmfFormatFeature>(),
-                               BW_SHORT_ID("Format", "Format", "1f2eaefb-b48d-484d-8793-e14f2fa0193b"));
     m_smfTypeFeature = addField(std::make_unique<babelwires::SimpleValueFeature>(SmfType::getThisIdentifier()),
                               BW_SHORT_ID("Smf", "Format", "3c918862-5835-4cbf-ade6-af6f7ab7821d"));
-}
-
-int smf::target::SmfFormatFeature::getNumMidiTracks() const {
-    return babelwires::ArrayFeatureUtils::getArraySize(*m_midiTrackAndChannelArray);
-}
-
-const babelwires::ValueFeature& smf::target::SmfFormatFeature::getMidiTrack(int index) const {
-    return babelwires::ArrayFeatureUtils::getChild(*m_midiTrackAndChannelArray, index);
-}
-
-const smf::target::SmfFormatFeature& smf::target::SmfFeature::getFormatFeature() const {
-    return *m_formatFeature;
-}
-
-smf::target::SmfFormatFeature& smf::target::SmfFeature::getFormatFeature() {
-    return *m_formatFeature;
 }
 
 smf::SmfType::FeatureWrapper<const babelwires::ValueFeature> smf::target::SmfFeature::getSmfTypeFeature() const {
@@ -76,9 +41,4 @@ smf::SmfType::FeatureWrapper<const babelwires::ValueFeature> smf::target::SmfFea
 
 smf::SmfType::FeatureWrapper<babelwires::ValueFeature> smf::target::SmfFeature::getSmfTypeFeature() {
     return m_smfTypeFeature;
-}
-
-babelwires::Feature::Style smf::target::SmfFormatFeature::getStyle() const {
-    // Not collapsable and inlined.
-    return babelwires::Feature::Style::isInlined;
 }
