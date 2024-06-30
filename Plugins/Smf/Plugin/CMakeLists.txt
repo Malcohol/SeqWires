@@ -37,6 +37,7 @@ SET( SMFLIB_SRCS
 	Percussion/xgStandard1PercussionSet.cpp
 	smfFormat.cpp
 	smfParser.cpp
+	smfSequenceType.cpp
 	smfSourceModel.cpp
 	smfTargetModel.cpp
 	smfWriter.cpp
