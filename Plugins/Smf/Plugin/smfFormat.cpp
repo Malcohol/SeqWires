@@ -61,5 +61,5 @@ smf::SmfTargetFormat::createNewFeature(const babelwires::ProjectContext& project
 void smf::SmfTargetFormat::writeToFile(const babelwires::ProjectContext& projectContext,
                                        babelwires::UserLogger& userLogger, const babelwires::FileFeature& sequence,
                                        std::ostream& os) const {
-    writeToSmf(projectContext, userLogger, sequence.as<target::SmfFeature>()->getFormatFeature(), os);
+    writeToSmf(projectContext, userLogger, sequence.is<target::SmfFeature>(), os);
 }

@@ -29,8 +29,8 @@
 #include <Plugins/Smf/Plugin/Percussion/gsOrchestraPercussionSet.hpp>
 #include <Plugins/Smf/Plugin/Percussion/gsPowerPercussionSet.hpp>
 #include <Plugins/Smf/Plugin/Percussion/gsRoomPercussionSet.hpp>
-#include <Plugins/Smf/Plugin/Percussion/gsStandard1PercussionSet.hpp>
 #include <Plugins/Smf/Plugin/Percussion/gsSFXPercussionSet.hpp>
+#include <Plugins/Smf/Plugin/Percussion/gsStandard1PercussionSet.hpp>
 #include <Plugins/Smf/Plugin/Percussion/xgAnalogPercussionSet.hpp>
 #include <Plugins/Smf/Plugin/Percussion/xgBrushPercussionSet.hpp>
 #include <Plugins/Smf/Plugin/Percussion/xgClassicPercussionSet.hpp>
@@ -42,15 +42,25 @@
 #include <Plugins/Smf/Plugin/Percussion/xgSFX2PercussionSet.hpp>
 #include <Plugins/Smf/Plugin/Percussion/xgStandard1PercussionSet.hpp>
 #include <Plugins/Smf/Plugin/gmSpec.hpp>
+#include <Plugins/Smf/Plugin/midiChannel.hpp>
+#include <Plugins/Smf/Plugin/midiMetadata.hpp>
+#include <Plugins/Smf/Plugin/midiTrackAndChannel.hpp>
+#include <Plugins/Smf/Plugin/midiTrackAndChannelArray.hpp>
 #include <Plugins/Smf/Plugin/smfFormat.hpp>
+#include <Plugins/Smf/Plugin/smfTargetModel.hpp>
 
 void smf::registerLib(babelwires::ProjectContext& context) {
     // Formats
-    context.m_sourceFileFormatReg.addEntry(std::make_unique<smf::SmfSourceFormat>());
-    context.m_targetFileFormatReg.addEntry(std::make_unique<smf::SmfTargetFormat>());
+    context.m_sourceFileFormatReg.addEntry(std::make_unique<SmfSourceFormat>());
+    context.m_targetFileFormatReg.addEntry(std::make_unique<SmfTargetFormat>());
 
     // Types
-    context.m_typeSystem.addEntry<smf::GMSpecType>();
+    context.m_typeSystem.addEntry<GMSpecType>();
+    context.m_typeSystem.addEntry<MidiMetadata>();
+    context.m_typeSystem.addEntry<MidiChannel>();
+    context.m_typeSystem.addEntry<MidiTrackAndChannel>();
+    context.m_typeSystem.addEntry<MidiTrackAndChannelArray>();
+    context.m_typeSystem.addEntry<SmfSequenceType>();
 
     // Percussion types
     const seqwires::BuiltInPercussionInstruments& builtInPercussion =

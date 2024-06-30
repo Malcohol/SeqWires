@@ -15,7 +15,7 @@
 
 #include <SeqWiresLib/Features/tempoFeature.hpp>
 
-#include <Plugins/Smf/Plugin/smfModelCommon.hpp>
+#include <Plugins/Smf/Plugin/midiMetadata.hpp>
 
 namespace seqwires {
     class TrackFeature;
@@ -75,18 +75,15 @@ namespace smf {
             virtual int getNumMidiTracks() const = 0;
             virtual const ChannelGroup& getMidiTrack(int i) const = 0;
 
-            MidiMetadata& getMidiMetadata();
-            const MidiMetadata& getMidiMetadata() const;
+            MidiMetadataFeature& getMidiMetadata();
+            const MidiMetadataFeature& getMidiMetadata() const;
 
           protected:
             SmfFeature(const babelwires::ProjectContext& projectContext, Format f);
 
           protected:
             Format m_format;
-            MidiMetadata* m_metadata;
-            babelwires::StringFeature* m_sequenceName;
-            babelwires::StringFeature* m_copyright;
-            seqwires::TempoFeature* m_tempo;
+            MidiMetadataFeature* m_metadata;
         };
 
         /// All note data for each channel is mixed into one midi track.

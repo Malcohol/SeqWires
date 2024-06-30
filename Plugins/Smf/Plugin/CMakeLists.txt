@@ -1,10 +1,10 @@
 SET( SMFLIB_SRCS
 	libRegistration.cpp
-	smfSourceModel.cpp
-	smfTargetModel.cpp
-	smfModelCommon.cpp
-	smfWriter.cpp
-	smfParser.cpp
+	gmSpec.cpp
+	midiChannel.cpp
+	midiMetadata.cpp
+	midiTrackAndChannel.cpp
+	midiTrackAndChannelArray.cpp
 	Percussion/gmPercussionSet.cpp
 	Percussion/gm2AnalogPercussionSet.cpp
 	Percussion/gm2BrushPercussionSet.cpp
@@ -36,8 +36,12 @@ SET( SMFLIB_SRCS
 	Percussion/xgSFX2PercussionSet.cpp
 	Percussion/xgStandard1PercussionSet.cpp
 	smfFormat.cpp
-	gmSpec.cpp
-   )
+	smfParser.cpp
+	smfSequenceType.cpp
+	smfSourceModel.cpp
+	smfTargetModel.cpp
+	smfWriter.cpp
+	)
 
 ADD_LIBRARY( SmfLib ${SMFLIB_SRCS} )
 TARGET_INCLUDE_DIRECTORIES( SmfLib PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../../../BabelWires )

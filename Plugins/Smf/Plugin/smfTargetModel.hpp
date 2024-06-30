@@ -7,78 +7,23 @@
  **/
 #pragma once
 
-#include <BabelWiresLib/Features/arrayFeature.hpp>
+#include <Plugins/Smf/Plugin/smfSequenceType.hpp>
+
 #include <BabelWiresLib/FileFormat/fileFeature.hpp>
-#include <BabelWiresLib/Features/unionFeature.hpp>
-#include <BabelWiresLib/Types/Int/intFeature.hpp>
-
-#include <Plugins/Smf/Plugin/smfModelCommon.hpp>
-
-namespace seqwires {
-    class Track;
-    class TrackFeature;
-}
+#include <BabelWiresLib/Features/valueFeature.hpp>
 
 namespace smf {
     namespace target {
-        class ChannelTrackFeature;
-
-        /// A track and its MIDI channel number.
-        /// This can also act as a ChannelGroup containing one ChannelTrackFeature (itself).
-        class ChannelTrackFeature : public babelwires::RecordFeature {
-          public:
-            ChannelTrackFeature();
-
-            int getChannelNumber() const;
-            const seqwires::Track& getTrack() const;
-
-          public:
-            babelwires::IntFeature* m_channelNum;
-            seqwires::TrackFeature* m_trackFeature;
-        };
-
-        /// An array of tracks and their MIDI channels.
-        class ArrayChannelGroup : public babelwires::ArrayFeature {
-          public:
-            int getNumTracks() const;
-            const ChannelTrackFeature& getTrack(int i) const;
-
-          protected:
-            std::unique_ptr<Feature> createNextEntry() const override;
-            babelwires::Range<unsigned int> doGetSizeRange() const override;
-        };
-
-        /// This is a UnionFeature in expectation of exploiting a structural difference
-        /// between format 0 and 1 files. For now, the structure is the same.
-        class SmfFormatFeature : public babelwires::UnionFeature {
-          public:
-            SmfFormatFeature();
-
-            const MidiMetadata& getMidiMetadata() const;
-            MidiMetadata& getMidiMetadata();
-
-            // Convenience: Dispatches to the ArrayChannelGroup.
-            int getNumMidiTracks() const;
-            const ChannelTrackFeature& getMidiTrack(int i) const;
-
-            Style getStyle() const override;
-
-          protected:
-            MidiMetadata* m_metadata;
-            babelwires::StringFeature* m_sequenceName;
-            babelwires::StringFeature* m_copyright;
-            seqwires::TempoFeature* m_tempo;
-            ArrayChannelGroup* m_channelGroup;
-        };
-
         /// Common to all formats of SmfFeature.
         class SmfFeature : public babelwires::FileFeature {
           public:
             SmfFeature(const babelwires::ProjectContext& projectContext);
 
-            const SmfFormatFeature& getFormatFeature() const;
+            SmfSequenceType::Instance<const babelwires::ValueFeature> getSmfTypeFeature() const;
+            SmfSequenceType::Instance<babelwires::ValueFeature> getSmfTypeFeature();
+
           protected:
-            SmfFormatFeature* m_formatFeature;
+            babelwires::ValueFeature* m_smfTypeFeature;
         };
     } // namespace target
 } // namespace smf

@@ -1,14 +1,16 @@
 #include <gtest/gtest.h>
 
+#include <Plugins/Smf/Plugin/gmSpec.hpp>
 #include <Plugins/Smf/Plugin/libRegistration.hpp>
 #include <Plugins/Smf/Plugin/smfParser.hpp>
 #include <Plugins/Smf/Plugin/smfSourceModel.hpp>
 #include <Plugins/Smf/Plugin/smfTargetModel.hpp>
 #include <Plugins/Smf/Plugin/smfWriter.hpp>
+#include <Plugins/Smf/Plugin/midiTrackAndChannel.hpp>
 
-#include <SeqWiresLib/Types/Track/trackFeature.hpp>
 #include <SeqWiresLib/Types/Track/TrackEvents/noteEvents.hpp>
 #include <SeqWiresLib/Types/Track/TrackEvents/percussionEvents.hpp>
+#include <SeqWiresLib/Types/Track/trackFeature.hpp>
 #include <SeqWiresLib/Utilities/filteredTrackIterator.hpp>
 #include <SeqWiresLib/libRegistration.hpp>
 
@@ -23,7 +25,7 @@
 
 namespace {
     struct PercussionTestData {
-        const char* m_specificationId;
+        smf::GMSpecType::Value m_specificationId;
         babelwires::ShortId m_instrumentId0;
         babelwires::ShortId m_instrumentId1;
         babelwires::ShortId m_instrumentId2;
@@ -39,34 +41,18 @@ TEST_P(SmfStandardPercussionTest, saveLoad) {
 
     const PercussionTestData& testData = GetParam();
 
-    testUtils::TempFilePath tempFile("standardPercussion.mid", testData.m_specificationId);
+    testUtils::TempFilePath tempFile("standardPercussion.mid",
+                                     smf::GMSpecType::getIdentifierFromValue(testData.m_specificationId).toString());
 
     {
         smf::target::SmfFeature smfFeature(testEnvironment.m_projectContext);
         smfFeature.setToDefault();
 
-        auto* smfFormatFeature =
-            smfFeature.getChildFromStep(babelwires::PathStep("Format")).as<smf::target::SmfFormatFeature>();
-        ASSERT_NE(smfFormatFeature, nullptr);
+        auto smfType = smfFeature.getSmfTypeFeature();
+        smfType.getMeta().getSpec().set(testData.m_specificationId);
 
-        smfFormatFeature->getMidiMetadata().getSpecFeature()->set(babelwires::ShortId(testData.m_specificationId));
-
-        auto* tracks =
-            smfFormatFeature->getChildFromStep(babelwires::PathStep("tracks")).as<babelwires::ArrayFeature>();
-
-        EXPECT_EQ(tracks->getNumFeatures(), 1);
-
-        auto* channelTrack = tracks->getFeature(0)->as<babelwires::RecordFeature>();
-        ASSERT_NE(channelTrack, nullptr);
-        EXPECT_EQ(channelTrack->getNumFeatures(), 2);
-
-        auto* channelFeature =
-            channelTrack->getChildFromStep(babelwires::PathStep("Chan")).as<babelwires::IntFeature>();
-        channelFeature->set(9);
-
-        ASSERT_NE(tracks, nullptr);
-
-        auto* trackFeature = channelTrack->getChildFromStep(babelwires::PathStep("Track")).as<seqwires::TrackFeature>();
+        auto trackAndChan = smfType.getTracks().getEntry(0);
+        trackAndChan.getChan().set(9);
 
         seqwires::Track track;
 
@@ -77,10 +63,10 @@ TEST_P(SmfStandardPercussionTest, saveLoad) {
         track.addEvent(seqwires::PercussionOnEvent{0, testData.m_instrumentId2});
         track.addEvent(seqwires::PercussionOffEvent{babelwires::Rational(1, 4), testData.m_instrumentId2});
 
-        trackFeature->set(std::move(track));
+        trackAndChan.getTrack().set(std::move(track));
 
         std::ofstream os = tempFile.openForWriting(std::ios_base::binary);
-        smf::writeToSmf(testEnvironment.m_projectContext, testEnvironment.m_log, smfFeature.getFormatFeature(), os);
+        smf::writeToSmf(testEnvironment.m_projectContext, testEnvironment.m_log, smfFeature, os);
     }
 
     {
@@ -91,8 +77,8 @@ TEST_P(SmfStandardPercussionTest, saveLoad) {
         auto smfFeature = feature.get()->as<const smf::source::Format0SmfFeature>();
         ASSERT_NE(smfFeature, nullptr);
 
-        EXPECT_EQ(smfFeature->getMidiMetadata().getSpecFeature()->get(),
-                  babelwires::ShortId(testData.m_specificationId));
+        const auto& metadata = smf::MidiMetadata::Instance<const babelwires::ValueFeature>(smfFeature->getMidiMetadata());
+        EXPECT_EQ(metadata.getSpec().get(), testData.m_specificationId);
 
         EXPECT_EQ(smfFeature->getNumMidiTracks(), 1);
         const auto& channelGroup = dynamic_cast<const smf::source::RecordChannelGroup&>(smfFeature->getMidiTrack(0));
@@ -133,41 +119,42 @@ TEST_P(SmfStandardPercussionTest, saveLoad) {
 }
 
 // The set should be automatically selected based on the standard and instruments.
-INSTANTIATE_TEST_SUITE_P(PercussionTest, SmfStandardPercussionTest,
-                         testing::Values(PercussionTestData{"GM", "AcBass", "HMTom", "OTrian"},   // GM Percussion
-                                         PercussionTestData{"GM2", "HighQ", "HMTom", "OSurdo"},   // Standard percussion
-                                         PercussionTestData{"GM2", "AcBass", "RLwTm2", "RHiTm1"}, // Room set
-                                         PercussionTestData{"GM2", "PKick", "PLwTm2", "PHiTm1"},  // Power set
-                                         PercussionTestData{"GM2", "ElBass", "ElSnr2", "RevCym"}, // Electronic set
-                                         PercussionTestData{"GM2", "ARmSht", "Tamb", "AClavs"},   // Analog set
-                                         PercussionTestData{"GM2", "JKick2", "HMTom", "OTrian"},  // Jazz set
-                                         PercussionTestData{"GM2", "BrTap", "BrSlap", "BrSwrL"},  // Brush set
-                                         PercussionTestData{"GM2", "TimpF", "Timpc", "Aplaus"},   // Orchestra set
-                                         PercussionTestData{"GM2", "GFret", "Bubble", "Dog"},     // SFX set
-                                         PercussionTestData{"GS", "SnrRll", "FngSnp", "AcBass"},  // GS Standard 1 set
-                                         PercussionTestData{"GS", "SnrRll", "RLwTm2", "RHiTm1"},  // GS Room set
-                                         PercussionTestData{"GS", "SnrRll", "PLwTm2", "PHiTm1"},  // GS Power set
-                                         PercussionTestData{"GS", "SnrRll", "ELwTm2", "RevCym"},  // GS Electronic set
-                                         PercussionTestData{"GS", "Bs909", "ELwTm2", "Bs808"},    // GS 808/909 set
-                                         PercussionTestData{"GS", "SnrRll", "JKick1", "JKick2"},  // GS Jazz set
-                                         PercussionTestData{"GS", "SnrRll", "JKick2", "BrTap"},   // GS Jazz set
-                                         PercussionTestData{"GS", "TimpF", "Timpc", "Aplaus"},    // GS Orchestra set
-                                         PercussionTestData{"GS", "Laugh", "Jetpln", "Aplaus"},   // GS SFX set
-                                         PercussionTestData{"XG", "SnrRll", "RimSht", "BeepLo"},  // XG Standard 1 set
-                                         PercussionTestData{"XG", "SnrRll", "RLwTm2", "BeepLo"},  // XG Room set
-                                         PercussionTestData{"XG", "PKick", "PLwTm1", "BeepLo"},   // XG Rock set
-                                         PercussionTestData{"XG", "PKick", "ELwTm1", "RevCym"},   // XG Electro set
-                                         PercussionTestData{"XG", "AnBass", "AMdTm2", "RevCym"},  // XG Analog set
-                                         PercussionTestData{"XG", "JKick1", "ClHHat", "OpHHat"},  // XG Jazz set
-                                         PercussionTestData{"XG", "JKick2", "BrTap", "BrSlap"},   // XG Brush set
-                                         PercussionTestData{"XG", "CnBD1", "CnCym2", "CnBD2"},    // XG Classic set
-                                         PercussionTestData{"XG", "PckScr", "Thnder", "XgMaou"},  // XG SFX1 set
-                                         PercussionTestData{"XG", "DoorCr", "Aplaus", "XgCstr"}   // XG SFX2 set
-                                         ));
+INSTANTIATE_TEST_SUITE_P(
+    PercussionTest, SmfStandardPercussionTest,
+    testing::Values(PercussionTestData{smf::GMSpecType::Value::GM, "AcBass", "HMTom", "OTrian"}, // GM Percussion
+                    PercussionTestData{smf::GMSpecType::Value::GM2, "HighQ", "HMTom", "OSurdo"}, // Standard percussion
+                    PercussionTestData{smf::GMSpecType::Value::GM2, "AcBass", "RLwTm2", "RHiTm1"}, // Room set
+                    PercussionTestData{smf::GMSpecType::Value::GM2, "PKick", "PLwTm2", "PHiTm1"},  // Power set
+                    PercussionTestData{smf::GMSpecType::Value::GM2, "ElBass", "ElSnr2", "RevCym"}, // Electronic set
+                    PercussionTestData{smf::GMSpecType::Value::GM2, "ARmSht", "Tamb", "AClavs"},   // Analog set
+                    PercussionTestData{smf::GMSpecType::Value::GM2, "JKick2", "HMTom", "OTrian"},  // Jazz set
+                    PercussionTestData{smf::GMSpecType::Value::GM2, "BrTap", "BrSlap", "BrSwrL"},  // Brush set
+                    PercussionTestData{smf::GMSpecType::Value::GM2, "TimpF", "Timpc", "Aplaus"},   // Orchestra set
+                    PercussionTestData{smf::GMSpecType::Value::GM2, "GFret", "Bubble", "Dog"},     // SFX set
+                    PercussionTestData{smf::GMSpecType::Value::GS, "SnrRll", "FngSnp", "AcBass"},  // GS Standard 1 set
+                    PercussionTestData{smf::GMSpecType::Value::GS, "SnrRll", "RLwTm2", "RHiTm1"},  // GS Room set
+                    PercussionTestData{smf::GMSpecType::Value::GS, "SnrRll", "PLwTm2", "PHiTm1"},  // GS Power set
+                    PercussionTestData{smf::GMSpecType::Value::GS, "SnrRll", "ELwTm2", "RevCym"},  // GS Electronic set
+                    PercussionTestData{smf::GMSpecType::Value::GS, "Bs909", "ELwTm2", "Bs808"},    // GS 808/909 set
+                    PercussionTestData{smf::GMSpecType::Value::GS, "SnrRll", "JKick1", "JKick2"},  // GS Jazz set
+                    PercussionTestData{smf::GMSpecType::Value::GS, "SnrRll", "JKick2", "BrTap"},   // GS Jazz set
+                    PercussionTestData{smf::GMSpecType::Value::GS, "TimpF", "Timpc", "Aplaus"},    // GS Orchestra set
+                    PercussionTestData{smf::GMSpecType::Value::GS, "Laugh", "Jetpln", "Aplaus"},   // GS SFX set
+                    PercussionTestData{smf::GMSpecType::Value::XG, "SnrRll", "RimSht", "BeepLo"},  // XG Standard 1 set
+                    PercussionTestData{smf::GMSpecType::Value::XG, "SnrRll", "RLwTm2", "BeepLo"},  // XG Room set
+                    PercussionTestData{smf::GMSpecType::Value::XG, "PKick", "PLwTm1", "BeepLo"},   // XG Rock set
+                    PercussionTestData{smf::GMSpecType::Value::XG, "PKick", "ELwTm1", "RevCym"},   // XG Electro set
+                    PercussionTestData{smf::GMSpecType::Value::XG, "AnBass", "AMdTm2", "RevCym"},  // XG Analog set
+                    PercussionTestData{smf::GMSpecType::Value::XG, "JKick1", "ClHHat", "OpHHat"},  // XG Jazz set
+                    PercussionTestData{smf::GMSpecType::Value::XG, "JKick2", "BrTap", "BrSlap"},   // XG Brush set
+                    PercussionTestData{smf::GMSpecType::Value::XG, "CnBD1", "CnCym2", "CnBD2"},    // XG Classic set
+                    PercussionTestData{smf::GMSpecType::Value::XG, "PckScr", "Thnder", "XgMaou"},  // XG SFX1 set
+                    PercussionTestData{smf::GMSpecType::Value::XG, "DoorCr", "Aplaus", "XgCstr"}   // XG SFX2 set
+                    ));
 
 namespace {
     struct TrackAllocationTestData {
-        const char* m_specificationId;
+        smf::GMSpecType::Value m_specificationId;
         std::vector<babelwires::ShortId> m_instrumentsInChannel[3];
         bool m_hasNotes[3];
         // The events expected to appear in channels 8, 9 and 10.
@@ -184,34 +171,20 @@ TEST_P(SmfTrackAllocationPercussionTest, trackAllocation) {
 
     const TrackAllocationTestData& testData = GetParam();
 
-    testUtils::TempFilePath tempFile("smfPercussionTrackAllocation.mid", testData.m_specificationId);
+    testUtils::TempFilePath tempFile("smfPercussionTrackAllocation.mid",
+                                     smf::GMSpecType::getIdentifierFromValue(testData.m_specificationId).toString());
 
     {
         smf::target::SmfFeature smfFeature(testEnvironment.m_projectContext);
         smfFeature.setToDefault();
 
-        auto* smfFormatFeature =
-            smfFeature.getChildFromStep(babelwires::PathStep("Format")).as<smf::target::SmfFormatFeature>();
-        ASSERT_NE(smfFormatFeature, nullptr);
-
-        smfFormatFeature->getMidiMetadata().getSpecFeature()->set(babelwires::ShortId(testData.m_specificationId));
-
-        auto* tracks =
-            smfFormatFeature->getChildFromStep(babelwires::PathStep("tracks")).as<babelwires::ArrayFeature>();
-
-        tracks->setSize(3);
+        smfFeature.getSmfTypeFeature().getMeta().getSpec().set(testData.m_specificationId);
+        auto tracks = smfFeature.getSmfTypeFeature().getTracks();
+        tracks.setSize(3);
 
         for (int i = 0; i < 3; ++i) {
-            auto* channelTrack = tracks->getFeature(i)->as<babelwires::RecordFeature>();
-            ASSERT_NE(channelTrack, nullptr);
-            EXPECT_EQ(channelTrack->getNumFeatures(), 2);
-
-            auto* channelFeature =
-                channelTrack->getChildFromStep(babelwires::PathStep("Chan")).as<babelwires::IntFeature>();
-            channelFeature->set(8 + i);
-
-            auto* trackFeature =
-                channelTrack->getChildFromStep(babelwires::PathStep("Track")).as<seqwires::TrackFeature>();
+            auto midiTrackAndChannel = tracks.getEntry(i);
+            midiTrackAndChannel.getChan().set(8+i);
 
             seqwires::Track track;
 
@@ -223,11 +196,11 @@ TEST_P(SmfTrackAllocationPercussionTest, trackAllocation) {
                 track.addEvent(seqwires::PercussionOffEvent{babelwires::Rational(1, 4), instrument});
             }
 
-            trackFeature->set(std::move(track));
+            midiTrackAndChannel.getTrack().set(std::move(track));
         }
 
         std::ofstream os = tempFile.openForWriting(std::ios_base::binary);
-        smf::writeToSmf(testEnvironment.m_projectContext, testEnvironment.m_log, smfFeature.getFormatFeature(), os);
+        smf::writeToSmf(testEnvironment.m_projectContext, testEnvironment.m_log, smfFeature, os);
     }
 
     {
@@ -238,8 +211,8 @@ TEST_P(SmfTrackAllocationPercussionTest, trackAllocation) {
         auto smfFeature = feature.get()->as<const smf::source::Format0SmfFeature>();
         ASSERT_NE(smfFeature, nullptr);
 
-        EXPECT_EQ(smfFeature->getMidiMetadata().getSpecFeature()->get(),
-                  babelwires::ShortId(testData.m_specificationId));
+        const auto& metadata = smf::MidiMetadata::Instance<const babelwires::ValueFeature>(smfFeature->getMidiMetadata());
+        EXPECT_EQ(metadata.getSpec().get(), testData.m_specificationId);
 
         EXPECT_EQ(smfFeature->getNumMidiTracks(), 1);
         const auto& channelGroup = dynamic_cast<const smf::source::RecordChannelGroup&>(smfFeature->getMidiTrack(0));
@@ -277,36 +250,33 @@ TEST_P(SmfTrackAllocationPercussionTest, trackAllocation) {
 // full standard)
 INSTANTIATE_TEST_SUITE_P(
     PercussionTest, SmfTrackAllocationPercussionTest,
-    testing::Values(TrackAllocationTestData{"GM",
+    testing::Values(TrackAllocationTestData{smf::GMSpecType::Value::GM,
                                             {{"AcBass", "HMTom", "OTrian"},
                                              {"AcBass", "HMTom", "OTrian"},
                                              {"AcBass", "HMTom", "OTrian"}},
                                             {true, false, true},
                                             {{}, {"AcBass", "HMTom", "OTrian"}, {}}},
-                    TrackAllocationTestData{
-                        "GM2",
+                    TrackAllocationTestData{smf::GMSpecType::Value::GM2,
                         {{"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}},
                         {true, false, false},
                         {{}, {"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}}},
-                    TrackAllocationTestData{"GM2",
+                    TrackAllocationTestData{smf::GMSpecType::Value::GM2,
                                             {{"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}, {}},
                                             {true, false, true},
                                             {{}, {"AcBass", "HMTom", "OTrian"}, {}}},
-                    TrackAllocationTestData{
-                        "GS",
+                    TrackAllocationTestData{smf::GMSpecType::Value::GS,
                         {{"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}},
                         {true, false, false},
                         {{}, {"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}}},
-                    TrackAllocationTestData{"GS",
+                    TrackAllocationTestData{smf::GMSpecType::Value::GS,
                                             {{"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}, {}},
                                             {true, false, true},
                                             {{}, {"AcBass", "HMTom", "OTrian"}, {}}},
-                    TrackAllocationTestData{
-                        "XG",
+                    TrackAllocationTestData{smf::GMSpecType::Value::XG,
                         {{"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}},
                         {false, false, false},
                         {{"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}}},
-                    TrackAllocationTestData{"XG",
+                    TrackAllocationTestData{smf::GMSpecType::Value::XG,
                                             {{"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}, {}},
                                             {false, false, true},
                                             {{"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}, {}}}));

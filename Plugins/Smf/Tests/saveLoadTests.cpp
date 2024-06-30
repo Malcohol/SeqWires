@@ -1,16 +1,19 @@
 #include <gtest/gtest.h>
 
 #include <Plugins/Smf/Plugin/libRegistration.hpp>
+#include <Plugins/Smf/Plugin/midiTrackAndChannel.hpp>
+#include <Plugins/Smf/Plugin/midiTrackAndChannelArray.hpp>
 #include <Plugins/Smf/Plugin/smfParser.hpp>
 #include <Plugins/Smf/Plugin/smfSourceModel.hpp>
 #include <Plugins/Smf/Plugin/smfTargetModel.hpp>
 #include <Plugins/Smf/Plugin/smfWriter.hpp>
 
-#include <SeqWiresLib/Types/Track/trackFeature.hpp>
 #include <SeqWiresLib/Types/Track/TrackEvents/noteEvents.hpp>
+#include <SeqWiresLib/Types/Track/trackFeature.hpp>
 #include <SeqWiresLib/libRegistration.hpp>
 
 #include <BabelWiresLib/libRegistration.hpp>
+#include <BabelWiresLib/Instance/arrayTypeInstance.hpp>
 
 #include <Common/IO/fileDataSource.hpp>
 
@@ -32,30 +35,17 @@ TEST(SmfSaveLoadTest, cMajorScale) {
         smf::target::SmfFeature smfFeature(testEnvironment.m_projectContext);
         smfFeature.setToDefault();
 
-        auto* tracks = babelwires::FeaturePath::deserializeFromString("Format/tracks")
-                           .follow(smfFeature)
-                           .as<babelwires::ArrayFeature>();
-        ASSERT_NE(tracks, nullptr);
-        EXPECT_EQ(tracks->getNumFeatures(), 1);
-
-        auto* channelTrack = tracks->getFeature(0)->as<babelwires::RecordFeature>();
-        ASSERT_NE(channelTrack, nullptr);
-        EXPECT_EQ(channelTrack->getNumFeatures(), 2);
-
-        auto* channelFeature =
-            channelTrack->getChildFromStep(babelwires::PathStep("Chan")).as<babelwires::IntFeature>();
-        channelFeature->set(2);
-
-        auto* trackFeature = channelTrack->getChildFromStep(babelwires::PathStep("Track")).as<seqwires::TrackFeature>();
+        auto smfType = smfFeature.getSmfTypeFeature();
+        auto tracks = smfType.getTracks();
+        auto trackAndChan = tracks.getEntry(0);
+        trackAndChan.getChan().set(2);
 
         seqwires::Track track;
-
         testUtils::addSimpleNotes(pitches, track);
-
-        trackFeature->set(std::move(track));
+        trackAndChan.getTrack().set(std::move(track));
 
         std::ofstream os = tempFile.openForWriting(std::ios_base::binary);
-        smf::writeToSmf(testEnvironment.m_projectContext, testEnvironment.m_log, smfFeature.getFormatFeature(), os);
+        smf::writeToSmf(testEnvironment.m_projectContext, testEnvironment.m_log, smfFeature, os);
     }
 
     {
@@ -81,32 +71,34 @@ namespace {
 
     enum MetadataFlags { HAS_SEQUENCE_NAME = 0b001, HAS_COPYRIGHT = 0b010, HAS_TEMPO = 0b100 };
 
-    void addMetadata(smf::target::SmfFormatFeature& smfFeature, std::uint8_t flags) {
-        auto* metadata = smfFeature.getChildFromStep(babelwires::PathStep("Meta")).as<smf::MidiMetadata>();
+    void addMetadata(smf::target::SmfFeature& smfFeature, std::uint8_t flags) {
+        auto metadata = smfFeature.getSmfTypeFeature().getMeta();
+
         if (flags & HAS_SEQUENCE_NAME) {
-            metadata->getActivatedSequenceName().set("Test Sequence Name");
+            metadata.activateAndGetName().set("Test Sequence Name");
         }
         if (flags & HAS_COPYRIGHT) {
-            metadata->getActivatedCopyright().set("(C)2021 Test Copyright");
+            metadata.activateAndGetCopyR().set("(C)2021 Test Copyright");
         }
         if (flags & HAS_TEMPO) {
-            metadata->getActivatedTempoFeature().set(100);
+            metadata.activateAndGetTempo().set(100);
         }
     }
 
     void checkMetadata(const smf::source::SmfFeature& smfFeature, std::uint8_t flags) {
-        const auto* metadata = smfFeature.getChildFromStep(babelwires::PathStep("Meta")).as<smf::MidiMetadata>();
+        const auto& metadata = smf::MidiMetadata::Instance<const babelwires::ValueFeature>(smfFeature.getMidiMetadata());
+        
         if (flags & HAS_SEQUENCE_NAME) {
-            ASSERT_NE(metadata->getSequenceName(), nullptr);
-            EXPECT_EQ(metadata->getSequenceName()->get(), "Test Sequence Name");
+            ASSERT_TRUE(metadata.tryGetName());
+            EXPECT_EQ(metadata.tryGetName()->get(), "Test Sequence Name");
         }
         if (flags & HAS_COPYRIGHT) {
-            ASSERT_NE(metadata->getCopyright(), nullptr);
-            EXPECT_EQ(metadata->getCopyright()->get(), "(C)2021 Test Copyright");
+            ASSERT_TRUE(metadata.tryGetCopyR());
+            EXPECT_EQ(metadata.tryGetCopyR()->get(), "(C)2021 Test Copyright");
         }
         if (flags & HAS_TEMPO) {
-            ASSERT_NE(metadata->getTempoFeature(), nullptr);
-            EXPECT_EQ(metadata->getTempoFeature()->get(), 100);
+            ASSERT_TRUE(metadata.tryGetTempo());
+            EXPECT_EQ(metadata.tryGetTempo()->get(), 100);
         }
     }
 } // namespace
@@ -124,36 +116,19 @@ TEST(SmfSaveLoadTest, cMajorScaleWithMetadata) {
             smf::target::SmfFeature smfFeature(testEnvironment.m_projectContext);
             smfFeature.setToDefault();
 
-            auto* smfFormatFeature =
-                smfFeature.getChildFromStep(babelwires::PathStep("Format")).as<smf::target::SmfFormatFeature>();
-            ASSERT_NE(smfFormatFeature, nullptr);
+            addMetadata(smfFeature, metadata);
 
-            addMetadata(*smfFormatFeature, metadata);
-
-            auto* tracks =
-                smfFormatFeature->getChildFromStep(babelwires::PathStep("tracks")).as<babelwires::ArrayFeature>();
-            ASSERT_NE(tracks, nullptr);
-            EXPECT_EQ(tracks->getNumFeatures(), 1);
-
-            auto* channelTrack = tracks->getFeature(0)->as<babelwires::RecordFeature>();
-            ASSERT_NE(channelTrack, nullptr);
-            EXPECT_EQ(channelTrack->getNumFeatures(), 2);
-
-            auto* channelFeature =
-                channelTrack->getChildFromStep(babelwires::PathStep("Chan")).as<babelwires::IntFeature>();
-            channelFeature->set(2);
-
-            auto* trackFeature =
-                channelTrack->getChildFromStep(babelwires::PathStep("Track")).as<seqwires::TrackFeature>();
+            auto smfType = smfFeature.getSmfTypeFeature();
+            auto tracks = smfType.getTracks();
+            auto trackAndChan = tracks.getEntry(0);
+            trackAndChan.getChan().set(2);
 
             seqwires::Track track;
-
             testUtils::addSimpleNotes(pitches, track);
-
-            trackFeature->set(std::move(track));
+            trackAndChan.getTrack().set(std::move(track));
 
             std::ofstream os = tempFile.openForWriting(std::ios_base::binary);
-            smf::writeToSmf(testEnvironment.m_projectContext, testEnvironment.m_log, smfFeature.getFormatFeature(), os);
+            smf::writeToSmf(testEnvironment.m_projectContext, testEnvironment.m_log, smfFeature, os);
         }
 
         babelwires::FileDataSource midiFile(tempFile);
@@ -193,30 +168,20 @@ TEST(SmfSaveLoadTest, format0Chords) {
         smf::target::SmfFeature smfFeature(testEnvironment.m_projectContext);
         smfFeature.setToDefault();
 
-        auto* tracks = babelwires::FeaturePath::deserializeFromString("Format/tracks")
-                           .follow(smfFeature)
-                           .as<babelwires::ArrayFeature>();
-        ASSERT_NE(tracks, nullptr);
-        tracks->addEntry();
-        tracks->addEntry();
-        EXPECT_EQ(tracks->getNumFeatures(), 3);
+        auto smfType = smfFeature.getSmfTypeFeature();
+        auto tracks = smfType.getTracks();
+        tracks.setSize(3);
 
         for (int i = 0; i < 3; ++i) {
-            auto* channelTrack = tracks->getFeature(i)->as<babelwires::RecordFeature>();
-            ASSERT_NE(channelTrack, nullptr);
-            EXPECT_EQ(channelTrack->getNumFeatures(), 2);
-            auto* channelFeature =
-                channelTrack->getChildFromStep(babelwires::PathStep("Chan")).as<babelwires::IntFeature>();
-            channelFeature->set(i);
-            auto* trackFeature =
-                channelTrack->getChildFromStep(babelwires::PathStep("Track")).as<seqwires::TrackFeature>();
+            auto trackAndChan = tracks.getEntry(i);
+            trackAndChan.getChan().set(i);
             seqwires::Track track;
             testUtils::addSimpleNotes(chordPitches[i], track);
-            trackFeature->set(std::move(track));
+            trackAndChan.getTrack().set(std::move(track));
         }
 
         std::ofstream os = tempFile.openForWriting(std::ios_base::binary);
-        smf::writeToSmf(testEnvironment.m_projectContext, testEnvironment.m_log, smfFeature.getFormatFeature(), os);
+        smf::writeToSmf(testEnvironment.m_projectContext, testEnvironment.m_log, smfFeature, os);
     }
 
     {
@@ -253,36 +218,21 @@ TEST(SmfSaveLoadTest, format1Chords) {
         smf::target::SmfFeature smfFeature(testEnvironment.m_projectContext);
         smfFeature.setToDefault();
 
-        auto* smfFormatFeature =
-            smfFeature.getChildFromStep(babelwires::PathStep("Format")).as<smf::target::SmfFormatFeature>();
-        ASSERT_NE(smfFormatFeature, nullptr);
-
-        smfFormatFeature->selectTag("SMF1");
-
-        auto* tracks =
-            smfFormatFeature->getChildFromStep(babelwires::PathStep("tracks")).as<babelwires::ArrayFeature>();
-
-        ASSERT_NE(tracks, nullptr);
-        tracks->addEntry();
-        tracks->addEntry();
-        EXPECT_EQ(tracks->getNumFeatures(), 3);
+        auto smfType = smfFeature.getSmfTypeFeature();
+        smfType.selectTag("SMF1");
+        auto tracks = smfType.getTracks();
+        tracks.setSize(3);
 
         for (int i = 0; i < 3; ++i) {
-            auto* channelTrack = tracks->getFeature(i)->as<babelwires::RecordFeature>();
-            ASSERT_NE(channelTrack, nullptr);
-            EXPECT_EQ(channelTrack->getNumFeatures(), 2);
-            auto* channelFeature =
-                channelTrack->getChildFromStep(babelwires::PathStep("Chan")).as<babelwires::IntFeature>();
-            channelFeature->set(i);
-            auto* trackFeature =
-                channelTrack->getChildFromStep(babelwires::PathStep("Track")).as<seqwires::TrackFeature>();
+            auto trackAndChan = tracks.getEntry(i);
+            trackAndChan.getChan().set(i);
             seqwires::Track track;
             testUtils::addSimpleNotes(chordPitches[i], track);
-            trackFeature->set(std::move(track));
+            trackAndChan.getTrack().set(std::move(track));
         }
 
         std::ofstream os = tempFile.openForWriting(std::ios_base::binary);
-        smf::writeToSmf(testEnvironment.m_projectContext, testEnvironment.m_log, smfFeature.getFormatFeature(), os);
+        smf::writeToSmf(testEnvironment.m_projectContext, testEnvironment.m_log, smfFeature, os);
     }
 
     {

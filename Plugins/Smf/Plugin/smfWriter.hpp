@@ -29,7 +29,7 @@ namespace smf {
     class SmfWriter {
       public:
         SmfWriter(const babelwires::ProjectContext& projectContext, babelwires::UserLogger& userLogger,
-                  const target::SmfFormatFeature& sequence, std::ostream& output);
+                  const target::SmfFeature& sequence, std::ostream& output);
 
         void write();
 
@@ -53,12 +53,15 @@ namespace smf {
         /// type is the integer 0..15 which defines which type of text meta-event should be issued.
         void writeTextMetaEvent(int type, std::string text);
 
-        void writeNotes(const std::vector<const target::ChannelTrackFeature*>& tracks);
+        // TODO It should be easier to express this.
+        using MidiTrackAndChannelInstance = MidiTrackAndChannel::Instance<const babelwires::ValueFeature>;
+
+        void writeNotes(const std::vector<MidiTrackAndChannelInstance>& tracks);
 
         void writeHeaderChunk();
 
         /// Write the events for the given track.
-        void writeTrack(const std::vector<const target::ChannelTrackFeature*>* tracks, bool includeGlobalSetup);
+        void writeTrack(const std::vector<MidiTrackAndChannelInstance>& tracks, bool includeGlobalSetup);
 
         /// Write non-channel-specific setup information.
         void writeGlobalSetup();
@@ -73,7 +76,7 @@ namespace smf {
       private:
         const babelwires::ProjectContext& m_projectContext;
         babelwires::UserLogger& m_userLogger;
-        const target::SmfFormatFeature& m_smfFormatFeature;
+        const target::SmfFeature& m_smfFeature;
         std::ostream& m_ostream;
         std::ostream* m_os;
         /// Always use metrical time. Quater-note division.
@@ -95,6 +98,6 @@ namespace smf {
     };
 
     void writeToSmf(const babelwires::ProjectContext& projectContext, babelwires::UserLogger& userLogger,
-                    const target::SmfFormatFeature& smfFormatFeature, std::ostream& output);
+                    const target::SmfFeature& smfFeature, std::ostream& output);
 
 } // namespace smf
