@@ -57,7 +57,7 @@ TEST(SmfTestSuiteTest, cMajorScale) {
     auto smfFeature = feature.get()->as<const smf::source::Format0SmfFeature>();
     ASSERT_NE(smfFeature, nullptr);
 
-    const auto& metadata = smf::MidiMetadata::Instance<const babelwires::ValueFeature>(&smfFeature->getMidiMetadata());
+    const auto& metadata = smf::MidiMetadata::Instance<const babelwires::ValueFeature>(smfFeature->getMidiMetadata());
     ASSERT_TRUE(metadata.tryGetName().has_value());
     EXPECT_EQ(metadata.tryGetName()->get(), "C Major Scale Test");
     ASSERT_TRUE(metadata.tryGetCopyR().has_value());
@@ -91,7 +91,7 @@ TEST(SmfTestSuiteTest, multichannelChords0) {
     auto smfFeature = feature.get()->as<const smf::source::Format0SmfFeature>();
     ASSERT_NE(smfFeature, nullptr);
 
-    const auto& metadata = smf::MidiMetadata::Instance<const babelwires::ValueFeature>(&smfFeature->getMidiMetadata());
+    const auto& metadata = smf::MidiMetadata::Instance<const babelwires::ValueFeature>(smfFeature->getMidiMetadata());
     ASSERT_TRUE(metadata.tryGetName().has_value());
     EXPECT_EQ(metadata.tryGetName()->get(), "Multi-channel chords Test 0");
 
@@ -126,7 +126,7 @@ TEST(SmfTestSuiteTest, multichannelChords1) {
     auto smfFeature = feature.get()->as<const smf::source::Format1SmfFeature>();
     ASSERT_NE(smfFeature, nullptr);
 
-    const auto& metadata = smf::MidiMetadata::Instance<const babelwires::ValueFeature>(&smfFeature->getMidiMetadata());
+    const auto& metadata = smf::MidiMetadata::Instance<const babelwires::ValueFeature>(smfFeature->getMidiMetadata());
     ASSERT_TRUE(metadata.tryGetName().has_value());
     EXPECT_EQ(metadata.tryGetName()->get(), "Multi-channel chords Test 1");
 
@@ -168,7 +168,7 @@ TEST(SmfTestSuiteTest, multichannelChords2) {
     auto smfFeature = feature.get()->as<const smf::source::Format1SmfFeature>();
     ASSERT_NE(smfFeature, nullptr);
     
-    const auto& metadata = smf::MidiMetadata::Instance<const babelwires::ValueFeature>(&smfFeature->getMidiMetadata());
+    const auto& metadata = smf::MidiMetadata::Instance<const babelwires::ValueFeature>(smfFeature->getMidiMetadata());
     ASSERT_TRUE(metadata.tryGetName().has_value());
     EXPECT_EQ(metadata.tryGetName()->get(), "Multi-channel chords Test 2");
 
@@ -224,7 +224,7 @@ TEST(SmfTestSuiteTest, multichannelChords3) {
     auto smfFeature = feature.get()->as<const smf::source::Format1SmfFeature>();
     ASSERT_NE(smfFeature, nullptr);
 
-    const auto& metadata = smf::MidiMetadata::Instance<const babelwires::ValueFeature>(&smfFeature->getMidiMetadata());
+    const auto& metadata = smf::MidiMetadata::Instance<const babelwires::ValueFeature>(smfFeature->getMidiMetadata());
     ASSERT_TRUE(metadata.tryGetName().has_value());
     EXPECT_EQ(metadata.tryGetName()->get(), "Multi-channel chords Test 3");
 
@@ -290,7 +290,7 @@ TEST(SmfTestSuiteTest, tempoTest) {
     auto smfFeature = feature.get()->as<const smf::source::Format1SmfFeature>();
     ASSERT_NE(smfFeature, nullptr);
 
-    const auto& metadata = smf::MidiMetadata::Instance<const babelwires::ValueFeature>(&smfFeature->getMidiMetadata());
+    const auto& metadata = smf::MidiMetadata::Instance<const babelwires::ValueFeature>(smfFeature->getMidiMetadata());
     ASSERT_TRUE(metadata.tryGetName().has_value());
     EXPECT_EQ(metadata.tryGetName()->get(), "Karaoke .KAR Test");
     ASSERT_TRUE(metadata.tryGetTempo().has_value());

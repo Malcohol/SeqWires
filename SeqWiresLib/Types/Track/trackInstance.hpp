@@ -18,17 +18,15 @@ namespace babelwires {
         requires std::is_base_of_v<seqwires::TrackType, TRACK_TYPE>
     class Instance<VALUE_FEATURE, TRACK_TYPE> : public InstanceCommonBase<VALUE_FEATURE, TRACK_TYPE> {
       public:
-        Instance(VALUE_FEATURE* valueFeature)
+        Instance(VALUE_FEATURE& valueFeature)
             : InstanceCommonBase<VALUE_FEATURE, TRACK_TYPE>(valueFeature) {}
 
         const typename seqwires::Track& get() const {
-            assert(this->m_valueFeature);
-            return this->m_valueFeature->getValue()->template is<seqwires::Track>();
+            return this->m_valueFeature.getValue()->template is<seqwires::Track>();
         }
         template <typename VALUE_FEATURE_M = VALUE_FEATURE>
         std::enable_if_t<!std::is_const_v<VALUE_FEATURE_M>, void> set(babelwires::ValueHolder newValue) {
-            assert(this->m_valueFeature);
-            this->m_valueFeature->setValue(std::move(newValue));
+            this->m_valueFeature.setValue(std::move(newValue));
         }
     };
 

@@ -20,9 +20,9 @@ smf::target::SmfFeature::SmfFeature(const babelwires::ProjectContext& projectCon
 }
 
 smf::SmfSequenceType::Instance<const babelwires::ValueFeature> smf::target::SmfFeature::getSmfTypeFeature() const {
-    return m_smfTypeFeature;
+    return *m_smfTypeFeature;
 }
 
 smf::SmfSequenceType::Instance<babelwires::ValueFeature> smf::target::SmfFeature::getSmfTypeFeature() {
-    return m_smfTypeFeature;
+    return *m_smfTypeFeature;
 }

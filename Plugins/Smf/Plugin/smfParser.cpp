@@ -176,7 +176,7 @@ void smf::SmfParser::readTempoEvent(MidiMetadataFeature* metadataFeature) {
     const double d = readU24();
     const double bpm = 60'000'000 / d;
     if (metadataFeature) {
-        auto metadata = smf::MidiMetadata::Instance<babelwires::ValueFeature>(metadataFeature);
+        auto metadata = smf::MidiMetadata::Instance<babelwires::ValueFeature>(*metadataFeature);
         metadata.activateAndGetTempo().set(std::round(bpm));
     }
 }
@@ -534,8 +534,6 @@ void smf::SmfParser::readProgramChange(unsigned int channelNumber) {
 }
 
 void smf::SmfParser::readTrack(int trackIndex, source::ChannelGroup& channels, MidiMetadataFeature* metadataFeature) {
-    auto metadata = smf::MidiMetadata::Instance<babelwires::ValueFeature>(metadataFeature);
-    
     readByteSequence("MTrk");
     const std::uint32_t trackLength = readU32();
     const int currentIndex = m_dataSource.getAbsolutePosition();
@@ -607,6 +605,7 @@ void smf::SmfParser::readTrack(int trackIndex, source::ChannelGroup& channels, M
                         {
                             std::string text = readTextMetaEvent(length);
                             if (metadataFeature) {
+                                auto metadata = smf::MidiMetadata::Instance<babelwires::ValueFeature>(*metadataFeature);
                                 metadata.activateAndGetCopyR().set(text);
                             }
                             break;
@@ -615,6 +614,7 @@ void smf::SmfParser::readTrack(int trackIndex, source::ChannelGroup& channels, M
                         {
                             std::string text = readTextMetaEvent(length);
                             if (metadataFeature) {
+                                auto metadata = smf::MidiMetadata::Instance<babelwires::ValueFeature>(*metadataFeature);
                                 metadata.activateAndGetName().set(text);
                             }
                             break;
@@ -817,7 +817,7 @@ void smf::SmfParser::readFormat1Sequence(source::Format1SmfFeature& sequence) {
 }
 
 smf::GMSpecType::Value smf::SmfParser::getGMSpec() const {
-    const auto& metadata = smf::MidiMetadata::Instance<const babelwires::ValueFeature>(&m_result->getMidiMetadata());
+    const auto& metadata = smf::MidiMetadata::Instance<const babelwires::ValueFeature>(m_result->getMidiMetadata());
     return metadata.getSpec().get();
 }
 
@@ -825,7 +825,7 @@ void smf::SmfParser::setGMSpec(GMSpecType::Value gmSpec) {
     for (int i = 0; i < 16; ++i) {
         m_channelSetup[i].m_kitIfPercussion = m_standardPercussionSets.getDefaultPercussionSet(gmSpec, i);
     }
-    auto metadata = smf::MidiMetadata::Instance<babelwires::ValueFeature>(&m_result->getMidiMetadata());
+    auto metadata = smf::MidiMetadata::Instance<babelwires::ValueFeature>(m_result->getMidiMetadata());
     metadata.getSpec().set(gmSpec);
 }
 
