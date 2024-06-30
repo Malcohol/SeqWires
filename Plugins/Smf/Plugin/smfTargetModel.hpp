@@ -19,8 +19,8 @@ namespace smf {
           public:
             SmfFeature(const babelwires::ProjectContext& projectContext);
 
-            SmfType::Instance<const babelwires::ValueFeature> getSmfTypeFeature() const;
-            SmfType::Instance<babelwires::ValueFeature> getSmfTypeFeature();
+            SmfSequenceType::Instance<const babelwires::ValueFeature> getSmfTypeFeature() const;
+            SmfSequenceType::Instance<babelwires::ValueFeature> getSmfTypeFeature();
 
           protected:
             babelwires::ValueFeature* m_smfTypeFeature;

@@ -11,7 +11,7 @@
 #include <SeqWiresLib/Types/Track/trackType.hpp>
 
 smf::MidiTrackAndChannel::MidiTrackAndChannel()
-    : babelwires::RecordType({{BW_SHORT_ID("Track", "Track", "2eee2dfd-6492-4633-b69d-393df7990f52"),
+    : babelwires::RecordType({{BW_SHORT_ID("Track", "Track", "a6db15c9-9f29-4fb3-92c4-771746b2b97f"),
                                seqwires::DefaultTrackType::getThisIdentifier()},
-                              {BW_SHORT_ID("Chan", "Channel", "0ee16945-bd15-4d8d-8e20-f04c790aaaef"),
+                              {BW_SHORT_ID("Chan", "Channel", "cad592ef-2355-4837-a265-38b49eae7599"),
                                MidiChannel::getThisIdentifier()}}) {}

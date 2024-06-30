@@ -108,28 +108,28 @@
                 </sourceFile>
                 <targetFile id="16" factory="SmfFile&apos;1" filePath="DucksInARow_Round.mid">
                     <modifiers>
-                        <assignFrom path="Format&apos;1/Meta&apos;1" sourceId="15" sourcePath="Meta&apos;1"/>
-                        <assign path="Format&apos;1/Meta&apos;1/Name&apos;1">
+                        <assignFrom path="SmfSeq&apos;1/Meta&apos;1" sourceId="15" sourcePath="Meta&apos;1"/>
+                        <assign path="SmfSeq&apos;1/Meta&apos;1/Name&apos;1">
                             <value typeName="string" value="Ducks in a Row (round)"/>
                         </assign>
-                        <arraySize path="Format&apos;1/tracks&apos;2" size="3"/>
-                        <assignFrom path="Format&apos;1/tracks&apos;2/0/Track&apos;2" sourceId="12" sourcePath="Output&apos;1"/>
-                        <assign path="Format&apos;1/tracks&apos;2/1/Chan&apos;1">
+                        <arraySize path="SmfSeq&apos;1/Tracks&apos;4" size="3"/>
+                        <assignFrom path="SmfSeq&apos;1/Tracks&apos;4/0/Track&apos;2" sourceId="12" sourcePath="Output&apos;1"/>
+                        <assign path="SmfSeq&apos;1/Tracks&apos;4/1/Chan&apos;1">
                             <value typeName="int" value="1"/>
                         </assign>
-                        <assignFrom path="Format&apos;1/tracks&apos;2/1/Track&apos;2" sourceId="13" sourcePath="Output&apos;1"/>
-                        <assign path="Format&apos;1/tracks&apos;2/2/Chan&apos;1">
+                        <assignFrom path="SmfSeq&apos;1/Tracks&apos;4/1/Track&apos;2" sourceId="13" sourcePath="Output&apos;1"/>
+                        <assign path="SmfSeq&apos;1/Tracks&apos;4/2/Chan&apos;1">
                             <value typeName="int" value="2"/>
                         </assign>
-                        <assignFrom path="Format&apos;1/tracks&apos;2/2/Track&apos;2" sourceId="10" sourcePath="Tracks&apos;2/0"/>
+                        <assignFrom path="SmfSeq&apos;1/Tracks&apos;4/2/Track&apos;2" sourceId="10" sourcePath="Tracks&apos;2/0"/>
                     </modifiers>
-                    <uiData x="1201" y="14" width="250"/>
+                    <uiData x="1207" y="55" width="250"/>
                     <expandedPaths>
-                        <path value="Format&apos;1"/>
-                        <path value="Format&apos;1/tracks&apos;2"/>
-                        <path value="Format&apos;1/tracks&apos;2/0"/>
-                        <path value="Format&apos;1/tracks&apos;2/1"/>
-                        <path value="Format&apos;1/tracks&apos;2/2"/>
+                        <path value="SmfSeq&apos;1"/>
+                        <path value="SmfSeq&apos;1/Tracks&apos;4"/>
+                        <path value="SmfSeq&apos;1/Tracks&apos;4/0"/>
+                        <path value="SmfSeq&apos;1/Tracks&apos;4/1"/>
+                        <path value="SmfSeq&apos;1/Tracks&apos;4/2"/>
                     </expandedPaths>
                 </targetFile>
             </elements>
@@ -145,12 +145,11 @@
         </factoryMetadata>
         <identifierMetadata>
             <identifiers>
-                <identifier id="Chan&apos;1" name="channel" uuid="cad592ef-2355-4837-a265-38b49eae7599"/>
+                <identifier id="Chan&apos;1" name="Channel" uuid="cad592ef-2355-4837-a265-38b49eae7599"/>
                 <identifier id="ConcatenateTracks&apos;1" name="Concatenate" uuid="42b00d10-9d16-42d2-8ba6-971aad016da0"/>
                 <identifier id="Count&apos;1" name="Count" uuid="f5d2ab08-4430-47fa-b26c-0ff2154826e3"/>
                 <identifier id="Duratn&apos;1" name="Duration" uuid="d83ebbc2-1492-4578-a3b8-4969eb6a2042"/>
                 <identifier id="Durn&apos;1" name="Duration" uuid="05d3ea91-cb90-42f5-9988-2fb2e02e231c"/>
-                <identifier id="Format&apos;1" name="Format" uuid="1f2eaefb-b48d-484d-8793-e14f2fa0193b"/>
                 <identifier id="Input&apos;1" name="Input tracks" uuid="3b8d8cd7-21d9-44a1-877e-134915fe5aca"/>
                 <identifier id="Meta&apos;1" name="Metadata" uuid="72bbbcee-2b53-4fb2-bfb8-4f5e495f9166"/>
                 <identifier id="Name&apos;1" name="Name" uuid="c2e4910f-d006-4a93-97a7-ae5973157ec8"/>
@@ -159,19 +158,20 @@
                 <identifier id="RepeatTracks&apos;1" name="Repeat" uuid="6c5b3e89-bb57-4c90-8a66-1d8cdeb29db9"/>
                 <identifier id="SilentTrack&apos;1" name="Silence" uuid="c59e4643-b7d8-430b-980b-bd81b5aa007b"/>
                 <identifier id="SmfFile&apos;1" name="Standard MIDI file (out)" uuid="f29cd3b0-8a46-4a21-bb7d-53acd6702944"/>
+                <identifier id="SmfSeq&apos;1" name="Format" uuid="1f2eaefb-b48d-484d-8793-e14f2fa0193b"/>
                 <identifier id="StandardMIDIFile&apos;1" name="Standard MIDI file (in)" uuid="418b8238-c184-4885-a369-b24c4e0d06ec"/>
                 <identifier id="Start&apos;1" name="Start" uuid="4b95f5db-a542-4660-a8db-97d3a5f831ca"/>
                 <identifier id="Track&apos;1" name="Track" uuid="86f3d028-a616-4a95-a566-a010ffcabb19"/>
-                <identifier id="Track&apos;2" name="track" uuid="a6db15c9-9f29-4fb3-92c4-771746b2b97f"/>
+                <identifier id="Track&apos;2" name="Track" uuid="a6db15c9-9f29-4fb3-92c4-771746b2b97f"/>
                 <identifier id="TrackExcerpt&apos;1" name="Excerpt" uuid="83c74dba-7861-447c-9abb-0b4439061baf"/>
                 <identifier id="Tracks&apos;1" name="Tracks" uuid="983b3bcb-7086-4791-8e18-d8c7550d45d3"/>
                 <identifier id="Tracks&apos;2" name="Tracks" uuid="83f05b66-7890-4542-8344-1409e50539b5"/>
                 <identifier id="Tracks&apos;3" name="Tracks" uuid="f727937f-0215-4527-bab4-0eca269d6c5c"/>
+                <identifier id="Tracks&apos;4" name="Tracks" uuid="38ae4e20-1468-4dce-890b-981454e6dbe0"/>
                 <identifier id="TransposeTracks&apos;1" name="Transpose" uuid="3414f6cf-290a-421e-bce5-6a98ed0483af"/>
                 <identifier id="ch0&apos;1" name="Ch. 0" uuid="18cb72e5-6891-428c-beae-aa17db453852"/>
                 <identifier id="ch1&apos;1" name="Ch. 1" uuid="f4bc5369-5d7e-4e18-83ec-44560309edb7"/>
                 <identifier id="tracks&apos;1" name="tracks" uuid="3fb0f062-4e8e-4b37-a598-edcd63f82971"/>
-                <identifier id="tracks&apos;2" name="tracks" uuid="1aa014da-2fb3-46e2-96df-98c7798b4a87"/>
             </identifiers>
         </identifierMetadata>
     </project>

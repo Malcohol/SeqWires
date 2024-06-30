@@ -15,14 +15,14 @@
 
 smf::target::SmfFeature::SmfFeature(const babelwires::ProjectContext& projectContext)
     : babelwires::FileFeature(projectContext, SmfSourceFormat::getThisIdentifier()) {
-    m_smfTypeFeature = addField(std::make_unique<babelwires::SimpleValueFeature>(SmfType::getThisIdentifier()),
-                              BW_SHORT_ID("Smf", "Format", "3c918862-5835-4cbf-ade6-af6f7ab7821d"));
+    m_smfTypeFeature = addField(std::make_unique<babelwires::SimpleValueFeature>(SmfSequenceType::getThisIdentifier()),
+                              BW_SHORT_ID("SmfSeq", "Format", "1f2eaefb-b48d-484d-8793-e14f2fa0193b"));
 }
 
-smf::SmfType::Instance<const babelwires::ValueFeature> smf::target::SmfFeature::getSmfTypeFeature() const {
+smf::SmfSequenceType::Instance<const babelwires::ValueFeature> smf::target::SmfFeature::getSmfTypeFeature() const {
     return m_smfTypeFeature;
 }
 
-smf::SmfType::Instance<babelwires::ValueFeature> smf::target::SmfFeature::getSmfTypeFeature() {
+smf::SmfSequenceType::Instance<babelwires::ValueFeature> smf::target::SmfFeature::getSmfTypeFeature() {
     return m_smfTypeFeature;
 }

@@ -1,5 +1,5 @@
 /**
- * Representation of a Standard MIDI File as a tree of Features.
+ * A type corresponding to the contents of a Standard MIDI file.
  *
  * (C) 2021 Malcolm Tyrrell
  *
@@ -24,12 +24,13 @@ namespace babelwires {}
 
 namespace smf {
 
-    class SmfType : public babelwires::RecordWithVariantsType {
+    /// A type corresponding to the contents of a Standard MIDI file.
+    class SmfSequenceType : public babelwires::RecordWithVariantsType {
       public:
-        PRIMITIVE_TYPE("SmfType", "Standard MIDI File", "d4c70fb2-fb67-4e69-82ca-328ec242b0a8", 1);
-        SmfType();
+        PRIMITIVE_TYPE("SmfSeqType", "Standard MIDI File", "d4c70fb2-fb67-4e69-82ca-328ec242b0a8", 1);
+        SmfSequenceType();
 
-        DECLARE_INSTANCE_BEGIN(SmfType)
+        DECLARE_INSTANCE_BEGIN(SmfSequenceType)
         DECLARE_INSTANCE_FIELD(Meta, MidiMetadata)
         DECLARE_INSTANCE_FIELD(Tracks, MidiTrackAndChannelArray);
         DECLARE_INSTANCE_END()
