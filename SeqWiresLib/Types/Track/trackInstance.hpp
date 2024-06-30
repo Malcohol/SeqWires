@@ -11,28 +11,24 @@
 #include <SeqWiresLib/Types/Track/track.hpp>
 
 #include <BabelWiresLib/TypeSystem/valueHolder.hpp>
-#include <BabelWiresLib/Instance/instance.hpp>
+#include <BabelWiresLib/Instance/instanceTemplates.hpp>
 
 namespace babelwires {
-    template <typename VALUE_FEATURE, typename T>
-        requires std::is_base_of_v<seqwires::TrackType, T>
-    class Instance<VALUE_FEATURE, T> {
-        VALUE_FEATURE* m_valueFeature;
-
+    template <typename VALUE_FEATURE, typename TRACK_TYPE>
+        requires std::is_base_of_v<seqwires::TrackType, TRACK_TYPE>
+    class Instance<VALUE_FEATURE, TRACK_TYPE> : public InstanceCommonBase<VALUE_FEATURE, TRACK_TYPE> {
       public:
         Instance(VALUE_FEATURE* valueFeature)
-            : m_valueFeature(valueFeature) {
-            assert(!valueFeature || valueFeature->getType().template as<seqwires::TrackType>());
-        }
+            : InstanceCommonBase<VALUE_FEATURE, TRACK_TYPE>(valueFeature) {}
 
         const typename seqwires::Track& get() const {
-            assert(m_valueFeature);
-            return m_valueFeature->getValue()->template is<seqwires::Track>();
+            assert(this->m_valueFeature);
+            return this->m_valueFeature->getValue()->template is<seqwires::Track>();
         }
         template <typename VALUE_FEATURE_M = VALUE_FEATURE>
         std::enable_if_t<!std::is_const_v<VALUE_FEATURE_M>, void> set(babelwires::ValueHolder newValue) {
-            assert(m_valueFeature);
-            m_valueFeature->setValue(std::move(newValue));
+            assert(this->m_valueFeature);
+            this->m_valueFeature->setValue(std::move(newValue));
         }
     };
 

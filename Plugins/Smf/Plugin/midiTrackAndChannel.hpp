@@ -7,7 +7,7 @@
  **/
 #pragma once
 
-#include <BabelWiresLib/Instance/instanceOfBuiltInTypes.hpp>
+#include <BabelWiresLib/Instance/instance.hpp>
 #include <BabelWiresLib/TypeSystem/primitiveType.hpp>
 #include <BabelWiresLib/Types/Record/recordType.hpp>
 
