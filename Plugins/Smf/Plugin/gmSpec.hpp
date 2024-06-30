@@ -9,7 +9,7 @@
 
 #include <BabelWiresLib/Types/Enum/enumWithCppEnum.hpp>
 #include <BabelWiresLib/TypeSystem/primitiveType.hpp>
-#include <BabelWiresLib/Types/Enum/enumFeatureWrapper.hpp>
+#include <BabelWiresLib/InstanceOf/instanceOfEnumType.hpp>
 #include <BabelWiresLib/InstanceOf/instanceOf.hpp>
 
 #define GM_SPEC_VALUES(X)                                                                                              \
