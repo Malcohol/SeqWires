@@ -54,14 +54,14 @@ namespace smf {
         void writeTextMetaEvent(int type, std::string text);
 
         // TODO It should be easier to express this.
-        using TrackFeatureWrapper = babelwires::Instance<const babelwires::ValueFeature, MidiTrackAndChannel>;
+        using MidiTrackAndChannelInstance = MidiTrackAndChannel::Instance<const babelwires::ValueFeature>;
 
-        void writeNotes(const std::vector<TrackFeatureWrapper>& tracks);
+        void writeNotes(const std::vector<MidiTrackAndChannelInstance>& tracks);
 
         void writeHeaderChunk();
 
         /// Write the events for the given track.
-        void writeTrack(const std::vector<TrackFeatureWrapper>& tracks, bool includeGlobalSetup);
+        void writeTrack(const std::vector<MidiTrackAndChannelInstance>& tracks, bool includeGlobalSetup);
 
         /// Write non-channel-specific setup information.
         void writeGlobalSetup();

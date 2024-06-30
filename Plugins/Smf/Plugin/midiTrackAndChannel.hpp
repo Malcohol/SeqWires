@@ -12,7 +12,7 @@
 #include <BabelWiresLib/Types/Record/recordType.hpp>
 
 #include <SeqWiresLib/Types/Track/trackType.hpp>
-#include <SeqWiresLib/Types/Track/trackFeatureWrapper.hpp>
+#include <SeqWiresLib/Types/Track/trackInstance.hpp>
 
 #include <Plugins/Smf/Plugin/midiChannel.hpp>
 

@@ -194,7 +194,7 @@ namespace {
 
 } // namespace
 
-void smf::SmfWriter::writeNotes(const std::vector<TrackFeatureWrapper>& tracks) {
+void smf::SmfWriter::writeNotes(const std::vector<MidiTrackAndChannelInstance>& tracks) {
     const int numTracks = tracks.size();
 
     seqwires::ModelDuration trackDuration = 0;
@@ -290,7 +290,7 @@ void smf::SmfWriter::writeGlobalSetup() {
     }
 }
 
-void smf::SmfWriter::writeTrack(const std::vector<TrackFeatureWrapper>& tracks,
+void smf::SmfWriter::writeTrack(const std::vector<MidiTrackAndChannelInstance>& tracks,
                                 bool includeGlobalSetup) {
     std::ostream* oldStream = m_os;
     std::ostringstream tempStream;
@@ -393,7 +393,7 @@ void smf::SmfWriter::write() {
 
     writeHeaderChunk();
 
-    std::vector<TrackFeatureWrapper> channelAndTrackValues;
+    std::vector<MidiTrackAndChannelInstance> channelAndTrackValues;
 
     const auto& smfType = m_smfFeature.getSmfTypeFeature();
     const auto& tracks = smfType.getTracks();
