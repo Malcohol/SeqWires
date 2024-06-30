@@ -10,7 +10,7 @@
 #include <BabelWiresLib/Types/Enum/enumWithCppEnum.hpp>
 #include <BabelWiresLib/TypeSystem/primitiveType.hpp>
 #include <BabelWiresLib/Instance/enumTypeInstance.hpp>
-#include <BabelWiresLib/Instance/instanceOf.hpp>
+#include <BabelWiresLib/Instance/instance.hpp>
 
 #define GM_SPEC_VALUES(X)                                                                                              \
     X(NONE, "No Specification", "0d8e86c7-3d0c-4a6c-8fb0-3aaa0410dfc1")                                                \
@@ -27,9 +27,5 @@ namespace smf {
         GMSpecType();
 
         ENUM_DEFINE_CPP_ENUM(GM_SPEC_VALUES);
-
-        DECLARE_INSTANCE_BEGIN(GMSpecType)
-        DECLARE_INSTANCE_CPP_ENUM(GMSpecType)
-        DECLARE_INSTANCE_END()
     };
 } // namespace smf

@@ -17,7 +17,7 @@
 #include <BabelWiresLib/Types/Int/intFeature.hpp>
 #include <BabelWiresLib/Types/RecordWithVariants/recordWithVariantsType.hpp>
 #include <BabelWiresLib/Instance/recordWithVariantsTypeInstance.hpp>
-#include <BabelWiresLib/Instance/instanceOf.hpp>
+#include <BabelWiresLib/Instance/instance.hpp>
 
 #include <BabelWiresLib/Features/valueFeature.hpp>
 

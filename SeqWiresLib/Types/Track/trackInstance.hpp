@@ -11,7 +11,7 @@
 #include <SeqWiresLib/Types/Track/track.hpp>
 
 #include <BabelWiresLib/TypeSystem/valueHolder.hpp>
-#include <BabelWiresLib/Instance/instanceOf.hpp>
+#include <BabelWiresLib/Instance/instance.hpp>
 
 namespace babelwires {
     template <typename VALUE_FEATURE, typename T>
