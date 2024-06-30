@@ -16,8 +16,8 @@
 #include <BabelWiresLib/Types/Array/arrayType.hpp>
 #include <BabelWiresLib/Types/Int/intFeature.hpp>
 #include <BabelWiresLib/Types/RecordWithVariants/recordWithVariantsType.hpp>
-#include <BabelWiresLib/Types/RecordWithVariants/recordWithVariantsFeatureWrapper.hpp>
-#include <BabelWiresLib/TypeSystem/featureWrapper.hpp>
+#include <BabelWiresLib/InstanceOf/instanceOfRecordWithVariantsType.hpp>
+#include <BabelWiresLib/InstanceOf/instanceOf.hpp>
 
 #include <BabelWiresLib/Features/valueFeature.hpp>
 

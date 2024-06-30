@@ -7,9 +7,8 @@
  **/
 #pragma once
 
-#include <BabelWiresLib/TypeSystem/standardFeatureWrappers.hpp>
+#include <BabelWiresLib/InstanceOf/instanceOfBuiltInTypes.hpp>
 #include <BabelWiresLib/TypeSystem/primitiveType.hpp>
-#include <BabelWiresLib/Types/Record/recordFeatureUtils.hpp>
 #include <BabelWiresLib/Types/Record/recordType.hpp>
 
 #include <SeqWiresLib/Types/Track/trackType.hpp>
