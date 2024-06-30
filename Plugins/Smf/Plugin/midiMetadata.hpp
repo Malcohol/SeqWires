@@ -12,7 +12,7 @@
 #include <SeqWiresLib/Features/tempoFeature.hpp>
 
 #include <BabelWiresLib/Types/Record/recordType.hpp>
-#include <BabelWiresLib/InstanceOf/instanceOfBuiltInTypes.hpp>
+#include <BabelWiresLib/Instance/instanceOfBuiltInTypes.hpp>
 
 namespace smf {
     class MidiMetadata : public babelwires::RecordType {

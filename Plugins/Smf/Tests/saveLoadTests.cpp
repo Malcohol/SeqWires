@@ -13,7 +13,7 @@
 #include <SeqWiresLib/libRegistration.hpp>
 
 #include <BabelWiresLib/libRegistration.hpp>
-#include <BabelWiresLib/InstanceOf/instanceOfArrayType.hpp>
+#include <BabelWiresLib/Instance/arrayTypeInstance.hpp>
 
 #include <Common/IO/fileDataSource.hpp>
 
