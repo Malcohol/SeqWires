@@ -77,7 +77,8 @@ TEST_P(SmfStandardPercussionTest, saveLoad) {
         auto smfFeature = feature.get()->as<const smf::source::Format0SmfFeature>();
         ASSERT_NE(smfFeature, nullptr);
 
-        EXPECT_EQ(smf::MidiMetadata::getSpec(smfFeature->getMidiMetadata()), testData.m_specificationId);
+        const auto& metadata = smf::MidiMetadata::FeatureWrapper<const babelwires::ValueFeature>(&smfFeature->getMidiMetadata());
+        EXPECT_EQ(metadata.getSpec().get(), testData.m_specificationId);
 
         EXPECT_EQ(smfFeature->getNumMidiTracks(), 1);
         const auto& channelGroup = dynamic_cast<const smf::source::RecordChannelGroup&>(smfFeature->getMidiTrack(0));
@@ -210,7 +211,8 @@ TEST_P(SmfTrackAllocationPercussionTest, trackAllocation) {
         auto smfFeature = feature.get()->as<const smf::source::Format0SmfFeature>();
         ASSERT_NE(smfFeature, nullptr);
 
-        EXPECT_EQ(smf::MidiMetadata::getSpec(smfFeature->getMidiMetadata()), testData.m_specificationId);
+        const auto& metadata = smf::MidiMetadata::FeatureWrapper<const babelwires::ValueFeature>(&smfFeature->getMidiMetadata());
+        EXPECT_EQ(metadata.getSpec().get(), testData.m_specificationId);
 
         EXPECT_EQ(smfFeature->getNumMidiTracks(), 1);
         const auto& channelGroup = dynamic_cast<const smf::source::RecordChannelGroup&>(smfFeature->getMidiTrack(0));

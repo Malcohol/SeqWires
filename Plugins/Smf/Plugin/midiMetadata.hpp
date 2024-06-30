@@ -22,11 +22,6 @@ namespace smf {
 
         MidiMetadata();
 
-        FIELD_ENUM(Spec, GMSpecType)
-        FIELD_INT_OPTIONAL(Tempo)
-        FIELD_STRING_OPTIONAL(Name)
-        FIELD_STRING_OPTIONAL(CopyR)
-
         FEATURE_WRAPPER_BEGIN(MidiMetadata)
         FEATURE_WRAPPER_FIELD(Spec, GMSpecType)
         FEATURE_WRAPPER_FIELD_OPTIONAL(Tempo, seqwires::Tempo)

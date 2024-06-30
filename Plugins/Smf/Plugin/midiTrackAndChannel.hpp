@@ -24,9 +24,6 @@ namespace smf {
         PRIMITIVE_TYPE("TrackChannel", "Track and Channel", "5e9b395c-ec13-4bdb-9b2b-b060ba7fb707", 1);
         MidiTrackAndChannel();
 
-        FIELD_INT(Chan);
-        FIELD_VALUE(Track, seqwires::Track);
-
         FEATURE_WRAPPER_BEGIN(MidiTrackAndChannel)
         FEATURE_WRAPPER_FIELD(Chan, MidiChannel)
         FEATURE_WRAPPER_FIELD(Track, seqwires::TrackType);

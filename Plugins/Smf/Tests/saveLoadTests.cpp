@@ -86,19 +86,19 @@ namespace {
     }
 
     void checkMetadata(const smf::source::SmfFeature& smfFeature, std::uint8_t flags) {
-        const auto& metadataFeature = smfFeature.getMidiMetadata();
-
+        const auto& metadata = smf::MidiMetadata::FeatureWrapper<const babelwires::ValueFeature>(&smfFeature.getMidiMetadata());
+        
         if (flags & HAS_SEQUENCE_NAME) {
-            ASSERT_TRUE(smf::MidiMetadata::tryGetName(metadataFeature));
-            EXPECT_EQ(*smf::MidiMetadata::tryGetName(metadataFeature), "Test Sequence Name");
+            ASSERT_TRUE(metadata.tryGetName());
+            EXPECT_EQ(metadata.tryGetName()->get(), "Test Sequence Name");
         }
         if (flags & HAS_COPYRIGHT) {
-            ASSERT_TRUE(smf::MidiMetadata::tryGetCopyR(metadataFeature));
-            EXPECT_EQ(smf::MidiMetadata::tryGetCopyR(metadataFeature), "(C)2021 Test Copyright");
+            ASSERT_TRUE(metadata.tryGetCopyR());
+            EXPECT_EQ(metadata.tryGetCopyR()->get(), "(C)2021 Test Copyright");
         }
         if (flags & HAS_TEMPO) {
-            ASSERT_TRUE(smf::MidiMetadata::tryGetTempo(metadataFeature));
-            EXPECT_EQ(smf::MidiMetadata::tryGetTempo(metadataFeature), 100);
+            ASSERT_TRUE(metadata.tryGetTempo());
+            EXPECT_EQ(metadata.tryGetTempo()->get(), 100);
         }
     }
 } // namespace

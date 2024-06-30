@@ -172,11 +172,12 @@ void smf::SmfParser::parse() {
     }
 }
 
-void smf::SmfParser::readTempoEvent(MidiMetadataFeature* metadata) {
+void smf::SmfParser::readTempoEvent(MidiMetadataFeature* metadataFeature) {
     const double d = readU24();
     const double bpm = 60'000'000 / d;
-    if (metadata) {
-        MidiMetadata::setTempo(*metadata, std::round(bpm));
+    if (metadataFeature) {
+        auto metadata = smf::MidiMetadata::FeatureWrapper<babelwires::ValueFeature>(metadataFeature);
+        metadata.getTempo().set(std::round(bpm));
     }
 }
 
@@ -532,7 +533,9 @@ void smf::SmfParser::readProgramChange(unsigned int channelNumber) {
     setProgram(channelNumber, newProgram);
 }
 
-void smf::SmfParser::readTrack(int trackIndex, source::ChannelGroup& channels, MidiMetadataFeature* metadata) {
+void smf::SmfParser::readTrack(int trackIndex, source::ChannelGroup& channels, MidiMetadataFeature* metadataFeature) {
+    auto metadata = smf::MidiMetadata::FeatureWrapper<babelwires::ValueFeature>(metadataFeature);
+    
     readByteSequence("MTrk");
     const std::uint32_t trackLength = readU32();
     const int currentIndex = m_dataSource.getAbsolutePosition();
@@ -603,16 +606,16 @@ void smf::SmfParser::readTrack(int trackIndex, source::ChannelGroup& channels, M
                         case 0x02: // Copyright
                         {
                             std::string text = readTextMetaEvent(length);
-                            if (metadata) {
-                                MidiMetadata::setCopyR(*metadata, text);
+                            if (metadataFeature) {
+                                metadata.getCopyR().set(text);
                             }
                             break;
                         }
                         case 0x03: // Sequence or track name.
                         {
                             std::string text = readTextMetaEvent(length);
-                            if (metadata) {
-                                MidiMetadata::setName(*metadata, text);
+                            if (metadataFeature) {
+                                metadata.getName().set(text);
                             }
                             break;
                         }
@@ -674,7 +677,7 @@ void smf::SmfParser::readTrack(int trackIndex, source::ChannelGroup& channels, M
                                                     << "Skipping Tempo meta-event with incorrect length",
                                                 length);
                             } else {
-                                readTempoEvent(metadata);
+                                readTempoEvent(metadataFeature);
                             }
                             break;
                         }
@@ -814,14 +817,16 @@ void smf::SmfParser::readFormat1Sequence(source::Format1SmfFeature& sequence) {
 }
 
 smf::GMSpecType::Value smf::SmfParser::getGMSpec() const {
-    return MidiMetadata::getSpec(m_result->getMidiMetadata());
+    const auto& metadata = smf::MidiMetadata::FeatureWrapper<const babelwires::ValueFeature>(&m_result->getMidiMetadata());
+    return metadata.getSpec().get();
 }
 
 void smf::SmfParser::setGMSpec(GMSpecType::Value gmSpec) {
     for (int i = 0; i < 16; ++i) {
         m_channelSetup[i].m_kitIfPercussion = m_standardPercussionSets.getDefaultPercussionSet(gmSpec, i);
     }
-    MidiMetadata::setSpec(m_result->getMidiMetadata(), gmSpec);
+    auto metadata = smf::MidiMetadata::FeatureWrapper<babelwires::ValueFeature>(&m_result->getMidiMetadata());
+    metadata.getSpec().set(gmSpec);
 }
 
 void smf::SmfParser::setBankMSB(unsigned int channelNumber, const babelwires::Byte msbValue) {
