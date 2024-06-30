@@ -177,7 +177,7 @@ void smf::SmfParser::readTempoEvent(MidiMetadataFeature* metadataFeature) {
     const double bpm = 60'000'000 / d;
     if (metadataFeature) {
         auto metadata = smf::MidiMetadata::Instance<babelwires::ValueFeature>(metadataFeature);
-        metadata.getTempo().set(std::round(bpm));
+        metadata.activateAndGetTempo().set(std::round(bpm));
     }
 }
 
@@ -607,7 +607,7 @@ void smf::SmfParser::readTrack(int trackIndex, source::ChannelGroup& channels, M
                         {
                             std::string text = readTextMetaEvent(length);
                             if (metadataFeature) {
-                                metadata.getCopyR().set(text);
+                                metadata.activateAndGetCopyR().set(text);
                             }
                             break;
                         }
@@ -615,7 +615,7 @@ void smf::SmfParser::readTrack(int trackIndex, source::ChannelGroup& channels, M
                         {
                             std::string text = readTextMetaEvent(length);
                             if (metadataFeature) {
-                                metadata.getName().set(text);
+                                metadata.activateAndGetName().set(text);
                             }
                             break;
                         }

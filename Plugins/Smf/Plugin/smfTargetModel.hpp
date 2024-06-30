@@ -35,10 +35,10 @@ namespace smf {
         PRIMITIVE_TYPE("SmfType", "Standard MIDI File", "d4c70fb2-fb67-4e69-82ca-328ec242b0a8", 1);
         SmfType();
 
-        RECORD_WITH_VARIANTS_BEGIN(SmfType)
+        DECLARE_INSTANCE_BEGIN(SmfType)
         DECLARE_INSTANCE_FIELD(Meta, MidiMetadata)
         DECLARE_INSTANCE_FIELD(Tracks, MidiTrackAndChannelArray);
-        RECORD_WITH_VARIANTS_END()
+        DECLARE_INSTANCE_END()
     };
 
     namespace target {
