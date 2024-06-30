@@ -35,10 +35,10 @@ smf::target::SmfFeature::SmfFeature(const babelwires::ProjectContext& projectCon
                               BW_SHORT_ID("Smf", "Format", "3c918862-5835-4cbf-ade6-af6f7ab7821d"));
 }
 
-smf::SmfType::FeatureWrapper<const babelwires::ValueFeature> smf::target::SmfFeature::getSmfTypeFeature() const {
+smf::SmfType::Instance<const babelwires::ValueFeature> smf::target::SmfFeature::getSmfTypeFeature() const {
     return m_smfTypeFeature;
 }
 
-smf::SmfType::FeatureWrapper<babelwires::ValueFeature> smf::target::SmfFeature::getSmfTypeFeature() {
+smf::SmfType::Instance<babelwires::ValueFeature> smf::target::SmfFeature::getSmfTypeFeature() {
     return m_smfTypeFeature;
 }

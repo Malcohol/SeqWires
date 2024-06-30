@@ -54,7 +54,7 @@ namespace smf {
         void writeTextMetaEvent(int type, std::string text);
 
         // TODO It should be easier to express this.
-        using TrackFeatureWrapper = babelwires::FeatureWrapper<const babelwires::ValueFeature, MidiTrackAndChannel>;
+        using TrackFeatureWrapper = babelwires::Instance<const babelwires::ValueFeature, MidiTrackAndChannel>;
 
         void writeNotes(const std::vector<TrackFeatureWrapper>& tracks);
 

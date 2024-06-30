@@ -47,8 +47,8 @@ namespace smf {
           public:
             SmfFeature(const babelwires::ProjectContext& projectContext);
 
-            SmfType::FeatureWrapper<const babelwires::ValueFeature> getSmfTypeFeature() const;
-            SmfType::FeatureWrapper<babelwires::ValueFeature> getSmfTypeFeature();
+            SmfType::Instance<const babelwires::ValueFeature> getSmfTypeFeature() const;
+            SmfType::Instance<babelwires::ValueFeature> getSmfTypeFeature();
 
           protected:
             babelwires::ValueFeature* m_smfTypeFeature;

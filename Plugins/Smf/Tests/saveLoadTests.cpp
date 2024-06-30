@@ -86,7 +86,7 @@ namespace {
     }
 
     void checkMetadata(const smf::source::SmfFeature& smfFeature, std::uint8_t flags) {
-        const auto& metadata = smf::MidiMetadata::FeatureWrapper<const babelwires::ValueFeature>(&smfFeature.getMidiMetadata());
+        const auto& metadata = smf::MidiMetadata::Instance<const babelwires::ValueFeature>(&smfFeature.getMidiMetadata());
         
         if (flags & HAS_SEQUENCE_NAME) {
             ASSERT_TRUE(metadata.tryGetName());

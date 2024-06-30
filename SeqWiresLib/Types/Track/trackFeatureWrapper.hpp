@@ -16,11 +16,11 @@
 namespace babelwires {
     template <typename VALUE_FEATURE, typename T>
         requires std::is_base_of_v<seqwires::TrackType, T>
-    class FeatureWrapper<VALUE_FEATURE, T> {
+    class Instance<VALUE_FEATURE, T> {
         VALUE_FEATURE* m_valueFeature;
 
       public:
-        FeatureWrapper(VALUE_FEATURE* valueFeature)
+        Instance(VALUE_FEATURE* valueFeature)
             : m_valueFeature(valueFeature) {
             assert(!valueFeature || valueFeature->getType().template as<seqwires::TrackType>());
         }
