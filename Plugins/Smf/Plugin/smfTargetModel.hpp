@@ -36,8 +36,8 @@ namespace smf {
         SmfType();
 
         RECORD_WITH_VARIANTS_BEGIN(SmfType)
-        FEATURE_WRAPPER_FIELD(Meta, MidiMetadata)
-        FEATURE_WRAPPER_FIELD(Tracks, MidiTrackAndChannelArray);
+        DECLARE_INSTANCE_FIELD(Meta, MidiMetadata)
+        DECLARE_INSTANCE_FIELD(Tracks, MidiTrackAndChannelArray);
         RECORD_WITH_VARIANTS_END()
     };
 

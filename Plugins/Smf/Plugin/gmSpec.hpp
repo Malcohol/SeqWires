@@ -28,8 +28,8 @@ namespace smf {
 
         ENUM_DEFINE_CPP_ENUM(GM_SPEC_VALUES);
 
-        FEATURE_WRAPPER_BEGIN(GMSpecType)
-        FEATURE_WRAPPER_CPP_ENUM(GMSpecType)
-        FEATURE_WRAPPER_END()
+        DECLARE_INSTANCE_BEGIN(GMSpecType)
+        DECLARE_INSTANCE_CPP_ENUM(GMSpecType)
+        DECLARE_INSTANCE_END()
     };
 } // namespace smf
