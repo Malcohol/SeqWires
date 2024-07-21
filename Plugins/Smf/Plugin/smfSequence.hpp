@@ -21,8 +21,6 @@ namespace seqwires {
     class TrackFeature;
 } // namespace seqwires
 
-namespace babelwires {}
-
 namespace smf {
 
     /// A type corresponding to the contents of a Standard MIDI file.
