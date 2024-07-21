@@ -3,11 +3,10 @@
 #include <Plugins/Smf/Plugin/Percussion/gm2StandardPercussionSet.hpp>
 #include <Plugins/Smf/Plugin/libRegistration.hpp>
 #include <Plugins/Smf/Plugin/smfParser.hpp>
-#include <Plugins/Smf/Plugin/smfSourceModel.hpp>
 
-#include <SeqWiresLib/Types/Track/trackFeature.hpp>
 #include <SeqWiresLib/Types/Track/TrackEvents/noteEvents.hpp>
 #include <SeqWiresLib/Types/Track/TrackEvents/percussionEvents.hpp>
+#include <SeqWiresLib/Types/Track/trackFeature.hpp>
 #include <SeqWiresLib/Utilities/filteredTrackIterator.hpp>
 #include <SeqWiresLib/libRegistration.hpp>
 
@@ -148,7 +147,7 @@ TEST(SmfTestSuiteTest, multichannelChords2) {
 
     auto smfSequence = feature->getSmfSequence();
     ASSERT_EQ(smfSequence.getInstanceType().getIndexOfTag(smfSequence.getSelectedTag()), 1);
-    
+
     const auto& metadata = smfSequence.getMeta();
     ASSERT_TRUE(metadata.tryGetName().has_value());
     EXPECT_EQ(metadata.tryGetName()->get(), "Multi-channel chords Test 2");
@@ -164,7 +163,7 @@ TEST(SmfTestSuiteTest, multichannelChords2) {
 
     const auto& track1 = tracks.getEntry(1);
     EXPECT_EQ(track1.getChan().get(), 2);
-   
+
     testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65, 67, 69, 71, 72}, track0.getTrack().get());
     testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{64, 65, 67, 69, 71, 72, 74, 76}, exCh1->get());
     testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{67, 69, 71, 72, 74, 76, 77, 79}, track1.getTrack().get());
@@ -273,7 +272,7 @@ TEST(SmfTestSuiteTest, testAllGMPercussion) {
 
     const auto feature = smf::parseSmfSequence(midiFile, testEnvironment.m_projectContext, testEnvironment.m_log);
     ASSERT_NE(feature, nullptr);
-    
+
     auto smfSequence = feature->getSmfSequence();
     ASSERT_EQ(smfSequence.getInstanceType().getIndexOfTag(smfSequence.getSelectedTag()), 0);
 
@@ -314,7 +313,7 @@ TEST(SmfTestSuiteTest, testGSDrumPartChange) {
 
     const auto feature = smf::parseSmfSequence(midiFile, testEnvironment.m_projectContext, testEnvironment.m_log);
     ASSERT_NE(feature, nullptr);
-    
+
     auto smfSequence = feature->getSmfSequence();
     ASSERT_EQ(smfSequence.getInstanceType().getIndexOfTag(smfSequence.getSelectedTag()), 0);
 
