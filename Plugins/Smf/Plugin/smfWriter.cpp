@@ -422,6 +422,11 @@ void smf::SmfWriter::write() {
             auto trackAndChannel = tracks.getEntry(i);
             channelAndTrackValues.emplace_back(
                 ChannelAndTrack{trackAndChannel.getChan().get(), &trackAndChannel.getTrack().get()});
+            for (unsigned int c = 0; c < 16; ++c) {
+                if (auto extraTrack = trackAndChannel.tryGetTrack(c)) {
+                    channelAndTrackValues.emplace_back(ChannelAndTrack{c, &extraTrack->get()});
+                }
+            }
             writeTrack(channelAndTrackValues, (i == 0));
         }
     }
