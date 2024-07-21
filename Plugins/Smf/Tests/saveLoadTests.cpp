@@ -5,7 +5,7 @@
 #include <Plugins/Smf/Plugin/midiTrackAndChannelArray.hpp>
 #include <Plugins/Smf/Plugin/smfParser.hpp>
 #include <Plugins/Smf/Plugin/smfSourceModel.hpp>
-#include <Plugins/Smf/Plugin/smfTargetModel.hpp>
+#include <Plugins/Smf/Plugin/smfFeature.hpp>
 #include <Plugins/Smf/Plugin/smfWriter.hpp>
 
 #include <SeqWiresLib/Types/Track/TrackEvents/noteEvents.hpp>
@@ -32,7 +32,7 @@ TEST(SmfSaveLoadTest, cMajorScale) {
 
     const std::vector<seqwires::Pitch> pitches{60, 62, 64, 65, 67, 69, 71, 72};
     {
-        smf::target::SmfFeature smfFeature(testEnvironment.m_projectContext);
+        smf::SmfFeature smfFeature(testEnvironment.m_projectContext);
         smfFeature.setToDefault();
 
         auto smfType = smfFeature.getSmfTypeFeature();
@@ -70,7 +70,7 @@ namespace {
 
     enum MetadataFlags { HAS_SEQUENCE_NAME = 0b001, HAS_COPYRIGHT = 0b010, HAS_TEMPO = 0b100 };
 
-    void addMetadata(smf::target::SmfFeature& smfFeature, std::uint8_t flags) {
+    void addMetadata(smf::SmfFeature& smfFeature, std::uint8_t flags) {
         auto metadata = smfFeature.getSmfTypeFeature().getMeta();
 
         if (flags & HAS_SEQUENCE_NAME) {
@@ -112,7 +112,7 @@ TEST(SmfSaveLoadTest, cMajorScaleWithMetadata) {
     for (std::uint8_t metadata = 0; metadata < 8; ++metadata) {
         testUtils::TempFilePath tempFile("cMajorWithMetadata.mid", metadata);
         {
-            smf::target::SmfFeature smfFeature(testEnvironment.m_projectContext);
+            smf::SmfFeature smfFeature(testEnvironment.m_projectContext);
             smfFeature.setToDefault();
 
             addMetadata(smfFeature, metadata);
@@ -163,7 +163,7 @@ TEST(SmfSaveLoadTest, format0Chords) {
     const char* trackName[3] = {"ch0", "ch1", "ch2"};
 
     {
-        smf::target::SmfFeature smfFeature(testEnvironment.m_projectContext);
+        smf::SmfFeature smfFeature(testEnvironment.m_projectContext);
         smfFeature.setToDefault();
 
         auto smfType = smfFeature.getSmfTypeFeature();
@@ -211,7 +211,7 @@ TEST(SmfSaveLoadTest, format1Chords) {
     const char* trackName[3] = {"ch0", "ch1", "ch2"};
 
     {
-        smf::target::SmfFeature smfFeature(testEnvironment.m_projectContext);
+        smf::SmfFeature smfFeature(testEnvironment.m_projectContext);
         smfFeature.setToDefault();
 
         auto smfType = smfFeature.getSmfTypeFeature();

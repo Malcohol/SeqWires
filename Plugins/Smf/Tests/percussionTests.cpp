@@ -4,7 +4,7 @@
 #include <Plugins/Smf/Plugin/libRegistration.hpp>
 #include <Plugins/Smf/Plugin/smfParser.hpp>
 #include <Plugins/Smf/Plugin/smfSourceModel.hpp>
-#include <Plugins/Smf/Plugin/smfTargetModel.hpp>
+#include <Plugins/Smf/Plugin/smfFeature.hpp>
 #include <Plugins/Smf/Plugin/smfWriter.hpp>
 #include <Plugins/Smf/Plugin/midiTrackAndChannel.hpp>
 
@@ -45,7 +45,7 @@ TEST_P(SmfStandardPercussionTest, saveLoad) {
                                      smf::GMSpecType::getIdentifierFromValue(testData.m_specificationId).toString());
 
     {
-        smf::target::SmfFeature smfFeature(testEnvironment.m_projectContext);
+        smf::SmfFeature smfFeature(testEnvironment.m_projectContext);
         smfFeature.setToDefault();
 
         auto smfType = smfFeature.getSmfTypeFeature();
@@ -174,7 +174,7 @@ TEST_P(SmfTrackAllocationPercussionTest, trackAllocation) {
                                      smf::GMSpecType::getIdentifierFromValue(testData.m_specificationId).toString());
 
     {
-        smf::target::SmfFeature smfFeature(testEnvironment.m_projectContext);
+        smf::SmfFeature smfFeature(testEnvironment.m_projectContext);
         smfFeature.setToDefault();
 
         smfFeature.getSmfTypeFeature().getMeta().getSpec().set(testData.m_specificationId);

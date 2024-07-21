@@ -47,7 +47,7 @@
 #include <Plugins/Smf/Plugin/midiTrackAndChannel.hpp>
 #include <Plugins/Smf/Plugin/midiTrackAndChannelArray.hpp>
 #include <Plugins/Smf/Plugin/smfFormat.hpp>
-#include <Plugins/Smf/Plugin/smfTargetModel.hpp>
+#include <Plugins/Smf/Plugin/smfFeature.hpp>
 #include <Plugins/Smf/Plugin/recordOfMidiTracks.hpp>
 
 void smf::registerLib(babelwires::ProjectContext& context) {

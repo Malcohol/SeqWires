@@ -7,7 +7,7 @@
  **/
 #pragma once
 
-#include <Plugins/Smf/Plugin/smfTargetModel.hpp>
+#include <Plugins/Smf/Plugin/smfFeature.hpp>
 #include <Plugins/Smf/Plugin/Percussion/standardPercussionSets.hpp>
 
 #include <SeqWiresLib/musicTypes.hpp>
@@ -29,7 +29,7 @@ namespace smf {
     class SmfWriter {
       public:
         SmfWriter(const babelwires::ProjectContext& projectContext, babelwires::UserLogger& userLogger,
-                  const target::SmfFeature& sequence, std::ostream& output);
+                  const SmfFeature& sequence, std::ostream& output);
 
         void write();
 
@@ -77,7 +77,7 @@ namespace smf {
       private:
         const babelwires::ProjectContext& m_projectContext;
         babelwires::UserLogger& m_userLogger;
-        const target::SmfFeature& m_smfFeature;
+        const SmfFeature& m_smfFeature;
         std::ostream& m_ostream;
         std::ostream* m_os;
         /// Always use metrical time. Quater-note division.
@@ -99,6 +99,6 @@ namespace smf {
     };
 
     void writeToSmf(const babelwires::ProjectContext& projectContext, babelwires::UserLogger& userLogger,
-                    const target::SmfFeature& smfFeature, std::ostream& output);
+                    const SmfFeature& smfFeature, std::ostream& output);
 
 } // namespace smf
