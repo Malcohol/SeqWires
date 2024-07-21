@@ -7,25 +7,50 @@
  **/
 #pragma once
 
+#include <Plugins/Smf/Plugin/instanceWithChannelOptionals.hpp>
+#include <Plugins/Smf/Plugin/smfCommon.hpp>
+
 #include <BabelWiresLib/Instance/instance.hpp>
 #include <BabelWiresLib/TypeSystem/primitiveType.hpp>
 #include <BabelWiresLib/Types/Record/recordType.hpp>
 
-#include <SeqWiresLib/Types/Track/trackType.hpp>
 #include <SeqWiresLib/Types/Track/trackInstance.hpp>
+#include <SeqWiresLib/Types/Track/trackType.hpp>
 
 #include <Plugins/Smf/Plugin/midiChannel.hpp>
 
 namespace smf {
 
+    /// The tracks of format 1 files usually carry events for one channel. However:
+    /// (a) more than one track can have data for the same channel.
+    /// (b) a track can carry events for multiple channels.
+    /// See discussion here: https://www.midi.org/forum/8793-smf-format-1-tracks-and-channels
+    /// Because of (a), I chose track number rather than channel number to give identity to the
+    /// TrackFeatures. That isn't a complete solution because of (b). However, since (b) is
+    /// very rare, I believe the following to be an acceptable compromise:
+    /// We pick the channel in each track which has the most events, and give it an identity
+    /// which just depends on the track number. This should be pretty stable.
+    /// All other channels in the track are given an identity which depends on the track number
+    /// and channel. This is less stable, but OK. Problems will arise in the very rare situation
+    /// where a track had a similar number of events for two channels, and on reload, the
+    /// the smaller became the larger.
     class MidiTrackAndChannel : public babelwires::RecordType {
       public:
         PRIMITIVE_TYPE("TrackChannel", "Track and Channel", "5e9b395c-ec13-4bdb-9b2b-b060ba7fb707", 1);
         MidiTrackAndChannel();
 
-        DECLARE_INSTANCE_BEGIN(MidiTrackAndChannel)
-        DECLARE_INSTANCE_FIELD(Chan, MidiChannel)
-        DECLARE_INSTANCE_FIELD(Track, seqwires::TrackType);
-        DECLARE_INSTANCE_END()
+        static babelwires::ShortId getTrackIdFromChannel(unsigned int channel);
+
+        /// It's easier to work with a custom instance than the one the standard DSL would produce.
+        /// The parent class provides index based access to the 16 optional tracks.
+        template <typename VALUE_FEATURE>
+        class Instance : public InstanceWithChannelOptionals<VALUE_FEATURE, MidiTrackAndChannel> {
+          public:
+            Instance(VALUE_FEATURE& valueFeature)
+                : InstanceWithChannelOptionals<VALUE_FEATURE, MidiTrackAndChannel>(valueFeature) {}
+
+            DECLARE_INSTANCE_FIELD(Chan, MidiChannel)
+            DECLARE_INSTANCE_FIELD(Track, seqwires::TrackType);
+        };
     };
 } // namespace smf

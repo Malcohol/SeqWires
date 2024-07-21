@@ -9,11 +9,12 @@
 
 #include <Plugins/Smf/Plugin/Percussion/gm2StandardPercussionSet.hpp>
 #include <Plugins/Smf/Plugin/Percussion/gmPercussionSet.hpp>
+#include <Plugins/Smf/Plugin/smfSequence.hpp>
 
-#include <SeqWiresLib/Types/Track/trackFeature.hpp>
+#include <SeqWiresLib/Percussion/builtInPercussionInstruments.hpp>
 #include <SeqWiresLib/Types/Track/TrackEvents/noteEvents.hpp>
 #include <SeqWiresLib/Types/Track/TrackEvents/percussionEvents.hpp>
-#include <SeqWiresLib/Percussion/builtInPercussionInstruments.hpp>
+#include <SeqWiresLib/Types/Track/trackFeature.hpp>
 
 #include <BabelWiresLib/Project/projectContext.hpp>
 #include <BabelWiresLib/TypeSystem/typeSystem.hpp>
@@ -26,6 +27,8 @@
 #include <iomanip>
 
 namespace {
+    static const int MAX_CHANNELS = 16;
+
     // See page 237 of the SC-8850 English manual
     const std::array<unsigned int, 16> s_gsBlockToPartMapping{10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 14, 15, 16};
 } // namespace
@@ -35,10 +38,13 @@ smf::SmfParser::SmfParser(babelwires::DataSource& dataSource, const babelwires::
     : m_projectContext(projectContext)
     , m_dataSource(dataSource)
     , m_userLogger(userLogger)
-    , m_sequenceType(source::SmfFeature::SMF_UNKNOWN_FORMAT)
+    , m_sequenceType(Format::SMF_UNKNOWN_FORMAT)
     , m_numTracks(-1)
     , m_division(-1)
-    , m_standardPercussionSets(projectContext) {}
+    , m_standardPercussionSets(projectContext) {
+    m_result = std::make_unique<SmfFeature>(projectContext);
+    m_result->setToDefault();
+}
 
 smf::SmfParser::~SmfParser() = default;
 
@@ -132,9 +138,17 @@ void smf::SmfParser::readHeaderChunk() {
     if (readU32() != 6) {
         throw babelwires::ParseException() << "Header chunk not expected length";
     }
-    m_sequenceType = source::SmfFeature::Format(readU16());
-    if (m_sequenceType > 2) {
-        throw babelwires::ParseException() << "Not a known type of Standard MIDI File";
+    switch (readU16()) {
+        case 0:
+            m_sequenceType = Format::SMF_FORMAT_0;
+            break;
+        case 1:
+            m_sequenceType = Format::SMF_FORMAT_1;
+            break;
+        case 2:
+            throw babelwires::ParseException() << "Standard MIDI File Format 2 files are not currently supported";
+        default:
+            throw babelwires::ParseException() << "Not a known type of Standard MIDI File";
     }
     m_numTracks = readU16();
     m_division = readU16();
@@ -144,41 +158,33 @@ void smf::SmfParser::readHeaderChunk() {
 }
 
 void smf::SmfParser::parse() {
+    auto smfSequence = m_result->getSmfSequence();
+
     readHeaderChunk();
     switch (m_sequenceType) {
-        case source::SmfFeature::SMF_FORMAT_0: {
-            auto seqPtr = std::make_unique<source::Format0SmfFeature>(m_projectContext);
-            source::Format0SmfFeature& seq = *seqPtr;
-            seq.setToDefault();
-            m_result = std::move(seqPtr);
-            readFormat0Sequence(seq);
+        case Format::SMF_FORMAT_0: {
+            readFormat0Sequence();
             break;
         }
-        case source::SmfFeature::SMF_FORMAT_1: {
-            auto seqPtr = std::make_unique<source::Format1SmfFeature>(m_projectContext);
-            source::Format1SmfFeature& seq = *seqPtr;
-            seq.setToDefault();
-            m_result = std::move(seqPtr);
-            readFormat1Sequence(seq);
+        case Format::SMF_FORMAT_1: {
+            smfSequence.selectTag("SMF1");
+            readFormat1Sequence();
             break;
         }
-        case source::SmfFeature::SMF_FORMAT_2: {
+        case Format::SMF_FORMAT_2: {
             // TODO
         }
-        case source::SmfFeature::SMF_UNKNOWN_FORMAT:
+        case Format::SMF_UNKNOWN_FORMAT:
         default: {
             throw babelwires::ParseException() << "The data is not in one of the understood sequence types";
         }
     }
 }
 
-void smf::SmfParser::readTempoEvent(MidiMetadataFeature* metadataFeature) {
-    const double d = readU24();
+void smf::SmfParser::readTempoEvent(std::uint32_t tempoValue) {
+    const double d = tempoValue;
     const double bpm = 60'000'000 / d;
-    if (metadataFeature) {
-        auto metadata = smf::MidiMetadata::Instance<babelwires::ValueFeature>(*metadataFeature);
-        metadata.activateAndGetTempo().set(std::round(bpm));
-    }
+    getMidiMetadata().activateAndGetTempo().set(std::round(bpm));
 }
 
 class smf::SmfParser::TrackSplitter {
@@ -189,7 +195,8 @@ class smf::SmfParser::TrackSplitter {
 
     bool addNoteOn(unsigned int channelNumber, seqwires::ModelDuration timeSinceLastTrackEvent, seqwires::Pitch pitch,
                    seqwires::Velocity velocity) {
-        if (const seqwires::PercussionSetWithPitchMap* const percussionSet = m_channelSetup[channelNumber].m_kitIfPercussion) {
+        if (const seqwires::PercussionSetWithPitchMap* const percussionSet =
+                m_channelSetup[channelNumber].m_kitIfPercussion) {
             if (auto instrument = percussionSet->tryGetInstrumentFromPitch(pitch)) {
                 addToChannel<seqwires::PercussionOnEvent>(channelNumber, timeSinceLastTrackEvent, *instrument,
                                                           velocity);
@@ -204,7 +211,8 @@ class smf::SmfParser::TrackSplitter {
 
     bool addNoteOff(unsigned int channelNumber, seqwires::ModelDuration timeSinceLastTrackEvent, seqwires::Pitch pitch,
                     seqwires::Velocity velocity) {
-        if (const seqwires::PercussionSetWithPitchMap* const percussionSet = m_channelSetup[channelNumber].m_kitIfPercussion) {
+        if (const seqwires::PercussionSetWithPitchMap* const percussionSet =
+                m_channelSetup[channelNumber].m_kitIfPercussion) {
             if (auto instrument = percussionSet->tryGetInstrumentFromPitch(pitch)) {
                 addToChannel<seqwires::PercussionOffEvent>(channelNumber, timeSinceLastTrackEvent, *instrument,
                                                            velocity);
@@ -223,28 +231,6 @@ class smf::SmfParser::TrackSplitter {
         for (int channelNumber = 0; channelNumber < MAX_CHANNELS; ++channelNumber) {
             if (m_channels[channelNumber] != nullptr) {
                 m_channels[channelNumber]->m_track.setDuration(duration);
-            }
-        }
-    }
-
-    void assignChannelsToChannelGroup(smf::source::ChannelGroup& channels) {
-        // If this is a format 1 track with multiple channels, then privilege the
-        // channel with the most events.
-        int privilegedTrack = -1;
-        int maxNumEvents = 0;
-        for (int channelNumber = 0; channelNumber < MAX_CHANNELS; ++channelNumber) {
-            if ((m_channels[channelNumber] != nullptr) &&
-                (m_channels[channelNumber]->m_track.getNumEvents() > maxNumEvents)) {
-                privilegedTrack = channelNumber;
-                maxNumEvents = m_channels[channelNumber]->m_track.getNumEvents();
-            }
-        }
-        if (privilegedTrack != -1) {
-            channels.setPrivilegedTrack(privilegedTrack);
-            for (int channelNumber = 0; channelNumber < MAX_CHANNELS; ++channelNumber) {
-                if (m_channels[channelNumber] != nullptr) {
-                    channels.addTrack(channelNumber)->set(std::move(m_channels[channelNumber]->m_track));
-                }
             }
         }
     }
@@ -276,11 +262,7 @@ class smf::SmfParser::TrackSplitter {
         channel->m_timeOfLastEvent = m_timeSinceStart;
     }
 
-  private:
-    static const int MAX_CHANNELS = 16;
-
-    std::array<const seqwires::PercussionSetWithPitchMap*, NUM_KNOWN_PERCUSSION_KITS> m_knownKits;
-
+  public:
     seqwires::ModelDuration m_timeSinceStart;
 
     std::array<std::unique_ptr<PerChannelInfo>, MAX_CHANNELS> m_channels;
@@ -533,12 +515,10 @@ void smf::SmfParser::readProgramChange(unsigned int channelNumber) {
     setProgram(channelNumber, newProgram);
 }
 
-void smf::SmfParser::readTrack(int trackIndex, source::ChannelGroup& channels, MidiMetadataFeature* metadataFeature) {
+void smf::SmfParser::readTrack(int trackIndex, TrackSplitter& tracks, bool hasMainMetadata) {
     readByteSequence("MTrk");
     const std::uint32_t trackLength = readU32();
     const int currentIndex = m_dataSource.getAbsolutePosition();
-
-    TrackSplitter tracks(m_channelSetup);
 
     seqwires::ModelDuration timeSinceLastNoteEvent = 0;
     babelwires::Byte lastStatusByte = 0;
@@ -604,18 +584,16 @@ void smf::SmfParser::readTrack(int trackIndex, source::ChannelGroup& channels, M
                         case 0x02: // Copyright
                         {
                             std::string text = readTextMetaEvent(length);
-                            if (metadataFeature) {
-                                auto metadata = smf::MidiMetadata::Instance<babelwires::ValueFeature>(*metadataFeature);
-                                metadata.activateAndGetCopyR().set(text);
+                            if (hasMainMetadata) {
+                                getMidiMetadata().activateAndGetCopyR().set(text);
                             }
                             break;
                         }
                         case 0x03: // Sequence or track name.
                         {
                             std::string text = readTextMetaEvent(length);
-                            if (metadataFeature) {
-                                auto metadata = smf::MidiMetadata::Instance<babelwires::ValueFeature>(*metadataFeature);
-                                metadata.activateAndGetName().set(text);
+                            if (hasMainMetadata) {
+                                getMidiMetadata().activateAndGetName().set(text);
                             }
                             break;
                         }
@@ -667,7 +645,6 @@ void smf::SmfParser::readTrack(int trackIndex, source::ChannelGroup& channels, M
                                     length);
                             }
                             tracks.setDurationsForAllChannels(timeSinceLastNoteEvent);
-                            tracks.assignChannelsToChannelGroup(channels);
                             return;
                         }
                         case 0x51: // Set tempo
@@ -677,7 +654,10 @@ void smf::SmfParser::readTrack(int trackIndex, source::ChannelGroup& channels, M
                                                     << "Skipping Tempo meta-event with incorrect length",
                                                 length);
                             } else {
-                                readTempoEvent(metadataFeature);
+                                const std::uint32_t tempoValue = readU24();
+                                if (hasMainMetadata) {
+                                    readTempoEvent(tempoValue);
+                                }
                             }
                             break;
                         }
@@ -798,35 +778,65 @@ void smf::SmfParser::readTrack(int trackIndex, source::ChannelGroup& channels, M
                                        << " without finding an end-of-track event";
 }
 
-void smf::SmfParser::readFormat0Sequence(source::Format0SmfFeature& sequence) {
+void smf::SmfParser::readFormat0Sequence() {
     if (m_numTracks != 1) {
         throw babelwires::ParseException()
-            << "A format 0 claims to have " << m_numTracks << " tracks but it should only have 1";
+            << "A format 0 Standard MIDI file claims to have " << m_numTracks << " tracks but it should only have 1";
     }
-    source::ChannelGroup* midiTrack = sequence.getMidiTrack0();
-    readTrack(0, *midiTrack, &sequence.getMidiMetadata());
-}
-
-void smf::SmfParser::readFormat1Sequence(source::Format1SmfFeature& sequence) {
-    source::ChannelGroup* midiTrack = sequence.addMidiTrack();
-    readTrack(0, *midiTrack, &sequence.getMidiMetadata());
-    for (int i = 1; i < m_numTracks; ++i) {
-        source::ChannelGroup* midiTrack = sequence.addMidiTrack();
-        readTrack(i, *midiTrack);
+    TrackSplitter splitTracks(m_channelSetup);
+    readTrack(0, splitTracks, true);
+    auto tracks = m_result->getSmfSequence().getTrcks0();
+    for (int channelNumber = 0; channelNumber < MAX_CHANNELS; ++channelNumber) {
+        if (splitTracks.m_channels[channelNumber] != nullptr) {
+            tracks.activateAndGetTrack(channelNumber).set(std::move(splitTracks.m_channels[channelNumber]->m_track));
+        }
     }
 }
 
-smf::GMSpecType::Value smf::SmfParser::getGMSpec() const {
-    const auto& metadata = smf::MidiMetadata::Instance<const babelwires::ValueFeature>(m_result->getMidiMetadata());
-    return metadata.getSpec().get();
+void smf::SmfParser::readFormat1SequenceTrack(MidiTrackAndChannel::Instance<babelwires::ValueFeature>& track,
+                                              bool hasMainMetadata) {
+    TrackSplitter splitTrack(m_channelSetup);
+    readTrack(0, splitTrack, hasMainMetadata);
+    // If this is a format 1 track with multiple channels (rare but possible), privilege the
+    // channel with the most events.
+    int privilegedTrack = -1;
+    int maxNumEvents = 0;
+    for (int channelNumber = 0; channelNumber < MAX_CHANNELS; ++channelNumber) {
+        if ((splitTrack.m_channels[channelNumber] != nullptr) &&
+            (splitTrack.m_channels[channelNumber]->m_track.getNumEvents() > maxNumEvents)) {
+            privilegedTrack = channelNumber;
+            maxNumEvents = splitTrack.m_channels[channelNumber]->m_track.getNumEvents();
+        }
+    }
+    for (int channelNumber = 0; channelNumber < MAX_CHANNELS; ++channelNumber) {
+        if (channelNumber == privilegedTrack) {
+            track.getChan().set(channelNumber);
+            track.getTrack().set(std::move(splitTrack.m_channels[channelNumber]->m_track));
+        } else if (splitTrack.m_channels[channelNumber] != nullptr) {
+            // All other tracks are added as extra.
+            track.activateAndGetTrack(channelNumber).set(std::move(splitTrack.m_channels[channelNumber]->m_track));
+        }
+    }
+}
+
+void smf::SmfParser::readFormat1Sequence() {
+    auto tracks = m_result->getSmfSequence().getTrcks1();
+    tracks.setSize(m_numTracks);
+    for (int i = 0; i < m_numTracks; ++i) {
+        auto track = tracks.getEntry(i);
+        readFormat1SequenceTrack(track, (i == 0));
+    }
+}
+
+smf::MidiMetadata::Instance<babelwires::ValueFeature> smf::SmfParser::getMidiMetadata() {
+    return m_result->getSmfSequence().getMeta();
 }
 
 void smf::SmfParser::setGMSpec(GMSpecType::Value gmSpec) {
     for (int i = 0; i < 16; ++i) {
         m_channelSetup[i].m_kitIfPercussion = m_standardPercussionSets.getDefaultPercussionSet(gmSpec, i);
     }
-    auto metadata = smf::MidiMetadata::Instance<babelwires::ValueFeature>(m_result->getMidiMetadata());
-    metadata.getSpec().set(gmSpec);
+    getMidiMetadata().getSpec().set(gmSpec);
 }
 
 void smf::SmfParser::setBankMSB(unsigned int channelNumber, const babelwires::Byte msbValue) {
@@ -855,14 +865,14 @@ void smf::SmfParser::setGsPartMode(unsigned int blockNumber, babelwires::Byte va
 /// Right now, just trying to determine which percussionSet is in use if any.
 void smf::SmfParser::onChangeProgram(unsigned int channelNumber) {
     ChannelSetup& channelSetup = m_channelSetup[channelNumber];
-    const GMSpecType::Value gmSpec = getGMSpec();
+    const GMSpecType::Value gmSpec = getMidiMetadata().getSpec().get();
     channelSetup.m_kitIfPercussion =
-        m_standardPercussionSets.getPercussionSetFromChannelSetupInfo(getGMSpec(), channelSetup.m_channelSetupInfo);
+        m_standardPercussionSets.getPercussionSetFromChannelSetupInfo(gmSpec, channelSetup.m_channelSetupInfo);
 }
 
-std::unique_ptr<smf::source::SmfFeature> smf::parseSmfSequence(babelwires::DataSource& dataSource,
-                                                               const babelwires::ProjectContext& projectContext,
-                                                               babelwires::UserLogger& userLogger) {
+std::unique_ptr<smf::SmfFeature> smf::parseSmfSequence(babelwires::DataSource& dataSource,
+                                                       const babelwires::ProjectContext& projectContext,
+                                                       babelwires::UserLogger& userLogger) {
     SmfParser parser(dataSource, projectContext, userLogger);
     parser.parse();
     return parser.getResult();

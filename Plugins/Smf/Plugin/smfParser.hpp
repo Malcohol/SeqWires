@@ -8,7 +8,7 @@
 #pragma once
 
 #include <Plugins/Smf/Plugin/gmSpec.hpp>
-#include <Plugins/Smf/Plugin/smfSourceModel.hpp>
+#include <Plugins/Smf/Plugin/smfFeature.hpp>
 #include <Plugins/Smf/Plugin/Percussion/standardPercussionSets.hpp>
 
 #include <SeqWiresLib/musicTypes.hpp>
@@ -36,13 +36,12 @@ namespace smf {
         virtual ~SmfParser();
 
         void parse();
-        std::unique_ptr<source::SmfFeature> getResult() { return std::move(m_result); }
+        std::unique_ptr<SmfFeature> getResult() { return std::move(m_result); }
 
       protected:
         babelwires::Byte getNext();
         babelwires::Byte peekNext();
 
-        GMSpecType::Value getGMSpec() const;
         void setGMSpec(GMSpecType::Value spec);
 
         /// Read the expected byte sequence.
@@ -51,14 +50,19 @@ namespace smf {
         /// Reads the header chunk and set some metadata.
         void readHeaderChunk();
 
-        void readFormat0Sequence(source::Format0SmfFeature& sequence);
-        void readFormat1Sequence(source::Format1SmfFeature& sequence);
+        void readFormat0Sequence();
+        void readFormat1Sequence();
+        void readFormat1SequenceTrack(MidiTrackAndChannel::Instance<babelwires::ValueFeature>& track, bool hasMainMetadata = false);
 
-        void readTrack(int trackIndex, source::ChannelGroup& tracks, MidiMetadataFeature* metadata = nullptr);
+        MidiMetadata::Instance<babelwires::ValueFeature> getMidiMetadata();
+
+        class TrackSplitter;
+
+        void readTrack(int trackIndex, TrackSplitter& tracks, bool hasMainMetadata = false);
 
         seqwires::ModelDuration readModelDuration();
 
-        void readTempoEvent(MidiMetadataFeature* metadata);
+        void readTempoEvent(std::uint32_t tempoValue);
 
         std::string readTextMetaEvent(int length);
 
@@ -84,8 +88,6 @@ namespace smf {
 
         template <typename STREAMLIKE> void logMessageBuffer(STREAMLIKE log) const;
 
-        class TrackSplitter;
-
         void readControlChange(unsigned int channelNumber);
         void readProgramChange(unsigned int channelNumber);
         void setBankMSB(unsigned int channelNumber, const babelwires::Byte msbValue);
@@ -103,10 +105,12 @@ namespace smf {
         const babelwires::ProjectContext& m_projectContext;
         babelwires::DataSource& m_dataSource;
         babelwires::UserLogger& m_userLogger;
-        std::unique_ptr<source::SmfFeature> m_result;
+        std::unique_ptr<SmfFeature> m_result;
         std::vector<babelwires::Byte> m_messageBuffer;
 
-        source::SmfFeature::Format m_sequenceType;
+        enum class Format { SMF_FORMAT_0, SMF_FORMAT_1, SMF_FORMAT_2, SMF_UNKNOWN_FORMAT };
+            
+        Format m_sequenceType;
         int m_numTracks;
         int m_division;
 
@@ -124,7 +128,7 @@ namespace smf {
         std::array<ChannelSetup, 16> m_channelSetup;
     };
 
-    std::unique_ptr<source::SmfFeature> parseSmfSequence(babelwires::DataSource& dataSource,
+    std::unique_ptr<SmfFeature> parseSmfSequence(babelwires::DataSource& dataSource,
                                                               const babelwires::ProjectContext& projectContext,
                                                               babelwires::UserLogger& userLogger);
 

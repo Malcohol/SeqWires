@@ -55,11 +55,11 @@ std::string smf::SmfTargetFormat::getProductName() const {
 
 std::unique_ptr<babelwires::FileFeature>
 smf::SmfTargetFormat::createNewFeature(const babelwires::ProjectContext& projectContext) const {
-    return std::make_unique<target::SmfFeature>(projectContext);
+    return std::make_unique<SmfFeature>(projectContext);
 }
 
 void smf::SmfTargetFormat::writeToFile(const babelwires::ProjectContext& projectContext,
                                        babelwires::UserLogger& userLogger, const babelwires::FileFeature& sequence,
                                        std::ostream& os) const {
-    writeToSmf(projectContext, userLogger, sequence.is<target::SmfFeature>(), os);
+    writeToSmf(projectContext, userLogger, sequence.is<SmfFeature>(), os);
 }
