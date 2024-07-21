@@ -48,7 +48,7 @@ TEST_P(SmfStandardPercussionTest, saveLoad) {
         smf::SmfFeature smfFeature(testEnvironment.m_projectContext);
         smfFeature.setToDefault();
 
-        auto smfType = smfFeature.getSmfTypeFeature();
+        auto smfType = smfFeature.getSmfSequence();
         smfType.getMeta().getSpec().set(testData.m_specificationId);
 
         auto track9 = smfType.getTrcks0().activateAndGetTrack(9);
@@ -177,8 +177,8 @@ TEST_P(SmfTrackAllocationPercussionTest, trackAllocation) {
         smf::SmfFeature smfFeature(testEnvironment.m_projectContext);
         smfFeature.setToDefault();
 
-        smfFeature.getSmfTypeFeature().getMeta().getSpec().set(testData.m_specificationId);
-        auto tracks = smfFeature.getSmfTypeFeature().getTrcks0();
+        smfFeature.getSmfSequence().getMeta().getSpec().set(testData.m_specificationId);
+        auto tracks = smfFeature.getSmfSequence().getTrcks0();
 
         for (int i = 0; i < 3; ++i) {
             auto trackI = tracks.activateAndGetTrack(8+i);

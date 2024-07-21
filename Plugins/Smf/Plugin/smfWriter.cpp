@@ -108,7 +108,7 @@ void smf::SmfWriter::writeTextMetaEvent(int type, std::string text) {
 }
 
 void smf::SmfWriter::writeHeaderChunk(unsigned int numTracks) {
-    const auto& smfType = m_smfFeature.getSmfTypeFeature();
+    const auto& smfType = m_smfFeature.getSmfSequence();
 
     assert((m_division < (2 << 15)) && "division is too large");
 
@@ -245,7 +245,7 @@ template <std::size_t N> void smf::SmfWriter::writeMessage(const std::array<std:
 }
 
 void smf::SmfWriter::writeGlobalSetup() {
-    const auto& metadata = m_smfFeature.getSmfTypeFeature().getMeta();
+    const auto& metadata = m_smfFeature.getSmfSequence().getMeta();
 
     switch (metadata.getSpec().get()) {
         case GMSpecType::Value::GM:
@@ -295,7 +295,7 @@ void smf::SmfWriter::writeTrack(const std::vector<MidiTrackAndChannelInstance>& 
         writeGlobalSetup();
     }
 
-    const GMSpecType::Value gmSpec = m_smfFeature.getSmfTypeFeature().getMeta().getSpec().get();
+    const GMSpecType::Value gmSpec = m_smfFeature.getSmfSequence().getMeta().getSpec().get();
 
     for (int i = 0; i < tracks.size(); ++i) {
         const unsigned int channelNumber = std::get<0>(tracks[i]);
@@ -348,7 +348,7 @@ void smf::SmfWriter::writeTrack(const std::vector<MidiTrackAndChannelInstance>& 
 
 void smf::SmfWriter::setUpPercussionKit(const std::unordered_set<babelwires::ShortId>& instrumentsInUse,
                                         int channelNumber) {
-    const GMSpecType::Value gmSpec = m_smfFeature.getSmfTypeFeature().getMeta().getSpec().get();
+    const GMSpecType::Value gmSpec = m_smfFeature.getSmfSequence().getMeta().getSpec().get();
     std::unordered_set<babelwires::ShortId> excludedInstruments;
     m_channelSetup[channelNumber].m_kitIfPercussion =
         m_standardPercussionSets.getBestPercussionSet(gmSpec, channelNumber, instrumentsInUse, excludedInstruments);
@@ -379,7 +379,7 @@ void smf::SmfWriter::setUpPercussionSets() {
 }
 
 void smf::SmfWriter::applyToAllTracks(std::function<void(unsigned int, const seqwires::Track&)> func) {
-    const auto& smfType = m_smfFeature.getSmfTypeFeature();
+    const auto& smfType = m_smfFeature.getSmfSequence();
     if (smfType.getInstanceType().getIndexOfTag(smfType.getSelectedTag()) == 0) {
         const auto& tracks = smfType.getTrcks0();
         for (unsigned int c = 0; c < 16; ++c) {
@@ -402,7 +402,7 @@ void smf::SmfWriter::write() {
 
     std::vector<MidiTrackAndChannelInstance> channelAndTrackValues;
 
-    const auto& smfType = m_smfFeature.getSmfTypeFeature();
+    const auto& smfType = m_smfFeature.getSmfSequence();
 
     if (smfType.getInstanceType().getIndexOfTag(smfType.getSelectedTag()) == 0) {
         const auto& tracks = smfType.getTrcks0();

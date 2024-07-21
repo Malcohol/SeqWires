@@ -35,7 +35,7 @@ TEST(SmfSaveLoadTest, cMajorScale) {
         smf::SmfFeature smfFeature(testEnvironment.m_projectContext);
         smfFeature.setToDefault();
 
-        auto smfType = smfFeature.getSmfTypeFeature();
+        auto smfType = smfFeature.getSmfSequence();
         auto tracks = smfType.getTrcks0();
         auto track2 = tracks.activateAndGetTrack(2);
 
@@ -71,7 +71,7 @@ namespace {
     enum MetadataFlags { HAS_SEQUENCE_NAME = 0b001, HAS_COPYRIGHT = 0b010, HAS_TEMPO = 0b100 };
 
     void addMetadata(smf::SmfFeature& smfFeature, std::uint8_t flags) {
-        auto metadata = smfFeature.getSmfTypeFeature().getMeta();
+        auto metadata = smfFeature.getSmfSequence().getMeta();
 
         if (flags & HAS_SEQUENCE_NAME) {
             metadata.activateAndGetName().set("Test Sequence Name");
@@ -117,7 +117,7 @@ TEST(SmfSaveLoadTest, cMajorScaleWithMetadata) {
 
             addMetadata(smfFeature, metadata);
 
-            auto smfType = smfFeature.getSmfTypeFeature();
+            auto smfType = smfFeature.getSmfSequence();
             auto tracks = smfType.getTrcks0();
             auto track2 = tracks.activateAndGetTrack(2);
 
@@ -166,7 +166,7 @@ TEST(SmfSaveLoadTest, format0Chords) {
         smf::SmfFeature smfFeature(testEnvironment.m_projectContext);
         smfFeature.setToDefault();
 
-        auto smfType = smfFeature.getSmfTypeFeature();
+        auto smfType = smfFeature.getSmfSequence();
         auto tracks = smfType.getTrcks0();
 
         for (int i = 0; i < 3; ++i) {
@@ -214,7 +214,7 @@ TEST(SmfSaveLoadTest, format1Chords) {
         smf::SmfFeature smfFeature(testEnvironment.m_projectContext);
         smfFeature.setToDefault();
 
-        auto smfType = smfFeature.getSmfTypeFeature();
+        auto smfType = smfFeature.getSmfSequence();
         smfType.selectTag("SMF1");
         auto tracks = smfType.getTrcks1();
         tracks.setSize(3);
