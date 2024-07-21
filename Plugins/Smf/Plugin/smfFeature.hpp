@@ -7,7 +7,7 @@
  **/
 #pragma once
 
-#include <Plugins/Smf/Plugin/smfSequenceType.hpp>
+#include <Plugins/Smf/Plugin/smfSequence.hpp>
 
 #include <BabelWiresLib/Features/valueFeature.hpp>
 #include <BabelWiresLib/FileFormat/fileFeature.hpp>

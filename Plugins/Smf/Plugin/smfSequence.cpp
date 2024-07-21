@@ -5,7 +5,7 @@
  *
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
-#include <Plugins/Smf/Plugin/smfSequenceType.hpp>
+#include <Plugins/Smf/Plugin/smfSequence.hpp>
 
 #include <Common/Identifiers/registeredIdentifier.hpp>
 

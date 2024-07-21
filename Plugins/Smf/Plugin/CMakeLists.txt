@@ -38,7 +38,7 @@ SET( SMFLIB_SRCS
 	recordOfMidiTracks.cpp
 	smfFormat.cpp
 	smfParser.cpp
-	smfSequenceType.cpp
+	smfSequence.cpp
 	smfSourceModel.cpp
 	smfFeature.cpp
 	smfWriter.cpp
