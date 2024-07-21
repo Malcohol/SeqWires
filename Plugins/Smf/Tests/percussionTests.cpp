@@ -3,7 +3,6 @@
 #include <Plugins/Smf/Plugin/gmSpec.hpp>
 #include <Plugins/Smf/Plugin/libRegistration.hpp>
 #include <Plugins/Smf/Plugin/smfParser.hpp>
-#include <Plugins/Smf/Plugin/smfSourceModel.hpp>
 #include <Plugins/Smf/Plugin/smfFeature.hpp>
 #include <Plugins/Smf/Plugin/smfWriter.hpp>
 #include <Plugins/Smf/Plugin/midiTrackAndChannel.hpp>
@@ -73,20 +72,17 @@ TEST_P(SmfStandardPercussionTest, saveLoad) {
 
         const auto feature = smf::parseSmfSequence(midiFile, testEnvironment.m_projectContext, testEnvironment.m_log);
         ASSERT_NE(feature, nullptr);
-        auto smfFeature = feature.get()->as<const smf::source::Format0SmfFeature>();
-        ASSERT_NE(smfFeature, nullptr);
 
-        const auto& metadata = smf::MidiMetadata::Instance<const babelwires::ValueFeature>(smfFeature->getMidiMetadata());
-        EXPECT_EQ(metadata.getSpec().get(), testData.m_specificationId);
+        auto smfSequence = feature->getSmfSequence();
+        ASSERT_EQ(smfSequence.getInstanceType().getIndexOfTag(smfSequence.getSelectedTag()), 0);
 
-        EXPECT_EQ(smfFeature->getNumMidiTracks(), 1);
-        const auto& channelGroup = dynamic_cast<const smf::source::RecordChannelGroup&>(smfFeature->getMidiTrack(0));
-        EXPECT_EQ(channelGroup.getNumFeatures(), 1);
-        const auto* trackFeature = channelGroup.getFeature(0)->as<const seqwires::TrackFeature>();
-        ASSERT_NE(trackFeature, nullptr);
-        ASSERT_EQ(channelGroup.getStepToChild(trackFeature), babelwires::PathStep(babelwires::ShortId("ch9")));
+        auto tracks = smfSequence.getTrcks0();
+        EXPECT_EQ(tracks.getValueFeature().getNumFeatures(), 1);
+        
+        auto track9 = tracks.tryGetTrack(9);
+        ASSERT_TRUE(track9);
 
-        const auto& track = trackFeature->get();
+        const auto& track = track9->get();
 
         auto categoryMap = track.getNumEventGroupsByCategory();
         EXPECT_EQ(categoryMap.find(seqwires::NoteEvent::s_noteEventCategory), categoryMap.end());
@@ -205,23 +201,21 @@ TEST_P(SmfTrackAllocationPercussionTest, trackAllocation) {
 
         const auto feature = smf::parseSmfSequence(midiFile, testEnvironment.m_projectContext, testEnvironment.m_log);
         ASSERT_NE(feature, nullptr);
-        auto smfFeature = feature.get()->as<const smf::source::Format0SmfFeature>();
-        ASSERT_NE(smfFeature, nullptr);
 
-        const auto& metadata = smf::MidiMetadata::Instance<const babelwires::ValueFeature>(smfFeature->getMidiMetadata());
+        auto smfSequence = feature->getSmfSequence();
+        ASSERT_EQ(smfSequence.getInstanceType().getIndexOfTag(smfSequence.getSelectedTag()), 0);
+
+        auto tracks = smfSequence.getTrcks0();
+        EXPECT_EQ(tracks.getValueFeature().getNumFeatures(), 3);
+
+        const auto& metadata = smfSequence.getMeta();
         EXPECT_EQ(metadata.getSpec().get(), testData.m_specificationId);
 
-        EXPECT_EQ(smfFeature->getNumMidiTracks(), 1);
-        const auto& channelGroup = dynamic_cast<const smf::source::RecordChannelGroup&>(smfFeature->getMidiTrack(0));
-        EXPECT_EQ(channelGroup.getNumFeatures(), 3);
-
         for (int i = 0; i < 3; ++i) {
-            const auto* const trackFeature = channelGroup.getFeature(i)->as<const seqwires::TrackFeature>();
-            ASSERT_NE(trackFeature, nullptr);
-            // ASSERT_EQ(channelGroup.getStepToChild(trackFeature),
-            // babelwires::PathStep(babelwires::ShortId("ch9")));
+            auto trackI = tracks.tryGetTrack(8 + i);
+            ASSERT_TRUE(trackI);
 
-            const auto& track = trackFeature->get();
+            const auto& track = trackI->get();
             auto categoryMap = track.getNumEventGroupsByCategory();
 
             if (testData.m_hasNotes[i]) {
