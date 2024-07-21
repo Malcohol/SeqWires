@@ -11,22 +11,22 @@
 
 namespace {
     static const babelwires::IdentifiersSource s_extraTrackNames = {
-        {"exCh0", "Extra Ch. 0", "1ae79cf3-41c3-4311-ae93-4cd78f7e1273"},
-        {"exCh1", "Extra Ch. 1", "3d02ebfa-cf59-4885-8522-d37ce08c6afb"},
-        {"exCh2", "Extra Ch. 2", "2afadcc4-8b05-425c-b0ff-60c2d126c02f"},
-        {"exCh3", "Extra Ch. 3", "bcfede88-37c9-4e29-bc4e-7b6a79d8035c"},
-        {"exCh4", "Extra Ch. 4", "9ba284d2-d954-409c-9f56-d39640737bed"},
-        {"exCh5", "Extra Ch. 5", "e345aab8-f2da-41bc-a905-8d4bf13ffbb8"},
-        {"exCh6", "Extra Ch. 6", "da699351-dffe-4bb0-9835-c2719b1d66e4"},
-        {"exCh7", "Extra Ch. 7", "c0af7db3-072b-4941-80f2-de65b55434a2"},
-        {"exCh8", "Extra Ch. 8", "a05f1117-b958-4711-aa6f-4491885ef8c9"},
-        {"exCh9", "Extra Ch. 9", "cbd0cf0e-226f-4897-83e8-8a3381d1b8a2"},
-        {"exCh10", "Extra Ch. 10", "f897fa6e-c835-4be4-9f91-b1052416260d"},
-        {"exCh11", "Extra Ch. 11", "53296f21-7197-4b54-b1b7-a09765e8ae9a"},
-        {"exCh12", "Extra Ch. 12", "73cb5d58-3cdb-49b1-bf55-500196633e11"},
-        {"exCh13", "Extra Ch. 13", "3f969eea-461f-4af2-9fa4-fe24df5ebd16"},
-        {"exCh14", "Extra Ch. 14", "4582d210-f0cf-4100-b554-a1f948341494"},
-        {"exCh15", "Extra Ch. 15", "6a3d1cde-dee0-451e-b23a-8f23d4a50c33"}};
+        {"exCh0", "Extra Ch. 0", "c1776a3f-120e-4139-9576-341c4de34304"},
+        {"exCh1", "Extra Ch. 1", "efd29a2a-d91c-44dc-abb3-5db296c5be43"},
+        {"exCh2", "Extra Ch. 2", "10258fb9-fe2c-4d6f-8a53-5e02984af667"},
+        {"exCh3", "Extra Ch. 3", "dce5df18-8f82-4dab-adbd-7448a7391115"},
+        {"exCh4", "Extra Ch. 4", "f51e27bf-b9e5-452e-9e94-5f1a44813444"},
+        {"exCh5", "Extra Ch. 5", "5a436af9-532b-4748-b4b7-7e6dfeb153c1"},
+        {"exCh6", "Extra Ch. 6", "ad5d0f48-c794-4857-b58d-6bdbdd2267b2"},
+        {"exCh7", "Extra Ch. 7", "d32f2f40-aae1-4c7f-97bf-845cd6393537"},
+        {"exCh8", "Extra Ch. 8", "3c794878-13cb-4a5f-adca-a44148498348"},
+        {"exCh9", "Extra Ch. 9", "efcccfa4-ba60-49ba-a763-26408d1ba410"},
+        {"exCh10", "Extra Ch. 10", "804206d4-9213-490c-a51e-89ca0a74690e"},
+        {"exCh11", "Extra Ch. 11", "345559d6-ba67-47f3-95d1-58057969e822"},
+        {"exCh12", "Extra Ch. 12", "0882522a-539d-4132-8972-dc6da74c8eb2"},
+        {"exCh13", "Extra Ch. 13", "4260ec70-c970-468f-887c-81ef55c2bf09"},
+        {"exCh14", "Extra Ch. 14", "ceec1976-1322-4157-9f95-f67bd6cead78"},
+        {"exCh15", "Extra Ch. 15", "9e224cdc-e0e1-4439-9aa4-739be9354c7c"}};
 } // namespace
 
 babelwires::ShortId smf::MidiTrackAndChannel::getTrackIdFromChannel(unsigned int index) {
