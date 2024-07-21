@@ -35,7 +35,7 @@ smf::SmfParser::SmfParser(babelwires::DataSource& dataSource, const babelwires::
     : m_projectContext(projectContext)
     , m_dataSource(dataSource)
     , m_userLogger(userLogger)
-    , m_sequenceType(source::SmfFeature::SMF_UNKNOWN_FORMAT)
+    , m_sequenceType(Format::SMF_UNKNOWN_FORMAT)
     , m_numTracks(-1)
     , m_division(-1)
     , m_standardPercussionSets(projectContext) {}
@@ -132,8 +132,16 @@ void smf::SmfParser::readHeaderChunk() {
     if (readU32() != 6) {
         throw babelwires::ParseException() << "Header chunk not expected length";
     }
-    m_sequenceType = source::SmfFeature::Format(readU16());
-    if (m_sequenceType > 2) {
+    m_sequenceType = Format(readU16());
+    switch (m_sequenceType)
+    {
+    case Format::SMF_FORMAT_0:
+    case Format::SMF_FORMAT_1:
+        /* code */
+        break;
+    case Format::SMF_FORMAT_2:
+        throw babelwires::ParseException() << "Standard MIDI File Format 2 files are not currently supported";
+    default:
         throw babelwires::ParseException() << "Not a known type of Standard MIDI File";
     }
     m_numTracks = readU16();
@@ -146,7 +154,7 @@ void smf::SmfParser::readHeaderChunk() {
 void smf::SmfParser::parse() {
     readHeaderChunk();
     switch (m_sequenceType) {
-        case source::SmfFeature::SMF_FORMAT_0: {
+        case Format::SMF_FORMAT_0: {
             auto seqPtr = std::make_unique<source::Format0SmfFeature>(m_projectContext);
             source::Format0SmfFeature& seq = *seqPtr;
             seq.setToDefault();
@@ -154,7 +162,7 @@ void smf::SmfParser::parse() {
             readFormat0Sequence(seq);
             break;
         }
-        case source::SmfFeature::SMF_FORMAT_1: {
+        case Format::SMF_FORMAT_1: {
             auto seqPtr = std::make_unique<source::Format1SmfFeature>(m_projectContext);
             source::Format1SmfFeature& seq = *seqPtr;
             seq.setToDefault();
@@ -162,10 +170,10 @@ void smf::SmfParser::parse() {
             readFormat1Sequence(seq);
             break;
         }
-        case source::SmfFeature::SMF_FORMAT_2: {
+        case Format::SMF_FORMAT_2: {
             // TODO
         }
-        case source::SmfFeature::SMF_UNKNOWN_FORMAT:
+        case Format::SMF_UNKNOWN_FORMAT:
         default: {
             throw babelwires::ParseException() << "The data is not in one of the understood sequence types";
         }

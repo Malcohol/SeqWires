@@ -106,7 +106,9 @@ namespace smf {
         std::unique_ptr<source::SmfFeature> m_result;
         std::vector<babelwires::Byte> m_messageBuffer;
 
-        source::SmfFeature::Format m_sequenceType;
+        enum class Format { SMF_FORMAT_0, SMF_FORMAT_1, SMF_FORMAT_2, SMF_UNKNOWN_FORMAT };
+            
+        Format m_sequenceType;
         int m_numTracks;
         int m_division;
 
