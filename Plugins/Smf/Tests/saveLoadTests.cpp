@@ -4,7 +4,6 @@
 #include <Plugins/Smf/Plugin/midiTrackAndChannel.hpp>
 #include <Plugins/Smf/Plugin/midiTrackAndChannelArray.hpp>
 #include <Plugins/Smf/Plugin/smfParser.hpp>
-#include <Plugins/Smf/Plugin/smfSourceModel.hpp>
 #include <Plugins/Smf/Plugin/smfFeature.hpp>
 #include <Plugins/Smf/Plugin/smfWriter.hpp>
 
@@ -52,17 +51,16 @@ TEST(SmfSaveLoadTest, cMajorScale) {
 
         const auto feature = smf::parseSmfSequence(midiFile, testEnvironment.m_projectContext, testEnvironment.m_log);
         ASSERT_NE(feature, nullptr);
-        auto smfFeature = feature.get()->as<const smf::source::Format0SmfFeature>();
-        ASSERT_NE(smfFeature, nullptr);
+        auto smfSequence = feature->getSmfSequence();
+        ASSERT_EQ(smfSequence.getInstanceType().getIndexOfTag(smfSequence.getSelectedTag()), 0);
 
-        EXPECT_EQ(smfFeature->getNumMidiTracks(), 1);
-        const auto& channelGroup = dynamic_cast<const smf::source::RecordChannelGroup&>(smfFeature->getMidiTrack(0));
-        EXPECT_EQ(channelGroup.getNumFeatures(), 1);
-        const auto* trackFeature = channelGroup.getFeature(0)->as<const seqwires::TrackFeature>();
-        ASSERT_NE(trackFeature, nullptr);
-        ASSERT_EQ(channelGroup.getStepToChild(trackFeature), babelwires::PathStep(babelwires::ShortId("ch2")));
+        auto tracks = smfSequence.getTrcks0();
+        EXPECT_EQ(tracks.getValueFeature().getNumFeatures(), 1);
+        
+        auto track2 = tracks.tryGetTrack(2);
+        ASSERT_TRUE(track2);
 
-        testUtils::testSimpleNotes(pitches, trackFeature->get());
+        testUtils::testSimpleNotes(pitches, track2->get());
     }
 }
 
@@ -84,8 +82,8 @@ namespace {
         }
     }
 
-    void checkMetadata(const smf::source::SmfFeature& smfFeature, std::uint8_t flags) {
-        const auto& metadata = smf::MidiMetadata::Instance<const babelwires::ValueFeature>(smfFeature.getMidiMetadata());
+    void checkMetadata(const smf::SmfFeature& smfFeature, std::uint8_t flags) {
+        const auto& metadata = smfFeature.getSmfSequence().getMeta();
         
         if (flags & HAS_SEQUENCE_NAME) {
             ASSERT_TRUE(metadata.tryGetName());
@@ -133,19 +131,19 @@ TEST(SmfSaveLoadTest, cMajorScaleWithMetadata) {
 
         const auto feature = smf::parseSmfSequence(midiFile, testEnvironment.m_projectContext, testEnvironment.m_log);
         ASSERT_NE(feature, nullptr);
-        auto smfFeature = feature.get()->as<const smf::source::Format0SmfFeature>();
-        ASSERT_NE(smfFeature, nullptr);
+        
+        auto smfSequence = feature->getSmfSequence();
+        ASSERT_EQ(smfSequence.getInstanceType().getIndexOfTag(smfSequence.getSelectedTag()), 0);
+        
+        checkMetadata(*feature, metadata);
 
-        checkMetadata(*smfFeature, metadata);
+        auto tracks = smfSequence.getTrcks0();
+        EXPECT_EQ(tracks.getValueFeature().getNumFeatures(), 1);
+        
+        auto track2 = tracks.tryGetTrack(2);
+        ASSERT_TRUE(track2);
 
-        EXPECT_EQ(smfFeature->getNumMidiTracks(), 1);
-        const auto& channelGroup = dynamic_cast<const smf::source::RecordChannelGroup&>(smfFeature->getMidiTrack(0));
-        EXPECT_EQ(channelGroup.getNumFeatures(), 1);
-        const auto* trackFeature = channelGroup.getFeature(0)->as<const seqwires::TrackFeature>();
-        ASSERT_NE(trackFeature, nullptr);
-        ASSERT_EQ(channelGroup.getStepToChild(trackFeature), babelwires::PathStep(babelwires::ShortId("ch2")));
-
-        testUtils::testSimpleNotes(pitches, trackFeature->get());
+        testUtils::testSimpleNotes(pitches, track2->get());
     }
 }
 
@@ -185,19 +183,17 @@ TEST(SmfSaveLoadTest, format0Chords) {
 
         const auto feature = smf::parseSmfSequence(midiFile, testEnvironment.m_projectContext, testEnvironment.m_log);
         ASSERT_NE(feature, nullptr);
-        auto smfFeature = feature.get()->as<const smf::source::Format0SmfFeature>();
-        ASSERT_NE(smfFeature, nullptr);
-
-        EXPECT_EQ(smfFeature->getNumMidiTracks(), 1);
-        const auto& channelGroup = dynamic_cast<const smf::source::RecordChannelGroup&>(smfFeature->getMidiTrack(0));
-        EXPECT_EQ(channelGroup.getNumFeatures(), 3);
-
+        
+        auto smfSequence = feature->getSmfSequence();
+        ASSERT_EQ(smfSequence.getInstanceType().getIndexOfTag(smfSequence.getSelectedTag()), 0);
+        
+        auto tracks = smfSequence.getTrcks0();
+        EXPECT_EQ(tracks.getValueFeature().getNumFeatures(), 3);
+        
         for (int i = 0; i < 3; ++i) {
-            const auto* trackFeature = channelGroup.getFeature(i)->as<const seqwires::TrackFeature>();
-            ASSERT_NE(trackFeature, nullptr);
-            ASSERT_EQ(channelGroup.getStepToChild(trackFeature),
-                      babelwires::PathStep(babelwires::ShortId(trackName[i])));
-            testUtils::testSimpleNotes(chordPitches[i], trackFeature->get());
+            auto trackI = tracks.tryGetTrack(i);
+            ASSERT_TRUE(trackI);
+            testUtils::testSimpleNotes(chordPitches[i], trackI->get());
         }
     }
 }
@@ -236,22 +232,17 @@ TEST(SmfSaveLoadTest, format1Chords) {
 
         const auto feature = smf::parseSmfSequence(midiFile, testEnvironment.m_projectContext, testEnvironment.m_log);
         ASSERT_NE(feature, nullptr);
-        auto smfFeature = feature.get()->as<const smf::source::Format1SmfFeature>();
-        ASSERT_NE(smfFeature, nullptr);
 
-        EXPECT_EQ(smfFeature->getNumMidiTracks(), 3);
+        auto smfSequence = feature->getSmfSequence();
+        ASSERT_EQ(smfSequence.getInstanceType().getIndexOfTag(smfSequence.getSelectedTag()), 1);
+        
+        auto tracks = smfSequence.getTrcks1();
+        EXPECT_EQ(tracks.getSize(), 3);
+
         for (int i = 0; i < 3; ++i) {
-            const auto& channelGroup =
-                dynamic_cast<const smf::source::ExtensibleChannelGroup&>(smfFeature->getMidiTrack(i));
-            EXPECT_EQ(channelGroup.getNumFeatures(), 2);
-            const auto* channelFeature =
-                channelGroup.getChildFromStep(babelwires::PathStep("ChanNo")).as<const babelwires::IntFeature>();
-            ASSERT_NE(channelFeature, nullptr);
-            EXPECT_EQ(channelFeature->get(), i);
-            const auto* trackFeature =
-                channelGroup.getChildFromStep(babelwires::PathStep("Track")).as<const seqwires::TrackFeature>();
-            ASSERT_NE(trackFeature, nullptr);
-            testUtils::testSimpleNotes(chordPitches[i], trackFeature->get());
+            auto track = tracks.getEntry(i);
+            EXPECT_EQ(track.getChan().get(), i);
+            testUtils::testSimpleNotes(chordPitches[i], track.getTrack().get());
         }
     }
 }
