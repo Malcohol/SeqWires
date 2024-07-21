@@ -51,8 +51,7 @@ TEST_P(SmfStandardPercussionTest, saveLoad) {
         auto smfType = smfFeature.getSmfTypeFeature();
         smfType.getMeta().getSpec().set(testData.m_specificationId);
 
-        auto trackAndChan = smfType.getTracks().getEntry(0);
-        trackAndChan.getChan().set(9);
+        auto track9 = smfType.getTrcks0().activateAndGetTrack(9);
 
         seqwires::Track track;
 
@@ -63,7 +62,7 @@ TEST_P(SmfStandardPercussionTest, saveLoad) {
         track.addEvent(seqwires::PercussionOnEvent{0, testData.m_instrumentId2});
         track.addEvent(seqwires::PercussionOffEvent{babelwires::Rational(1, 4), testData.m_instrumentId2});
 
-        trackAndChan.getTrack().set(std::move(track));
+        track9.set(std::move(track));
 
         std::ofstream os = tempFile.openForWriting(std::ios_base::binary);
         smf::writeToSmf(testEnvironment.m_projectContext, testEnvironment.m_log, smfFeature, os);
@@ -179,12 +178,10 @@ TEST_P(SmfTrackAllocationPercussionTest, trackAllocation) {
         smfFeature.setToDefault();
 
         smfFeature.getSmfTypeFeature().getMeta().getSpec().set(testData.m_specificationId);
-        auto tracks = smfFeature.getSmfTypeFeature().getTracks();
-        tracks.setSize(3);
+        auto tracks = smfFeature.getSmfTypeFeature().getTrcks0();
 
         for (int i = 0; i < 3; ++i) {
-            auto midiTrackAndChannel = tracks.getEntry(i);
-            midiTrackAndChannel.getChan().set(8+i);
+            auto trackI = tracks.activateAndGetTrack(8+i);
 
             seqwires::Track track;
 
@@ -196,7 +193,7 @@ TEST_P(SmfTrackAllocationPercussionTest, trackAllocation) {
                 track.addEvent(seqwires::PercussionOffEvent{babelwires::Rational(1, 4), instrument});
             }
 
-            midiTrackAndChannel.getTrack().set(std::move(track));
+            trackI.set(std::move(track));
         }
 
         std::ofstream os = tempFile.openForWriting(std::ios_base::binary);

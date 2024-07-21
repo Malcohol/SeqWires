@@ -9,6 +9,7 @@
 
 #include <Plugins/Smf/Plugin/midiMetadata.hpp>
 #include <Plugins/Smf/Plugin/midiTrackAndChannelArray.hpp>
+#include <Plugins/Smf/Plugin/recordOfMidiTracks.hpp>
 
 #include <BabelWiresLib/Types/RecordWithVariants/recordWithVariantsType.hpp>
 #include <BabelWiresLib/Instance/instance.hpp>
@@ -32,7 +33,8 @@ namespace smf {
 
         DECLARE_INSTANCE_BEGIN(SmfSequenceType)
         DECLARE_INSTANCE_FIELD(Meta, MidiMetadata)
-        DECLARE_INSTANCE_FIELD(Tracks, MidiTrackAndChannelArray);
+        DECLARE_INSTANCE_FIELD(Trcks0, RecordOfMidiTracks);
+        DECLARE_INSTANCE_FIELD(Trcks1, MidiTrackAndChannelArray);
         DECLARE_INSTANCE_END()
     };
 }

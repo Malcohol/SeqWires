@@ -108,28 +108,29 @@
                 </sourceFile>
                 <targetFile id="16" factory="SmfFile&apos;1" filePath="DucksInARow_Round.mid">
                     <modifiers>
+                        <selectUnionBranch path="SmfSeq&apos;1" select="SMF1&apos;1"/>
                         <assignFrom path="SmfSeq&apos;1/Meta&apos;1" sourceId="15" sourcePath="Meta&apos;1"/>
                         <assign path="SmfSeq&apos;1/Meta&apos;1/Name&apos;1">
                             <value typeName="string" value="Ducks in a Row (round)"/>
                         </assign>
-                        <arraySize path="SmfSeq&apos;1/Tracks&apos;4" size="3"/>
-                        <assignFrom path="SmfSeq&apos;1/Tracks&apos;4/0/Track&apos;2" sourceId="12" sourcePath="Output&apos;1"/>
-                        <assign path="SmfSeq&apos;1/Tracks&apos;4/1/Chan&apos;1">
+                        <arraySize path="SmfSeq&apos;1/Trcks1&apos;1" size="3"/>
+                        <assignFrom path="SmfSeq&apos;1/Trcks1&apos;1/0/Track&apos;2" sourceId="12" sourcePath="Output&apos;1"/>
+                        <assign path="SmfSeq&apos;1/Trcks1&apos;1/1/Chan&apos;1">
                             <value typeName="int" value="1"/>
                         </assign>
-                        <assignFrom path="SmfSeq&apos;1/Tracks&apos;4/1/Track&apos;2" sourceId="13" sourcePath="Output&apos;1"/>
-                        <assign path="SmfSeq&apos;1/Tracks&apos;4/2/Chan&apos;1">
+                        <assignFrom path="SmfSeq&apos;1/Trcks1&apos;1/1/Track&apos;2" sourceId="13" sourcePath="Output&apos;1"/>
+                        <assign path="SmfSeq&apos;1/Trcks1&apos;1/2/Chan&apos;1">
                             <value typeName="int" value="2"/>
                         </assign>
-                        <assignFrom path="SmfSeq&apos;1/Tracks&apos;4/2/Track&apos;2" sourceId="10" sourcePath="Tracks&apos;2/0"/>
+                        <assignFrom path="SmfSeq&apos;1/Trcks1&apos;1/2/Track&apos;2" sourceId="10" sourcePath="Tracks&apos;2/0"/>
                     </modifiers>
                     <uiData x="1207" y="55" width="250"/>
                     <expandedPaths>
                         <path value="SmfSeq&apos;1"/>
-                        <path value="SmfSeq&apos;1/Tracks&apos;4"/>
-                        <path value="SmfSeq&apos;1/Tracks&apos;4/0"/>
-                        <path value="SmfSeq&apos;1/Tracks&apos;4/1"/>
-                        <path value="SmfSeq&apos;1/Tracks&apos;4/2"/>
+                        <path value="SmfSeq&apos;1/Trcks1&apos;1"/>
+                        <path value="SmfSeq&apos;1/Trcks1&apos;1/0"/>
+                        <path value="SmfSeq&apos;1/Trcks1&apos;1/1"/>
+                        <path value="SmfSeq&apos;1/Trcks1&apos;1/2"/>
                     </expandedPaths>
                 </targetFile>
             </elements>
@@ -156,6 +157,7 @@
                 <identifier id="Offset&apos;1" name="Pitch Offset" uuid="5cfa1541-f25e-4671-ac11-2ff71c883418"/>
                 <identifier id="Output&apos;1" name="Output Track" uuid="873d5d66-c5ec-46a4-9aba-f5f4223bdfd4"/>
                 <identifier id="RepeatTracks&apos;1" name="Repeat" uuid="6c5b3e89-bb57-4c90-8a66-1d8cdeb29db9"/>
+                <identifier id="SMF1&apos;1" name="1" uuid="ce16e042-445b-423d-a493-874ed4c238b3"/>
                 <identifier id="SilentTrack&apos;1" name="Silence" uuid="c59e4643-b7d8-430b-980b-bd81b5aa007b"/>
                 <identifier id="SmfFile&apos;1" name="Standard MIDI file (out)" uuid="f29cd3b0-8a46-4a21-bb7d-53acd6702944"/>
                 <identifier id="SmfSeq&apos;1" name="Format" uuid="1f2eaefb-b48d-484d-8793-e14f2fa0193b"/>
@@ -167,8 +169,8 @@
                 <identifier id="Tracks&apos;1" name="Tracks" uuid="983b3bcb-7086-4791-8e18-d8c7550d45d3"/>
                 <identifier id="Tracks&apos;2" name="Tracks" uuid="83f05b66-7890-4542-8344-1409e50539b5"/>
                 <identifier id="Tracks&apos;3" name="Tracks" uuid="f727937f-0215-4527-bab4-0eca269d6c5c"/>
-                <identifier id="Tracks&apos;4" name="Tracks" uuid="38ae4e20-1468-4dce-890b-981454e6dbe0"/>
                 <identifier id="TransposeTracks&apos;1" name="Transpose" uuid="3414f6cf-290a-421e-bce5-6a98ed0483af"/>
+                <identifier id="Trcks1&apos;1" name="Tracks" uuid="38ae4e20-1468-4dce-890b-981454e6dbe0"/>
                 <identifier id="ch0&apos;1" name="Ch. 0" uuid="18cb72e5-6891-428c-beae-aa17db453852"/>
                 <identifier id="ch1&apos;1" name="Ch. 1" uuid="f4bc5369-5d7e-4e18-83ec-44560309edb7"/>
                 <identifier id="tracks&apos;1" name="tracks" uuid="3fb0f062-4e8e-4b37-a598-edcd63f82971"/>
@@ -187,6 +189,7 @@
         <serializable type="project" version="1"/>
         <serializable type="projectData" version="1"/>
         <serializable type="rational" version="1"/>
+        <serializable type="selectUnionBranch" version="1"/>
         <serializable type="sourceFile" version="1"/>
         <serializable type="string" version="1"/>
         <serializable type="targetFile" version="1"/>

@@ -14,7 +14,6 @@
 
 namespace smf {
     namespace target {
-        /// Common to all formats of SmfFeature.
         class SmfFeature : public babelwires::FileFeature {
           public:
             SmfFeature(const babelwires::ProjectContext& projectContext);

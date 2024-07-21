@@ -36,13 +36,12 @@ TEST(SmfSaveLoadTest, cMajorScale) {
         smfFeature.setToDefault();
 
         auto smfType = smfFeature.getSmfTypeFeature();
-        auto tracks = smfType.getTracks();
-        auto trackAndChan = tracks.getEntry(0);
-        trackAndChan.getChan().set(2);
+        auto tracks = smfType.getTrcks0();
+        auto track2 = tracks.activateAndGetTrack(2);
 
         seqwires::Track track;
         testUtils::addSimpleNotes(pitches, track);
-        trackAndChan.getTrack().set(std::move(track));
+        track2.set(std::move(track));
 
         std::ofstream os = tempFile.openForWriting(std::ios_base::binary);
         smf::writeToSmf(testEnvironment.m_projectContext, testEnvironment.m_log, smfFeature, os);
@@ -119,13 +118,12 @@ TEST(SmfSaveLoadTest, cMajorScaleWithMetadata) {
             addMetadata(smfFeature, metadata);
 
             auto smfType = smfFeature.getSmfTypeFeature();
-            auto tracks = smfType.getTracks();
-            auto trackAndChan = tracks.getEntry(0);
-            trackAndChan.getChan().set(2);
+            auto tracks = smfType.getTrcks0();
+            auto track2 = tracks.activateAndGetTrack(2);
 
             seqwires::Track track;
             testUtils::addSimpleNotes(pitches, track);
-            trackAndChan.getTrack().set(std::move(track));
+            track2.set(std::move(track));
 
             std::ofstream os = tempFile.openForWriting(std::ios_base::binary);
             smf::writeToSmf(testEnvironment.m_projectContext, testEnvironment.m_log, smfFeature, os);
@@ -169,15 +167,13 @@ TEST(SmfSaveLoadTest, format0Chords) {
         smfFeature.setToDefault();
 
         auto smfType = smfFeature.getSmfTypeFeature();
-        auto tracks = smfType.getTracks();
-        tracks.setSize(3);
+        auto tracks = smfType.getTrcks0();
 
         for (int i = 0; i < 3; ++i) {
-            auto trackAndChan = tracks.getEntry(i);
-            trackAndChan.getChan().set(i);
+            auto trackI = tracks.activateAndGetTrack(i);
             seqwires::Track track;
             testUtils::addSimpleNotes(chordPitches[i], track);
-            trackAndChan.getTrack().set(std::move(track));
+            trackI.set(std::move(track));
         }
 
         std::ofstream os = tempFile.openForWriting(std::ios_base::binary);
@@ -220,7 +216,7 @@ TEST(SmfSaveLoadTest, format1Chords) {
 
         auto smfType = smfFeature.getSmfTypeFeature();
         smfType.selectTag("SMF1");
-        auto tracks = smfType.getTracks();
+        auto tracks = smfType.getTrcks1();
         tracks.setSize(3);
 
         for (int i = 0; i < 3; ++i) {

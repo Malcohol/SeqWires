@@ -53,12 +53,13 @@ namespace smf {
         /// type is the integer 0..15 which defines which type of text meta-event should be issued.
         void writeTextMetaEvent(int type, std::string text);
 
-        // TODO It should be easier to express this.
-        using MidiTrackAndChannelInstance = MidiTrackAndChannel::Instance<const babelwires::ValueFeature>;
+        using MidiTrackAndChannelInstance = std::tuple<unsigned int, const seqwires::Track*>;
+
+        void applyToAllTracks(std::function<void(unsigned int, const seqwires::Track&)> function);
 
         void writeNotes(const std::vector<MidiTrackAndChannelInstance>& tracks);
 
-        void writeHeaderChunk();
+        void writeHeaderChunk(unsigned int numTracks);
 
         /// Write the events for the given track.
         void writeTrack(const std::vector<MidiTrackAndChannelInstance>& tracks, bool includeGlobalSetup);
