@@ -191,7 +191,7 @@ namespace {
 
 } // namespace
 
-void smf::SmfWriter::writeNotes(const std::vector<MidiTrackAndChannelInstance>& tracks) {
+void smf::SmfWriter::writeNotes(const std::vector<ChannelAndTrack>& tracks) {
     const int numTracks = tracks.size();
 
     seqwires::ModelDuration trackDuration = 0;
@@ -286,7 +286,7 @@ void smf::SmfWriter::writeGlobalSetup() {
     }
 }
 
-void smf::SmfWriter::writeTrack(const std::vector<MidiTrackAndChannelInstance>& tracks, bool includeGlobalSetup) {
+void smf::SmfWriter::writeTrack(const std::vector<ChannelAndTrack>& tracks, bool includeGlobalSetup) {
     std::ostream* oldStream = m_os;
     std::ostringstream tempStream;
     m_os = &tempStream;
@@ -400,7 +400,7 @@ void smf::SmfWriter::applyToAllTracks(std::function<void(unsigned int, const seq
 void smf::SmfWriter::write() {
     setUpPercussionSets();
 
-    std::vector<MidiTrackAndChannelInstance> channelAndTrackValues;
+    std::vector<ChannelAndTrack> channelAndTrackValues;
 
     const auto& smfType = m_smfFeature.getSmfSequence();
 
@@ -408,7 +408,7 @@ void smf::SmfWriter::write() {
         const auto& tracks = smfType.getTrcks0();
         for (unsigned int c = 0; c < 16; ++c) {
             if (auto track = tracks.tryGetTrack(c)) {
-                channelAndTrackValues.emplace_back(MidiTrackAndChannelInstance{c, &track->get()});
+                channelAndTrackValues.emplace_back(ChannelAndTrack{c, &track->get()});
             }
         }
         writeHeaderChunk(channelAndTrackValues.size());
@@ -421,7 +421,7 @@ void smf::SmfWriter::write() {
             channelAndTrackValues.clear();
             auto trackAndChannel = tracks.getEntry(i);
             channelAndTrackValues.emplace_back(
-                MidiTrackAndChannelInstance{trackAndChannel.getChan().get(), &trackAndChannel.getTrack().get()});
+                ChannelAndTrack{trackAndChannel.getChan().get(), &trackAndChannel.getTrack().get()});
             writeTrack(channelAndTrackValues, (i == 0));
         }
     }
