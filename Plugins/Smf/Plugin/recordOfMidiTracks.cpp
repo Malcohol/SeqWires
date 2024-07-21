@@ -65,8 +65,3 @@ babelwires::ShortId smf::RecordOfMidiTracks::getTrackIdFromChannel(unsigned int 
     assert(index <= 15);
     return REGISTERED_ID_VECTOR(s_trackNames)[index];
 }
-
-unsigned int smf::RecordOfMidiTracks::getChannelFromTrackId(babelwires::ShortId id) {
-    // TODO
-    return 0;
-}
