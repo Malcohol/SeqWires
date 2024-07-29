@@ -12,7 +12,6 @@
 #include <SeqWiresLib/pitch.hpp>
 
 #include <BabelWiresLib/Features/rootFeature.hpp>
-#include <BabelWiresLib/Project/projectContext.hpp>
 #include <BabelWiresLib/TypeSystem/typeSystem.hpp>
 #include <BabelWiresLib/Types/Enum/addBlankToEnum.hpp>
 #include <BabelWiresLib/Types/Map/mapFeature.hpp>
@@ -49,8 +48,8 @@ seqwires::ChordMapProcessor::Factory::Factory()
 
 void seqwires::ChordMapProcessor::processEntry(babelwires::UserLogger& userLogger, const seqwires::TrackFeature& input,
                                                seqwires::TrackFeature& output) const {
-    const babelwires::ProjectContext& context = babelwires::RootFeature::getProjectContextAt(*m_chordTypeMapFeature);
+    const babelwires::TypeSystem& typeSystem = babelwires::RootFeature::getTypeSystemAt(*m_chordTypeMapFeature);
 
-    output.set(mapChordsFunction(context.m_typeSystem, input.get(), m_chordTypeMapFeature->get(),
+    output.set(mapChordsFunction(typeSystem, input.get(), m_chordTypeMapFeature->get(),
                                  m_pitchClassMapFeature->get()));
 }
