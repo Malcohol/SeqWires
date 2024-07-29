@@ -64,7 +64,7 @@ TEST(SmfTestSuiteTest, cMajorScale) {
     EXPECT_EQ(metadata.tryGetCopyR()->get(), "https://jazz-soft.net");
 
     auto tracks = smfSequence.getTrcks0();
-    EXPECT_EQ(tracks.getValueFeature().getNumFeatures(), 1);
+    EXPECT_EQ(tracks->getNumFeatures(), 1);
 
     auto track0 = tracks.tryGetTrack(0);
     ASSERT_TRUE(track0);
@@ -96,7 +96,7 @@ TEST(SmfTestSuiteTest, multichannelChords0) {
     EXPECT_EQ(metadata.tryGetName()->get(), "Multi-channel chords Test 0");
 
     auto tracks = smfSequence.getTrcks0();
-    EXPECT_EQ(tracks.getValueFeature().getNumFeatures(), 3);
+    EXPECT_EQ(tracks->getNumFeatures(), 3);
 
     testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65, 67, 69, 71, 72}, tracks.getTrack(0).get());
     testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{64, 65, 67, 69, 71, 72, 74, 76}, tracks.getTrack(1).get());
@@ -218,7 +218,7 @@ TEST(SmfTestSuiteTest, trackLength) {
     ASSERT_EQ(smfSequence.getInstanceType().getIndexOfTag(smfSequence.getSelectedTag()), 0);
 
     auto tracks = smfSequence.getTrcks0();
-    EXPECT_EQ(tracks.getValueFeature().getNumFeatures(), 1);
+    EXPECT_EQ(tracks->getNumFeatures(), 1);
 
     auto track0 = tracks.tryGetTrack(0);
     ASSERT_TRUE(track0);
