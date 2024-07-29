@@ -71,5 +71,29 @@ seqwires::SplitAtPitchProcessorOutput::SplitAtPitchProcessorOutput()
       }) {}
 
 seqwires::SplitAtPitchProcessor2::SplitAtPitchProcessor2(const babelwires::ProjectContext& projectContext)
-    : ValueProcessor(projectContext) {
+    : ValueProcessor(projectContext, SplitAtPitchProcessorInput::getThisIdentifier(),
+                     SplitAtPitchProcessorOutput::getThisIdentifier()) {}
+
+void seqwires::SplitAtPitchProcessor2::processValue(babelwires::UserLogger& userLogger, const babelwires::ValueFeature& inputFeature, babelwires::ValueFeature& outputFeature) const {
+    SplitAtPitchProcessorInput::Instance<const babelwires::ValueFeature> input{inputFeature};
+    auto pitch = input.getPitch();
+    auto trackIn = input.getInput();
+    if (pitch->isChanged(babelwires::Feature::Changes::SomethingChanged) ||
+        trackIn->isChanged(babelwires::Feature::Changes::SomethingChanged)) {
+        const int pitchIndex = pitch.getInstanceType().tryGetIndexFromIdentifier(pitch.get().get());
+        if (pitchIndex >= 0) {
+            auto newTracksOut = splitAtPitch(Pitch(pitchIndex), trackIn.get());
+            auto outputType = outputFeature.getTypeRef().toString();
+            SplitAtPitchProcessorOutput::Instance<babelwires::ValueFeature> output{outputFeature};
+            output.getAbove().set(std::move(newTracksOut.m_equalOrAbove));
+            output.getBelow().set(std::move(newTracksOut.m_below));
+            output.getOther().set(std::move(newTracksOut.m_other));
+        } else {
+            throw babelwires::ModelException() << "A valid pitch value was not specified in the SplitAtPitchProcessor";
+        }
     }
+}
+
+seqwires::SplitAtPitchProcessor2::Factory::Factory()
+    : CommonProcessorFactory(
+          BW_LONG_ID("SplitAtPitchProcessor2", "Split At Pitch 2", "c7b79e31-98f4-4d20-b946-f55113eb3b75"), 1) {}

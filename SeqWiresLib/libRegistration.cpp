@@ -42,6 +42,8 @@ void seqwires::registerLib(babelwires::ProjectContext& context) {
     context.m_typeSystem.addEntry<MonophonicSubtracksPolicyEnum>();
     context.m_typeSystem.addEntry<FingeredChordsSustainPolicyEnum>();
     context.m_typeSystem.addEntry<Tempo>();
+    context.m_typeSystem.addEntry<SplitAtPitchProcessorInput>();
+    context.m_typeSystem.addEntry<SplitAtPitchProcessorOutput>();
 
     context.m_typeSystem.addTypeConstructor<TrackTypeConstructor>();
     context.m_typeSystem.addTypeConstructor<PercussionMapType>();
@@ -57,5 +59,6 @@ void seqwires::registerLib(babelwires::ProjectContext& context) {
     context.m_processorReg.addEntry<RepeatProcessor::Factory>();
     context.m_processorReg.addEntry<SilenceProcessor::Factory>();
     context.m_processorReg.addEntry<SplitAtPitchProcessor::Factory>();
+    context.m_processorReg.addEntry<SplitAtPitchProcessor2::Factory>();
     context.m_processorReg.addEntry<TransposeProcessor::Factory>();
 }
