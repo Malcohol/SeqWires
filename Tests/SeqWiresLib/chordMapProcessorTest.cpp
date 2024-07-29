@@ -230,13 +230,13 @@ TEST(ChordMapProcessorTest, processor) {
     processor.getOutputFeature()->setToDefault();
 
     auto* chordTypeMapFeature =
-        processor.getInputFeature()->getChildFromStep(babelwires::PathStep("TypMap")).as<babelwires::MapFeature>();
+        processor.getInputRootFeature()->getChildFromStep(babelwires::PathStep("TypMap")).as<babelwires::MapFeature>();
     auto* pitchClassMapFeature =
-        processor.getInputFeature()->getChildFromStep(babelwires::PathStep("RtMap")).as<babelwires::MapFeature>();
+        processor.getInputRootFeature()->getChildFromStep(babelwires::PathStep("RtMap")).as<babelwires::MapFeature>();
     auto* inputArray =
-        processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Tracks")).as<babelwires::ArrayFeature>();
+        processor.getInputRootFeature()->getChildFromStep(babelwires::PathStep("Tracks")).as<babelwires::ArrayFeature>();
     auto* outputArray =
-        processor.getOutputFeature()->getChildFromStep(babelwires::PathStep("Tracks")).as<babelwires::ArrayFeature>();
+        processor.getOutputRootFeature()->getChildFromStep(babelwires::PathStep("Tracks")).as<babelwires::ArrayFeature>();
     ASSERT_NE(chordTypeMapFeature, nullptr);
     ASSERT_NE(pitchClassMapFeature, nullptr);
     ASSERT_NE(inputArray, nullptr);

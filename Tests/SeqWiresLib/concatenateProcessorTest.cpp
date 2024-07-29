@@ -71,8 +71,8 @@ TEST(ConcatenateProcessorTest, processor) {
     processor.getInputFeature()->setToDefault();
     processor.getOutputFeature()->setToDefault();
 
-    auto* inputArray = processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Input")).as<babelwires::ArrayFeature>();
-    auto* outputTrack = processor.getOutputFeature()->getChildFromStep(babelwires::PathStep("Output")).as<seqwires::TrackFeature>();
+    auto* inputArray = processor.getInputRootFeature()->getChildFromStep(babelwires::PathStep("Input")).as<babelwires::ArrayFeature>();
+    auto* outputTrack = processor.getOutputRootFeature()->getChildFromStep(babelwires::PathStep("Output")).as<seqwires::TrackFeature>();
     ASSERT_NE(inputArray, nullptr);
     ASSERT_NE(outputTrack, nullptr);
 

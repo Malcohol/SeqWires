@@ -132,10 +132,10 @@ TEST(ExcerptProcessorTest, processor) {
     processor.getInputFeature()->setToDefault();
     processor.getOutputFeature()->setToDefault();
 
-    auto* startFeature = processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Start")).as<babelwires::RationalFeature>();
-    auto* durationFeature = processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Duratn")).as<babelwires::RationalFeature>();
-    auto* inputArray = processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Tracks")).as<babelwires::ArrayFeature>();
-    auto* outputArray = processor.getOutputFeature()->getChildFromStep(babelwires::PathStep("Tracks")).as<babelwires::ArrayFeature>();
+    auto* startFeature = processor.getInputRootFeature()->getChildFromStep(babelwires::PathStep("Start")).as<babelwires::RationalFeature>();
+    auto* durationFeature = processor.getInputRootFeature()->getChildFromStep(babelwires::PathStep("Duratn")).as<babelwires::RationalFeature>();
+    auto* inputArray = processor.getInputRootFeature()->getChildFromStep(babelwires::PathStep("Tracks")).as<babelwires::ArrayFeature>();
+    auto* outputArray = processor.getOutputRootFeature()->getChildFromStep(babelwires::PathStep("Tracks")).as<babelwires::ArrayFeature>();
     ASSERT_NE(startFeature, nullptr);
     ASSERT_NE(durationFeature, nullptr);
     ASSERT_NE(inputArray, nullptr);

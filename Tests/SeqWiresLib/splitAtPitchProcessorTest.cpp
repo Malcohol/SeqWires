@@ -89,11 +89,11 @@ TEST(SplitAtPitchProcessorTest, processor) {
     processor.getInputFeature()->setToDefault();
     processor.getOutputFeature()->setToDefault();
 
-    auto* pitchFeature = processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Pitch")).as<babelwires::EnumFeature>();
-    auto* inputTrack = processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Input")).as<seqwires::TrackFeature>();
-    auto* aboveTrack = processor.getOutputFeature()->getChildFromStep(babelwires::PathStep("Above")).as<seqwires::TrackFeature>();
-    auto* belowTrack = processor.getOutputFeature()->getChildFromStep(babelwires::PathStep("Below")).as<seqwires::TrackFeature>();
-    auto* otherTrack = processor.getOutputFeature()->getChildFromStep(babelwires::PathStep("Other")).as<seqwires::TrackFeature>();
+    auto* pitchFeature = processor.getInputRootFeature()->getChildFromStep(babelwires::PathStep("Pitch")).as<babelwires::EnumFeature>();
+    auto* inputTrack = processor.getInputRootFeature()->getChildFromStep(babelwires::PathStep("Input")).as<seqwires::TrackFeature>();
+    auto* aboveTrack = processor.getOutputRootFeature()->getChildFromStep(babelwires::PathStep("Above")).as<seqwires::TrackFeature>();
+    auto* belowTrack = processor.getOutputRootFeature()->getChildFromStep(babelwires::PathStep("Below")).as<seqwires::TrackFeature>();
+    auto* otherTrack = processor.getOutputRootFeature()->getChildFromStep(babelwires::PathStep("Other")).as<seqwires::TrackFeature>();
     ASSERT_NE(pitchFeature, nullptr);
     ASSERT_NE(inputTrack, nullptr);
     ASSERT_NE(aboveTrack, nullptr);

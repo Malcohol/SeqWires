@@ -678,11 +678,11 @@ TEST(FingeredChordsTest, processor) {
     processor.getOutputFeature()->setToDefault();
 
     auto* sustainPolicy =
-        processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Policy")).as<babelwires::EnumFeature>();
+        processor.getInputRootFeature()->getChildFromStep(babelwires::PathStep("Policy")).as<babelwires::EnumFeature>();
     auto* inputTrack =
-        processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Notes")).as<seqwires::TrackFeature>();
+        processor.getInputRootFeature()->getChildFromStep(babelwires::PathStep("Notes")).as<seqwires::TrackFeature>();
     auto* outputTrack =
-        processor.getOutputFeature()->getChildFromStep(babelwires::PathStep("Chords")).as<seqwires::TrackFeature>();
+        processor.getOutputRootFeature()->getChildFromStep(babelwires::PathStep("Chords")).as<seqwires::TrackFeature>();
     ASSERT_NE(inputTrack, nullptr);
     ASSERT_NE(outputTrack, nullptr);
 
