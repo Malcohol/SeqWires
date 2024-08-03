@@ -19,10 +19,10 @@ smf::SmfFeature::SmfFeature(const babelwires::ProjectContext& projectContext)
                               BW_SHORT_ID("SmfSeq", "Format", "1f2eaefb-b48d-484d-8793-e14f2fa0193b"));
 }
 
-smf::SmfSequence::Instance<const babelwires::ValueFeature> smf::SmfFeature::getSmfSequence() const {
+smf::SmfSequence::ConstInstance smf::SmfFeature::getSmfSequence() const {
     return *m_smfTypeFeature;
 }
 
-smf::SmfSequence::Instance<babelwires::ValueFeature> smf::SmfFeature::getSmfSequence() {
+smf::SmfSequence::Instance smf::SmfFeature::getSmfSequence() {
     return *m_smfTypeFeature;
 }

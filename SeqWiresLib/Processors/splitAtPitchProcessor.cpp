@@ -38,7 +38,7 @@ seqwires::SplitAtPitchProcessor::SplitAtPitchProcessor(const babelwires::Project
                      SplitAtPitchProcessorOutput::getThisIdentifier()) {}
 
 void seqwires::SplitAtPitchProcessor::processValue(babelwires::UserLogger& userLogger, const babelwires::ValueFeature& inputFeature, babelwires::ValueFeature& outputFeature) const {
-    SplitAtPitchProcessorInput::Instance<const babelwires::ValueFeature> input{inputFeature};
+    SplitAtPitchProcessorInput::ConstInstance input{inputFeature};
     auto pitch = input.getPitch();
     auto trackIn = input.getInput();
     if (pitch->isChanged(babelwires::Feature::Changes::SomethingChanged) ||
@@ -47,7 +47,7 @@ void seqwires::SplitAtPitchProcessor::processValue(babelwires::UserLogger& userL
         if (pitchIndex >= 0) {
             auto newTracksOut = splitAtPitch(Pitch(pitchIndex), trackIn.get());
             auto outputType = outputFeature.getTypeRef().toString();
-            SplitAtPitchProcessorOutput::Instance<babelwires::ValueFeature> output{outputFeature};
+            SplitAtPitchProcessorOutput::Instance output{outputFeature};
             output.getAbove().set(std::move(newTracksOut.m_equalOrAbove));
             output.getBelow().set(std::move(newTracksOut.m_below));
             output.getOther().set(std::move(newTracksOut.m_other));
