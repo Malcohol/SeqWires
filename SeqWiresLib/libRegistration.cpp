@@ -59,6 +59,5 @@ void seqwires::registerLib(babelwires::ProjectContext& context) {
     context.m_processorReg.addEntry<RepeatProcessor::Factory>();
     context.m_processorReg.addEntry<SilenceProcessor::Factory>();
     context.m_processorReg.addEntry<SplitAtPitchProcessor::Factory>();
-    context.m_processorReg.addEntry<SplitAtPitchProcessor2::Factory>();
     context.m_processorReg.addEntry<TransposeProcessor::Factory>();
 }

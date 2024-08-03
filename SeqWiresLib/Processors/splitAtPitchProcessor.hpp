@@ -22,26 +22,6 @@ namespace babelwires {
 } // namespace babelwires
 
 namespace seqwires {
-    class TrackFeature;
-
-    /// A processor which limits a track to events between certain pitches.
-    class SplitAtPitchProcessor : public babelwires::CommonProcessor {
-      public:
-        SplitAtPitchProcessor(const babelwires::ProjectContext& projectContext);
-
-        virtual void process(babelwires::UserLogger& userLogger) override;
-
-        struct Factory : public babelwires::CommonProcessorFactory<SplitAtPitchProcessor> {
-            Factory();
-        };
-      private:
-        babelwires::EnumFeature* m_pitch;
-        TrackFeature* m_trackIn;
-        TrackFeature* m_equalOrAboveTrackOut;
-        TrackFeature* m_belowTrackOut;
-        TrackFeature* m_otherTrackOut;
-    };
-
     class SplitAtPitchProcessorInput : public babelwires::RecordType {
       public:
         PRIMITIVE_TYPE("PitchSplitIn", "Split At Pitch Input", "f901af3a-c27b-449c-961a-8f43dee7d9a6", 1);
@@ -67,11 +47,11 @@ namespace seqwires {
         DECLARE_INSTANCE_END()
     };
 
-    class SplitAtPitchProcessor2 : public babelwires::ValueProcessor {
+    class SplitAtPitchProcessor : public babelwires::ValueProcessor {
       public:
-        SplitAtPitchProcessor2(const babelwires::ProjectContext& projectContext);
+        SplitAtPitchProcessor(const babelwires::ProjectContext& projectContext);
 
-        struct Factory : public babelwires::CommonProcessorFactory<SplitAtPitchProcessor2> {
+        struct Factory : public babelwires::CommonProcessorFactory<SplitAtPitchProcessor> {
             Factory();
         };
       protected:

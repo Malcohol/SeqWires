@@ -89,24 +89,16 @@ TEST(SplitAtPitchProcessorTest, processor) {
     processor.getInputFeature()->setToDefault();
     processor.getOutputFeature()->setToDefault();
 
-    auto* pitchFeature = processor.getInputRootFeature()->getChildFromStep(babelwires::PathStep("Pitch")).as<babelwires::EnumFeature>();
-    auto* inputTrack = processor.getInputRootFeature()->getChildFromStep(babelwires::PathStep("Input")).as<seqwires::TrackFeature>();
-    auto* aboveTrack = processor.getOutputRootFeature()->getChildFromStep(babelwires::PathStep("Above")).as<seqwires::TrackFeature>();
-    auto* belowTrack = processor.getOutputRootFeature()->getChildFromStep(babelwires::PathStep("Below")).as<seqwires::TrackFeature>();
-    auto* otherTrack = processor.getOutputRootFeature()->getChildFromStep(babelwires::PathStep("Other")).as<seqwires::TrackFeature>();
-    ASSERT_NE(pitchFeature, nullptr);
-    ASSERT_NE(inputTrack, nullptr);
-    ASSERT_NE(aboveTrack, nullptr);
-    ASSERT_NE(belowTrack, nullptr);
-    ASSERT_NE(otherTrack, nullptr);
+    auto input = seqwires::SplitAtPitchProcessorInput::Instance<babelwires::ValueFeature>(processor.getInputFeature()->is<babelwires::ValueFeature>());
+    const auto output = seqwires::SplitAtPitchProcessorOutput::Instance<const babelwires::ValueFeature>(processor.getOutputFeature()->is<babelwires::ValueFeature>());
 
-    pitchFeature->setToEnumIndex(67);
+    input.getPitch().set(babelwires::EnumValue(input.getPitch().getInstanceType().getIdentifierFromIndex(67)));
     {
         seqwires::Track track;
         testUtils::addSimpleNotes({60, 62, 64, 65, 67, 69, 71, 72}, track);
-        inputTrack->set(std::move(track));
+        input.getInput().set(std::move(track));
     }
-    processor.process(testEnvironment.m_log);    
+    processor.process(testEnvironment.m_log);  
 
     std::vector<testUtils::NoteInfo> expectedNotesAbove{
         {67, 1, babelwires::Rational(1, 4)},
@@ -121,15 +113,19 @@ TEST(SplitAtPitchProcessorTest, processor) {
         {65, 0, babelwires::Rational(1, 4)},
     };
 
-    testUtils::testNotes(expectedNotesAbove, aboveTrack->get());
-    EXPECT_EQ(aboveTrack->get().getDuration(), 2);
-    testUtils::testNotes(expectedNotesBelow, belowTrack->get());
-    EXPECT_EQ(belowTrack->get().getDuration(), 2);
-    EXPECT_EQ(otherTrack->get().getNumEvents(), 0);
-    EXPECT_EQ(otherTrack->get().getDuration(), 2);
+    testUtils::testNotes(expectedNotesAbove, output.getAbove().get());
+    EXPECT_EQ(output.getAbove().get().getDuration(), 2);
+    testUtils::testNotes(expectedNotesBelow, output.getBelow().get());
+    EXPECT_EQ(output.getBelow().get().getDuration(), 2);
+    EXPECT_EQ(output.getOther().get().getNumEvents(), 0);
+    EXPECT_EQ(output.getOther().get().getDuration(), 2);
 
     processor.getInputFeature()->clearChanges();
-    pitchFeature->setToEnumIndex(64);
+    
+    processor.getInputFeature()->is<babelwires::SimpleValueFeature>().backUpValue();
+    input.getPitch().set(babelwires::EnumValue(input.getPitch().getInstanceType().getIdentifierFromIndex(64)));
+    processor.getInputFeature()->is<babelwires::SimpleValueFeature>().reconcileChangesFromBackup();
+
     processor.process(testEnvironment.m_log); 
 
     expectedNotesAbove = {
@@ -145,10 +141,11 @@ TEST(SplitAtPitchProcessorTest, processor) {
         {62, 0, babelwires::Rational(1, 4)},
     };
 
-    testUtils::testNotes(expectedNotesAbove, aboveTrack->get());
-    EXPECT_EQ(aboveTrack->get().getDuration(), 2);
-    testUtils::testNotes(expectedNotesBelow, belowTrack->get());
-    EXPECT_EQ(belowTrack->get().getDuration(), 2);
-    EXPECT_EQ(otherTrack->get().getNumEvents(), 0);
-    EXPECT_EQ(otherTrack->get().getDuration(), 2);
+    testUtils::testNotes(expectedNotesAbove, output.getAbove().get());
+    EXPECT_EQ(output.getAbove().get().getDuration(), 2);
+    testUtils::testNotes(expectedNotesBelow, output.getBelow().get());
+    EXPECT_EQ(output.getBelow().get().getDuration(), 2);
+    EXPECT_EQ(output.getOther().get().getNumEvents(), 0);
+    EXPECT_EQ(output.getOther().get().getDuration(), 2);
+
 }
