@@ -18,7 +18,5 @@ namespace smf {
       public:
         PRIMITIVE_TYPE("MidiTrackArray", "MIDI Track and Channels", "b5462658-be68-4570-b0a5-d2dcb03f4d8e", 1);
         MidiTrackAndChannelArray();
-
-        DECLARE_ARRAY_INSTANCE(MidiTrackAndChannel);
     };
 } // namespace smf
