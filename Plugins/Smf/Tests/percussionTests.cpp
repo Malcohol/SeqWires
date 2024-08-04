@@ -77,7 +77,7 @@ TEST_P(SmfStandardPercussionTest, saveLoad) {
         ASSERT_EQ(smfSequence.getInstanceType().getIndexOfTag(smfSequence.getSelectedTag()), 0);
 
         auto tracks = smfSequence.getTrcks0();
-        EXPECT_EQ(tracks.getValueFeature().getNumFeatures(), 1);
+        EXPECT_EQ(tracks->getNumFeatures(), 1);
         
         auto track9 = tracks.tryGetTrack(9);
         ASSERT_TRUE(track9);
@@ -206,7 +206,7 @@ TEST_P(SmfTrackAllocationPercussionTest, trackAllocation) {
         ASSERT_EQ(smfSequence.getInstanceType().getIndexOfTag(smfSequence.getSelectedTag()), 0);
 
         auto tracks = smfSequence.getTrcks0();
-        EXPECT_EQ(tracks.getValueFeature().getNumFeatures(), 3);
+        EXPECT_EQ(tracks->getNumFeatures(), 3);
 
         const auto& metadata = smfSequence.getMeta();
         EXPECT_EQ(metadata.getSpec().get(), testData.m_specificationId);

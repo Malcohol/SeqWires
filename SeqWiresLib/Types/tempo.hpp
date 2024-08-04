@@ -18,12 +18,6 @@ namespace seqwires {
       public:
         PRIMITIVE_TYPE("tempo", "Tempo", "6ee26c7f-ced6-400d-a927-9464a143b39c", 1);
         Tempo() : babelwires::IntType({0, 255}, 120) {}
-
-        using TempoT = std::uint8_t;
-        
-        TempoT get(const babelwires::ValueHolder& value) const { 
-            return static_cast<TempoT>(value->is<babelwires::IntValue>().get());
-        }
     };
 
 } // namespace seqwires

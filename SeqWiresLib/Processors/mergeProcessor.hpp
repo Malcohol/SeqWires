@@ -7,29 +7,52 @@
  **/
 #pragma once
 
+#include <SeqWiresLib/Types/Track/trackInstance.hpp>
+#include <SeqWiresLib/Types/Track/trackType.hpp>
+
 #include <BabelWiresLib/Processors/commonProcessor.hpp>
+#include <BabelWiresLib/Instance/instance.hpp>
+#include <BabelWiresLib/Processors/processorFactory.hpp>
+#include <BabelWiresLib/Processors/valueProcessor.hpp>
+#include <BabelWiresLib/TypeSystem/primitiveType.hpp>
+#include <BabelWiresLib/Types/Record/recordType.hpp>
 
 namespace babelwires {
     class ArrayFeature;
 } // namespace babelwires
 
 namespace seqwires {
-    class TrackFeature;
-
-    /// A processor which limits a track to events between certain points.
-    class MergeProcessor : public babelwires::CommonProcessor {
+    class MergeProcessorInput : public babelwires::RecordType {
       public:
+        PRIMITIVE_TYPE("MergeTracksIn", "Merge Tracks Input", "15dd4564-e67f-4087-8609-ef5985b23dd7", 1);
+
+        MergeProcessorInput();
+
+        DECLARE_INSTANCE_BEGIN(MergeProcessorInput)
+        DECLARE_INSTANCE_ARRAY_FIELD(Input, TrackType)
+        DECLARE_INSTANCE_END()
+    };
+
+    class MergeProcessorOutput : public babelwires::RecordType {
+      public:
+        PRIMITIVE_TYPE("MergeTracksOut", "Merge Tracks Output", "9b797596-f6c2-4900-98a4-001ec7c18be4", 1);
+
+        MergeProcessorOutput();
+
+        DECLARE_INSTANCE_BEGIN(MergeProcessorOutput)
+        DECLARE_INSTANCE_FIELD(Output, TrackType)
+        DECLARE_INSTANCE_END()
+    };
+
+    class MergeProcessor : public babelwires::ValueProcessor {
+      public:
+        BW_PROCESSOR_WITH_DEFAULT_FACTORY("MergeTracks", "Merge", "ed004257-0ae3-44aa-abb9-d752c2eba0c1");
+
         MergeProcessor(const babelwires::ProjectContext& projectContext);
 
-        virtual void process(babelwires::UserLogger& userLogger) override;
-
-        struct Factory : public babelwires::CommonProcessorFactory<MergeProcessor> {
-            Factory();
-        };
-
-      private:
-        babelwires::ArrayFeature* m_tracksIn;
-        seqwires::TrackFeature* m_trackOut;
+      protected:
+        void processValue(babelwires::UserLogger& userLogger, const babelwires::ValueFeature& inputFeature,
+                          babelwires::ValueFeature& outputFeature) const override;
     };
 
 } // namespace seqwires

@@ -11,7 +11,6 @@
 #include <SeqWiresLib/Percussion/builtInPercussionInstruments.hpp>
 
 #include <BabelWiresLib/Features/rootFeature.hpp>
-#include <BabelWiresLib/Project/projectContext.hpp>
 #include <BabelWiresLib/TypeSystem/typeSystem.hpp>
 #include <BabelWiresLib/Types/Enum/addBlankToEnum.hpp>
 #include <BabelWiresLib/Types/Map/mapFeature.hpp>
@@ -39,7 +38,7 @@ seqwires::PercussionMapProcessor::Factory::Factory()
 void seqwires::PercussionMapProcessor::processEntry(babelwires::UserLogger& userLogger,
                                                     const seqwires::TrackFeature& input,
                                                     seqwires::TrackFeature& output) const {
-    const babelwires::ProjectContext& context = babelwires::RootFeature::getProjectContextAt(*m_percussionMapFeature);
+    const babelwires::TypeSystem& typeSystem = babelwires::RootFeature::getTypeSystemAt(*m_percussionMapFeature);
 
-    output.set(mapPercussionFunction(context.m_typeSystem, input.get(), m_percussionMapFeature->getValue()->is<babelwires::MapValue>()));
+    output.set(mapPercussionFunction(typeSystem, input.get(), m_percussionMapFeature->getValue()->is<babelwires::MapValue>()));
 }

@@ -78,11 +78,11 @@ TEST(QuantizeProcessorTest, processor) {
     processor.getOutputFeature()->setToDefault();
 
     auto* beatFeature =
-        processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Beat")).as<babelwires::RationalFeature>();
+        processor.getInputRootFeature()->getChildFromStep(babelwires::PathStep("Beat")).as<babelwires::RationalFeature>();
     auto* inputArray =
-        processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Tracks")).as<babelwires::ArrayFeature>();
+        processor.getInputRootFeature()->getChildFromStep(babelwires::PathStep("Tracks")).as<babelwires::ArrayFeature>();
     auto* outputArray =
-        processor.getOutputFeature()->getChildFromStep(babelwires::PathStep("Tracks")).as<babelwires::ArrayFeature>();
+        processor.getOutputRootFeature()->getChildFromStep(babelwires::PathStep("Tracks")).as<babelwires::ArrayFeature>();
     ASSERT_NE(beatFeature, nullptr);
     ASSERT_NE(inputArray, nullptr);
     ASSERT_NE(outputArray, nullptr);

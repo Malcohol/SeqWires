@@ -120,11 +120,11 @@ TEST(PercussionMapProcessorTest, processor) {
     processor.getOutputFeature()->setToDefault();
 
     auto* percussionMapFeature =
-        processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Map")).as<babelwires::SimpleValueFeature>();
+        processor.getInputRootFeature()->getChildFromStep(babelwires::PathStep("Map")).as<babelwires::SimpleValueFeature>();
     auto* inputArray =
-        processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Tracks")).as<babelwires::ArrayFeature>();
+        processor.getInputRootFeature()->getChildFromStep(babelwires::PathStep("Tracks")).as<babelwires::ArrayFeature>();
     auto* outputArray =
-        processor.getOutputFeature()->getChildFromStep(babelwires::PathStep("Tracks")).as<babelwires::ArrayFeature>();
+        processor.getOutputRootFeature()->getChildFromStep(babelwires::PathStep("Tracks")).as<babelwires::ArrayFeature>();
     ASSERT_NE(percussionMapFeature, nullptr);
     ASSERT_NE(inputArray, nullptr);
     ASSERT_NE(outputArray, nullptr);

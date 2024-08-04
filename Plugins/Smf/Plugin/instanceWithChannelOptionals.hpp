@@ -23,20 +23,20 @@ namespace smf {
         InstanceWithChannelOptionals(VALUE_FEATURE& valueFeature)
             : babelwires::InstanceCommonBase<VALUE_FEATURE, TypeWithChannelOptionals>(valueFeature) {}
 
-        babelwires::Instance<VALUE_FEATURE, TypeOfTracks> getTrack(unsigned int channel) const {
+        babelwires::ConstInstance<TypeOfTracks> getTrack(unsigned int channel) const {
             return babelwires::InstanceUtils::getChild(this->m_valueFeature,
                                                        TypeWithChannelOptionals::getTrackIdFromChannel(channel));
         }
 
         template <typename VALUE_FEATURE_M = VALUE_FEATURE>
         std::enable_if_t<!std::is_const_v<VALUE_FEATURE_M>,
-                         babelwires::Instance<babelwires::ValueFeature, TypeOfTracks>>
+                         babelwires::Instance<TypeOfTracks>>
         getTrack(unsigned int channel) {
             return babelwires::InstanceUtils::getChild(this->m_valueFeature,
                                                        TypeWithChannelOptionals::getTrackIdFromChannel(channel));
         }
 
-        std::optional<babelwires::Instance<const babelwires::ValueFeature, TypeOfTracks>>
+        std::optional<babelwires::ConstInstance<TypeOfTracks>>
         tryGetTrack(unsigned int channel) const {
             if (const babelwires::ValueFeature* valueFeature = babelwires::InstanceUtils::tryGetChild(
                     this->m_valueFeature, TypeWithChannelOptionals::getTrackIdFromChannel(channel))) {
@@ -48,7 +48,7 @@ namespace smf {
 
         template <typename VALUE_FEATURE_M = VALUE_FEATURE>
         std::enable_if_t<!std::is_const_v<VALUE_FEATURE_M>,
-                         babelwires::Instance<babelwires::ValueFeature, TypeOfTracks>>
+                         babelwires::Instance<TypeOfTracks>>
         activateAndGetTrack(unsigned int channel) {
             return babelwires::InstanceUtils::activateAndGetChild(
                 this->m_valueFeature, TypeWithChannelOptionals::getTrackIdFromChannel(channel));

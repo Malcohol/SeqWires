@@ -793,7 +793,7 @@ void smf::SmfParser::readFormat0Sequence() {
     }
 }
 
-void smf::SmfParser::readFormat1SequenceTrack(MidiTrackAndChannel::Instance<babelwires::ValueFeature>& track,
+void smf::SmfParser::readFormat1SequenceTrack(MidiTrackAndChannel::Instance& track,
                                               bool hasMainMetadata) {
     TrackSplitter splitTrack(m_channelSetup);
     readTrack(0, splitTrack, hasMainMetadata);
@@ -828,7 +828,7 @@ void smf::SmfParser::readFormat1Sequence() {
     }
 }
 
-smf::MidiMetadata::Instance<babelwires::ValueFeature> smf::SmfParser::getMidiMetadata() {
+smf::MidiMetadata::Instance smf::SmfParser::getMidiMetadata() {
     return m_result->getSmfSequence().getMeta();
 }
 

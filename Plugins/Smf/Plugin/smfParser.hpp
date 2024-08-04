@@ -52,9 +52,9 @@ namespace smf {
 
         void readFormat0Sequence();
         void readFormat1Sequence();
-        void readFormat1SequenceTrack(MidiTrackAndChannel::Instance<babelwires::ValueFeature>& track, bool hasMainMetadata = false);
+        void readFormat1SequenceTrack(MidiTrackAndChannel::Instance& track, bool hasMainMetadata = false);
 
-        MidiMetadata::Instance<babelwires::ValueFeature> getMidiMetadata();
+        MidiMetadata::Instance getMidiMetadata();
 
         class TrackSplitter;
 

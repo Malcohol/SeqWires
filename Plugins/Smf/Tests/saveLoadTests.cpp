@@ -55,7 +55,7 @@ TEST(SmfSaveLoadTest, cMajorScale) {
         ASSERT_EQ(smfSequence.getInstanceType().getIndexOfTag(smfSequence.getSelectedTag()), 0);
 
         auto tracks = smfSequence.getTrcks0();
-        EXPECT_EQ(tracks.getValueFeature().getNumFeatures(), 1);
+        EXPECT_EQ(tracks->getNumFeatures(), 1);
         
         auto track2 = tracks.tryGetTrack(2);
         ASSERT_TRUE(track2);
@@ -138,7 +138,7 @@ TEST(SmfSaveLoadTest, cMajorScaleWithMetadata) {
         checkMetadata(*feature, metadata);
 
         auto tracks = smfSequence.getTrcks0();
-        EXPECT_EQ(tracks.getValueFeature().getNumFeatures(), 1);
+        EXPECT_EQ(tracks->getNumFeatures(), 1);
         
         auto track2 = tracks.tryGetTrack(2);
         ASSERT_TRUE(track2);
@@ -188,7 +188,7 @@ TEST(SmfSaveLoadTest, format0Chords) {
         ASSERT_EQ(smfSequence.getInstanceType().getIndexOfTag(smfSequence.getSelectedTag()), 0);
         
         auto tracks = smfSequence.getTrcks0();
-        EXPECT_EQ(tracks.getValueFeature().getNumFeatures(), 3);
+        EXPECT_EQ(tracks->getNumFeatures(), 3);
         
         for (int i = 0; i < 3; ++i) {
             auto trackI = tracks.tryGetTrack(i);

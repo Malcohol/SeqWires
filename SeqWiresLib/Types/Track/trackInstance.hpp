@@ -16,9 +16,9 @@
 namespace babelwires {
     template <typename VALUE_FEATURE, typename TRACK_TYPE>
         requires std::is_base_of_v<seqwires::TrackType, TRACK_TYPE>
-    class Instance<VALUE_FEATURE, TRACK_TYPE> : public InstanceCommonBase<VALUE_FEATURE, TRACK_TYPE> {
+    class InstanceImpl<VALUE_FEATURE, TRACK_TYPE> : public InstanceCommonBase<VALUE_FEATURE, TRACK_TYPE> {
       public:
-        Instance(VALUE_FEATURE& valueFeature)
+        InstanceImpl(VALUE_FEATURE& valueFeature)
             : InstanceCommonBase<VALUE_FEATURE, TRACK_TYPE>(valueFeature) {}
 
         const typename seqwires::Track& get() const {

@@ -23,10 +23,11 @@
 #include <SeqWiresLib/Processors/silenceProcessor.hpp>
 #include <SeqWiresLib/Processors/splitAtPitchProcessor.hpp>
 #include <SeqWiresLib/Processors/transposeProcessor.hpp>
+#include <SeqWiresLib/Types/Track/trackTypeConstructor.hpp>
+#include <SeqWiresLib/Types/tempo.hpp>
+#include <SeqWiresLib/Types/duration.hpp>
 #include <SeqWiresLib/chord.hpp>
 #include <SeqWiresLib/pitch.hpp>
-#include <SeqWiresLib/Types/tempo.hpp>
-#include <SeqWiresLib/Types/Track/trackTypeConstructor.hpp>
 
 #include <BabelWiresLib/Processors/processorFactory.hpp>
 #include <BabelWiresLib/Processors/processorFactoryRegistry.hpp>
@@ -39,23 +40,43 @@ void seqwires::registerLib(babelwires::ProjectContext& context) {
     context.m_typeSystem.addEntry<PitchClass>();
     context.m_typeSystem.addEntry<PitchEnum>();
     context.m_typeSystem.addEntry<BuiltInPercussionInstruments>();
-    context.m_typeSystem.addEntry<MonophonicSubtracksPolicyEnum>();
-    context.m_typeSystem.addEntry<FingeredChordsSustainPolicyEnum>();
+    context.m_typeSystem.addEntry<Duration>();
     context.m_typeSystem.addEntry<Tempo>();
+
+    context.m_typeSystem.addEntry<SplitAtPitchProcessorInput>();
+    context.m_typeSystem.addEntry<SplitAtPitchProcessorOutput>();
+    context.m_processorReg.addProcessor<SplitAtPitchProcessor>();
+
+    context.m_typeSystem.addEntry<MonophonicSubtracksPolicyEnum>();
+    context.m_typeSystem.addEntry<MonophonicSubtracksProcessorInput>();
+    context.m_typeSystem.addEntry<MonophonicSubtracksProcessorOutput>();
+    context.m_processorReg.addProcessor<MonophonicSubtracksProcessor>();
+
+    context.m_typeSystem.addEntry<FingeredChordsSustainPolicyEnum>();
+    context.m_typeSystem.addEntry<FingeredChordsProcessorInput>();
+    context.m_typeSystem.addEntry<FingeredChordsProcessorOutput>();
+    context.m_processorReg.addProcessor<FingeredChordsProcessor>();
+
+    context.m_typeSystem.addEntry<MergeProcessorInput>();
+    context.m_typeSystem.addEntry<MergeProcessorOutput>();
+    context.m_processorReg.addProcessor<MergeProcessor>();
+
+    context.m_typeSystem.addEntry<SilenceProcessorInput>();
+    context.m_typeSystem.addEntry<SilenceProcessorOutput>();
+    context.m_processorReg.addProcessor<SilenceProcessor>();
+
+    context.m_typeSystem.addEntry<ConcatenateProcessorInput>();
+    context.m_typeSystem.addEntry<ConcatenateProcessorOutput>();
+    context.m_processorReg.addProcessor<ConcatenateProcessor>();
+
 
     context.m_typeSystem.addTypeConstructor<TrackTypeConstructor>();
     context.m_typeSystem.addTypeConstructor<PercussionMapType>();
 
     context.m_processorReg.addEntry<ChordMapProcessor::Factory>();
-    context.m_processorReg.addEntry<ConcatenateProcessor::Factory>();
     context.m_processorReg.addEntry<ExcerptProcessor::Factory>();
-    context.m_processorReg.addEntry<MergeProcessor::Factory>();
-    context.m_processorReg.addEntry<MonophonicSubtracksProcessor::Factory>();
-    context.m_processorReg.addEntry<FingeredChordsProcessor::Factory>();
     context.m_processorReg.addEntry<PercussionMapProcessor::Factory>();
     context.m_processorReg.addEntry<QuantizeProcessor::Factory>();
     context.m_processorReg.addEntry<RepeatProcessor::Factory>();
-    context.m_processorReg.addEntry<SilenceProcessor::Factory>();
-    context.m_processorReg.addEntry<SplitAtPitchProcessor::Factory>();
     context.m_processorReg.addEntry<TransposeProcessor::Factory>();
 }

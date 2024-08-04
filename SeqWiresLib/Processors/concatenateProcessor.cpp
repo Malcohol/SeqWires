@@ -7,52 +7,43 @@
  **/
 #include <SeqWiresLib/Processors/concatenateProcessor.hpp>
 
-#include <SeqWiresLib/Types/Track/trackFeature.hpp>
 #include <SeqWiresLib/Functions/appendTrackFunction.hpp>
 
 #include <BabelWiresLib/Features/arrayFeature.hpp>
 #include <BabelWiresLib/Features/featureMixins.hpp>
 #include <BabelWiresLib/Features/rootFeature.hpp>
+#include <BabelWiresLib/Types/Array/arrayTypeConstructor.hpp>
+#include <BabelWiresLib/Types/Enum/enumFeature.hpp>
+#include <BabelWiresLib/Types/Int/intTypeConstructor.hpp>
 
-#include <Common/Identifiers/registeredIdentifier.hpp>
+seqwires::ConcatenateProcessorInput::ConcatenateProcessorInput()
+    : babelwires::RecordType(
+          {{BW_SHORT_ID("Input", "Input tracks", "3b8d8cd7-21d9-44a1-877e-134915fe5aca"),
+            babelwires::TypeRef{babelwires::ArrayTypeConstructor::getThisIdentifier(),
+                                {{DefaultTrackType::getThisIdentifier()},
+                                 {babelwires::IntValue(2), babelwires::IntValue(16), babelwires::IntValue(2)}}}}}) {}
 
-#include <set>
+seqwires::ConcatenateProcessorOutput::ConcatenateProcessorOutput()
+    : babelwires::RecordType({{BW_SHORT_ID("Output", "Output track", "873d5d66-c5ec-46a4-9aba-f5f4223bdfd4"),
+                               DefaultTrackType::getThisIdentifier()}}) {}
 
 seqwires::ConcatenateProcessor::ConcatenateProcessor(const babelwires::ProjectContext& projectContext)
-    : babelwires::CommonProcessor(projectContext) {
-    m_tracksIn = m_inputFeature->addField(
-        std::make_unique<
-            babelwires::HasStaticSizeRange<babelwires::StandardArrayFeature<seqwires::TrackFeature>, 2, 16>>(),
-        BW_SHORT_ID("Input", "Input tracks", "3b8d8cd7-21d9-44a1-877e-134915fe5aca"));
-    m_trackOut =
-        m_outputFeature->addField(std::make_unique<TrackFeature>(),
-                                  BW_SHORT_ID("Output", "Output Track", "873d5d66-c5ec-46a4-9aba-f5f4223bdfd4"));
-}
+    : babelwires::ValueProcessor(projectContext, ConcatenateProcessorInput::getThisIdentifier(),
+                                 ConcatenateProcessorOutput::getThisIdentifier()) {}
 
-seqwires::ConcatenateProcessor::Factory::Factory()
-    : CommonProcessorFactory(
-          BW_LONG_ID("ConcatenateTracks", "Concatenate", "42b00d10-9d16-42d2-8ba6-971aad016da0"), 1) {}
+void seqwires::ConcatenateProcessor::processValue(babelwires::UserLogger& userLogger,
+                                                           const babelwires::ValueFeature& inputFeature,
+                                                           babelwires::ValueFeature& outputFeature) const {
+    ConcatenateProcessorInput::ConstInstance input{inputFeature};
+    if (input->isChanged(babelwires::Feature::Changes::SomethingChanged)) {
+        Track trackOut;
 
-void seqwires::ConcatenateProcessor::process(babelwires::UserLogger& userLogger) {
-    bool hasChanges = false;
-
-    for (int i = 0; i < m_tracksIn->getNumFeatures(); ++i) {
-        auto trackFeatureIn = static_cast<const TrackFeature*>(m_tracksIn->getFeature(i));
-        if (trackFeatureIn->isChanged(babelwires::Feature::Changes::SomethingChanged)) {
-            hasChanges = true;
+        for (int i = 0; i < input.getInput().getSize(); ++i) {
+            appendTrack(trackOut, input.getInput().getEntry(i).get());
         }
+
+        ConcatenateProcessorOutput::Instance output{outputFeature};
+
+        output.getOutput().set(std::move(trackOut));
     }
-
-    if (!hasChanges) {
-        return;
-    }
-
-    Track trackOut;
-
-    for (int i = 0; i < m_tracksIn->getNumFeatures(); ++i) {
-        auto trackFeatureIn = static_cast<const TrackFeature*>(m_tracksIn->getFeature(i));
-        appendTrack(trackOut, trackFeatureIn->get());
-    }
-
-    m_trackOut->set(std::move(trackOut));
 }

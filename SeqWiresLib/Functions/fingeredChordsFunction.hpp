@@ -5,6 +5,8 @@
  *
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
+#pragma once
+
 #include <BabelWiresLib/TypeSystem/primitiveType.hpp>
 
 #include <SeqWiresLib/Types/Track/track.hpp>
