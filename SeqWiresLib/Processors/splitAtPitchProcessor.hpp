@@ -7,15 +7,15 @@
  **/
 #pragma once
 
-#include <SeqWiresLib/pitch.hpp>
-#include <SeqWiresLib/Types/Track/trackType.hpp>
 #include <SeqWiresLib/Types/Track/trackInstance.hpp>
+#include <SeqWiresLib/Types/Track/trackType.hpp>
+#include <SeqWiresLib/pitch.hpp>
 
+#include <BabelWiresLib/Instance/instance.hpp>
+#include <BabelWiresLib/Processors/processorFactory.hpp>
+#include <BabelWiresLib/Processors/valueProcessor.hpp>
 #include <BabelWiresLib/TypeSystem/primitiveType.hpp>
 #include <BabelWiresLib/Types/Record/recordType.hpp>
-#include <BabelWiresLib/Instance/instance.hpp>
-#include <BabelWiresLib/Processors/valueProcessor.hpp>
-#include <BabelWiresLib/Processors/processorFactory.hpp>
 
 namespace seqwires {
     class SplitAtPitchProcessorInput : public babelwires::RecordType {
@@ -27,7 +27,7 @@ namespace seqwires {
         DECLARE_INSTANCE_BEGIN(SplitAtPitchProcessorInput)
         DECLARE_INSTANCE_FIELD(Pitch, seqwires::PitchEnum)
         DECLARE_INSTANCE_FIELD(Input, seqwires::TrackType)
-        DECLARE_INSTANCE_END()        
+        DECLARE_INSTANCE_END()
     };
 
     class SplitAtPitchProcessorOutput : public babelwires::RecordType {
@@ -45,14 +45,13 @@ namespace seqwires {
 
     class SplitAtPitchProcessor : public babelwires::ValueProcessor {
       public:
+        BW_PROCESSOR_WITH_DEFAULT_FACTORY("SplitAtPitchProcessor", "Split At Pitch", "c7b79e31-98f4-4d20-b946-f55113eb3b75");
+
         SplitAtPitchProcessor(const babelwires::ProjectContext& projectContext);
 
-        struct Factory : public babelwires::CommonProcessorFactory<SplitAtPitchProcessor> {
-            Factory();
-        };
       protected:
         void processValue(babelwires::UserLogger& userLogger, const babelwires::ValueFeature& inputFeature,
-                                  babelwires::ValueFeature& outputFeature) const override;
+                          babelwires::ValueFeature& outputFeature) const override;
     };
 
 } // namespace seqwires

@@ -10,15 +10,12 @@
 #include <SeqWiresLib/Functions/monophonicSubtracksFunction.hpp>
 #include <SeqWiresLib/Types/Track/trackInstance.hpp>
 #include <SeqWiresLib/Types/Track/trackType.hpp>
-#include <SeqWiresLib/pitch.hpp>
 
 #include <BabelWiresLib/Instance/instance.hpp>
 #include <BabelWiresLib/Processors/processorFactory.hpp>
 #include <BabelWiresLib/Processors/valueProcessor.hpp>
 #include <BabelWiresLib/TypeSystem/primitiveType.hpp>
 #include <BabelWiresLib/Types/Record/recordType.hpp>
-
-#include <BabelWiresLib/Processors/commonProcessor.hpp>
 
 namespace seqwires {
     class MonophonicSubtracksProcessorInput : public babelwires::RecordType {
@@ -48,11 +45,9 @@ namespace seqwires {
 
     class MonophonicSubtracksProcessor : public babelwires::ValueProcessor {
       public:
-        MonophonicSubtracksProcessor(const babelwires::ProjectContext& projectContext);
+        BW_PROCESSOR_WITH_DEFAULT_FACTORY("MonoSubtracksProcessor", "Monophonic subtracks", "7b6bbc49-24a5-4657-86fd-c457d77feaf9");
 
-        struct Factory : public babelwires::CommonProcessorFactory<MonophonicSubtracksProcessor> {
-            Factory();
-        };
+        MonophonicSubtracksProcessor(const babelwires::ProjectContext& projectContext);
 
       protected:
         void processValue(babelwires::UserLogger& userLogger, const babelwires::ValueFeature& inputFeature,

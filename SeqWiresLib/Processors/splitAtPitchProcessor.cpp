@@ -56,7 +56,3 @@ void seqwires::SplitAtPitchProcessor::processValue(babelwires::UserLogger& userL
         }
     }
 }
-
-seqwires::SplitAtPitchProcessor::Factory::Factory()
-    : CommonProcessorFactory(
-          BW_LONG_ID("SplitAtPitchProcessor", "Split At Pitch", "c7b79e31-98f4-4d20-b946-f55113eb3b75"), 1) {}

@@ -63,15 +63,3 @@ void seqwires::MonophonicSubtracksProcessor::processValue(babelwires::UserLogger
         output.getOther().set(std::move(result.m_other));
     }
 }
-
-seqwires::MonophonicSubtracksProcessor::Factory::Factory()
-    : CommonProcessorFactory(
-          BW_LONG_ID("MonoSubtrcksProcessor2", "Monophonic subtracks 2", "7b6bbc49-24a5-4657-86fd-c457d77feaf9"), 1) {}
-
-
-namespace {
-    using SubtrackArrayFeature =
-        babelwires::HasStaticSizeRange<babelwires::StandardArrayFeature<seqwires::TrackFeature>, 1, 16>;
-
-    using PolicyFeature = babelwires::EnumWithCppEnumFeature<seqwires::MonophonicSubtracksPolicyEnum>;
-} // namespace

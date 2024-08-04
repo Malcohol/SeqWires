@@ -54,12 +54,13 @@ void seqwires::registerLib(babelwires::ProjectContext& context) {
     context.m_processorReg.addEntry<ConcatenateProcessor::Factory>();
     context.m_processorReg.addEntry<ExcerptProcessor::Factory>();
     context.m_processorReg.addEntry<MergeProcessor::Factory>();
-    context.m_processorReg.addEntry<MonophonicSubtracksProcessor::Factory>();
     context.m_processorReg.addEntry<FingeredChordsProcessor::Factory>();
     context.m_processorReg.addEntry<PercussionMapProcessor::Factory>();
     context.m_processorReg.addEntry<QuantizeProcessor::Factory>();
     context.m_processorReg.addEntry<RepeatProcessor::Factory>();
     context.m_processorReg.addEntry<SilenceProcessor::Factory>();
-    context.m_processorReg.addEntry<SplitAtPitchProcessor::Factory>();
     context.m_processorReg.addEntry<TransposeProcessor::Factory>();
+
+    context.m_processorReg.addProcessor<MonophonicSubtracksProcessor>();
+    context.m_processorReg.addProcessor<SplitAtPitchProcessor>();
 }
