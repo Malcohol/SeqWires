@@ -12,6 +12,7 @@
 namespace babelwires {
     class RationalFeature;
     class ArrayFeature;
+    class ValueFeature;
 } // namespace babelwires
 
 namespace seqwires {
@@ -29,7 +30,7 @@ namespace seqwires {
             Factory();
         };
       private:
-        babelwires::RationalFeature* m_duration;
+        babelwires::ValueFeature* m_duration;
         seqwires::TrackFeature* m_trackOut;
     };
 

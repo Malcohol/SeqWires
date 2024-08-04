@@ -12,6 +12,7 @@
 
 #include <BabelWiresLib/Features/arrayFeature.hpp>
 #include <BabelWiresLib/Features/rootFeature.hpp>
+#include <BabelWiresLib/Types/Rational/rationalValue.hpp>
 
 #include <Common/Identifiers/registeredIdentifier.hpp>
 
@@ -34,6 +35,8 @@ seqwires::ExcerptProcessor::Factory::Factory()
 
 void seqwires::ExcerptProcessor::processEntry(babelwires::UserLogger& userLogger, const seqwires::TrackFeature& input,
                                               seqwires::TrackFeature& output) const {
-    auto trackOut = getTrackExcerpt(input.get(), m_start->get(), m_duration->get());
+    const babelwires::Rational start = m_start->getValue()->is<babelwires::RationalValue>().get();
+    const babelwires::Rational duration = m_duration->getValue()->is<babelwires::RationalValue>().get();
+    auto trackOut = getTrackExcerpt(input.get(), start, duration);
     output.set(std::move(trackOut));
 }

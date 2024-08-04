@@ -13,6 +13,7 @@
 
 #include <BabelWiresLib/Features/arrayFeature.hpp>
 #include <BabelWiresLib/Features/rootFeature.hpp>
+#include <BabelWiresLib/Types/Rational/rationalValue.hpp>
 
 #include <Common/Identifiers/registeredIdentifier.hpp>
 
@@ -28,7 +29,8 @@ seqwires::SilenceProcessor::Factory::Factory()
     : CommonProcessorFactory(BW_LONG_ID("SilentTrack", "Silence", "c59e4643-b7d8-430b-980b-bd81b5aa007b"), 1) {}
 
 void seqwires::SilenceProcessor::process(babelwires::UserLogger& userLogger) {
+    const babelwires::Rational duration = m_duration->getValue()->is<babelwires::RationalValue>().get();
     if (m_duration->isChanged(babelwires::Feature::Changes::SomethingChanged)) {
-        m_trackOut->set(Track(m_duration->get()));
+        m_trackOut->set(Track(duration));
     }
 }

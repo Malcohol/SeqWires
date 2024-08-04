@@ -30,8 +30,8 @@ namespace seqwires {
         };
 
       private:
-        babelwires::RationalFeature* m_start;
-        babelwires::RationalFeature* m_duration;
+        babelwires::ValueFeature* m_start;
+        babelwires::ValueFeature* m_duration;
     };
 
 } // namespace seqwires

@@ -25,6 +25,7 @@
 #include <SeqWiresLib/Processors/transposeProcessor.hpp>
 #include <SeqWiresLib/Types/Track/trackTypeConstructor.hpp>
 #include <SeqWiresLib/Types/tempo.hpp>
+#include <SeqWiresLib/Types/duration.hpp>
 #include <SeqWiresLib/chord.hpp>
 #include <SeqWiresLib/pitch.hpp>
 
@@ -39,6 +40,7 @@ void seqwires::registerLib(babelwires::ProjectContext& context) {
     context.m_typeSystem.addEntry<PitchClass>();
     context.m_typeSystem.addEntry<PitchEnum>();
     context.m_typeSystem.addEntry<BuiltInPercussionInstruments>();
+    context.m_typeSystem.addEntry<Duration>();
     context.m_typeSystem.addEntry<Tempo>();
 
     context.m_typeSystem.addEntry<SplitAtPitchProcessorInput>();

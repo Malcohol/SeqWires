@@ -4,6 +4,7 @@
 #include <SeqWiresLib/Types/Track/TrackEvents/noteEvents.hpp>
 #include <SeqWiresLib/Processors/excerptProcessor.hpp>
 #include <SeqWiresLib/Types/Track/trackFeature.hpp>
+#include <SeqWiresLib/libRegistration.hpp>
 
 #include <BabelWiresLib/Features/arrayFeature.hpp>
 #include <BabelWiresLib/Features/rootFeature.hpp>
@@ -125,15 +126,15 @@ TEST(ExcerptProcessorTest, funcGaps) {
 
 TEST(ExcerptProcessorTest, processor) {
     testUtils::TestEnvironment testEnvironment;
-    testEnvironment.m_typeSystem.addEntry<seqwires::DefaultTrackType>();
+    seqwires::registerLib(testEnvironment.m_projectContext);
 
     seqwires::ExcerptProcessor processor(testEnvironment.m_projectContext);
 
     processor.getInputFeature()->setToDefault();
     processor.getOutputFeature()->setToDefault();
 
-    auto* startFeature = processor.getInputRootFeature()->getChildFromStep(babelwires::PathStep("Start")).as<babelwires::RationalFeature>();
-    auto* durationFeature = processor.getInputRootFeature()->getChildFromStep(babelwires::PathStep("Duratn")).as<babelwires::RationalFeature>();
+    auto* startFeature = processor.getInputRootFeature()->getChildFromStep(babelwires::PathStep("Start")).as<babelwires::ValueFeature>();
+    auto* durationFeature = processor.getInputRootFeature()->getChildFromStep(babelwires::PathStep("Duratn")).as<babelwires::ValueFeature>();
     auto* inputArray = processor.getInputRootFeature()->getChildFromStep(babelwires::PathStep("Tracks")).as<babelwires::ArrayFeature>();
     auto* outputArray = processor.getOutputRootFeature()->getChildFromStep(babelwires::PathStep("Tracks")).as<babelwires::ArrayFeature>();
     ASSERT_NE(startFeature, nullptr);
@@ -153,7 +154,7 @@ TEST(ExcerptProcessorTest, processor) {
     EXPECT_EQ(getInputTrack(0)->get().getDuration(), 0);
     EXPECT_EQ(getOutputTrack(0)->get().getDuration(), 0);
 
-    durationFeature->set(1);
+    durationFeature->setValue(babelwires::RationalValue(1));
     processor.process(testEnvironment.m_log);
     EXPECT_EQ(getOutputTrack(0)->get().getDuration(), 1);
     EXPECT_EQ(getOutputTrack(0)->get().getNumEvents(), 0);
@@ -167,7 +168,7 @@ TEST(ExcerptProcessorTest, processor) {
     EXPECT_EQ(getOutputTrack(0)->get().getDuration(), 1);
     testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65}, getOutputTrack(0)->get());
 
-    startFeature->set(1);
+    startFeature->setValue(babelwires::RationalValue(1));
     processor.process(testEnvironment.m_log);
     EXPECT_EQ(getOutputTrack(0)->get().getDuration(), 1);
     testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{67, 69, 71, 72}, getOutputTrack(0)->get());
