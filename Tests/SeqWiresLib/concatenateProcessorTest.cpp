@@ -4,6 +4,7 @@
 #include <SeqWiresLib/Processors/concatenateProcessor.hpp>
 #include <SeqWiresLib/Types/Track/TrackEvents/noteEvents.hpp>
 #include <SeqWiresLib/Types/Track/trackFeature.hpp>
+#include <SeqWiresLib/libRegistration.hpp>
 
 #include <BabelWiresLib/Features/arrayFeature.hpp>
 #include <BabelWiresLib/Features/rootFeature.hpp>
@@ -64,58 +65,56 @@ TEST(ConcatenateProcessorTest, appendFuncGaps) {
 
 TEST(ConcatenateProcessorTest, processor) {
     testUtils::TestEnvironment testEnvironment;
-    testEnvironment.m_typeSystem.addEntry<seqwires::DefaultTrackType>();
+    seqwires::registerLib(testEnvironment.m_projectContext);
 
     seqwires::ConcatenateProcessor processor(testEnvironment.m_projectContext);
 
     processor.getInputFeature()->setToDefault();
     processor.getOutputFeature()->setToDefault();
 
-    auto* inputArray = processor.getInputRootFeature()->getChildFromStep(babelwires::PathStep("Input")).as<babelwires::ArrayFeature>();
-    auto* outputTrack = processor.getOutputRootFeature()->getChildFromStep(babelwires::PathStep("Output")).as<seqwires::TrackFeature>();
-    ASSERT_NE(inputArray, nullptr);
-    ASSERT_NE(outputTrack, nullptr);
+    auto input = seqwires::ConcatenateProcessorInput::Instance(
+        processor.getInputFeature()->is<babelwires::ValueFeature>());
+    const auto output = seqwires::ConcatenateProcessorOutput::ConstInstance(
+        processor.getOutputFeature()->is<babelwires::ValueFeature>());
 
-    EXPECT_EQ(inputArray->getNumFeatures(), 2);
-    EXPECT_EQ(outputTrack->get().getDuration(), 0);
-
-    auto getInputTrack = [&inputArray](int i) { return inputArray->getChildFromStep(i).as<seqwires::TrackFeature>(); };
-
-    ASSERT_NE(getInputTrack(0), nullptr);
-    ASSERT_NE(getInputTrack(1), nullptr);
-
-    EXPECT_EQ(getInputTrack(0)->get().getDuration(), 0);
-    EXPECT_EQ(getInputTrack(1)->get().getDuration(), 0);
+    ASSERT_EQ(input.getInput().getSize(), 2);
+    EXPECT_EQ(input.getInput().getEntry(0).get().getDuration(), 0);
+    EXPECT_EQ(input.getInput().getEntry(1).get().getDuration(), 0);
 
     {
         seqwires::Track track;
         testUtils::addSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65}, track);
-        getInputTrack(0)->set(std::move(track));
+        input.getInput().getEntry(0).set(std::move(track));
     }
 
     processor.process(testEnvironment.m_log);
 
-    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65}, outputTrack->get());
+    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65}, output.getOutput().get());
 
+    processor.getInputFeature()->clearChanges();
+    processor.getInputFeature()->is<babelwires::SimpleValueFeature>().backUpValue();
     {
         seqwires::Track track;
         testUtils::addSimpleNotes(std::vector<seqwires::Pitch>{67, 69, 71, 72}, track);
-        getInputTrack(1)->set(std::move(track));
+        input.getInput().getEntry(1).set(std::move(track));
     }
-
+    processor.getInputFeature()->is<babelwires::SimpleValueFeature>().reconcileChangesFromBackup();
     processor.process(testEnvironment.m_log);
 
-    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65, 67, 69, 71, 72}, outputTrack->get());
+    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65, 67, 69, 71, 72}, output.getOutput().get());
 
-    inputArray->addEntry(1);
-
+    processor.getInputFeature()->clearChanges();
+    processor.getInputFeature()->is<babelwires::SimpleValueFeature>().backUpValue();
+    // Insert a new track at position 1.
+    input.getInput().setSize(3);
+    input.getInput().getEntry(2).set(input.getInput().getEntry(1)->getValue());
     {
         seqwires::Track track;
         testUtils::addSimpleNotes(std::vector<seqwires::Pitch>{67, 65}, track);
-        getInputTrack(1)->set(std::move(track));
+        input.getInput().getEntry(1).set(std::move(track));
     }
-
+    processor.getInputFeature()->is<babelwires::SimpleValueFeature>().reconcileChangesFromBackup();
     processor.process(testEnvironment.m_log);
 
-    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65, 67, 65, 67, 69, 71, 72}, outputTrack->get());
+    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65, 67, 65, 67, 69, 71, 72}, output.getOutput().get());
 }

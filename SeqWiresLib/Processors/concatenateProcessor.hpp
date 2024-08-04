@@ -9,6 +9,15 @@
 
 #include <BabelWiresLib/Processors/commonProcessor.hpp>
 
+#include <SeqWiresLib/Types/Track/trackInstance.hpp>
+#include <SeqWiresLib/Types/Track/trackType.hpp>
+
+#include <BabelWiresLib/Instance/instance.hpp>
+#include <BabelWiresLib/Processors/processorFactory.hpp>
+#include <BabelWiresLib/Processors/valueProcessor.hpp>
+#include <BabelWiresLib/TypeSystem/primitiveType.hpp>
+#include <BabelWiresLib/Types/Record/recordType.hpp>
+
 namespace babelwires {
     class ArrayFeature;
 } // namespace babelwires
@@ -16,20 +25,36 @@ namespace babelwires {
 namespace seqwires {
     class TrackFeature;
 
-    /// A processor which limits a track to events between certain points.
-    class ConcatenateProcessor : public babelwires::CommonProcessor {
+    class ConcatenateProcessorInput : public babelwires::RecordType {
       public:
-        ConcatenateProcessor(const babelwires::ProjectContext& projectContext);
+        PRIMITIVE_TYPE("ConcatTrcksIn", "Concatenate In", "f4f21fe1-25e6-4721-a298-36fe27b532cc", 1);
 
-        virtual void process(babelwires::UserLogger& userLogger) override;
+        ConcatenateProcessorInput();
 
-        struct Factory : public babelwires::CommonProcessorFactory<ConcatenateProcessor> {
-            Factory();
-        };
-
-      private:
-        babelwires::ArrayFeature* m_tracksIn;
-        seqwires::TrackFeature* m_trackOut;
+        DECLARE_INSTANCE_BEGIN(ConcatenateProcessorInput)
+        DECLARE_INSTANCE_ARRAY_FIELD(Input, TrackType)
+        DECLARE_INSTANCE_END()
     };
 
+    class ConcatenateProcessorOutput : public babelwires::RecordType {
+      public:
+        PRIMITIVE_TYPE("ConcatTrcksOut", "Concatenate Out", "2c9e13aa-eb88-494f-b3a6-7fb82504196c", 1);
+
+        ConcatenateProcessorOutput();
+
+        DECLARE_INSTANCE_BEGIN(ConcatenateProcessorOutput)
+        DECLARE_INSTANCE_FIELD(Output, TrackType)
+        DECLARE_INSTANCE_END()
+    };
+
+    class ConcatenateProcessor : public babelwires::ValueProcessor {
+      public:
+        BW_PROCESSOR_WITH_DEFAULT_FACTORY("ConcatenateTracks", "Concatenate", "42b00d10-9d16-42d2-8ba6-971aad016da0");
+
+        ConcatenateProcessor(const babelwires::ProjectContext& projectContext);
+
+      protected:
+        void processValue(babelwires::UserLogger& userLogger, const babelwires::ValueFeature& inputFeature,
+                          babelwires::ValueFeature& outputFeature) const override;
+    };
 } // namespace seqwires
