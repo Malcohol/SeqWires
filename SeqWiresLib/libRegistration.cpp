@@ -61,6 +61,10 @@ void seqwires::registerLib(babelwires::ProjectContext& context) {
     context.m_typeSystem.addEntry<MergeProcessorOutput>();
     context.m_processorReg.addProcessor<MergeProcessor>();
 
+    context.m_typeSystem.addEntry<SilenceProcessorInput>();
+    context.m_typeSystem.addEntry<SilenceProcessorOutput>();
+    context.m_processorReg.addProcessor<SilenceProcessor>();
+
     context.m_typeSystem.addTypeConstructor<TrackTypeConstructor>();
     context.m_typeSystem.addTypeConstructor<PercussionMapType>();
 
@@ -70,6 +74,5 @@ void seqwires::registerLib(babelwires::ProjectContext& context) {
     context.m_processorReg.addEntry<PercussionMapProcessor::Factory>();
     context.m_processorReg.addEntry<QuantizeProcessor::Factory>();
     context.m_processorReg.addEntry<RepeatProcessor::Factory>();
-    context.m_processorReg.addEntry<SilenceProcessor::Factory>();
     context.m_processorReg.addEntry<TransposeProcessor::Factory>();
 }

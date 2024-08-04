@@ -1,36 +1,36 @@
 /**
  * A processor which creates a silent track of a certain duration.
- * 
+ *
  * (C) 2021 Malcolm Tyrrell
- * 
+ *
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
 #include <SeqWiresLib/Processors/silenceProcessor.hpp>
 
-#include <SeqWiresLib/Types/Track/trackFeature.hpp>
-#include <SeqWiresLib/Features/durationFeature.hpp>
-#include <SeqWiresLib/Functions/appendTrackFunction.hpp>
+#include <SeqWiresLib/Types/duration.hpp>
 
 #include <BabelWiresLib/Features/arrayFeature.hpp>
 #include <BabelWiresLib/Features/rootFeature.hpp>
 #include <BabelWiresLib/Types/Rational/rationalValue.hpp>
 
-#include <Common/Identifiers/registeredIdentifier.hpp>
+seqwires::SilenceProcessorInput::SilenceProcessorInput()
+    : babelwires::RecordType(
+          {{BW_SHORT_ID("Durn", "Duration", "05d3ea91-cb90-42f5-9988-2fb2e02e231c"), Duration::getThisIdentifier()}}) {}
+
+seqwires::SilenceProcessorOutput::SilenceProcessorOutput()
+    : babelwires::RecordType({{BW_SHORT_ID("Track", "Track", "86f3d028-a616-4a95-a566-a010ffcabb19"),
+                               DefaultTrackType::getThisIdentifier()}}) {}
 
 seqwires::SilenceProcessor::SilenceProcessor(const babelwires::ProjectContext& projectContext)
-: CommonProcessor(projectContext) {
-    m_duration = m_inputFeature->addField(std::make_unique<DurationFeature>(),
-                                       BW_SHORT_ID("Durn", "Duration", "05d3ea91-cb90-42f5-9988-2fb2e02e231c"));
-    m_trackOut = m_outputFeature->addField(std::make_unique<TrackFeature>(),
-                                                BW_SHORT_ID("Track", "Track", "86f3d028-a616-4a95-a566-a010ffcabb19"));
-}
+    : ValueProcessor(projectContext, SilenceProcessorInput::getThisIdentifier(),
+                     SilenceProcessorOutput::getThisIdentifier()) {}
 
-seqwires::SilenceProcessor::Factory::Factory()
-    : CommonProcessorFactory(BW_LONG_ID("SilentTrack", "Silence", "c59e4643-b7d8-430b-980b-bd81b5aa007b"), 1) {}
-
-void seqwires::SilenceProcessor::process(babelwires::UserLogger& userLogger) {
-    const babelwires::Rational duration = m_duration->getValue()->is<babelwires::RationalValue>().get();
-    if (m_duration->isChanged(babelwires::Feature::Changes::SomethingChanged)) {
-        m_trackOut->set(Track(duration));
+void seqwires::SilenceProcessor::processValue(babelwires::UserLogger& userLogger,
+                                              const babelwires::ValueFeature& inputFeature,
+                                              babelwires::ValueFeature& outputFeature) const {
+    SilenceProcessorInput::ConstInstance input{inputFeature};
+    if (input->isChanged(babelwires::Feature::Changes::SomethingChanged)) {
+        SilenceProcessorOutput::Instance output{outputFeature};
+        output.getTrack().set(Track(input.getDurn().get()));
     }
 }

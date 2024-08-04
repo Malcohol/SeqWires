@@ -16,10 +16,6 @@
 #include <BabelWiresLib/Types/Enum/enumFeature.hpp>
 #include <BabelWiresLib/Types/Int/intTypeConstructor.hpp>
 
-#include <Common/Identifiers/registeredIdentifier.hpp>
-
-#include <set>
-
 seqwires::MonophonicSubtracksProcessorInput::MonophonicSubtracksProcessorInput()
     : babelwires::RecordType(
           {{BW_SHORT_ID("NumTrk", "Num subtracks", "30bc74d2-b678-4986-8296-929db40fc8c2"),
