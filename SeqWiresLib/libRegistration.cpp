@@ -39,14 +39,21 @@ void seqwires::registerLib(babelwires::ProjectContext& context) {
     context.m_typeSystem.addEntry<PitchClass>();
     context.m_typeSystem.addEntry<PitchEnum>();
     context.m_typeSystem.addEntry<BuiltInPercussionInstruments>();
-    context.m_typeSystem.addEntry<MonophonicSubtracksPolicyEnum>();
-    context.m_typeSystem.addEntry<FingeredChordsSustainPolicyEnum>();
     context.m_typeSystem.addEntry<Tempo>();
     context.m_typeSystem.addEntry<SplitAtPitchProcessorInput>();
     context.m_typeSystem.addEntry<SplitAtPitchProcessorOutput>();
+    context.m_processorReg.addProcessor<SplitAtPitchProcessor>();
+
+    context.m_typeSystem.addEntry<MonophonicSubtracksPolicyEnum>();
     context.m_typeSystem.addEntry<MonophonicSubtracksProcessorInput>();
     context.m_typeSystem.addEntry<MonophonicSubtracksProcessorOutput>();
+    context.m_processorReg.addProcessor<MonophonicSubtracksProcessor>();
 
+    context.m_typeSystem.addEntry<FingeredChordsSustainPolicyEnum>();
+    context.m_typeSystem.addEntry<FingeredChordsProcessorInput>();
+    context.m_typeSystem.addEntry<FingeredChordsProcessorOutput>();
+    context.m_processorReg.addProcessor<FingeredChordsProcessor>();
+    
     context.m_typeSystem.addTypeConstructor<TrackTypeConstructor>();
     context.m_typeSystem.addTypeConstructor<PercussionMapType>();
 
@@ -54,13 +61,9 @@ void seqwires::registerLib(babelwires::ProjectContext& context) {
     context.m_processorReg.addEntry<ConcatenateProcessor::Factory>();
     context.m_processorReg.addEntry<ExcerptProcessor::Factory>();
     context.m_processorReg.addEntry<MergeProcessor::Factory>();
-    context.m_processorReg.addEntry<FingeredChordsProcessor::Factory>();
     context.m_processorReg.addEntry<PercussionMapProcessor::Factory>();
     context.m_processorReg.addEntry<QuantizeProcessor::Factory>();
     context.m_processorReg.addEntry<RepeatProcessor::Factory>();
     context.m_processorReg.addEntry<SilenceProcessor::Factory>();
     context.m_processorReg.addEntry<TransposeProcessor::Factory>();
-
-    context.m_processorReg.addProcessor<MonophonicSubtracksProcessor>();
-    context.m_processorReg.addProcessor<SplitAtPitchProcessor>();
 }

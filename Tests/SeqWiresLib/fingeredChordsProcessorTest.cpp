@@ -677,17 +677,12 @@ TEST(FingeredChordsTest, processor) {
     processor.getInputFeature()->setToDefault();
     processor.getOutputFeature()->setToDefault();
 
-    auto* sustainPolicy =
-        processor.getInputRootFeature()->getChildFromStep(babelwires::PathStep("Policy")).as<babelwires::EnumFeature>();
-    auto* inputTrack =
-        processor.getInputRootFeature()->getChildFromStep(babelwires::PathStep("Notes")).as<seqwires::TrackFeature>();
-    auto* outputTrack =
-        processor.getOutputRootFeature()->getChildFromStep(babelwires::PathStep("Chords")).as<seqwires::TrackFeature>();
-    ASSERT_NE(inputTrack, nullptr);
-    ASSERT_NE(outputTrack, nullptr);
+    auto input = seqwires::FingeredChordsProcessorInput::Instance(
+        processor.getInputFeature()->is<babelwires::ValueFeature>());
+    const auto output = seqwires::FingeredChordsProcessorOutput::ConstInstance(
+        processor.getOutputFeature()->is<babelwires::ValueFeature>());
 
-    EXPECT_EQ(inputTrack->get().getDuration(), 0);
-    EXPECT_EQ(outputTrack->get().getDuration(), 0);
+    input.getPolicy().set(seqwires::FingeredChordsSustainPolicyEnum::Value::Notes);
 
     {
         seqwires::Track track;
@@ -703,7 +698,7 @@ TEST(FingeredChordsTest, processor) {
         track.addEvent(seqwires::NoteOffEvent(1, 62));
         track.addEvent(seqwires::NoteOffEvent(0, 65));
         track.addEvent(seqwires::NoteOffEvent(0, 69));
-        inputTrack->set(std::move(track));
+        input.getNotes().set(std::move(track));
     }
 
     processor.process(testEnvironment.m_log);
@@ -713,9 +708,13 @@ TEST(FingeredChordsTest, processor) {
             {seqwires::PitchClass::Value::C, seqwires::ChordType::Value::M, 1},
             {seqwires::PitchClass::Value::D, seqwires::ChordType::Value::m, 1, 1},
         },
-        outputTrack->get());
+        output.getChords().get());
 
-    sustainPolicy->set("Hold");
+    processor.getInputFeature()->clearChanges();
+
+    processor.getInputFeature()->is<babelwires::SimpleValueFeature>().backUpValue();
+    input.getPolicy().set(seqwires::FingeredChordsSustainPolicyEnum::Value::Hold);
+    processor.getInputFeature()->is<babelwires::SimpleValueFeature>().reconcileChangesFromBackup();
 
     processor.process(testEnvironment.m_log);
 
@@ -724,8 +723,11 @@ TEST(FingeredChordsTest, processor) {
             {seqwires::PitchClass::Value::C, seqwires::ChordType::Value::M, 2},
             {seqwires::PitchClass::Value::D, seqwires::ChordType::Value::m, 1},
         },
-        outputTrack->get());
+        output.getChords().get());
 
+    processor.getInputFeature()->clearChanges();
+
+    processor.getInputFeature()->is<babelwires::SimpleValueFeature>().backUpValue();
     {
         seqwires::Track track;
         track.addEvent(seqwires::NoteOnEvent(0, 60));
@@ -740,8 +742,9 @@ TEST(FingeredChordsTest, processor) {
         track.addEvent(seqwires::NoteOffEvent(1, 64));
         track.addEvent(seqwires::NoteOffEvent(0, 67));
         track.addEvent(seqwires::NoteOffEvent(0, 71));
-        inputTrack->set(std::move(track));
+        input.getNotes().set(std::move(track));
     }
+    processor.getInputFeature()->is<babelwires::SimpleValueFeature>().reconcileChangesFromBackup();
 
     processor.process(testEnvironment.m_log);
 
@@ -750,5 +753,5 @@ TEST(FingeredChordsTest, processor) {
             {seqwires::PitchClass::Value::C, seqwires::ChordType::Value::M, 2},
             {seqwires::PitchClass::Value::E, seqwires::ChordType::Value::m, 1},
         },
-        outputTrack->get());
+        output.getChords().get());
 }
