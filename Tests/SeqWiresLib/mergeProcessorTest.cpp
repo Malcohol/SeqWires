@@ -1,10 +1,11 @@
 #include <gtest/gtest.h>
 
-#include <SeqWiresLib/Processors/mergeProcessor.hpp>
 #include <SeqWiresLib/Functions/mergeFunction.hpp>
+#include <SeqWiresLib/Processors/mergeProcessor.hpp>
 #include <SeqWiresLib/Types/Track/TrackEvents/noteEvents.hpp>
-#include <SeqWiresLib/Types/Track/trackFeature.hpp>
 #include <SeqWiresLib/Types/Track/TrackEvents/trackEventHolder.hpp>
+#include <SeqWiresLib/Types/Track/trackFeature.hpp>
+#include <SeqWiresLib/libRegistration.hpp>
 
 #include <BabelWiresLib/Features/arrayFeature.hpp>
 #include <BabelWiresLib/Features/rootFeature.hpp>
@@ -22,28 +23,26 @@ TEST(MergeProcessorTest, simpleFunction) {
     seqwires::Track track = seqwires::mergeTracks({&trackA, &trackB});
     ASSERT_EQ(track.getDuration(), babelwires::Rational(3, 2));
 
-    std::vector<seqwires::TrackEventHolder> expectedEvents = {
-      seqwires::NoteOnEvent{ 0, 72 },
-      seqwires::NoteOnEvent{ 0, 48 },
-      seqwires::NoteOffEvent{ babelwires::Rational(1, 4), 72 },
-      seqwires::NoteOnEvent{ 0, 74 },
-      seqwires::NoteOffEvent{ 0, 48 },
-      seqwires::NoteOnEvent{ 0, 50 },
-      seqwires::NoteOffEvent{ babelwires::Rational(1, 4), 74 },
-      seqwires::NoteOnEvent{ 0, 76 },
-      seqwires::NoteOffEvent{ 0, 50 },
-      seqwires::NoteOnEvent{ 0, 52 },
-      seqwires::NoteOffEvent{ babelwires::Rational(1, 4), 76 },
-      seqwires::NoteOnEvent{ 0, 77 },
-      seqwires::NoteOffEvent{ 0, 52 },
-      seqwires::NoteOnEvent{ 0, 53 },
-      seqwires::NoteOffEvent{ babelwires::Rational(1, 4), 77 },
-      seqwires::NoteOffEvent{ 0, 53 },
-      seqwires::NoteOnEvent{ 0, 55 },
-      seqwires::NoteOffEvent{ babelwires::Rational(1, 4), 55 },
-      seqwires::NoteOnEvent{ 0, 57 },
-      seqwires::NoteOffEvent{ babelwires::Rational(1, 4), 57 }
-    };
+    std::vector<seqwires::TrackEventHolder> expectedEvents = {seqwires::NoteOnEvent{0, 72},
+                                                              seqwires::NoteOnEvent{0, 48},
+                                                              seqwires::NoteOffEvent{babelwires::Rational(1, 4), 72},
+                                                              seqwires::NoteOnEvent{0, 74},
+                                                              seqwires::NoteOffEvent{0, 48},
+                                                              seqwires::NoteOnEvent{0, 50},
+                                                              seqwires::NoteOffEvent{babelwires::Rational(1, 4), 74},
+                                                              seqwires::NoteOnEvent{0, 76},
+                                                              seqwires::NoteOffEvent{0, 50},
+                                                              seqwires::NoteOnEvent{0, 52},
+                                                              seqwires::NoteOffEvent{babelwires::Rational(1, 4), 76},
+                                                              seqwires::NoteOnEvent{0, 77},
+                                                              seqwires::NoteOffEvent{0, 52},
+                                                              seqwires::NoteOnEvent{0, 53},
+                                                              seqwires::NoteOffEvent{babelwires::Rational(1, 4), 77},
+                                                              seqwires::NoteOffEvent{0, 53},
+                                                              seqwires::NoteOnEvent{0, 55},
+                                                              seqwires::NoteOffEvent{babelwires::Rational(1, 4), 55},
+                                                              seqwires::NoteOnEvent{0, 57},
+                                                              seqwires::NoteOffEvent{babelwires::Rational(1, 4), 57}};
 
     auto it = track.begin();
     const auto end = track.end();
@@ -61,64 +60,62 @@ TEST(MergeProcessorTest, simpleFunction) {
     EXPECT_EQ(it, end);
 }
 
-
 TEST(MergeProcessorTest, processor) {
     testUtils::TestEnvironment testEnvironment;
-    testEnvironment.m_typeSystem.addEntry<seqwires::DefaultTrackType>();
+    seqwires::registerLib(testEnvironment.m_projectContext);
 
     seqwires::MergeProcessor processor(testEnvironment.m_projectContext);
 
     processor.getInputFeature()->setToDefault();
     processor.getOutputFeature()->setToDefault();
 
-    auto* inputArray = processor.getInputRootFeature()->getChildFromStep(babelwires::PathStep("Input")).as<babelwires::ArrayFeature>();
-    auto* outputTrack = processor.getOutputRootFeature()->getChildFromStep(babelwires::PathStep("Output")).as<seqwires::TrackFeature>();
-    ASSERT_NE(inputArray, nullptr);
-    ASSERT_NE(outputTrack, nullptr);
+    auto input = seqwires::MergeProcessorInput::Instance(processor.getInputFeature()->is<babelwires::ValueFeature>());
+    const auto output =
+        seqwires::MergeProcessorOutput::ConstInstance(processor.getOutputFeature()->is<babelwires::ValueFeature>());
 
-    EXPECT_EQ(inputArray->getNumFeatures(), 2);
-    EXPECT_EQ(outputTrack->get().getDuration(), 0);
-
-    auto getInputTrack = [&inputArray](int i) { return inputArray->getChildFromStep(i).as<seqwires::TrackFeature>(); };
-
-    ASSERT_NE(getInputTrack(0), nullptr);
-    ASSERT_NE(getInputTrack(1), nullptr);
-
-    EXPECT_EQ(getInputTrack(0)->get().getDuration(), 0);
-    EXPECT_EQ(getInputTrack(1)->get().getDuration(), 0);
+    ASSERT_EQ(input.getInput().getSize(), 2);
+    EXPECT_EQ(input.getInput().getEntry(0).get().getDuration(), 0);
+    EXPECT_EQ(input.getInput().getEntry(1).get().getDuration(), 0);
 
     {
         seqwires::Track track;
         testUtils::addSimpleNotes(std::vector<seqwires::Pitch>{72, 74}, track);
-        getInputTrack(0)->set(std::move(track));
+        input.getInput().getEntry(0).set(std::move(track));
     }
 
     processor.process(testEnvironment.m_log);
 
-    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{72, 74}, outputTrack->get());
+    auto outputTrackInstance = output.getOutput();
+
+    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{72, 74}, outputTrackInstance.get());
+
+
+    processor.getInputFeature()->clearChanges();
+    processor.getInputFeature()->is<babelwires::SimpleValueFeature>().backUpValue();
 
     {
         seqwires::Track track;
         testUtils::addSimpleNotes(std::vector<seqwires::Pitch>{48, 50}, track);
-        getInputTrack(1)->set(std::move(track));
+        input.getInput().getEntry(1).set(std::move(track));
     }
 
+    processor.getInputFeature()->is<babelwires::SimpleValueFeature>().reconcileChangesFromBackup();
     processor.process(testEnvironment.m_log);
 
     std::vector<seqwires::TrackEventHolder> expectedEvents = {
-      seqwires::NoteOnEvent{ 0, 72 },
-      seqwires::NoteOnEvent{ 0, 48 },
-      seqwires::NoteOffEvent{ babelwires::Rational(1, 4), 72 },
-      seqwires::NoteOnEvent{ 0, 74 },
-      seqwires::NoteOffEvent{ 0, 48 },
-      seqwires::NoteOnEvent{ 0, 50 },
-      seqwires::NoteOffEvent{ babelwires::Rational(1, 4), 74 },
-      seqwires::NoteOffEvent{ 0, 50 },
+        seqwires::NoteOnEvent{0, 72},
+        seqwires::NoteOnEvent{0, 48},
+        seqwires::NoteOffEvent{babelwires::Rational(1, 4), 72},
+        seqwires::NoteOnEvent{0, 74},
+        seqwires::NoteOffEvent{0, 48},
+        seqwires::NoteOnEvent{0, 50},
+        seqwires::NoteOffEvent{babelwires::Rational(1, 4), 74},
+        seqwires::NoteOffEvent{0, 50},
     };
 
     {
-        auto it = outputTrack->get().begin();
-        const auto end = outputTrack->get().end();
+        auto it = outputTrackInstance.get().begin();
+        const auto end = outputTrackInstance.get().end();
 
         for (auto e : expectedEvents) {
             ASSERT_NE(it, end);
@@ -133,34 +130,33 @@ TEST(MergeProcessorTest, processor) {
         EXPECT_EQ(it, end);
     }
 
-    inputArray->addEntry(1);
+    processor.getInputFeature()->clearChanges();
+    processor.getInputFeature()->is<babelwires::SimpleValueFeature>().backUpValue();
 
+    // Insert a new track at position 1.
+    input.getInput().setSize(3);
+    input.getInput().getEntry(2).set(input.getInput().getEntry(1)->getValue());
     {
         seqwires::Track track;
         testUtils::addSimpleNotes(std::vector<seqwires::Pitch>{60, 62}, track);
-        getInputTrack(1)->set(std::move(track));
+        input.getInput().getEntry(1).set(std::move(track));
     }
 
+    processor.getInputFeature()->is<babelwires::SimpleValueFeature>().reconcileChangesFromBackup();
     processor.process(testEnvironment.m_log);
 
     expectedEvents = {
-      seqwires::NoteOnEvent{ 0, 72 },
-      seqwires::NoteOnEvent{ 0, 60 },
-      seqwires::NoteOnEvent{ 0, 48 },
-      seqwires::NoteOffEvent{ babelwires::Rational(1, 4), 72 },
-      seqwires::NoteOnEvent{ 0, 74 },
-      seqwires::NoteOffEvent{ 0, 60 },
-      seqwires::NoteOnEvent{ 0, 62 },
-      seqwires::NoteOffEvent{ 0, 48 },
-      seqwires::NoteOnEvent{ 0, 50 },
-      seqwires::NoteOffEvent{ babelwires::Rational(1, 4), 74 },
-      seqwires::NoteOffEvent{ 0, 62 },
-      seqwires::NoteOffEvent{ 0, 50 },
+        seqwires::NoteOnEvent{0, 72},  seqwires::NoteOnEvent{0, 60},
+        seqwires::NoteOnEvent{0, 48},  seqwires::NoteOffEvent{babelwires::Rational(1, 4), 72},
+        seqwires::NoteOnEvent{0, 74},  seqwires::NoteOffEvent{0, 60},
+        seqwires::NoteOnEvent{0, 62},  seqwires::NoteOffEvent{0, 48},
+        seqwires::NoteOnEvent{0, 50},  seqwires::NoteOffEvent{babelwires::Rational(1, 4), 74},
+        seqwires::NoteOffEvent{0, 62}, seqwires::NoteOffEvent{0, 50},
     };
 
     {
-        auto it = outputTrack->get().begin();
-        const auto end = outputTrack->get().end();
+        auto it = outputTrackInstance.get().begin();
+        const auto end = outputTrackInstance.get().end();
 
         for (auto e : expectedEvents) {
             ASSERT_NE(it, end);

@@ -40,6 +40,7 @@ void seqwires::registerLib(babelwires::ProjectContext& context) {
     context.m_typeSystem.addEntry<PitchEnum>();
     context.m_typeSystem.addEntry<BuiltInPercussionInstruments>();
     context.m_typeSystem.addEntry<Tempo>();
+
     context.m_typeSystem.addEntry<SplitAtPitchProcessorInput>();
     context.m_typeSystem.addEntry<SplitAtPitchProcessorOutput>();
     context.m_processorReg.addProcessor<SplitAtPitchProcessor>();
@@ -53,14 +54,17 @@ void seqwires::registerLib(babelwires::ProjectContext& context) {
     context.m_typeSystem.addEntry<FingeredChordsProcessorInput>();
     context.m_typeSystem.addEntry<FingeredChordsProcessorOutput>();
     context.m_processorReg.addProcessor<FingeredChordsProcessor>();
-    
+
+    context.m_typeSystem.addEntry<MergeProcessorInput>();
+    context.m_typeSystem.addEntry<MergeProcessorOutput>();
+    context.m_processorReg.addProcessor<MergeProcessor>();
+
     context.m_typeSystem.addTypeConstructor<TrackTypeConstructor>();
     context.m_typeSystem.addTypeConstructor<PercussionMapType>();
 
     context.m_processorReg.addEntry<ChordMapProcessor::Factory>();
     context.m_processorReg.addEntry<ConcatenateProcessor::Factory>();
     context.m_processorReg.addEntry<ExcerptProcessor::Factory>();
-    context.m_processorReg.addEntry<MergeProcessor::Factory>();
     context.m_processorReg.addEntry<PercussionMapProcessor::Factory>();
     context.m_processorReg.addEntry<QuantizeProcessor::Factory>();
     context.m_processorReg.addEntry<RepeatProcessor::Factory>();
