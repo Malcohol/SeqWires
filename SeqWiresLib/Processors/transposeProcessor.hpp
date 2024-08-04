@@ -1,5 +1,5 @@
 /**
- * A processor which repeats sequence data a number of times.
+ * A processor that adjusts the pitch of note events.
  *
  * (C) 2021 Malcolm Tyrrell
  *
@@ -18,7 +18,7 @@ namespace babelwires {
 
 namespace seqwires {
 
-    /// A processor which limits a track to events between certain points.
+    /// A processor that adjusts the pitch of note events.
     class TransposeProcessor : public babelwires::ParallelProcessor<seqwires::TrackFeature, seqwires::TrackFeature> {
       public:
         TransposeProcessor(const babelwires::ProjectContext& projectContext);

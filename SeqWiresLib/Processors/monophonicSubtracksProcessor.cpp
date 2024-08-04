@@ -8,17 +8,66 @@
 #include <SeqWiresLib/Processors/monophonicSubtracksProcessor.hpp>
 
 #include <SeqWiresLib/Types/Track/trackFeature.hpp>
-#include <SeqWiresLib/Functions/monophonicSubtracksFunction.hpp>
 
 #include <BabelWiresLib/Features/arrayFeature.hpp>
 #include <BabelWiresLib/Features/featureMixins.hpp>
 #include <BabelWiresLib/Features/rootFeature.hpp>
+#include <BabelWiresLib/Types/Array/arrayTypeConstructor.hpp>
 #include <BabelWiresLib/Types/Enum/enumFeature.hpp>
 #include <BabelWiresLib/Types/Int/intFeature.hpp>
+#include <BabelWiresLib/Types/Int/intTypeConstructor.hpp>
 
 #include <Common/Identifiers/registeredIdentifier.hpp>
 
 #include <set>
+
+seqwires::MonophonicSubtracksProcessorInput::MonophonicSubtracksProcessorInput()
+    : babelwires::RecordType(
+          {{BW_SHORT_ID("NumTrk", "Num subtracks", "30bc74d2-b678-4986-8296-929db40fc8c2"),
+            babelwires::TypeRef{babelwires::IntTypeConstructor::getThisIdentifier(),
+                                {{}, {babelwires::IntValue(0), babelwires::IntValue(16), babelwires::IntValue(1)}}}},
+           {BW_SHORT_ID("Policy", "Policy", "c3192ee7-adec-4239-83a1-ef2d130ce421"),
+            MonophonicSubtracksPolicyEnum::getThisIdentifier()},
+           {BW_SHORT_ID("Input", "Input Track", "16e6745d-2456-489f-b73b-8704a442591b"),
+            DefaultTrackType::getThisIdentifier()}}) {}
+
+seqwires::MonophonicSubtracksProcessorOutput::MonophonicSubtracksProcessorOutput()
+    : babelwires::RecordType(
+          {{BW_SHORT_ID("Sbtrks", "Mono tracks", "27c5fbe2-1060-4dc4-b46a-735b48128e17"),
+            babelwires::TypeRef{babelwires::ArrayTypeConstructor::getThisIdentifier(),
+                                {{DefaultTrackType::getThisIdentifier()},
+                                 {babelwires::IntValue(0), babelwires::IntValue(16), babelwires::IntValue(1)}}}},
+           {BW_SHORT_ID("Other", "Other", "bc3a5261-630c-43d7-bda5-f85dd6a1fe2b"),
+            DefaultTrackType::getThisIdentifier()}}) {}
+
+seqwires::MonophonicSubtracksProcessor::MonophonicSubtracksProcessor(const babelwires::ProjectContext& projectContext)
+    : ValueProcessor(projectContext, MonophonicSubtracksProcessorInput::getThisIdentifier(),
+                     MonophonicSubtracksProcessorOutput::getThisIdentifier()) {}
+
+void seqwires::MonophonicSubtracksProcessor::processValue(babelwires::UserLogger& userLogger,
+                                                           const babelwires::ValueFeature& inputFeature,
+                                                           babelwires::ValueFeature& outputFeature) const {
+    MonophonicSubtracksProcessorInput::ConstInstance input{inputFeature};
+    if (input->isChanged(babelwires::Feature::Changes::SomethingChanged)) {
+        const unsigned int numTracks = input.getNumTrk().get();
+        const MonophonicSubtracksPolicyEnum::Value policy = input.getPolicy().get();
+        const seqwires::Track& trackIn = input.getInput().get();
+        auto result = getMonophonicSubtracks(trackIn, numTracks, policy);
+        
+        MonophonicSubtracksProcessorOutput::Instance output{outputFeature};
+        auto tracksOut = output.getSbtrks();
+        tracksOut.setSize(numTracks);
+        for (int i = 0; i < result.m_noteTracks.size(); ++i) {
+            tracksOut.getEntry(i).set(std::move(result.m_noteTracks[i]));
+        }
+        output.getOther().set(std::move(result.m_other));
+    }
+}
+
+seqwires::MonophonicSubtracksProcessor::Factory::Factory()
+    : CommonProcessorFactory(
+          BW_LONG_ID("MonoSubtrcksProcessor2", "Monophonic subtracks 2", "7b6bbc49-24a5-4657-86fd-c457d77feaf9"), 1) {}
+
 
 namespace {
     using SubtrackArrayFeature =
@@ -26,41 +75,3 @@ namespace {
 
     using PolicyFeature = babelwires::EnumWithCppEnumFeature<seqwires::MonophonicSubtracksPolicyEnum>;
 } // namespace
-
-seqwires::MonophonicSubtracksProcessor::MonophonicSubtracksProcessor(const babelwires::ProjectContext& projectContext)
-    : CommonProcessor(projectContext) {
-    m_numSubtracks =
-        m_inputFeature->addField(std::make_unique<babelwires::IntFeature>(1, 16),
-                                 BW_SHORT_ID("NumTrk", "Num subtracks", "036ba53e-fdf5-4278-a2c3-7232fc10731c"));
-    m_policy = m_inputFeature->addField(std::make_unique<PolicyFeature>(),
-                                        BW_SHORT_ID("Policy", "Policy", "6dca88e9-a6ec-4d43-adb8-78b7bfa00ab9"));
-    m_trackIn = m_inputFeature->addField(std::make_unique<TrackFeature>(),
-                                         BW_SHORT_ID("Input", "Input Track", "7e50ba70-0c5e-4493-b088-a3327d65256f"));
-    m_tracksOut =
-        m_outputFeature->addField(std::make_unique<SubtrackArrayFeature>(),
-                                  BW_SHORT_ID("Sbtrks", "Mono tracks", "d3e08407-a6e1-4b1f-b6f7-8fa9be6bdf5f"));
-    m_otherTrackOut = m_outputFeature->addField(std::make_unique<TrackFeature>(),
-                                                BW_SHORT_ID("Other", "Other", "bc69fa38-8727-40c3-a90e-bfe6de8ad847"));
-}
-
-seqwires::MonophonicSubtracksProcessor::Factory::Factory()
-    : CommonProcessorFactory(
-          BW_LONG_ID("MonoSubtracksProcessor", "Monophonic subtracks", "0b131aaf-91ce-4552-9206-a680615775b1"), 1) {}
-
-void seqwires::MonophonicSubtracksProcessor::process(babelwires::UserLogger& userLogger) {
-    if (m_numSubtracks->isChanged(babelwires::Feature::Changes::SomethingChanged)) {
-        m_tracksOut->setSize(m_numSubtracks->get());
-    }
-    if (m_numSubtracks->isChanged(babelwires::Feature::Changes::SomethingChanged) ||
-        m_trackIn->isChanged(babelwires::Feature::Changes::SomethingChanged) ||
-        m_policy->isChanged(babelwires::Feature::Changes::SomethingChanged)) {
-        auto result = getMonophonicSubtracks(m_trackIn->get(), m_numSubtracks->get(),
-                                             static_cast<const PolicyFeature*>(m_policy)->getAsValue());
-        for (int i = 0; i < result.m_noteTracks.size(); ++i) {
-            assert(m_tracksOut->getFeature(i)->as<TrackFeature>() != nullptr);
-            auto trackOut = static_cast<TrackFeature*>(m_tracksOut->getFeature(i));
-            trackOut->set(std::move(result.m_noteTracks[i]));
-        }
-        m_otherTrackOut->set(std::move(result.m_other));
-    }
-}

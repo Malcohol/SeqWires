@@ -11,15 +11,11 @@
 #include <SeqWiresLib/Types/Track/trackType.hpp>
 #include <SeqWiresLib/Types/Track/trackInstance.hpp>
 
-#include <BabelWiresLib/Processors/commonProcessor.hpp>
 #include <BabelWiresLib/TypeSystem/primitiveType.hpp>
 #include <BabelWiresLib/Types/Record/recordType.hpp>
 #include <BabelWiresLib/Instance/instance.hpp>
 #include <BabelWiresLib/Processors/valueProcessor.hpp>
-
-namespace babelwires {
-    class EnumFeature;
-} // namespace babelwires
+#include <BabelWiresLib/Processors/processorFactory.hpp>
 
 namespace seqwires {
     class SplitAtPitchProcessorInput : public babelwires::RecordType {

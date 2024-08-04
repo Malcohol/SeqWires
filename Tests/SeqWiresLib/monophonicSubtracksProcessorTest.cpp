@@ -1,13 +1,16 @@
 #include <gtest/gtest.h>
 
-#include <SeqWiresLib/Types/Track/trackFeature.hpp>
 #include <SeqWiresLib/Functions/monophonicSubtracksFunction.hpp>
+#include <SeqWiresLib/Processors/monophonicSubtracksProcessor.hpp>
 #include <SeqWiresLib/Types/Track/TrackEvents/chordEvents.hpp>
 #include <SeqWiresLib/Types/Track/TrackEvents/noteEvents.hpp>
 #include <SeqWiresLib/Types/Track/TrackEvents/trackEventHolder.hpp>
+#include <SeqWiresLib/Types/Track/trackFeature.hpp>
+#include <SeqWiresLib/libRegistration.hpp>
 
 #include <BabelWiresLib/Features/arrayFeature.hpp>
 
+#include <Tests/BabelWiresLib/TestUtils/testEnvironment.hpp>
 #include <Tests/TestUtils/seqTestUtils.hpp>
 #include <Tests/TestUtils/testLog.hpp>
 
@@ -127,8 +130,8 @@ TEST(MonophonicSubtracksProcessorTest, FunctionLower) {
     EXPECT_EQ(result.m_noteTracks[1].getDuration(), 1);
     EXPECT_EQ(result.m_other.getDuration(), 1);
 
-    testUtils::testSimpleNotes({72, 74, 76, 77}, result.m_noteTracks[1]);
     testUtils::testSimpleNotes({48, 50, 52, 53}, result.m_noteTracks[0]);
+    testUtils::testSimpleNotes({72, 74, 76, 77}, result.m_noteTracks[1]);
     testUtils::testChords({{seqwires::PitchClass::Value::C, seqwires::ChordType::ChordType::Value::M},
                            {seqwires::PitchClass::Value::D, seqwires::ChordType::ChordType::Value::m}},
                           result.m_other);
@@ -193,7 +196,6 @@ TEST(MonophonicSubtracksProcessorTest, higherPitchesEvictOneTrack) {
     EXPECT_EQ(result.m_noteTracks[0].getDuration(), babelwires::Rational(11, 4));
     EXPECT_EQ(result.m_other.getDuration(), babelwires::Rational(11, 4));
 
-
     const std::vector<seqwires::TrackEventHolder> monoEvents = {
         seqwires::NoteOnEvent{0, 48}, seqwires::NoteOffEvent{babelwires::Rational(1, 4), 48},
         seqwires::NoteOnEvent{0, 60}, seqwires::NoteOffEvent{babelwires::Rational(1, 4), 60},
@@ -243,10 +245,12 @@ TEST(MonophonicSubtracksProcessorTest, higherPitchesEvictTwoTracks) {
     testUtils::testNotesAndChords(monoEvents0, result.m_noteTracks[0]);
 
     const std::vector<seqwires::TrackEventHolder> monoEvents1 = {
-        seqwires::NoteOnEvent{babelwires::Rational(1, 4), 60}, seqwires::NoteOffEvent{babelwires::Rational(3, 4), 60},
-        seqwires::NoteOnEvent{0, 62}, seqwires::NoteOffEvent{babelwires::Rational(3, 4), 62},
-        seqwires::NoteOnEvent{0, 60}, seqwires::NoteOffEvent{babelwires::Rational(3, 4), 60}
-    };
+        seqwires::NoteOnEvent{babelwires::Rational(1, 4), 60},
+        seqwires::NoteOffEvent{babelwires::Rational(3, 4), 60},
+        seqwires::NoteOnEvent{0, 62},
+        seqwires::NoteOffEvent{babelwires::Rational(3, 4), 62},
+        seqwires::NoteOnEvent{0, 60},
+        seqwires::NoteOffEvent{babelwires::Rational(3, 4), 60}};
 
     testUtils::testNotesAndChords(monoEvents1, result.m_noteTracks[1]);
 
@@ -273,7 +277,6 @@ TEST(MonophonicSubtracksProcessorTest, lowerPitchesEvictOneTrack) {
     ASSERT_EQ(result.m_noteTracks.size(), 1);
     EXPECT_EQ(result.m_noteTracks[0].getDuration(), babelwires::Rational(11, 4));
     EXPECT_EQ(result.m_other.getDuration(), babelwires::Rational(11, 4));
-
 
     const std::vector<seqwires::TrackEventHolder> monoEvents = {
         seqwires::NoteOnEvent{0, 72}, seqwires::NoteOffEvent{babelwires::Rational(1, 4), 72},
@@ -324,10 +327,12 @@ TEST(MonophonicSubtracksProcessorTest, lowerPitchesEvictTwoTracks) {
     testUtils::testNotesAndChords(monoEvents0, result.m_noteTracks[0]);
 
     const std::vector<seqwires::TrackEventHolder> monoEvents1 = {
-        seqwires::NoteOnEvent{babelwires::Rational(1, 4), 60}, seqwires::NoteOffEvent{babelwires::Rational(3, 4), 60},
-        seqwires::NoteOnEvent{0, 62}, seqwires::NoteOffEvent{babelwires::Rational(3, 4), 62},
-        seqwires::NoteOnEvent{0, 60}, seqwires::NoteOffEvent{babelwires::Rational(3, 4), 60}
-    };
+        seqwires::NoteOnEvent{babelwires::Rational(1, 4), 60},
+        seqwires::NoteOffEvent{babelwires::Rational(3, 4), 60},
+        seqwires::NoteOnEvent{0, 62},
+        seqwires::NoteOffEvent{babelwires::Rational(3, 4), 62},
+        seqwires::NoteOnEvent{0, 60},
+        seqwires::NoteOffEvent{babelwires::Rational(3, 4), 60}};
 
     testUtils::testNotesAndChords(monoEvents1, result.m_noteTracks[1]);
 
@@ -343,4 +348,49 @@ TEST(MonophonicSubtracksProcessorTest, lowerPitchesEvictTwoTracks) {
     };
 
     testUtils::testNotesAndChords(otherEvents, result.m_other);
+}
+
+TEST(MonophonicSubtracksProcessorTest, processor) {
+    testUtils::TestEnvironment testEnvironment;
+    seqwires::registerLib(testEnvironment.m_projectContext);
+
+    seqwires::MonophonicSubtracksProcessor processor(testEnvironment.m_projectContext);
+
+    processor.getInputFeature()->setToDefault();
+    processor.getOutputFeature()->setToDefault();
+
+    auto input = seqwires::MonophonicSubtracksProcessorInput::Instance(
+        processor.getInputFeature()->is<babelwires::ValueFeature>());
+    const auto output = seqwires::MonophonicSubtracksProcessorOutput::ConstInstance(
+        processor.getOutputFeature()->is<babelwires::ValueFeature>());
+
+    input.getNumTrk().set(2);
+    input.getPolicy().set(seqwires::MonophonicSubtracksPolicyEnum::Value::Low);
+    input.getInput().set(getSamplePolyphonicTrack());
+
+    processor.process(testEnvironment.m_log);
+
+    EXPECT_EQ(output.getSbtrks().getSize(), 2);
+    testUtils::testSimpleNotes({48, 50, 52, 53}, output.getSbtrks().getEntry(0).get());
+    testUtils::testSimpleNotes({72, 74, 76, 77}, output.getSbtrks().getEntry(1).get());
+    testUtils::testChords({{seqwires::PitchClass::Value::C, seqwires::ChordType::ChordType::Value::M},
+                           {seqwires::PitchClass::Value::D, seqwires::ChordType::ChordType::Value::m}},
+                          output.getOther().get());
+
+    processor.getInputFeature()->clearChanges();
+
+    processor.getInputFeature()->is<babelwires::SimpleValueFeature>().backUpValue();
+    input.getNumTrk().set(3);
+    input.getPolicy().set(seqwires::MonophonicSubtracksPolicyEnum::Value::High);
+    processor.getInputFeature()->is<babelwires::SimpleValueFeature>().reconcileChangesFromBackup();
+
+    processor.process(testEnvironment.m_log);
+
+    EXPECT_EQ(output.getSbtrks().getSize(), 3);
+    testUtils::testSimpleNotes({72, 74, 76, 77}, output.getSbtrks().getEntry(0).get());
+    testUtils::testSimpleNotes({48, 50, 52, 53}, output.getSbtrks().getEntry(1).get());
+    EXPECT_EQ(output.getSbtrks().getEntry(2).get().getNumEvents(), 0);
+    testUtils::testChords({{seqwires::PitchClass::Value::C, seqwires::ChordType::ChordType::Value::M},
+                           {seqwires::PitchClass::Value::D, seqwires::ChordType::ChordType::Value::m}},
+                          output.getOther().get());
 }

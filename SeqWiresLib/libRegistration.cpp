@@ -23,10 +23,10 @@
 #include <SeqWiresLib/Processors/silenceProcessor.hpp>
 #include <SeqWiresLib/Processors/splitAtPitchProcessor.hpp>
 #include <SeqWiresLib/Processors/transposeProcessor.hpp>
+#include <SeqWiresLib/Types/Track/trackTypeConstructor.hpp>
+#include <SeqWiresLib/Types/tempo.hpp>
 #include <SeqWiresLib/chord.hpp>
 #include <SeqWiresLib/pitch.hpp>
-#include <SeqWiresLib/Types/tempo.hpp>
-#include <SeqWiresLib/Types/Track/trackTypeConstructor.hpp>
 
 #include <BabelWiresLib/Processors/processorFactory.hpp>
 #include <BabelWiresLib/Processors/processorFactoryRegistry.hpp>
@@ -44,6 +44,8 @@ void seqwires::registerLib(babelwires::ProjectContext& context) {
     context.m_typeSystem.addEntry<Tempo>();
     context.m_typeSystem.addEntry<SplitAtPitchProcessorInput>();
     context.m_typeSystem.addEntry<SplitAtPitchProcessorOutput>();
+    context.m_typeSystem.addEntry<MonophonicSubtracksProcessorInput>();
+    context.m_typeSystem.addEntry<MonophonicSubtracksProcessorOutput>();
 
     context.m_typeSystem.addTypeConstructor<TrackTypeConstructor>();
     context.m_typeSystem.addTypeConstructor<PercussionMapType>();
