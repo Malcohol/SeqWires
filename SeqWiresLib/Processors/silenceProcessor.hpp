@@ -7,8 +7,6 @@
  **/
 #pragma once
 
-#include <BabelWiresLib/Processors/commonProcessor.hpp>
-
 #include <SeqWiresLib/Types/Track/trackInstance.hpp>
 #include <SeqWiresLib/Types/Track/trackType.hpp>
 

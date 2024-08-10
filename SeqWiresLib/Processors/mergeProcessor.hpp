@@ -10,7 +10,6 @@
 #include <SeqWiresLib/Types/Track/trackInstance.hpp>
 #include <SeqWiresLib/Types/Track/trackType.hpp>
 
-#include <BabelWiresLib/Processors/commonProcessor.hpp>
 #include <BabelWiresLib/Instance/instance.hpp>
 #include <BabelWiresLib/Processors/processorFactory.hpp>
 #include <BabelWiresLib/Processors/valueProcessor.hpp>
