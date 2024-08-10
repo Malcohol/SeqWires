@@ -378,12 +378,11 @@ TEST(MonophonicSubtracksProcessorTest, processor) {
                           output.getOther().get());
 
     processor.getInputFeature()->clearChanges();
-
-    processor.getInputFeature()->is<babelwires::SimpleValueFeature>().backUpValue();
-    input.getNumTrk().set(3);
-    input.getPolicy().set(seqwires::MonophonicSubtracksPolicyEnum::Value::High);
-    processor.getInputFeature()->is<babelwires::SimpleValueFeature>().reconcileChangesFromBackup();
-
+    {
+        babelwires::BackupScope scope(processor.getInputFeature()->is<babelwires::SimpleValueFeature>());
+        input.getNumTrk().set(3);
+        input.getPolicy().set(seqwires::MonophonicSubtracksPolicyEnum::Value::High);
+    }
     processor.process(testEnvironment.m_log);
 
     EXPECT_EQ(output.getSbtrks().getSize(), 3);

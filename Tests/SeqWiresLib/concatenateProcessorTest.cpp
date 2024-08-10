@@ -26,12 +26,10 @@ TEST(ConcatenateProcessorTest, appendFuncSimple) {
 
 TEST(ConcatenateProcessorTest, appendFuncGaps) {
     seqwires::Track trackA;
-    const std::vector<testUtils::NoteInfo> noteInfosA{
-        {60, 1, babelwires::Rational(1, 4)},
-        {62, 0, babelwires::Rational(1, 4)},
-        {64, 0, babelwires::Rational(1, 4)},
-        {65, 0, babelwires::Rational(1, 4)}
-    };
+    const std::vector<testUtils::NoteInfo> noteInfosA{{60, 1, babelwires::Rational(1, 4)},
+                                                      {62, 0, babelwires::Rational(1, 4)},
+                                                      {64, 0, babelwires::Rational(1, 4)},
+                                                      {65, 0, babelwires::Rational(1, 4)}};
     testUtils::addNotes(noteInfosA, trackA);
     trackA.setDuration(3);
 
@@ -50,14 +48,9 @@ TEST(ConcatenateProcessorTest, appendFuncGaps) {
     EXPECT_EQ(trackA.getDuration(), 6);
 
     const std::vector<testUtils::NoteInfo> expectedNoteInfos{
-        {60, 1, babelwires::Rational(1, 4)},
-        {62, 0, babelwires::Rational(1, 4)},
-        {64, 0, babelwires::Rational(1, 4)},
-        {65, 0, babelwires::Rational(1, 4)},
-        {67, 2, babelwires::Rational(1, 4)},
-        {69, 0, babelwires::Rational(1, 4)},
-        {71, 0, babelwires::Rational(1, 4)},
-        {72, 0, babelwires::Rational(1, 4)},
+        {60, 1, babelwires::Rational(1, 4)}, {62, 0, babelwires::Rational(1, 4)}, {64, 0, babelwires::Rational(1, 4)},
+        {65, 0, babelwires::Rational(1, 4)}, {67, 2, babelwires::Rational(1, 4)}, {69, 0, babelwires::Rational(1, 4)},
+        {71, 0, babelwires::Rational(1, 4)}, {72, 0, babelwires::Rational(1, 4)},
     };
 
     testUtils::testNotes(expectedNoteInfos, trackA);
@@ -72,8 +65,8 @@ TEST(ConcatenateProcessorTest, processor) {
     processor.getInputFeature()->setToDefault();
     processor.getOutputFeature()->setToDefault();
 
-    auto input = seqwires::ConcatenateProcessorInput::Instance(
-        processor.getInputFeature()->is<babelwires::ValueFeature>());
+    auto input =
+        seqwires::ConcatenateProcessorInput::Instance(processor.getInputFeature()->is<babelwires::ValueFeature>());
     const auto output = seqwires::ConcatenateProcessorOutput::ConstInstance(
         processor.getOutputFeature()->is<babelwires::ValueFeature>());
 
@@ -92,29 +85,30 @@ TEST(ConcatenateProcessorTest, processor) {
     testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65}, output.getOutput().get());
 
     processor.getInputFeature()->clearChanges();
-    processor.getInputFeature()->is<babelwires::SimpleValueFeature>().backUpValue();
     {
+        babelwires::BackupScope scope(processor.getInputFeature()->is<babelwires::SimpleValueFeature>());
         seqwires::Track track;
         testUtils::addSimpleNotes(std::vector<seqwires::Pitch>{67, 69, 71, 72}, track);
         input.getInput().getEntry(1).set(std::move(track));
     }
-    processor.getInputFeature()->is<babelwires::SimpleValueFeature>().reconcileChangesFromBackup();
     processor.process(testEnvironment.m_log);
 
     testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65, 67, 69, 71, 72}, output.getOutput().get());
 
     processor.getInputFeature()->clearChanges();
-    processor.getInputFeature()->is<babelwires::SimpleValueFeature>().backUpValue();
     // Insert a new track at position 1.
-    input.getInput().setSize(3);
-    input.getInput().getEntry(2).set(input.getInput().getEntry(1)->getValue());
     {
-        seqwires::Track track;
-        testUtils::addSimpleNotes(std::vector<seqwires::Pitch>{67, 65}, track);
-        input.getInput().getEntry(1).set(std::move(track));
+        babelwires::BackupScope scope(processor.getInputFeature()->is<babelwires::SimpleValueFeature>());
+        input.getInput().setSize(3);
+        input.getInput().getEntry(2).set(input.getInput().getEntry(1)->getValue());
+        {
+            seqwires::Track track;
+            testUtils::addSimpleNotes(std::vector<seqwires::Pitch>{67, 65}, track);
+            input.getInput().getEntry(1).set(std::move(track));
+        }
     }
-    processor.getInputFeature()->is<babelwires::SimpleValueFeature>().reconcileChangesFromBackup();
     processor.process(testEnvironment.m_log);
 
-    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65, 67, 65, 67, 69, 71, 72}, output.getOutput().get());
+    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65, 67, 65, 67, 69, 71, 72},
+                               output.getOutput().get());
 }

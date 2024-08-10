@@ -1,19 +1,19 @@
 #include <gtest/gtest.h>
 
-#include <SeqWiresLib/Types/Track/trackFeature.hpp>
 #include <SeqWiresLib/Functions/mergeFunction.hpp>
 #include <SeqWiresLib/Functions/splitAtPitchFunction.hpp>
 #include <SeqWiresLib/Processors/splitAtPitchProcessor.hpp>
 #include <SeqWiresLib/Types/Track/TrackEvents/chordEvents.hpp>
 #include <SeqWiresLib/Types/Track/TrackEvents/noteEvents.hpp>
 #include <SeqWiresLib/Types/Track/TrackEvents/trackEventHolder.hpp>
+#include <SeqWiresLib/Types/Track/trackFeature.hpp>
 #include <SeqWiresLib/libRegistration.hpp>
 
 #include <BabelWiresLib/Features/arrayFeature.hpp>
 #include <BabelWiresLib/Features/rootFeature.hpp>
 
-#include <Tests/TestUtils/seqTestUtils.hpp>
 #include <Tests/BabelWiresLib/TestUtils/testEnvironment.hpp>
+#include <Tests/TestUtils/seqTestUtils.hpp>
 
 TEST(SplitAtPitchProcessorTest, monophonicSplit) {
     seqwires::Track track;
@@ -46,8 +46,8 @@ TEST(SplitAtPitchProcessorTest, aboveAndBelowSplit) {
     seqwires::Track track;
     track.addEvent(seqwires::NoteOnEvent{0, 72});
     track.addEvent(seqwires::NoteOnEvent{0, 48});
-    track.addEvent(
-        seqwires::ChordOnEvent{0, {seqwires::PitchClass::PitchClass::Value::C, seqwires::ChordType::ChordType::Value::M}});
+    track.addEvent(seqwires::ChordOnEvent{
+        0, {seqwires::PitchClass::PitchClass::Value::C, seqwires::ChordType::ChordType::Value::M}});
     track.addEvent(seqwires::NoteOffEvent{babelwires::Rational(1, 4), 72});
     track.addEvent(seqwires::NoteOffEvent{0, 48});
     track.addEvent(seqwires::NoteOnEvent{0, 74});
@@ -57,8 +57,8 @@ TEST(SplitAtPitchProcessorTest, aboveAndBelowSplit) {
     track.addEvent(seqwires::ChordOffEvent{0});
     track.addEvent(seqwires::NoteOnEvent{0, 76});
     track.addEvent(seqwires::NoteOnEvent{0, 52});
-    track.addEvent(
-        seqwires::ChordOnEvent{0, {seqwires::PitchClass::PitchClass::Value::D, seqwires::ChordType::ChordType::Value::m}});
+    track.addEvent(seqwires::ChordOnEvent{
+        0, {seqwires::PitchClass::PitchClass::Value::D, seqwires::ChordType::ChordType::Value::m}});
     track.addEvent(seqwires::NoteOffEvent{babelwires::Rational(1, 4), 76});
     track.addEvent(seqwires::NoteOffEvent{0, 52});
     track.addEvent(seqwires::NoteOnEvent{0, 77});
@@ -89,8 +89,10 @@ TEST(SplitAtPitchProcessorTest, processor) {
     processor.getInputFeature()->setToDefault();
     processor.getOutputFeature()->setToDefault();
 
-    auto input = seqwires::SplitAtPitchProcessorInput::Instance(processor.getInputFeature()->is<babelwires::ValueFeature>());
-    const auto output = seqwires::SplitAtPitchProcessorOutput::ConstInstance(processor.getOutputFeature()->is<babelwires::ValueFeature>());
+    auto input =
+        seqwires::SplitAtPitchProcessorInput::Instance(processor.getInputFeature()->is<babelwires::ValueFeature>());
+    const auto output = seqwires::SplitAtPitchProcessorOutput::ConstInstance(
+        processor.getOutputFeature()->is<babelwires::ValueFeature>());
 
     input.getPitch().set(babelwires::EnumValue(input.getPitch().getInstanceType().getIdentifierFromIndex(67)));
     {
@@ -98,7 +100,7 @@ TEST(SplitAtPitchProcessorTest, processor) {
         testUtils::addSimpleNotes({60, 62, 64, 65, 67, 69, 71, 72}, track);
         input.getInput().set(std::move(track));
     }
-    processor.process(testEnvironment.m_log);  
+    processor.process(testEnvironment.m_log);
 
     std::vector<testUtils::NoteInfo> expectedNotesAbove{
         {67, 1, babelwires::Rational(1, 4)},
@@ -121,12 +123,11 @@ TEST(SplitAtPitchProcessorTest, processor) {
     EXPECT_EQ(output.getOther().get().getDuration(), 2);
 
     processor.getInputFeature()->clearChanges();
-    
-    processor.getInputFeature()->is<babelwires::SimpleValueFeature>().backUpValue();
-    input.getPitch().set(babelwires::EnumValue(input.getPitch().getInstanceType().getIdentifierFromIndex(64)));
-    processor.getInputFeature()->is<babelwires::SimpleValueFeature>().reconcileChangesFromBackup();
-
-    processor.process(testEnvironment.m_log); 
+    {
+        babelwires::BackupScope scope(processor.getInputFeature()->is<babelwires::SimpleValueFeature>());
+        input.getPitch().set(babelwires::EnumValue(input.getPitch().getInstanceType().getIdentifierFromIndex(64)));
+    }
+    processor.process(testEnvironment.m_log);
 
     expectedNotesAbove = {
         {64, babelwires::Rational(1, 2), babelwires::Rational(1, 4)},
@@ -147,5 +148,4 @@ TEST(SplitAtPitchProcessorTest, processor) {
     EXPECT_EQ(output.getBelow().get().getDuration(), 2);
     EXPECT_EQ(output.getOther().get().getNumEvents(), 0);
     EXPECT_EQ(output.getOther().get().getDuration(), 2);
-
 }

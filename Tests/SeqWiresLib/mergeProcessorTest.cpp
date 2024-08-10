@@ -89,17 +89,13 @@ TEST(MergeProcessorTest, processor) {
 
     testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{72, 74}, outputTrackInstance.get());
 
-
     processor.getInputFeature()->clearChanges();
-    processor.getInputFeature()->is<babelwires::SimpleValueFeature>().backUpValue();
-
     {
+        babelwires::BackupScope scope(processor.getInputFeature()->is<babelwires::SimpleValueFeature>());
         seqwires::Track track;
         testUtils::addSimpleNotes(std::vector<seqwires::Pitch>{48, 50}, track);
         input.getInput().getEntry(1).set(std::move(track));
     }
-
-    processor.getInputFeature()->is<babelwires::SimpleValueFeature>().reconcileChangesFromBackup();
     processor.process(testEnvironment.m_log);
 
     std::vector<seqwires::TrackEventHolder> expectedEvents = {
@@ -131,18 +127,16 @@ TEST(MergeProcessorTest, processor) {
     }
 
     processor.getInputFeature()->clearChanges();
-    processor.getInputFeature()->is<babelwires::SimpleValueFeature>().backUpValue();
-
     // Insert a new track at position 1.
-    input.getInput().setSize(3);
-    input.getInput().getEntry(2).set(input.getInput().getEntry(1)->getValue());
     {
+        babelwires::BackupScope scope(processor.getInputFeature()->is<babelwires::SimpleValueFeature>());
+        input.getInput().setSize(3);
+        input.getInput().getEntry(2).set(input.getInput().getEntry(1)->getValue());
+
         seqwires::Track track;
         testUtils::addSimpleNotes(std::vector<seqwires::Pitch>{60, 62}, track);
         input.getInput().getEntry(1).set(std::move(track));
     }
-
-    processor.getInputFeature()->is<babelwires::SimpleValueFeature>().reconcileChangesFromBackup();
     processor.process(testEnvironment.m_log);
 
     expectedEvents = {

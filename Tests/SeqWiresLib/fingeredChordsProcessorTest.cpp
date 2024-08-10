@@ -1,13 +1,13 @@
 #include <gtest/gtest.h>
 
-#include <SeqWiresLib/Types/Track/trackFeature.hpp>
 #include <SeqWiresLib/Functions/fingeredChordsFunction.hpp>
 #include <SeqWiresLib/Processors/fingeredChordsProcessor.hpp>
 #include <SeqWiresLib/Types/Track/TrackEvents/noteEvents.hpp>
+#include <SeqWiresLib/Types/Track/trackFeature.hpp>
 #include <SeqWiresLib/libRegistration.hpp>
 
-#include <BabelWiresLib/Types/Enum/enumFeature.hpp>
 #include <BabelWiresLib/Features/rootFeature.hpp>
+#include <BabelWiresLib/Types/Enum/enumFeature.hpp>
 
 #include <Tests/BabelWiresLib/TestUtils/testEnvironment.hpp>
 #include <Tests/TestUtils/seqTestUtils.hpp>
@@ -677,8 +677,8 @@ TEST(FingeredChordsTest, processor) {
     processor.getInputFeature()->setToDefault();
     processor.getOutputFeature()->setToDefault();
 
-    auto input = seqwires::FingeredChordsProcessorInput::Instance(
-        processor.getInputFeature()->is<babelwires::ValueFeature>());
+    auto input =
+        seqwires::FingeredChordsProcessorInput::Instance(processor.getInputFeature()->is<babelwires::ValueFeature>());
     const auto output = seqwires::FingeredChordsProcessorOutput::ConstInstance(
         processor.getOutputFeature()->is<babelwires::ValueFeature>());
 
@@ -711,11 +711,10 @@ TEST(FingeredChordsTest, processor) {
         output.getChords().get());
 
     processor.getInputFeature()->clearChanges();
-
-    processor.getInputFeature()->is<babelwires::SimpleValueFeature>().backUpValue();
-    input.getPolicy().set(seqwires::FingeredChordsSustainPolicyEnum::Value::Hold);
-    processor.getInputFeature()->is<babelwires::SimpleValueFeature>().reconcileChangesFromBackup();
-
+    {
+        babelwires::BackupScope scope(processor.getInputFeature()->is<babelwires::SimpleValueFeature>());
+        input.getPolicy().set(seqwires::FingeredChordsSustainPolicyEnum::Value::Hold);
+    }
     processor.process(testEnvironment.m_log);
 
     testUtils::testChords(
@@ -726,9 +725,8 @@ TEST(FingeredChordsTest, processor) {
         output.getChords().get());
 
     processor.getInputFeature()->clearChanges();
-
-    processor.getInputFeature()->is<babelwires::SimpleValueFeature>().backUpValue();
     {
+        babelwires::BackupScope scope(processor.getInputFeature()->is<babelwires::SimpleValueFeature>());
         seqwires::Track track;
         track.addEvent(seqwires::NoteOnEvent(0, 60));
         track.addEvent(seqwires::NoteOnEvent(0, 64));
@@ -744,8 +742,6 @@ TEST(FingeredChordsTest, processor) {
         track.addEvent(seqwires::NoteOffEvent(0, 71));
         input.getNotes().set(std::move(track));
     }
-    processor.getInputFeature()->is<babelwires::SimpleValueFeature>().reconcileChangesFromBackup();
-
     processor.process(testEnvironment.m_log);
 
     testUtils::testChords(
