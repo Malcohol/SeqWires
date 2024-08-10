@@ -11,37 +11,6 @@
 
 #include <BabelWiresLib/Instance/instance.hpp>
 #include <BabelWiresLib/Processors/parallelProcessor.hpp>
-#include <BabelWiresLib/Processors/valueProcessor.hpp>
-#include <BabelWiresLib/Types/Record/recordType.hpp>
-
-namespace babelwires {
-    class RationalFeature;
-    class ArrayFeature;
-
-    class ParallelValueProcessorInputBase : public RecordType {
-      public:
-        ParallelValueProcessorInputBase(std::vector<RecordType::Field> commonInput, ShortId arrayId, TypeRef entryType);
-    };
-
-    class ParallelValueProcessorOutputBase : public RecordType {
-      public:
-        ParallelValueProcessorOutputBase(ShortId arrayId, TypeRef entryType);
-    };
-
-    class ParallelValueProcessor : public ValueProcessor {
-      public:
-        ParallelValueProcessor(const ProjectContext& projectContext, const TypeRef& parallelInput,
-                               const TypeRef& parallelOutput);
-
-      protected:
-        void processValue(UserLogger& userLogger, const ValueFeature& inputFeature,
-                          ValueFeature& outputFeature) const override final;
-
-        virtual void processEntry(UserLogger& userLogger, const ValueFeature& inputFeature,
-                                  const ValueFeature& inputEntry, ValueFeature& outputEntry) const = 0;
-    };
-
-} // namespace babelwires
 
 namespace seqwires {
 
