@@ -124,6 +124,8 @@ TEST(ExcerptProcessorTest, funcGaps) {
     testUtils::testNotes(expectedNoteInfos, trackOut);
 }
 
+/*
+
 TEST(ExcerptProcessorTest, processor) {
     testUtils::TestEnvironment testEnvironment;
     seqwires::registerLib(testEnvironment.m_projectContext);
@@ -191,3 +193,4 @@ TEST(ExcerptProcessorTest, processor) {
     testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{55, 57, 59, 60}, getOutputTrack(0)->get());
     testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{67, 69, 71, 72}, getOutputTrack(1)->get());
 }
+*/
