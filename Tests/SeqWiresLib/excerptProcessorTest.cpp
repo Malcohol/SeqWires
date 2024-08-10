@@ -3,7 +3,6 @@
 #include <SeqWiresLib/Functions/excerptFunction.hpp>
 #include <SeqWiresLib/Processors/excerptProcessor.hpp>
 #include <SeqWiresLib/Types/Track/TrackEvents/noteEvents.hpp>
-#include <SeqWiresLib/Types/Track/trackFeature.hpp>
 #include <SeqWiresLib/libRegistration.hpp>
 #include <SeqWiresLib/Types/Track/trackInstance.hpp>
 
