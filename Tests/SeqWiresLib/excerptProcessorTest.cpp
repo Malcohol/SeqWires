@@ -1,17 +1,18 @@
 #include <gtest/gtest.h>
 
 #include <SeqWiresLib/Functions/excerptFunction.hpp>
-#include <SeqWiresLib/Types/Track/TrackEvents/noteEvents.hpp>
 #include <SeqWiresLib/Processors/excerptProcessor.hpp>
+#include <SeqWiresLib/Types/Track/TrackEvents/noteEvents.hpp>
 #include <SeqWiresLib/Types/Track/trackFeature.hpp>
 #include <SeqWiresLib/libRegistration.hpp>
+#include <SeqWiresLib/Types/Track/trackInstance.hpp>
 
 #include <BabelWiresLib/Features/arrayFeature.hpp>
 #include <BabelWiresLib/Features/rootFeature.hpp>
 #include <BabelWiresLib/Types/Rational/rationalFeature.hpp>
 
-#include <Tests/TestUtils/seqTestUtils.hpp>
 #include <Tests/BabelWiresLib/TestUtils/testEnvironment.hpp>
+#include <Tests/TestUtils/seqTestUtils.hpp>
 
 TEST(ExcerptProcessorTest, funcSimple) {
     seqwires::Track trackIn;
@@ -118,13 +119,10 @@ TEST(ExcerptProcessorTest, funcGaps) {
         {64, babelwires::Rational(1, 8), babelwires::Rational(1, 4)},
         {65, 0, babelwires::Rational(1, 4)},
         {67, 0, babelwires::Rational(1, 4)},
-        {69, 0, babelwires::Rational(1, 8)}
-    };
+        {69, 0, babelwires::Rational(1, 8)}};
 
     testUtils::testNotes(expectedNoteInfos, trackOut);
 }
-
-/*
 
 TEST(ExcerptProcessorTest, processor) {
     testUtils::TestEnvironment testEnvironment;
@@ -135,62 +133,74 @@ TEST(ExcerptProcessorTest, processor) {
     processor.getInputFeature()->setToDefault();
     processor.getOutputFeature()->setToDefault();
 
-    auto* startFeature = processor.getInputRootFeature()->getChildFromStep(babelwires::PathStep("Start")).as<babelwires::ValueFeature>();
-    auto* durationFeature = processor.getInputRootFeature()->getChildFromStep(babelwires::PathStep("Duratn")).as<babelwires::ValueFeature>();
-    auto* inputArray = processor.getInputRootFeature()->getChildFromStep(babelwires::PathStep("Tracks")).as<babelwires::ArrayFeature>();
-    auto* outputArray = processor.getOutputRootFeature()->getChildFromStep(babelwires::PathStep("Tracks")).as<babelwires::ArrayFeature>();
-    ASSERT_NE(startFeature, nullptr);
-    ASSERT_NE(durationFeature, nullptr);
-    ASSERT_NE(inputArray, nullptr);
-    ASSERT_NE(outputArray, nullptr);
+    babelwires::ValueFeature& inputValueFeature = processor.getInputFeature()->is<babelwires::ValueFeature>();
+    const babelwires::ValueFeature& outputValueFeature = processor.getOutputFeature()->is<babelwires::ValueFeature>();
 
-    EXPECT_EQ(inputArray->getNumFeatures(), 1);
-    EXPECT_EQ(outputArray->getNumFeatures(), 1);
+    babelwires::ValueFeature& inputArrayFeature =
+        inputValueFeature.getChildFromStep(babelwires::PathStep(seqwires::ExcerptProcessor::getCommonArrayId()))
+            .is<babelwires::ValueFeature>();
+    const babelwires::ValueFeature& outputArrayFeature =
+        outputValueFeature.getChildFromStep(babelwires::PathStep(seqwires::ExcerptProcessor::getCommonArrayId()))
+            .is<babelwires::ValueFeature>();
 
-    auto getInputTrack = [&inputArray](int i) { return inputArray->getChildFromStep(i).as<seqwires::TrackFeature>(); };
-    auto getOutputTrack = [&outputArray](int i) { return outputArray->getChildFromStep(i).as<seqwires::TrackFeature>(); };
+    babelwires::ArrayInstanceImpl<babelwires::ValueFeature, seqwires::TrackType> inputArray(inputArrayFeature);
+    const babelwires::ArrayInstanceImpl<const babelwires::ValueFeature, seqwires::TrackType> outputArray(outputArrayFeature);
 
-    ASSERT_NE(getInputTrack(0), nullptr);
-    ASSERT_NE(getOutputTrack(0), nullptr);
+    seqwires::ExcerptProcessorInput::Instance input(inputValueFeature);
 
-    EXPECT_EQ(getInputTrack(0)->get().getDuration(), 0);
-    EXPECT_EQ(getOutputTrack(0)->get().getDuration(), 0);
+    EXPECT_EQ(inputArray.getSize(), 1);
+    EXPECT_EQ(outputArray.getSize(), 1);
 
-    durationFeature->setValue(babelwires::RationalValue(1));
+    EXPECT_EQ(inputArray.getEntry(0).get().getDuration(), 0);
+    EXPECT_EQ(outputArray.getEntry(0).get().getDuration(), 0);
+
+    input.getDuratn().set(1);
+
     processor.process(testEnvironment.m_log);
-    EXPECT_EQ(getOutputTrack(0)->get().getDuration(), 1);
-    EXPECT_EQ(getOutputTrack(0)->get().getNumEvents(), 0);
 
+    EXPECT_EQ(outputArray.getEntry(0).get().getDuration(), 1);
+    EXPECT_EQ(outputArray.getEntry(0).get().getNumEvents(), 0);
+
+    processor.getInputFeature()->clearChanges();
     {
+        babelwires::BackupScope scope(processor.getInputFeature()->is<babelwires::SimpleValueFeature>());
         seqwires::Track track;
         testUtils::addSimpleNotes({60, 62, 64, 65, 67, 69, 71, 72}, track);
-        getInputTrack(0)->set(std::move(track));
+        inputArray.getEntry(0).set(std::move(track));
     }
     processor.process(testEnvironment.m_log);
-    EXPECT_EQ(getOutputTrack(0)->get().getDuration(), 1);
-    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65}, getOutputTrack(0)->get());
 
-    startFeature->setValue(babelwires::RationalValue(1));
-    processor.process(testEnvironment.m_log);
-    EXPECT_EQ(getOutputTrack(0)->get().getDuration(), 1);
-    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{67, 69, 71, 72}, getOutputTrack(0)->get());
+    EXPECT_EQ(outputArray.getEntry(0).get().getDuration(), 1);
+    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65}, outputArray.getEntry(0).get());
 
-    // Confirm that adding a track entry does not cause existing entries to be changed.
     processor.getInputFeature()->clearChanges();
-    processor.getOutputFeature()->clearChanges();
-    inputArray->addEntry(0);
     {
-        seqwires::Track track;
-        testUtils::addSimpleNotes(std::vector<seqwires::Pitch>{48, 50, 52, 53, 55, 57, 59, 60}, track);
-        getInputTrack(0)->set(std::move(track));
+        babelwires::BackupScope scope(processor.getInputFeature()->is<babelwires::SimpleValueFeature>());
+        input.getStart().set(1);
     }
     processor.process(testEnvironment.m_log);
+
+    EXPECT_EQ(outputArray.getEntry(0).get().getDuration(), 1);
+    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{67, 69, 71, 72}, outputArray.getEntry(0).get());
+
+    //TODO: Would like this test to confirm that adding a track entry does not cause existing entries to be changed.
+    // However that functionality didn't survive the switch to types/values.
+    processor.getInputFeature()->clearChanges();
+    {
+        babelwires::BackupScope scope(processor.getInputFeature()->is<babelwires::SimpleValueFeature>());
+        inputArray.setSize(2);
+        inputArray.getEntry(1).set(inputArray.getEntry(0)->getValue());
+        {
+            seqwires::Track track;
+            testUtils::addSimpleNotes(std::vector<seqwires::Pitch>{48, 50, 52, 53, 55, 57, 59, 60}, track);
+            inputArray.getEntry(0).set(std::move(track));
+        }
+    }
+    processor.process(testEnvironment.m_log);
+
     ASSERT_EQ(outputArray->getNumFeatures(), 2);
-    ASSERT_NE(getOutputTrack(0), nullptr);
-    ASSERT_NE(getOutputTrack(1), nullptr);
-    EXPECT_FALSE(getOutputTrack(1)->isChanged(babelwires::Feature::Changes::SomethingChanged));
-    EXPECT_EQ(getOutputTrack(0)->get().getDuration(), 1);
-    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{55, 57, 59, 60}, getOutputTrack(0)->get());
-    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{67, 69, 71, 72}, getOutputTrack(1)->get());
+    //EXPECT_FALSE(getOutputTrack(1)->isChanged(babelwires::Feature::Changes::SomethingChanged));
+    EXPECT_EQ(outputArray.getEntry(0).get().getDuration(), 1);
+    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{55, 57, 59, 60}, outputArray.getEntry(0).get());
+    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{67, 69, 71, 72}, outputArray.getEntry(1).get());
 }
-*/
