@@ -188,18 +188,36 @@ TEST(ExcerptProcessorTest, processor) {
     {
         babelwires::BackupScope scope(processor.getInputFeature()->is<babelwires::SimpleValueFeature>());
         inputArray.setSize(2);
-        inputArray.getEntry(1).set(inputArray.getEntry(0)->getValue());
         {
             seqwires::Track track;
             testUtils::addSimpleNotes(std::vector<seqwires::Pitch>{48, 50, 52, 53, 55, 57, 59, 60}, track);
-            inputArray.getEntry(0).set(std::move(track));
+            inputArray.getEntry(1).set(std::move(track));
         }
     }
     processor.process(testEnvironment.m_log);
 
     ASSERT_EQ(outputArray->getNumFeatures(), 2);
-    //EXPECT_FALSE(getOutputTrack(1)->isChanged(babelwires::Feature::Changes::SomethingChanged));
     EXPECT_EQ(outputArray.getEntry(0).get().getDuration(), 1);
-    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{55, 57, 59, 60}, outputArray.getEntry(0).get());
-    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{67, 69, 71, 72}, outputArray.getEntry(1).get());
+    EXPECT_EQ(outputArray.getEntry(1).get().getDuration(), 1);
+    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{67, 69, 71, 72}, outputArray.getEntry(0).get());
+    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{55, 57, 59, 60}, outputArray.getEntry(1).get());
+
+    // Check that input changes to an entry only affect its output entry. For this test, we clear the output changes too.
+    processor.getInputFeature()->clearChanges();
+    processor.getOutputFeature()->clearChanges();
+    {
+        babelwires::BackupScope scope(processor.getInputFeature()->is<babelwires::SimpleValueFeature>());
+        // Set it to empty.
+        inputArray.getEntry(0).set(seqwires::Track());
+    }
+    processor.process(testEnvironment.m_log);
+
+    ASSERT_EQ(outputArray->getNumFeatures(), 2);
+    EXPECT_EQ(outputArray.getEntry(0).get().getDuration(), 1);
+    EXPECT_EQ(outputArray.getEntry(1).get().getDuration(), 1);
+    EXPECT_EQ(outputArray.getEntry(0).get().getNumEvents(), 0);
+
+    // The other entry is untouched.
+    EXPECT_FALSE(outputArray.getEntry(1)->isChanged(babelwires::Feature::Changes::SomethingChanged));
+    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{55, 57, 59, 60}, outputArray.getEntry(1).get());
 }
