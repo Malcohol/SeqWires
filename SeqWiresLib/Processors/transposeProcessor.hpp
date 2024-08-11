@@ -9,6 +9,7 @@
 
 #include <SeqWiresLib/Types/Track/trackFeature.hpp>
 
+#include <BabelWiresLib/Instance/instance.hpp>
 #include <BabelWiresLib/Processors/parallelProcessor.hpp>
 
 namespace babelwires {
@@ -18,18 +19,36 @@ namespace babelwires {
 
 namespace seqwires {
 
-    /// A processor that adjusts the pitch of note events.
-    class TransposeProcessor : public babelwires::ParallelProcessor<seqwires::TrackFeature, seqwires::TrackFeature> {
+    class TransposeProcessorInput : public babelwires::ParallelValueProcessorInputBase {
       public:
+        PRIMITIVE_TYPE("TranspTrcksIn", "Transpose In", "980af793-e5fe-4fa4-861c-90f400fc4977", 1);
+
+        TransposeProcessorInput();
+
+        DECLARE_INSTANCE_BEGIN(TransposeProcessorInput)
+        DECLARE_INSTANCE_FIELD(Offset, babelwires::IntType)
+        DECLARE_INSTANCE_END()
+    };
+
+    class TransposeProcessorOutput : public babelwires::ParallelValueProcessorOutputBase {
+      public:
+        PRIMITIVE_TYPE("TranspTrcksOut", "Transpose Out", "e2c9d64e-259a-4ef5-bd9d-0883c5d67599", 1);
+
+        TransposeProcessorOutput();
+    };
+
+
+    /// A processor that adjusts the pitch of note events.
+    class TransposeProcessor : public babelwires::ParallelValueProcessor {
+      public:
+        BW_PROCESSOR_WITH_DEFAULT_FACTORY("TransposeTracks", "Transpose", "3414f6cf-290a-421e-bce5-6a98ed0483af");
+
         TransposeProcessor(const babelwires::ProjectContext& projectContext);
 
-        void processEntry(babelwires::UserLogger& userLogger, const seqwires::TrackFeature& input, seqwires::TrackFeature& output) const override;
+        static babelwires::ShortId getCommonArrayId();
 
-        struct Factory : public babelwires::CommonProcessorFactory<TransposeProcessor> {
-            Factory();
-        };
-      private:
-        babelwires::IntFeature* m_pitchOffset;
+        void processEntry(babelwires::UserLogger& userLogger, const babelwires::ValueFeature& inputFeature,
+                          const babelwires::ValueFeature& input, babelwires::ValueFeature& output) const override;
     };
 
 } // namespace seqwires

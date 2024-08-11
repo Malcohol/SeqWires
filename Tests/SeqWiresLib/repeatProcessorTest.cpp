@@ -3,7 +3,6 @@
 #include <SeqWiresLib/Functions/repeatFunction.hpp>
 #include <SeqWiresLib/Processors/repeatProcessor.hpp>
 #include <SeqWiresLib/Types/Track/TrackEvents/noteEvents.hpp>
-#include <SeqWiresLib/Types/Track/trackFeature.hpp>
 #include <SeqWiresLib/Types/Track/trackInstance.hpp>
 #include <SeqWiresLib/libRegistration.hpp>
 
@@ -107,7 +106,6 @@ TEST(RepeatProcessorTest, processor) {
     }
     processor.process(testEnvironment.m_log);
 
-    // Confirm that adding a track entry does not cause existing entries to be changed.
     ASSERT_EQ(outputArray.getSize(), 2);
     EXPECT_EQ(outputArray.getEntry(0).get().getDuration(), 1);
     EXPECT_EQ(outputArray.getEntry(1).get().getDuration(), 1);
