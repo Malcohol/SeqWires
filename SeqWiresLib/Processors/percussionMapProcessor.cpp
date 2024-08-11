@@ -16,16 +16,16 @@
 #include <Common/Identifiers/registeredIdentifier.hpp>
 
 seqwires::PercussionMapProcessorInput::PercussionMapProcessorInput()
-    : babelwires::ParallelValueProcessorInputBase(
+    : babelwires::ParallelProcessorInputBase(
           {{BW_SHORT_ID("Map", "Map", "b8cbf8c9-579b-4292-bdef-524b7d1010bc"), seqwires::getPercussionMapType()}},
           PercussionMapProcessor::getCommonArrayId(), seqwires::DefaultTrackType::getThisIdentifier()) {}
 
 seqwires::PercussionMapProcessorOutput::PercussionMapProcessorOutput()
-    : babelwires::ParallelValueProcessorOutputBase(PercussionMapProcessor::getCommonArrayId(),
+    : babelwires::ParallelProcessorOutputBase(PercussionMapProcessor::getCommonArrayId(),
                                                    seqwires::DefaultTrackType::getThisIdentifier()) {}
 
 seqwires::PercussionMapProcessor::PercussionMapProcessor(const babelwires::ProjectContext& projectContext)
-    : babelwires::ParallelValueProcessor(projectContext, PercussionMapProcessorInput::getThisIdentifier(),
+    : babelwires::ParallelProcessor(projectContext, PercussionMapProcessorInput::getThisIdentifier(),
                                          PercussionMapProcessorOutput::getThisIdentifier()) {}
 
 babelwires::ShortId seqwires::PercussionMapProcessor::getCommonArrayId() {

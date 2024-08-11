@@ -21,7 +21,7 @@
 #include <set>
 
 seqwires::QuantizeProcessorInput::QuantizeProcessorInput()
-    : babelwires::ParallelValueProcessorInputBase(
+    : babelwires::ParallelProcessorInputBase(
           {{BW_SHORT_ID("Beat", "Beat", "1651ab49-3313-4cd3-b92d-16742b7f5921"),
             babelwires::TypeRef{babelwires::RationalTypeConstructor::getThisIdentifier(),
                                 babelwires::TypeConstructorArguments{
@@ -33,11 +33,11 @@ seqwires::QuantizeProcessorInput::QuantizeProcessorInput()
           QuantizeProcessor::getCommonArrayId(), seqwires::DefaultTrackType::getThisIdentifier()) {}
 
 seqwires::QuantizeProcessorOutput::QuantizeProcessorOutput()
-    : babelwires::ParallelValueProcessorOutputBase(QuantizeProcessor::getCommonArrayId(),
+    : babelwires::ParallelProcessorOutputBase(QuantizeProcessor::getCommonArrayId(),
                                                    seqwires::DefaultTrackType::getThisIdentifier()) {}
 
 seqwires::QuantizeProcessor::QuantizeProcessor(const babelwires::ProjectContext& projectContext)
-    : babelwires::ParallelValueProcessor(projectContext, QuantizeProcessorInput::getThisIdentifier(),
+    : babelwires::ParallelProcessor(projectContext, QuantizeProcessorInput::getThisIdentifier(),
                                          QuantizeProcessorOutput::getThisIdentifier()) {}
 
 babelwires::ShortId seqwires::QuantizeProcessor::getCommonArrayId() {

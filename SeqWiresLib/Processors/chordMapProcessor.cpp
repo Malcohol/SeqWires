@@ -18,7 +18,7 @@
 #include <Common/Identifiers/registeredIdentifier.hpp>
 
 seqwires::ChordMapProcessorInput::ChordMapProcessorInput()
-    : babelwires::ParallelValueProcessorInputBase(
+    : babelwires::ParallelProcessorInputBase(
           {{BW_SHORT_ID("TypMap", "Type map", "6054b8e9-5f48-4e9f-8807-b6377d36d6aa"),
             babelwires::TypeRef{
                 babelwires::MapTypeConstructor::getThisIdentifier(),
@@ -36,11 +36,11 @@ seqwires::ChordMapProcessorInput::ChordMapProcessorInput()
           ChordMapProcessor::getCommonArrayId(), seqwires::DefaultTrackType::getThisIdentifier()) {}
 
 seqwires::ChordMapProcessorOutput::ChordMapProcessorOutput()
-    : babelwires::ParallelValueProcessorOutputBase(ChordMapProcessor::getCommonArrayId(),
+    : babelwires::ParallelProcessorOutputBase(ChordMapProcessor::getCommonArrayId(),
                                                    seqwires::DefaultTrackType::getThisIdentifier()) {}
 
 seqwires::ChordMapProcessor::ChordMapProcessor(const babelwires::ProjectContext& projectContext)
-    : babelwires::ParallelValueProcessor(projectContext, ChordMapProcessorInput::getThisIdentifier(),
+    : babelwires::ParallelProcessor(projectContext, ChordMapProcessorInput::getThisIdentifier(),
                                          ChordMapProcessorOutput::getThisIdentifier()) {}
 
 babelwires::ShortId seqwires::ChordMapProcessor::getCommonArrayId() {

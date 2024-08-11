@@ -19,7 +19,7 @@ namespace babelwires {
 
 namespace seqwires {
 
-    class TransposeProcessorInput : public babelwires::ParallelValueProcessorInputBase {
+    class TransposeProcessorInput : public babelwires::ParallelProcessorInputBase {
       public:
         PRIMITIVE_TYPE("TranspTrcksIn", "Transpose In", "980af793-e5fe-4fa4-861c-90f400fc4977", 1);
 
@@ -30,7 +30,7 @@ namespace seqwires {
         DECLARE_INSTANCE_END()
     };
 
-    class TransposeProcessorOutput : public babelwires::ParallelValueProcessorOutputBase {
+    class TransposeProcessorOutput : public babelwires::ParallelProcessorOutputBase {
       public:
         PRIMITIVE_TYPE("TranspTrcksOut", "Transpose Out", "e2c9d64e-259a-4ef5-bd9d-0883c5d67599", 1);
 
@@ -39,7 +39,7 @@ namespace seqwires {
 
 
     /// A processor that adjusts the pitch of note events.
-    class TransposeProcessor : public babelwires::ParallelValueProcessor {
+    class TransposeProcessor : public babelwires::ParallelProcessor {
       public:
         BW_PROCESSOR_WITH_DEFAULT_FACTORY("TransposeTracks", "Transpose", "3414f6cf-290a-421e-bce5-6a98ed0483af");
 

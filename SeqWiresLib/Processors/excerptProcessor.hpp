@@ -14,7 +14,7 @@
 
 namespace seqwires {
 
-    class ExcerptProcessorInput : public babelwires::ParallelValueProcessorInputBase {
+    class ExcerptProcessorInput : public babelwires::ParallelProcessorInputBase {
       public:
         PRIMITIVE_TYPE("ExcerptTrckIn", "Excerpt In", "68577705-b5c2-499c-a2db-8ab5f63e5728", 1);
 
@@ -27,7 +27,7 @@ namespace seqwires {
         DECLARE_INSTANCE_END()
     };
 
-    class ExcerptProcessorOutput : public babelwires::ParallelValueProcessorOutputBase {
+    class ExcerptProcessorOutput : public babelwires::ParallelProcessorOutputBase {
       public:
         PRIMITIVE_TYPE("ExcerptTrckOut", "Excerpt Out", "73469491-111c-441a-b89c-2f8aceaa640c", 1);
 
@@ -35,7 +35,7 @@ namespace seqwires {
     };
 
     /// A processor which limits a track to events between certain points.
-    class ExcerptProcessor : public babelwires::ParallelValueProcessor {
+    class ExcerptProcessor : public babelwires::ParallelProcessor {
       public:
         BW_PROCESSOR_WITH_DEFAULT_FACTORY("TrackExcerpt", "Excerpt", "83c74dba-7861-447c-9abb-0b4439061baf");
 

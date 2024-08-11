@@ -17,7 +17,7 @@
 #include <Common/Identifiers/registeredIdentifier.hpp>
 
 seqwires::RepeatProcessorInput::RepeatProcessorInput()
-    : babelwires::ParallelValueProcessorInputBase(
+    : babelwires::ParallelProcessorInputBase(
           {{BW_SHORT_ID("Count", "Count", "f5d2ab08-4430-47fa-b26c-0ff2154826e3"),
             babelwires::TypeRef{babelwires::IntTypeConstructor::getThisIdentifier(),
                                 babelwires::TypeConstructorArguments{
@@ -28,11 +28,11 @@ seqwires::RepeatProcessorInput::RepeatProcessorInput()
           RepeatProcessor::getCommonArrayId(), seqwires::DefaultTrackType::getThisIdentifier()) {}
 
 seqwires::RepeatProcessorOutput::RepeatProcessorOutput()
-    : babelwires::ParallelValueProcessorOutputBase(RepeatProcessor::getCommonArrayId(),
+    : babelwires::ParallelProcessorOutputBase(RepeatProcessor::getCommonArrayId(),
                                                    seqwires::DefaultTrackType::getThisIdentifier()) {}
 
 seqwires::RepeatProcessor::RepeatProcessor(const babelwires::ProjectContext& projectContext)
-    : babelwires::ParallelValueProcessor(projectContext, RepeatProcessorInput::getThisIdentifier(),
+    : babelwires::ParallelProcessor(projectContext, RepeatProcessorInput::getThisIdentifier(),
                                          RepeatProcessorOutput::getThisIdentifier()) {}
 
 babelwires::ShortId seqwires::RepeatProcessor::getCommonArrayId() {

@@ -23,7 +23,7 @@
 #include <set>
 
 seqwires::TransposeProcessorInput::TransposeProcessorInput()
-    : babelwires::ParallelValueProcessorInputBase(
+    : babelwires::ParallelProcessorInputBase(
           {{BW_SHORT_ID("Offset", "Pitch Offset", "5cfa1541-f25e-4671-ac11-2ff71c883418"),
             babelwires::TypeRef{
                 babelwires::IntTypeConstructor::getThisIdentifier(),
@@ -37,11 +37,11 @@ namespace {
 } // namespace
 
 seqwires::TransposeProcessor::TransposeProcessor(const babelwires::ProjectContext& projectContext)
-    : babelwires::ParallelValueProcessor(projectContext, TransposeProcessorInput::getThisIdentifier(),
+    : babelwires::ParallelProcessor(projectContext, TransposeProcessorInput::getThisIdentifier(),
                                          TransposeProcessorOutput::getThisIdentifier()) {}
 
 seqwires::TransposeProcessorOutput::TransposeProcessorOutput()
-    : babelwires::ParallelValueProcessorOutputBase(TransposeProcessor::getCommonArrayId(),
+    : babelwires::ParallelProcessorOutputBase(TransposeProcessor::getCommonArrayId(),
                                                    seqwires::DefaultTrackType::getThisIdentifier()) {}
 
 babelwires::ShortId seqwires::TransposeProcessor::getCommonArrayId() {

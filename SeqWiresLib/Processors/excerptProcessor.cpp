@@ -15,13 +15,13 @@
 #include <Common/Identifiers/registeredIdentifier.hpp>
 
 seqwires::ExcerptProcessorInput::ExcerptProcessorInput()
-    : babelwires::ParallelValueProcessorInputBase(
+    : babelwires::ParallelProcessorInputBase(
           {{BW_SHORT_ID("Start", "Start", "4b95f5db-a542-4660-a8db-97d3a5f831ca"), Duration::getThisIdentifier()},
            {BW_SHORT_ID("Duratn", "Duration", "d83ebbc2-1492-4578-a3b8-4969eb6a2042"), Duration::getThisIdentifier()}},
           ExcerptProcessor::getCommonArrayId(), seqwires::DefaultTrackType::getThisIdentifier()) {}
 
 seqwires::ExcerptProcessorOutput::ExcerptProcessorOutput()
-    : babelwires::ParallelValueProcessorOutputBase(ExcerptProcessor::getCommonArrayId(),
+    : babelwires::ParallelProcessorOutputBase(ExcerptProcessor::getCommonArrayId(),
                                                    seqwires::DefaultTrackType::getThisIdentifier()) {}
 
 babelwires::ShortId seqwires::ExcerptProcessor::getCommonArrayId() {
@@ -29,7 +29,7 @@ babelwires::ShortId seqwires::ExcerptProcessor::getCommonArrayId() {
 }
 
 seqwires::ExcerptProcessor::ExcerptProcessor(const babelwires::ProjectContext& projectContext)
-    : babelwires::ParallelValueProcessor(projectContext, ExcerptProcessorInput::getThisIdentifier(), ExcerptProcessorOutput::getThisIdentifier()) {}
+    : babelwires::ParallelProcessor(projectContext, ExcerptProcessorInput::getThisIdentifier(), ExcerptProcessorOutput::getThisIdentifier()) {}
 
 void seqwires::ExcerptProcessor::processEntry(babelwires::UserLogger& userLogger, const babelwires::ValueFeature& inputFeature,
                           const babelwires::ValueFeature& inputEntry, babelwires::ValueFeature& outputEntry)  const {

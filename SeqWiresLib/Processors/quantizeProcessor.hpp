@@ -15,7 +15,7 @@
 
 namespace seqwires {
 
-    class QuantizeProcessorInput : public babelwires::ParallelValueProcessorInputBase {
+    class QuantizeProcessorInput : public babelwires::ParallelProcessorInputBase {
       public:
         PRIMITIVE_TYPE("QuantTrcksIn", "Quantize In", "86a46b16-69a3-41bb-bbb3-19f8cb0a4e4d", 1);
 
@@ -27,7 +27,7 @@ namespace seqwires {
         DECLARE_INSTANCE_END()
     };
 
-    class QuantizeProcessorOutput : public babelwires::ParallelValueProcessorOutputBase {
+    class QuantizeProcessorOutput : public babelwires::ParallelProcessorOutputBase {
       public:
         PRIMITIVE_TYPE("QuantTrcksOut", "Quantize Out", "89feb462-63b1-473a-bc77-29540bda43f7", 1);
 
@@ -35,7 +35,7 @@ namespace seqwires {
     };
 
     /// A processor which quantizes the events in a track a specified number of times.
-    class QuantizeProcessor : public babelwires::ParallelValueProcessor {
+    class QuantizeProcessor : public babelwires::ParallelProcessor {
       public:
         BW_PROCESSOR_WITH_DEFAULT_FACTORY("QuantizeTracks", "Quantize", "1ae89077-2cfb-4071-910c-2f5dcfc85b17");
 
