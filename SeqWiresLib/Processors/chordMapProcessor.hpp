@@ -7,29 +7,44 @@
  **/
 #pragma once
 
-#include <SeqWiresLib/Types/Track/trackFeature.hpp>
+#include <SeqWiresLib/instance.hpp>
 
 #include <BabelWiresLib/Processors/parallelProcessor.hpp>
-
-namespace babelwires {
-    class MapFeature;
-} // namespace babelwires
+#include <BabelWiresLib/Types/Rational/rationalType.hpp>
+#include <BabelWiresLib/Types/Map/mapType.hpp>
 
 namespace seqwires {
 
-    class ChordMapProcessor : public babelwires::ParallelProcessor<seqwires::TrackFeature, seqwires::TrackFeature> {
+    class ChordMapProcessorInput : public babelwires::ParallelValueProcessorInputBase {
       public:
-        ChordMapProcessor(const babelwires::ProjectContext& context);
+        PRIMITIVE_TYPE("ChordMapIn", "ChordMap In", "9a6aac86-fc46-40e2-91ba-c0fb053ad172", 1);
 
-        void processEntry(babelwires::UserLogger& userLogger, const seqwires::TrackFeature& input,
-                          seqwires::TrackFeature& output) const override;
+        ChordMapProcessorInput();
 
-        struct Factory : public babelwires::CommonProcessorFactory<ChordMapProcessor> {
-            Factory();
-        };
-
-      private:
-        babelwires::MapFeature* m_chordTypeMapFeature;
-        babelwires::MapFeature* m_pitchClassMapFeature;
+        DECLARE_INSTANCE_BEGIN(ChordMapProcessorInput)
+        DECLARE_INSTANCE_MAP_FIELD(TypMap, babelwires::EnumType, babelwires::EnumType)
+        DECLARE_INSTANCE_MAP_FIELD(RtMap, babelwires::EnumType, babelwires::EnumType)
+        DECLARE_INSTANCE_END()
     };
+
+    class ChordMapProcessorOutput : public babelwires::ParallelValueProcessorOutputBase {
+      public:
+        PRIMITIVE_TYPE("ChordMapOut", "ChordMap Out", "e7ed549d-d6ef-4cca-b66e-5b271d00e0b2", 1);
+
+        ChordMapProcessorOutput();
+    };
+
+    /// A processor which chordmaps the events in a track a specified number of times.
+    class ChordMapProcessor : public babelwires::ParallelValueProcessor {
+      public:
+        BW_PROCESSOR_WITH_DEFAULT_FACTORY("ChordMapProcessor", "Chord Map", "b7227130-8274-4451-bd60-8fe34a74c4b6");
+
+        ChordMapProcessor(const babelwires::ProjectContext& projectContext);
+
+        static babelwires::ShortId getCommonArrayId();
+
+        void processEntry(babelwires::UserLogger& userLogger, const babelwires::ValueFeature& inputFeature,
+                          const babelwires::ValueFeature& input, babelwires::ValueFeature& output) const override;
+    };
+
 } // namespace seqwires

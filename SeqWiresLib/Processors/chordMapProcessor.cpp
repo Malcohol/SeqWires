@@ -14,42 +14,51 @@
 #include <BabelWiresLib/Features/rootFeature.hpp>
 #include <BabelWiresLib/TypeSystem/typeSystem.hpp>
 #include <BabelWiresLib/Types/Enum/addBlankToEnum.hpp>
-#include <BabelWiresLib/Types/Map/mapFeature.hpp>
+#include <BabelWiresLib/Types/Map/mapTypeConstructor.hpp>
+#include <BabelWiresLib/Types/Map/mapValue.hpp>
 
 #include <Common/Identifiers/registeredIdentifier.hpp>
 
-namespace {
-    struct ChordTypeMap : babelwires::MapFeature {
-        ChordTypeMap()
-            : babelwires::MapFeature(seqwires::getMapChordFunctionChordTypeRef(),
-                                      seqwires::getMapChordFunctionChordTypeRef(),
-                                      babelwires::MapEntryData::Kind::All2Sm) {}
-    };
+seqwires::ChordMapProcessorInput::ChordMapProcessorInput()
+    : babelwires::ParallelValueProcessorInputBase(
+          {{BW_SHORT_ID("TypMap", "Type map", "6054b8e9-5f48-4e9f-8807-b6377d36d6aa"),
+            babelwires::TypeRef{
+                babelwires::MapTypeConstructor::getThisIdentifier(),
+                babelwires::TypeConstructorArguments{
+                    {seqwires::getMapChordFunctionChordTypeRef(), seqwires::getMapChordFunctionChordTypeRef()},
+                    {babelwires::EnumValue(babelwires::MapEntryFallbackKind::getIdentifierFromValue(
+                        babelwires::MapEntryData::Kind::All2Sm))}}}},
+           {BW_SHORT_ID("RtMap", "Root map", "4df92989-554b-426a-aa0c-2c0c7ca2dfd6"),
+            babelwires::TypeRef{
+                babelwires::MapTypeConstructor::getThisIdentifier(),
+                babelwires::TypeConstructorArguments{
+                    {seqwires::getMapChordFunctionPitchClassRef(), seqwires::getMapChordFunctionPitchClassRef()},
+                    {babelwires::EnumValue(babelwires::MapEntryFallbackKind::getIdentifierFromValue(
+                        babelwires::MapEntryData::Kind::All2Sm))}}}}},
+          ChordMapProcessor::getCommonArrayId(), seqwires::DefaultTrackType::getThisIdentifier()) {}
 
-    struct PitchClassMap : babelwires::MapFeature {
-        PitchClassMap()
-            : babelwires::MapFeature(seqwires::getMapChordFunctionPitchClassRef(),
-                                             seqwires::getMapChordFunctionPitchClassRef(),
-                                      babelwires::MapEntryData::Kind::All2Sm) {}
-    };
-} // namespace
+seqwires::ChordMapProcessorOutput::ChordMapProcessorOutput()
+    : babelwires::ParallelValueProcessorOutputBase(ChordMapProcessor::getCommonArrayId(),
+                                                   seqwires::DefaultTrackType::getThisIdentifier()) {}
 
-seqwires::ChordMapProcessor::ChordMapProcessor(const babelwires::ProjectContext& context)
-    : babelwires::ParallelProcessor<seqwires::TrackFeature, seqwires::TrackFeature>(context) {
-    m_chordTypeMapFeature = m_inputFeature->addField(
-        std::make_unique<ChordTypeMap>(), BW_SHORT_ID("TypMap", "Type map", "6054b8e9-5f48-4e9f-8807-b6377d36d6aa"));
-    m_pitchClassMapFeature = m_inputFeature->addField(
-        std::make_unique<PitchClassMap>(), BW_SHORT_ID("RtMap", "Root map", "4df92989-554b-426a-aa0c-2c0c7ca2dfd6"));
-    addArrayFeature(BW_SHORT_ID("Tracks", "Tracks", "24e56b0d-eb1e-4c93-97fd-ba4d639e112a"));
+seqwires::ChordMapProcessor::ChordMapProcessor(const babelwires::ProjectContext& projectContext)
+    : babelwires::ParallelValueProcessor(projectContext, ChordMapProcessorInput::getThisIdentifier(),
+                                         ChordMapProcessorOutput::getThisIdentifier()) {}
+
+babelwires::ShortId seqwires::ChordMapProcessor::getCommonArrayId() {
+    return BW_SHORT_ID("Tracks", "Tracks", "24e56b0d-eb1e-4c93-97fd-ba4d639e112a");
 }
 
-seqwires::ChordMapProcessor::Factory::Factory()
-    : CommonProcessorFactory(BW_LONG_ID("ChordMapProcessor", "Chord Map", "b7227130-8274-4451-bd60-8fe34a74c4b6"), 1) {}
+void seqwires::ChordMapProcessor::processEntry(babelwires::UserLogger& userLogger,
+                                               const babelwires::ValueFeature& inputFeature,
+                                               const babelwires::ValueFeature& inputEntry,
+                                               babelwires::ValueFeature& outputEntry) const {
+    ChordMapProcessorInput::ConstInstance input{inputFeature};
+    babelwires::ConstInstance<TrackType> entryIn{inputEntry};
+    babelwires::Instance<TrackType> entryOut{outputEntry};
 
-void seqwires::ChordMapProcessor::processEntry(babelwires::UserLogger& userLogger, const seqwires::TrackFeature& input,
-                                               seqwires::TrackFeature& output) const {
-    const babelwires::TypeSystem& typeSystem = babelwires::RootFeature::getTypeSystemAt(*m_chordTypeMapFeature);
+    const auto& chordTypeMap = input.getTypMap()->getValue()->is<babelwires::MapValue>();
+    const auto& chordRootMap = input.getRtMap()->getValue()->is<babelwires::MapValue>();
 
-    output.set(mapChordsFunction(typeSystem, input.get(), m_chordTypeMapFeature->get(),
-                                 m_pitchClassMapFeature->get()));
+    entryOut.set(mapChordsFunction(input->getTypeSystem(), entryIn.get(), chordTypeMap, chordRootMap));
 }

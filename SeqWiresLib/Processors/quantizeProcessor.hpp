@@ -7,16 +7,11 @@
  **/
 #pragma once
 
-#include <SeqWiresLib/Types/Track/trackFeature.hpp>
 #include <SeqWiresLib/instance.hpp>
 
 #include <BabelWiresLib/Processors/parallelProcessor.hpp>
 #include <BabelWiresLib/Types/Rational/rationalType.hpp>
 
-namespace babelwires {
-    class RationalFeature;
-    class ArrayFeature;
-} // namespace babelwires
 
 namespace seqwires {
 
