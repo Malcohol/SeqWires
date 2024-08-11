@@ -11,6 +11,7 @@
 
 #include <BabelWiresLib/Processors/parallelProcessor.hpp>
 #include <BabelWiresLib/Types/Rational/rationalType.hpp>
+#include <BabelWiresLib/Processors/processorFactory.hpp>
 
 
 namespace seqwires {

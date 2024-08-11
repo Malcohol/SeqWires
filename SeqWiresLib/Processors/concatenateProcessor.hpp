@@ -16,12 +16,8 @@
 #include <BabelWiresLib/TypeSystem/primitiveType.hpp>
 #include <BabelWiresLib/Types/Record/recordType.hpp>
 
-namespace babelwires {
-    class ArrayFeature;
-} // namespace babelwires
 
 namespace seqwires {
-    class TrackFeature;
 
     class ConcatenateProcessorInput : public babelwires::RecordType {
       public:

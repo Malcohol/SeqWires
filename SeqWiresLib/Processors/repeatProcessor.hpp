@@ -11,11 +11,8 @@
 
 #include <BabelWiresLib/Instance/instance.hpp>
 #include <BabelWiresLib/Processors/parallelProcessor.hpp>
+#include <BabelWiresLib/Processors/processorFactory.hpp>
 
-namespace babelwires {
-    class IntFeature;
-    class ArrayFeature;
-} // namespace babelwires
 
 namespace seqwires {
     class RepeatProcessorInput : public babelwires::ParallelProcessorInputBase {

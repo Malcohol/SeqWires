@@ -11,11 +11,7 @@
 
 #include <BabelWiresLib/Instance/instance.hpp>
 #include <BabelWiresLib/Processors/parallelProcessor.hpp>
-
-namespace babelwires {
-    class IntFeature;
-    class ArrayFeature;
-} // namespace babelwires
+#include <BabelWiresLib/Processors/processorFactory.hpp>
 
 namespace seqwires {
 

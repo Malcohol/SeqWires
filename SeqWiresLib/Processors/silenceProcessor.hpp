@@ -16,13 +16,6 @@
 #include <BabelWiresLib/TypeSystem/primitiveType.hpp>
 #include <BabelWiresLib/Types/Record/recordType.hpp>
 
-
-namespace babelwires {
-    class RationalFeature;
-    class ArrayFeature;
-    class ValueFeature;
-} // namespace babelwires
-
 namespace seqwires {
     class TrackFeature;
 

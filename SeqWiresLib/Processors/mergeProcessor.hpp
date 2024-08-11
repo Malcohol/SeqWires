@@ -16,10 +16,6 @@
 #include <BabelWiresLib/TypeSystem/primitiveType.hpp>
 #include <BabelWiresLib/Types/Record/recordType.hpp>
 
-namespace babelwires {
-    class ArrayFeature;
-} // namespace babelwires
-
 namespace seqwires {
     class MergeProcessorInput : public babelwires::RecordType {
       public:
