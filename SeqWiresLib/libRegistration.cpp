@@ -81,10 +81,13 @@ void seqwires::registerLib(babelwires::ProjectContext& context) {
     context.m_typeSystem.addEntry<TransposeProcessorOutput>();
     context.m_processorReg.addProcessor<TransposeProcessor>();
 
+    context.m_typeSystem.addEntry<QuantizeProcessorInput>();
+    context.m_typeSystem.addEntry<QuantizeProcessorOutput>();
+    context.m_processorReg.addProcessor<QuantizeProcessor>();
+
     context.m_typeSystem.addTypeConstructor<TrackTypeConstructor>();
     context.m_typeSystem.addTypeConstructor<PercussionMapType>();
 
     context.m_processorReg.addEntry<ChordMapProcessor::Factory>();
     context.m_processorReg.addEntry<PercussionMapProcessor::Factory>();
-    context.m_processorReg.addEntry<QuantizeProcessor::Factory>();
 }
