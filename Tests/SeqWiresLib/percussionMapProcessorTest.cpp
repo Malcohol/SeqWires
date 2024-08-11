@@ -7,13 +7,13 @@
 #include <SeqWiresLib/Types/Track/track.hpp>
 #include <SeqWiresLib/libRegistration.hpp>
 
+#include <BabelWiresLib/TypeSystem/typeSystem.hpp>
 #include <BabelWiresLib/Types/Enum/addBlankToEnum.hpp>
+#include <BabelWiresLib/Types/Enum/enumValue.hpp>
 #include <BabelWiresLib/Types/Map/MapEntries/allToSameFallbackMapEntryData.hpp>
 #include <BabelWiresLib/Types/Map/MapEntries/oneToOneMapEntryData.hpp>
-#include <BabelWiresLib/Types/Map/mapValue.hpp>
 #include <BabelWiresLib/Types/Map/mapFeature.hpp>
-#include <BabelWiresLib/Types/Enum/enumValue.hpp>
-#include <BabelWiresLib/TypeSystem/typeSystem.hpp>
+#include <BabelWiresLib/Types/Map/mapValue.hpp>
 
 #include <Tests/BabelWiresLib/TestUtils/testEnvironment.hpp>
 #include <Tests/TestUtils/seqTestUtils.hpp>
@@ -24,7 +24,8 @@ namespace {
         const seqwires::BuiltInPercussionInstruments& builtInPercussion =
             typeSystem.getEntryByType<seqwires::BuiltInPercussionInstruments>();
 
-        babelwires::TypeRef targetTypeRef(babelwires::AddBlankToEnum::getThisIdentifier(), seqwires::BuiltInPercussionInstruments::getThisIdentifier());
+        babelwires::TypeRef targetTypeRef(babelwires::AddBlankToEnum::getThisIdentifier(),
+                                          seqwires::BuiltInPercussionInstruments::getThisIdentifier());
 
         babelwires::MapValue percussionMap;
         percussionMap.setSourceTypeRef(seqwires::BuiltInPercussionInstruments::getThisIdentifier());
@@ -119,33 +120,35 @@ TEST(PercussionMapProcessorTest, processor) {
     processor.getInputFeature()->setToDefault();
     processor.getOutputFeature()->setToDefault();
 
-    auto* percussionMapFeature =
-        processor.getInputRootFeature()->getChildFromStep(babelwires::PathStep("Map")).as<babelwires::SimpleValueFeature>();
-    auto* inputArray =
-        processor.getInputRootFeature()->getChildFromStep(babelwires::PathStep("Tracks")).as<babelwires::ArrayFeature>();
-    auto* outputArray =
-        processor.getOutputRootFeature()->getChildFromStep(babelwires::PathStep("Tracks")).as<babelwires::ArrayFeature>();
-    ASSERT_NE(percussionMapFeature, nullptr);
-    ASSERT_NE(inputArray, nullptr);
-    ASSERT_NE(outputArray, nullptr);
+    babelwires::ValueFeature& inputValueFeature = processor.getInputFeature()->is<babelwires::ValueFeature>();
+    const babelwires::ValueFeature& outputValueFeature = processor.getOutputFeature()->is<babelwires::ValueFeature>();
 
-    EXPECT_EQ(inputArray->getNumFeatures(), 1);
-    EXPECT_EQ(outputArray->getNumFeatures(), 1);
+    babelwires::ValueFeature& inputArrayFeature =
+        inputValueFeature.getChildFromStep(babelwires::PathStep(seqwires::PercussionMapProcessor::getCommonArrayId()))
+            .is<babelwires::ValueFeature>();
+    const babelwires::ValueFeature& outputArrayFeature =
+        outputValueFeature.getChildFromStep(babelwires::PathStep(seqwires::PercussionMapProcessor::getCommonArrayId()))
+            .is<babelwires::ValueFeature>();
 
-    auto getInputTrack = [&inputArray](int i) { return inputArray->getChildFromStep(i).as<seqwires::TrackFeature>(); };
-    auto getOutputTrack = [&outputArray](int i) {
-        return outputArray->getChildFromStep(i).as<seqwires::TrackFeature>();
-    };
+    babelwires::ArrayInstanceImpl<babelwires::ValueFeature, seqwires::TrackType> inputArray(inputArrayFeature);
+    const babelwires::ArrayInstanceImpl<const babelwires::ValueFeature, seqwires::TrackType> outputArray(
+        outputArrayFeature);
 
-    ASSERT_NE(getInputTrack(0), nullptr);
-    ASSERT_NE(getOutputTrack(0), nullptr);
+    seqwires::PercussionMapProcessorInput::Instance input(inputValueFeature);
 
-    percussionMapFeature->setValue(getTestPercussionMap(testEnvironment.m_typeSystem));
-    getInputTrack(0)->set(getTestInputTrack());
+    EXPECT_EQ(inputArray.getSize(), 1);
+    EXPECT_EQ(outputArray.getSize(), 1);
+
+    EXPECT_EQ(inputArray.getEntry(0).get().getDuration(), 0);
+    EXPECT_EQ(outputArray.getEntry(0).get().getDuration(), 0);
+    processor.getOutputFeature()->setToDefault();
+
+    input.getMap()->setValue(getTestPercussionMap(testEnvironment.m_typeSystem));
+    inputArray.getEntry(0).set(getTestInputTrack());
 
     processor.process(testEnvironment.m_log);
 
-    const seqwires::Track outputTrack = getOutputTrack(0)->get();
+    const seqwires::Track outputTrack = outputArray.getEntry(0).get();
     const seqwires::Track expectedOutputTrack = getTestOutputTrack();
 
     EXPECT_EQ(outputTrack, expectedOutputTrack);

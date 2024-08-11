@@ -7,29 +7,43 @@
  **/
 #pragma once
 
-#include <SeqWiresLib/Types/Track/trackFeature.hpp>
+#include <SeqWiresLib/instance.hpp>
 
 #include <BabelWiresLib/Processors/parallelProcessor.hpp>
-
-namespace babelwires {
-    class MapFeature;
-}
+#include <BabelWiresLib/Types/Rational/rationalType.hpp>
+#include <BabelWiresLib/Types/Map/mapType.hpp>
 
 namespace seqwires {
 
-    class PercussionMapProcessor
-        : public babelwires::ParallelProcessor<seqwires::TrackFeature, seqwires::TrackFeature> {
+    class PercussionMapProcessorInput : public babelwires::ParallelValueProcessorInputBase {
       public:
-        PercussionMapProcessor(const babelwires::ProjectContext& context);
+        PRIMITIVE_TYPE("PercMapIn", "PercussionMap In", "d422110c-3ea4-42a3-86b0-311332836504", 1);
 
-        void processEntry(babelwires::UserLogger& userLogger, const seqwires::TrackFeature& input,
-                          seqwires::TrackFeature& output) const override;
+        PercussionMapProcessorInput();
 
-        struct Factory : public babelwires::CommonProcessorFactory<PercussionMapProcessor> {
-            Factory();
-        };
-
-      private:
-        babelwires::SimpleValueFeature* m_percussionMapFeature;
+        DECLARE_INSTANCE_BEGIN(PercussionMapProcessorInput)
+        DECLARE_INSTANCE_GENERIC_FIELD(Map)
+        DECLARE_INSTANCE_END()
     };
+
+    class PercussionMapProcessorOutput : public babelwires::ParallelValueProcessorOutputBase {
+      public:
+        PRIMITIVE_TYPE("PercMapOut", "PercussionMap Out", "e0940d22-c79a-4139-a0ef-00aee485ef2a", 1);
+
+        PercussionMapProcessorOutput();
+    };
+
+    /// A processor which percussionmaps the events in a track a specified number of times.
+    class PercussionMapProcessor : public babelwires::ParallelValueProcessor {
+      public:
+        BW_PROCESSOR_WITH_DEFAULT_FACTORY("PercussionMapProcessor", "Percussion Map", "1ab6fd2b-8176-4516-9d9a-3b2d91a53f42");
+
+        PercussionMapProcessor(const babelwires::ProjectContext& projectContext);
+
+        static babelwires::ShortId getCommonArrayId();
+
+        void processEntry(babelwires::UserLogger& userLogger, const babelwires::ValueFeature& inputFeature,
+                          const babelwires::ValueFeature& input, babelwires::ValueFeature& output) const override;
+    };
+
 } // namespace seqwires
