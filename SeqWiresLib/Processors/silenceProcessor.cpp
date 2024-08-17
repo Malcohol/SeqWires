@@ -22,7 +22,7 @@ seqwires::SilenceProcessorOutput::SilenceProcessorOutput()
                                DefaultTrackType::getThisIdentifier()}}) {}
 
 seqwires::SilenceProcessor::SilenceProcessor(const babelwires::ProjectContext& projectContext)
-    : ValueProcessor(projectContext, SilenceProcessorInput::getThisIdentifier(),
+    : Processor(projectContext, SilenceProcessorInput::getThisIdentifier(),
                      SilenceProcessorOutput::getThisIdentifier()) {}
 
 void seqwires::SilenceProcessor::processValue(babelwires::UserLogger& userLogger,

@@ -23,7 +23,7 @@ seqwires::FingeredChordsProcessorOutput::FingeredChordsProcessorOutput()
 
 
 seqwires::FingeredChordsProcessor::FingeredChordsProcessor(const babelwires::ProjectContext& projectContext)
-    : ValueProcessor(projectContext, FingeredChordsProcessorInput::getThisIdentifier(),
+    : Processor(projectContext, FingeredChordsProcessorInput::getThisIdentifier(),
                      FingeredChordsProcessorOutput::getThisIdentifier()) {}
 
 void seqwires::FingeredChordsProcessor::processValue(babelwires::UserLogger& userLogger,

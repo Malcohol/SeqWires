@@ -13,7 +13,7 @@
 
 #include <BabelWiresLib/Instance/instance.hpp>
 #include <BabelWiresLib/Processors/processorFactory.hpp>
-#include <BabelWiresLib/Processors/valueProcessor.hpp>
+#include <BabelWiresLib/Processors/processor.hpp>
 #include <BabelWiresLib/TypeSystem/primitiveType.hpp>
 #include <BabelWiresLib/Types/Record/recordType.hpp>
 
@@ -43,7 +43,7 @@ namespace seqwires {
         DECLARE_INSTANCE_END()
     };
 
-    class SplitAtPitchProcessor : public babelwires::ValueProcessor {
+    class SplitAtPitchProcessor : public babelwires::Processor {
       public:
         BW_PROCESSOR_WITH_DEFAULT_FACTORY("SplitAtPitchProcessor", "Split At Pitch", "c7b79e31-98f4-4d20-b946-f55113eb3b75");
 

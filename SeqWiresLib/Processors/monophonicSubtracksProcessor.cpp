@@ -36,7 +36,7 @@ seqwires::MonophonicSubtracksProcessorOutput::MonophonicSubtracksProcessorOutput
             DefaultTrackType::getThisIdentifier()}}) {}
 
 seqwires::MonophonicSubtracksProcessor::MonophonicSubtracksProcessor(const babelwires::ProjectContext& projectContext)
-    : ValueProcessor(projectContext, MonophonicSubtracksProcessorInput::getThisIdentifier(),
+    : Processor(projectContext, MonophonicSubtracksProcessorInput::getThisIdentifier(),
                      MonophonicSubtracksProcessorOutput::getThisIdentifier()) {}
 
 void seqwires::MonophonicSubtracksProcessor::processValue(babelwires::UserLogger& userLogger,

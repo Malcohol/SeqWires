@@ -11,7 +11,7 @@
 
 #include <BabelWiresLib/Instance/instance.hpp>
 #include <BabelWiresLib/Processors/processorFactory.hpp>
-#include <BabelWiresLib/Processors/valueProcessor.hpp>
+#include <BabelWiresLib/Processors/processor.hpp>
 #include <BabelWiresLib/TypeSystem/primitiveType.hpp>
 #include <BabelWiresLib/Types/Record/recordType.hpp>
 
@@ -39,7 +39,7 @@ namespace seqwires {
         DECLARE_INSTANCE_END()
     };
 
-    class FingeredChordsProcessor : public babelwires::ValueProcessor {
+    class FingeredChordsProcessor : public babelwires::Processor {
       public:
         BW_PROCESSOR_WITH_DEFAULT_FACTORY("FingeredChords", "Fingered Chords", "c7beca58-d894-452c-8476-872db2173dd9");
 

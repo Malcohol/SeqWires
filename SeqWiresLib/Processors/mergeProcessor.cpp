@@ -31,7 +31,7 @@ seqwires::MergeProcessorOutput::MergeProcessorOutput()
                                DefaultTrackType::getThisIdentifier()}}) {}
 
 seqwires::MergeProcessor::MergeProcessor(const babelwires::ProjectContext& projectContext)
-    : ValueProcessor(projectContext, MergeProcessorInput::getThisIdentifier(),
+    : Processor(projectContext, MergeProcessorInput::getThisIdentifier(),
                      MergeProcessorOutput::getThisIdentifier()) {}
 
 void seqwires::MergeProcessor::processValue(babelwires::UserLogger& userLogger,

@@ -28,7 +28,7 @@ seqwires::ConcatenateProcessorOutput::ConcatenateProcessorOutput()
                                DefaultTrackType::getThisIdentifier()}}) {}
 
 seqwires::ConcatenateProcessor::ConcatenateProcessor(const babelwires::ProjectContext& projectContext)
-    : babelwires::ValueProcessor(projectContext, ConcatenateProcessorInput::getThisIdentifier(),
+    : babelwires::Processor(projectContext, ConcatenateProcessorInput::getThisIdentifier(),
                                  ConcatenateProcessorOutput::getThisIdentifier()) {}
 
 void seqwires::ConcatenateProcessor::processValue(babelwires::UserLogger& userLogger,

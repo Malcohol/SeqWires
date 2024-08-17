@@ -13,7 +13,7 @@
 
 #include <BabelWiresLib/Instance/instance.hpp>
 #include <BabelWiresLib/Processors/processorFactory.hpp>
-#include <BabelWiresLib/Processors/valueProcessor.hpp>
+#include <BabelWiresLib/Processors/processor.hpp>
 #include <BabelWiresLib/TypeSystem/primitiveType.hpp>
 #include <BabelWiresLib/Types/Record/recordType.hpp>
 
@@ -43,7 +43,7 @@ namespace seqwires {
         DECLARE_INSTANCE_END()
     };
 
-    class MonophonicSubtracksProcessor : public babelwires::ValueProcessor {
+    class MonophonicSubtracksProcessor : public babelwires::Processor {
       public:
         BW_PROCESSOR_WITH_DEFAULT_FACTORY("MonoSubtracksProcessor", "Monophonic subtracks", "7b6bbc49-24a5-4657-86fd-c457d77feaf9");
 

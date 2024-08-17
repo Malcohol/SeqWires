@@ -12,7 +12,7 @@
 
 #include <BabelWiresLib/Instance/instance.hpp>
 #include <BabelWiresLib/Processors/processorFactory.hpp>
-#include <BabelWiresLib/Processors/valueProcessor.hpp>
+#include <BabelWiresLib/Processors/processor.hpp>
 #include <BabelWiresLib/TypeSystem/primitiveType.hpp>
 #include <BabelWiresLib/Types/Record/recordType.hpp>
 
@@ -41,7 +41,7 @@ namespace seqwires {
         DECLARE_INSTANCE_END()
     };
 
-    class ConcatenateProcessor : public babelwires::ValueProcessor {
+    class ConcatenateProcessor : public babelwires::Processor {
       public:
         BW_PROCESSOR_WITH_DEFAULT_FACTORY("ConcatenateTracks", "Concatenate", "42b00d10-9d16-42d2-8ba6-971aad016da0");
 

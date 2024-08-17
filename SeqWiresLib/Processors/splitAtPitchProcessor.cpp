@@ -34,7 +34,7 @@ seqwires::SplitAtPitchProcessorOutput::SplitAtPitchProcessorOutput()
       }) {}
 
 seqwires::SplitAtPitchProcessor::SplitAtPitchProcessor(const babelwires::ProjectContext& projectContext)
-    : ValueProcessor(projectContext, SplitAtPitchProcessorInput::getThisIdentifier(),
+    : Processor(projectContext, SplitAtPitchProcessorInput::getThisIdentifier(),
                      SplitAtPitchProcessorOutput::getThisIdentifier()) {}
 
 void seqwires::SplitAtPitchProcessor::processValue(babelwires::UserLogger& userLogger, const babelwires::ValueFeature& inputFeature, babelwires::ValueFeature& outputFeature) const {

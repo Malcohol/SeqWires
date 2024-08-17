@@ -12,7 +12,7 @@
 
 #include <BabelWiresLib/Instance/instance.hpp>
 #include <BabelWiresLib/Processors/processorFactory.hpp>
-#include <BabelWiresLib/Processors/valueProcessor.hpp>
+#include <BabelWiresLib/Processors/processor.hpp>
 #include <BabelWiresLib/TypeSystem/primitiveType.hpp>
 #include <BabelWiresLib/Types/Record/recordType.hpp>
 
@@ -41,7 +41,7 @@ namespace seqwires {
         DECLARE_INSTANCE_END()
     };
 
-    class SilenceProcessor : public babelwires::ValueProcessor {
+    class SilenceProcessor : public babelwires::Processor {
       public:
         BW_PROCESSOR_WITH_DEFAULT_FACTORY("SilentTrack", "Silence", "c59e4643-b7d8-430b-980b-bd81b5aa007b");
 

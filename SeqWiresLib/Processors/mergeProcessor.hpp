@@ -12,7 +12,7 @@
 
 #include <BabelWiresLib/Instance/instance.hpp>
 #include <BabelWiresLib/Processors/processorFactory.hpp>
-#include <BabelWiresLib/Processors/valueProcessor.hpp>
+#include <BabelWiresLib/Processors/processor.hpp>
 #include <BabelWiresLib/TypeSystem/primitiveType.hpp>
 #include <BabelWiresLib/Types/Record/recordType.hpp>
 
@@ -39,7 +39,7 @@ namespace seqwires {
         DECLARE_INSTANCE_END()
     };
 
-    class MergeProcessor : public babelwires::ValueProcessor {
+    class MergeProcessor : public babelwires::Processor {
       public:
         BW_PROCESSOR_WITH_DEFAULT_FACTORY("MergeTracks", "Merge", "ed004257-0ae3-44aa-abb9-d752c2eba0c1");
 
