@@ -677,10 +677,8 @@ TEST(FingeredChordsTest, processor) {
     processor.getInputFeature()->setToDefault();
     processor.getOutputFeature()->setToDefault();
 
-    auto input =
-        seqwires::FingeredChordsProcessorInput::Instance(processor.getInputFeature()->is<babelwires::ValueFeature>());
-    const auto output = seqwires::FingeredChordsProcessorOutput::ConstInstance(
-        processor.getOutputFeature()->is<babelwires::ValueFeature>());
+    auto input = seqwires::FingeredChordsProcessorInput::Instance(*processor.getInputFeature());
+    const auto output = seqwires::FingeredChordsProcessorOutput::ConstInstance(*processor.getOutputFeature());
 
     input.getPolicy().set(seqwires::FingeredChordsSustainPolicyEnum::Value::Notes);
 

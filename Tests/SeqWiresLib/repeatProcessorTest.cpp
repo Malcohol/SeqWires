@@ -52,8 +52,8 @@ TEST(RepeatProcessorTest, processor) {
     processor.getInputFeature()->setToDefault();
     processor.getOutputFeature()->setToDefault();
 
-    babelwires::ValueFeature& inputValueFeature = processor.getInputFeature()->is<babelwires::ValueFeature>();
-    const babelwires::ValueFeature& outputValueFeature = processor.getOutputFeature()->is<babelwires::ValueFeature>();
+    babelwires::ValueFeature& inputValueFeature = *processor.getInputFeature();
+    const babelwires::ValueFeature& outputValueFeature = *processor.getOutputFeature();
 
     babelwires::ValueFeature& inputArrayFeature =
         inputValueFeature.getChildFromStep(babelwires::PathStep(seqwires::RepeatProcessor::getCommonArrayId()))

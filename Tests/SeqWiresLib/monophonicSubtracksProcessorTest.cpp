@@ -359,10 +359,8 @@ TEST(MonophonicSubtracksProcessorTest, processor) {
     processor.getInputFeature()->setToDefault();
     processor.getOutputFeature()->setToDefault();
 
-    auto input = seqwires::MonophonicSubtracksProcessorInput::Instance(
-        processor.getInputFeature()->is<babelwires::ValueFeature>());
-    const auto output = seqwires::MonophonicSubtracksProcessorOutput::ConstInstance(
-        processor.getOutputFeature()->is<babelwires::ValueFeature>());
+    auto input = seqwires::MonophonicSubtracksProcessorInput::Instance(*processor.getInputFeature());
+    const auto output = seqwires::MonophonicSubtracksProcessorOutput::ConstInstance(*processor.getOutputFeature());
 
     input.getNumTrk().set(2);
     input.getPolicy().set(seqwires::MonophonicSubtracksPolicyEnum::Value::Low);

@@ -69,9 +69,9 @@ TEST(MergeProcessorTest, processor) {
     processor.getInputFeature()->setToDefault();
     processor.getOutputFeature()->setToDefault();
 
-    auto input = seqwires::MergeProcessorInput::Instance(processor.getInputFeature()->is<babelwires::ValueFeature>());
+    auto input = seqwires::MergeProcessorInput::Instance(*processor.getInputFeature());
     const auto output =
-        seqwires::MergeProcessorOutput::ConstInstance(processor.getOutputFeature()->is<babelwires::ValueFeature>());
+        seqwires::MergeProcessorOutput::ConstInstance(*processor.getOutputFeature());
 
     ASSERT_EQ(input.getInput().getSize(), 2);
     EXPECT_EQ(input.getInput().getEntry(0).get().getDuration(), 0);

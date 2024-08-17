@@ -89,10 +89,8 @@ TEST(SplitAtPitchProcessorTest, processor) {
     processor.getInputFeature()->setToDefault();
     processor.getOutputFeature()->setToDefault();
 
-    auto input =
-        seqwires::SplitAtPitchProcessorInput::Instance(processor.getInputFeature()->is<babelwires::ValueFeature>());
-    const auto output = seqwires::SplitAtPitchProcessorOutput::ConstInstance(
-        processor.getOutputFeature()->is<babelwires::ValueFeature>());
+    auto input = seqwires::SplitAtPitchProcessorInput::Instance(*processor.getInputFeature());
+    const auto output = seqwires::SplitAtPitchProcessorOutput::ConstInstance(*processor.getOutputFeature());
 
     input.getPitch().set(babelwires::EnumValue(input.getPitch().getInstanceType().getIdentifierFromIndex(67)));
     {

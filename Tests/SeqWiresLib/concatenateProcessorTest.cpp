@@ -65,10 +65,8 @@ TEST(ConcatenateProcessorTest, processor) {
     processor.getInputFeature()->setToDefault();
     processor.getOutputFeature()->setToDefault();
 
-    auto input =
-        seqwires::ConcatenateProcessorInput::Instance(processor.getInputFeature()->is<babelwires::ValueFeature>());
-    const auto output = seqwires::ConcatenateProcessorOutput::ConstInstance(
-        processor.getOutputFeature()->is<babelwires::ValueFeature>());
+    auto input = seqwires::ConcatenateProcessorInput::Instance(*processor.getInputFeature());
+    const auto output = seqwires::ConcatenateProcessorOutput::ConstInstance(*processor.getOutputFeature());
 
     ASSERT_EQ(input.getInput().getSize(), 2);
     EXPECT_EQ(input.getInput().getEntry(0).get().getDuration(), 0);

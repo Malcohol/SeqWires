@@ -8,13 +8,13 @@
 #include <SeqWiresLib/chord.hpp>
 #include <SeqWiresLib/libRegistration.hpp>
 
+#include <BabelWiresLib/TypeSystem/typeSystem.hpp>
 #include <BabelWiresLib/Types/Enum/addBlankToEnum.hpp>
+#include <BabelWiresLib/Types/Enum/enumValue.hpp>
 #include <BabelWiresLib/Types/Map/MapEntries/allToSameFallbackMapEntryData.hpp>
 #include <BabelWiresLib/Types/Map/MapEntries/oneToOneMapEntryData.hpp>
-#include <BabelWiresLib/Types/Map/mapValue.hpp>
 #include <BabelWiresLib/Types/Map/mapFeature.hpp>
-#include <BabelWiresLib/Types/Enum/enumValue.hpp>
-#include <BabelWiresLib/TypeSystem/typeSystem.hpp>
+#include <BabelWiresLib/Types/Map/mapValue.hpp>
 
 #include <Tests/BabelWiresLib/TestUtils/testEnvironment.hpp>
 #include <Tests/TestUtils/seqTestUtils.hpp>
@@ -227,8 +227,8 @@ TEST(ChordMapProcessorTest, processor) {
     processor.getInputFeature()->setToDefault();
     processor.getOutputFeature()->setToDefault();
 
-        babelwires::ValueFeature& inputValueFeature = processor.getInputFeature()->is<babelwires::ValueFeature>();
-    const babelwires::ValueFeature& outputValueFeature = processor.getOutputFeature()->is<babelwires::ValueFeature>();
+    babelwires::ValueFeature& inputValueFeature = *processor.getInputFeature();
+    const babelwires::ValueFeature& outputValueFeature = *processor.getOutputFeature();
 
     babelwires::ValueFeature& inputArrayFeature =
         inputValueFeature.getChildFromStep(babelwires::PathStep(seqwires::ChordMapProcessor::getCommonArrayId()))
