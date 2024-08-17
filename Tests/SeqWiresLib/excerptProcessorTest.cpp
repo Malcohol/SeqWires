@@ -129,11 +129,11 @@ TEST(ExcerptProcessorTest, processor) {
 
     seqwires::ExcerptProcessor processor(testEnvironment.m_projectContext);
 
-    processor.getInputFeature()->setToDefault();
-    processor.getOutputFeature()->setToDefault();
+    processor.getInputFeature().setToDefault();
+    processor.getOutputFeature().setToDefault();
 
-    babelwires::ValueFeature& inputValueFeature = *processor.getInputFeature();
-    const babelwires::ValueFeature& outputValueFeature = *processor.getOutputFeature();
+    babelwires::ValueFeature& inputValueFeature = processor.getInputFeature();
+    const babelwires::ValueFeature& outputValueFeature = processor.getOutputFeature();
 
     babelwires::ValueFeature& inputArrayFeature =
         inputValueFeature.getChildFromStep(babelwires::PathStep(seqwires::ExcerptProcessor::getCommonArrayId()))
@@ -160,9 +160,9 @@ TEST(ExcerptProcessorTest, processor) {
     EXPECT_EQ(outputArray.getEntry(0).get().getDuration(), 1);
     EXPECT_EQ(outputArray.getEntry(0).get().getNumEvents(), 0);
 
-    processor.getInputFeature()->clearChanges();
+    processor.getInputFeature().clearChanges();
     {
-        babelwires::BackupScope scope(processor.getInputFeature()->is<babelwires::SimpleValueFeature>());
+        babelwires::BackupScope scope(processor.getInputFeature().is<babelwires::SimpleValueFeature>());
         seqwires::Track track;
         testUtils::addSimpleNotes({60, 62, 64, 65, 67, 69, 71, 72}, track);
         inputArray.getEntry(0).set(std::move(track));
@@ -172,9 +172,9 @@ TEST(ExcerptProcessorTest, processor) {
     EXPECT_EQ(outputArray.getEntry(0).get().getDuration(), 1);
     testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65}, outputArray.getEntry(0).get());
 
-    processor.getInputFeature()->clearChanges();
+    processor.getInputFeature().clearChanges();
     {
-        babelwires::BackupScope scope(processor.getInputFeature()->is<babelwires::SimpleValueFeature>());
+        babelwires::BackupScope scope(processor.getInputFeature().is<babelwires::SimpleValueFeature>());
         input.getStart().set(1);
     }
     processor.process(testEnvironment.m_log);
@@ -184,9 +184,9 @@ TEST(ExcerptProcessorTest, processor) {
 
     //TODO: Would like this test to confirm that adding a track entry does not cause existing entries to be changed.
     // However that functionality didn't survive the switch to types/values.
-    processor.getInputFeature()->clearChanges();
+    processor.getInputFeature().clearChanges();
     {
-        babelwires::BackupScope scope(processor.getInputFeature()->is<babelwires::SimpleValueFeature>());
+        babelwires::BackupScope scope(processor.getInputFeature().is<babelwires::SimpleValueFeature>());
         inputArray.setSize(2);
         {
             seqwires::Track track;
@@ -203,10 +203,10 @@ TEST(ExcerptProcessorTest, processor) {
     testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{55, 57, 59, 60}, outputArray.getEntry(1).get());
 
     // Check that input changes to an entry only affect its output entry. For this test, we clear the output changes too.
-    processor.getInputFeature()->clearChanges();
-    processor.getOutputFeature()->clearChanges();
+    processor.getInputFeature().clearChanges();
+    processor.getOutputFeature().clearChanges();
     {
-        babelwires::BackupScope scope(processor.getInputFeature()->is<babelwires::SimpleValueFeature>());
+        babelwires::BackupScope scope(processor.getInputFeature().is<babelwires::SimpleValueFeature>());
         // Set it to empty.
         inputArray.getEntry(0).set(seqwires::Track());
     }

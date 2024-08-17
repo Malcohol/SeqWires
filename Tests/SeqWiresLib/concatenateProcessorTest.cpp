@@ -62,11 +62,11 @@ TEST(ConcatenateProcessorTest, processor) {
 
     seqwires::ConcatenateProcessor processor(testEnvironment.m_projectContext);
 
-    processor.getInputFeature()->setToDefault();
-    processor.getOutputFeature()->setToDefault();
+    processor.getInputFeature().setToDefault();
+    processor.getOutputFeature().setToDefault();
 
-    auto input = seqwires::ConcatenateProcessorInput::Instance(*processor.getInputFeature());
-    const auto output = seqwires::ConcatenateProcessorOutput::ConstInstance(*processor.getOutputFeature());
+    auto input = seqwires::ConcatenateProcessorInput::Instance(processor.getInputFeature());
+    const auto output = seqwires::ConcatenateProcessorOutput::ConstInstance(processor.getOutputFeature());
 
     ASSERT_EQ(input.getInput().getSize(), 2);
     EXPECT_EQ(input.getInput().getEntry(0).get().getDuration(), 0);
@@ -82,9 +82,9 @@ TEST(ConcatenateProcessorTest, processor) {
 
     testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65}, output.getOutput().get());
 
-    processor.getInputFeature()->clearChanges();
+    processor.getInputFeature().clearChanges();
     {
-        babelwires::BackupScope scope(processor.getInputFeature()->is<babelwires::SimpleValueFeature>());
+        babelwires::BackupScope scope(processor.getInputFeature().is<babelwires::SimpleValueFeature>());
         seqwires::Track track;
         testUtils::addSimpleNotes(std::vector<seqwires::Pitch>{67, 69, 71, 72}, track);
         input.getInput().getEntry(1).set(std::move(track));
@@ -93,10 +93,10 @@ TEST(ConcatenateProcessorTest, processor) {
 
     testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65, 67, 69, 71, 72}, output.getOutput().get());
 
-    processor.getInputFeature()->clearChanges();
+    processor.getInputFeature().clearChanges();
     // Insert a new track at position 1.
     {
-        babelwires::BackupScope scope(processor.getInputFeature()->is<babelwires::SimpleValueFeature>());
+        babelwires::BackupScope scope(processor.getInputFeature().is<babelwires::SimpleValueFeature>());
         input.getInput().setSize(3);
         input.getInput().getEntry(2).set(input.getInput().getEntry(1)->getValue());
         {

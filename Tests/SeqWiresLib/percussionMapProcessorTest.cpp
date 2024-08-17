@@ -117,11 +117,11 @@ TEST(PercussionMapProcessorTest, processor) {
 
     seqwires::PercussionMapProcessor processor(testEnvironment.m_projectContext);
 
-    processor.getInputFeature()->setToDefault();
-    processor.getOutputFeature()->setToDefault();
+    processor.getInputFeature().setToDefault();
+    processor.getOutputFeature().setToDefault();
 
-    babelwires::ValueFeature& inputValueFeature = *processor.getInputFeature();
-    const babelwires::ValueFeature& outputValueFeature = *processor.getOutputFeature();
+    babelwires::ValueFeature& inputValueFeature = processor.getInputFeature();
+    const babelwires::ValueFeature& outputValueFeature = processor.getOutputFeature();
 
     babelwires::ValueFeature& inputArrayFeature =
         inputValueFeature.getChildFromStep(babelwires::PathStep(seqwires::PercussionMapProcessor::getCommonArrayId()))
@@ -141,7 +141,7 @@ TEST(PercussionMapProcessorTest, processor) {
 
     EXPECT_EQ(inputArray.getEntry(0).get().getDuration(), 0);
     EXPECT_EQ(outputArray.getEntry(0).get().getDuration(), 0);
-    processor.getOutputFeature()->setToDefault();
+    processor.getOutputFeature().setToDefault();
 
     input.getMap()->setValue(getTestPercussionMap(testEnvironment.m_typeSystem));
     inputArray.getEntry(0).set(getTestInputTrack());

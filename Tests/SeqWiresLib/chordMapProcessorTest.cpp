@@ -224,11 +224,11 @@ TEST(ChordMapProcessorTest, processor) {
 
     seqwires::ChordMapProcessor processor(testEnvironment.m_projectContext);
 
-    processor.getInputFeature()->setToDefault();
-    processor.getOutputFeature()->setToDefault();
+    processor.getInputFeature().setToDefault();
+    processor.getOutputFeature().setToDefault();
 
-    babelwires::ValueFeature& inputValueFeature = *processor.getInputFeature();
-    const babelwires::ValueFeature& outputValueFeature = *processor.getOutputFeature();
+    babelwires::ValueFeature& inputValueFeature = processor.getInputFeature();
+    const babelwires::ValueFeature& outputValueFeature = processor.getOutputFeature();
 
     babelwires::ValueFeature& inputArrayFeature =
         inputValueFeature.getChildFromStep(babelwires::PathStep(seqwires::ChordMapProcessor::getCommonArrayId()))

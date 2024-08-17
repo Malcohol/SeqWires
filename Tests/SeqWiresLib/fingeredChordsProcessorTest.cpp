@@ -674,11 +674,11 @@ TEST(FingeredChordsTest, processor) {
 
     seqwires::FingeredChordsProcessor processor(testEnvironment.m_projectContext);
 
-    processor.getInputFeature()->setToDefault();
-    processor.getOutputFeature()->setToDefault();
+    processor.getInputFeature().setToDefault();
+    processor.getOutputFeature().setToDefault();
 
-    auto input = seqwires::FingeredChordsProcessorInput::Instance(*processor.getInputFeature());
-    const auto output = seqwires::FingeredChordsProcessorOutput::ConstInstance(*processor.getOutputFeature());
+    auto input = seqwires::FingeredChordsProcessorInput::Instance(processor.getInputFeature());
+    const auto output = seqwires::FingeredChordsProcessorOutput::ConstInstance(processor.getOutputFeature());
 
     input.getPolicy().set(seqwires::FingeredChordsSustainPolicyEnum::Value::Notes);
 
@@ -708,9 +708,9 @@ TEST(FingeredChordsTest, processor) {
         },
         output.getChords().get());
 
-    processor.getInputFeature()->clearChanges();
+    processor.getInputFeature().clearChanges();
     {
-        babelwires::BackupScope scope(processor.getInputFeature()->is<babelwires::SimpleValueFeature>());
+        babelwires::BackupScope scope(processor.getInputFeature().is<babelwires::SimpleValueFeature>());
         input.getPolicy().set(seqwires::FingeredChordsSustainPolicyEnum::Value::Hold);
     }
     processor.process(testEnvironment.m_log);
@@ -722,9 +722,9 @@ TEST(FingeredChordsTest, processor) {
         },
         output.getChords().get());
 
-    processor.getInputFeature()->clearChanges();
+    processor.getInputFeature().clearChanges();
     {
-        babelwires::BackupScope scope(processor.getInputFeature()->is<babelwires::SimpleValueFeature>());
+        babelwires::BackupScope scope(processor.getInputFeature().is<babelwires::SimpleValueFeature>());
         seqwires::Track track;
         track.addEvent(seqwires::NoteOnEvent(0, 60));
         track.addEvent(seqwires::NoteOnEvent(0, 64));

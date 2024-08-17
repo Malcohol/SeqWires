@@ -74,11 +74,11 @@ TEST(QuantizeProcessorTest, processor) {
 
     seqwires::QuantizeProcessor processor(testEnvironment.m_projectContext);
 
-    processor.getInputFeature()->setToDefault();
-    processor.getOutputFeature()->setToDefault();
+    processor.getInputFeature().setToDefault();
+    processor.getOutputFeature().setToDefault();
 
-    babelwires::ValueFeature& inputValueFeature = *processor.getInputFeature();
-    const babelwires::ValueFeature& outputValueFeature = *processor.getOutputFeature();
+    babelwires::ValueFeature& inputValueFeature = processor.getInputFeature();
+    const babelwires::ValueFeature& outputValueFeature = processor.getOutputFeature();
 
     babelwires::ValueFeature& inputArrayFeature =
         inputValueFeature.getChildFromStep(babelwires::PathStep(seqwires::QuantizeProcessor::getCommonArrayId()))
@@ -100,7 +100,7 @@ TEST(QuantizeProcessorTest, processor) {
     EXPECT_EQ(outputArray.getEntry(0).get().getDuration(), 0);
 
     {
-        babelwires::BackupScope scope(processor.getInputFeature()->is<babelwires::SimpleValueFeature>());
+        babelwires::BackupScope scope(processor.getInputFeature().is<babelwires::SimpleValueFeature>());
         input.getBeat().set(babelwires::Rational(1, 8));
         seqwires::Track track;
         testUtils::addNotes(
@@ -121,9 +121,9 @@ TEST(QuantizeProcessorTest, processor) {
                           {65, 0, babelwires::Rational(5, 4)}},
                          outputArray.getEntry(0).get());
 
-    processor.getInputFeature()->clearChanges();
+    processor.getInputFeature().clearChanges();
     {
-        babelwires::BackupScope scope(processor.getInputFeature()->is<babelwires::SimpleValueFeature>());
+        babelwires::BackupScope scope(processor.getInputFeature().is<babelwires::SimpleValueFeature>());
         input.getBeat().set(babelwires::Rational(1, 4));
     }
     processor.process(testEnvironment.m_log);
@@ -134,9 +134,9 @@ TEST(QuantizeProcessorTest, processor) {
                           {65, 0, babelwires::Rational(5, 4)}},
                          outputArray.getEntry(0).get());
 
-    processor.getInputFeature()->clearChanges();
+    processor.getInputFeature().clearChanges();
     {
-        babelwires::BackupScope scope(processor.getInputFeature()->is<babelwires::SimpleValueFeature>());
+        babelwires::BackupScope scope(processor.getInputFeature().is<babelwires::SimpleValueFeature>());
         seqwires::Track track;
         testUtils::addNotes(
             {

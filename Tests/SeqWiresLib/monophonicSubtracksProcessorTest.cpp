@@ -356,11 +356,11 @@ TEST(MonophonicSubtracksProcessorTest, processor) {
 
     seqwires::MonophonicSubtracksProcessor processor(testEnvironment.m_projectContext);
 
-    processor.getInputFeature()->setToDefault();
-    processor.getOutputFeature()->setToDefault();
+    processor.getInputFeature().setToDefault();
+    processor.getOutputFeature().setToDefault();
 
-    auto input = seqwires::MonophonicSubtracksProcessorInput::Instance(*processor.getInputFeature());
-    const auto output = seqwires::MonophonicSubtracksProcessorOutput::ConstInstance(*processor.getOutputFeature());
+    auto input = seqwires::MonophonicSubtracksProcessorInput::Instance(processor.getInputFeature());
+    const auto output = seqwires::MonophonicSubtracksProcessorOutput::ConstInstance(processor.getOutputFeature());
 
     input.getNumTrk().set(2);
     input.getPolicy().set(seqwires::MonophonicSubtracksPolicyEnum::Value::Low);
@@ -375,9 +375,9 @@ TEST(MonophonicSubtracksProcessorTest, processor) {
                            {seqwires::PitchClass::Value::D, seqwires::ChordType::ChordType::Value::m}},
                           output.getOther().get());
 
-    processor.getInputFeature()->clearChanges();
+    processor.getInputFeature().clearChanges();
     {
-        babelwires::BackupScope scope(processor.getInputFeature()->is<babelwires::SimpleValueFeature>());
+        babelwires::BackupScope scope(processor.getInputFeature().is<babelwires::SimpleValueFeature>());
         input.getNumTrk().set(3);
         input.getPolicy().set(seqwires::MonophonicSubtracksPolicyEnum::Value::High);
     }

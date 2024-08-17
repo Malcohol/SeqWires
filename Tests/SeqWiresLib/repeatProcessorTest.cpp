@@ -49,11 +49,11 @@ TEST(RepeatProcessorTest, processor) {
 
     seqwires::RepeatProcessor processor(testEnvironment.m_projectContext);
 
-    processor.getInputFeature()->setToDefault();
-    processor.getOutputFeature()->setToDefault();
+    processor.getInputFeature().setToDefault();
+    processor.getOutputFeature().setToDefault();
 
-    babelwires::ValueFeature& inputValueFeature = *processor.getInputFeature();
-    const babelwires::ValueFeature& outputValueFeature = *processor.getOutputFeature();
+    babelwires::ValueFeature& inputValueFeature = processor.getInputFeature();
+    const babelwires::ValueFeature& outputValueFeature = processor.getOutputFeature();
 
     babelwires::ValueFeature& inputArrayFeature =
         inputValueFeature.getChildFromStep(babelwires::PathStep(seqwires::RepeatProcessor::getCommonArrayId()))
@@ -75,7 +75,7 @@ TEST(RepeatProcessorTest, processor) {
     EXPECT_EQ(outputArray.getEntry(0).get().getDuration(), 0);
 
     {
-        babelwires::BackupScope scope(processor.getInputFeature()->is<babelwires::SimpleValueFeature>());
+        babelwires::BackupScope scope(processor.getInputFeature().is<babelwires::SimpleValueFeature>());
         seqwires::Track track;
         testUtils::addSimpleNotes({60, 62, 64, 65}, track);
         inputArray.getEntry(0).set(std::move(track));
@@ -85,18 +85,18 @@ TEST(RepeatProcessorTest, processor) {
     testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65, 60, 62, 64, 65},
                                outputArray.getEntry(0).get());
 
-    processor.getInputFeature()->clearChanges();
+    processor.getInputFeature().clearChanges();
     {
-        babelwires::BackupScope scope(processor.getInputFeature()->is<babelwires::SimpleValueFeature>());
+        babelwires::BackupScope scope(processor.getInputFeature().is<babelwires::SimpleValueFeature>());
         input.getCount().set(1);
     }
     processor.process(testEnvironment.m_log);
 
     testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65}, outputArray.getEntry(0).get());
 
-    processor.getInputFeature()->clearChanges();
+    processor.getInputFeature().clearChanges();
     {
-        babelwires::BackupScope scope(processor.getInputFeature()->is<babelwires::SimpleValueFeature>());
+        babelwires::BackupScope scope(processor.getInputFeature().is<babelwires::SimpleValueFeature>());
         inputArray.setSize(2);
         {
             seqwires::Track track;
