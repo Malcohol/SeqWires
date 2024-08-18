@@ -7,15 +7,17 @@
  **/
 #pragma once
 
-#include <BabelWiresLib/Types/Rational/rationalFeature.hpp>
+#include <SeqWiresLib/Types/duration.hpp>
+
+#include <BabelWiresLib/Features/simpleValueFeature.hpp>
 
 namespace seqwires {
 
     /// The DurationFeature is an RationalFeature describing a duration in whole note units.
-    class DurationFeature : public babelwires::RationalFeature {
+    class DurationFeature : public babelwires::SimpleValueFeature {
       public:
         DurationFeature()
-            : babelwires::RationalFeature(0, std::numeric_limits<babelwires::Rational::ComponentType>::max()) {}
+            : babelwires::SimpleValueFeature(Duration::getThisIdentifier()) {}
     };
 
 } // namespace seqwires

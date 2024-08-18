@@ -1,13 +1,13 @@
 #include <gtest/gtest.h>
 
-#include <SeqWiresLib/Types/Track/trackFeature.hpp>
 #include <SeqWiresLib/Functions/fingeredChordsFunction.hpp>
 #include <SeqWiresLib/Processors/fingeredChordsProcessor.hpp>
 #include <SeqWiresLib/Types/Track/TrackEvents/noteEvents.hpp>
+#include <SeqWiresLib/Types/Track/trackFeature.hpp>
 #include <SeqWiresLib/libRegistration.hpp>
 
-#include <BabelWiresLib/Types/Enum/enumFeature.hpp>
 #include <BabelWiresLib/Features/rootFeature.hpp>
+#include <BabelWiresLib/Types/Enum/enumFeature.hpp>
 
 #include <Tests/BabelWiresLib/TestUtils/testEnvironment.hpp>
 #include <Tests/TestUtils/seqTestUtils.hpp>
@@ -674,20 +674,13 @@ TEST(FingeredChordsTest, processor) {
 
     seqwires::FingeredChordsProcessor processor(testEnvironment.m_projectContext);
 
-    processor.getInputFeature()->setToDefault();
-    processor.getOutputFeature()->setToDefault();
+    processor.getInputFeature().setToDefault();
+    processor.getOutputFeature().setToDefault();
 
-    auto* sustainPolicy =
-        processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Policy")).as<babelwires::EnumFeature>();
-    auto* inputTrack =
-        processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Notes")).as<seqwires::TrackFeature>();
-    auto* outputTrack =
-        processor.getOutputFeature()->getChildFromStep(babelwires::PathStep("Chords")).as<seqwires::TrackFeature>();
-    ASSERT_NE(inputTrack, nullptr);
-    ASSERT_NE(outputTrack, nullptr);
+    auto input = seqwires::FingeredChordsProcessorInput::Instance(processor.getInputFeature());
+    const auto output = seqwires::FingeredChordsProcessorOutput::ConstInstance(processor.getOutputFeature());
 
-    EXPECT_EQ(inputTrack->get().getDuration(), 0);
-    EXPECT_EQ(outputTrack->get().getDuration(), 0);
+    input.getPolicy().set(seqwires::FingeredChordsSustainPolicyEnum::Value::Notes);
 
     {
         seqwires::Track track;
@@ -703,7 +696,7 @@ TEST(FingeredChordsTest, processor) {
         track.addEvent(seqwires::NoteOffEvent(1, 62));
         track.addEvent(seqwires::NoteOffEvent(0, 65));
         track.addEvent(seqwires::NoteOffEvent(0, 69));
-        inputTrack->set(std::move(track));
+        input.getNotes().set(std::move(track));
     }
 
     processor.process(testEnvironment.m_log);
@@ -713,10 +706,13 @@ TEST(FingeredChordsTest, processor) {
             {seqwires::PitchClass::Value::C, seqwires::ChordType::Value::M, 1},
             {seqwires::PitchClass::Value::D, seqwires::ChordType::Value::m, 1, 1},
         },
-        outputTrack->get());
+        output.getChords().get());
 
-    sustainPolicy->set("Hold");
-
+    processor.getInputFeature().clearChanges();
+    {
+        babelwires::BackupScope scope(processor.getInputFeature().is<babelwires::SimpleValueFeature>());
+        input.getPolicy().set(seqwires::FingeredChordsSustainPolicyEnum::Value::Hold);
+    }
     processor.process(testEnvironment.m_log);
 
     testUtils::testChords(
@@ -724,9 +720,11 @@ TEST(FingeredChordsTest, processor) {
             {seqwires::PitchClass::Value::C, seqwires::ChordType::Value::M, 2},
             {seqwires::PitchClass::Value::D, seqwires::ChordType::Value::m, 1},
         },
-        outputTrack->get());
+        output.getChords().get());
 
+    processor.getInputFeature().clearChanges();
     {
+        babelwires::BackupScope scope(processor.getInputFeature().is<babelwires::SimpleValueFeature>());
         seqwires::Track track;
         track.addEvent(seqwires::NoteOnEvent(0, 60));
         track.addEvent(seqwires::NoteOnEvent(0, 64));
@@ -740,9 +738,8 @@ TEST(FingeredChordsTest, processor) {
         track.addEvent(seqwires::NoteOffEvent(1, 64));
         track.addEvent(seqwires::NoteOffEvent(0, 67));
         track.addEvent(seqwires::NoteOffEvent(0, 71));
-        inputTrack->set(std::move(track));
+        input.getNotes().set(std::move(track));
     }
-
     processor.process(testEnvironment.m_log);
 
     testUtils::testChords(
@@ -750,5 +747,5 @@ TEST(FingeredChordsTest, processor) {
             {seqwires::PitchClass::Value::C, seqwires::ChordType::Value::M, 2},
             {seqwires::PitchClass::Value::E, seqwires::ChordType::Value::m, 1},
         },
-        outputTrack->get());
+        output.getChords().get());
 }

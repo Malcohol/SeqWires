@@ -1,37 +1,51 @@
 /**
- * A processor which extracts a section of sequence data from a track. 
- * 
+ * A processor which extracts a section of sequence data from a track.
+ *
  * (C) 2021 Malcolm Tyrrell
- * 
+ *
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
 #pragma once
 
 #include <SeqWiresLib/Types/Track/trackFeature.hpp>
 
+#include <BabelWiresLib/Instance/instance.hpp>
 #include <BabelWiresLib/Processors/parallelProcessor.hpp>
-
-namespace babelwires {
-    class RationalFeature;
-    class ArrayFeature;
-} // namespace babelwires
+#include <BabelWiresLib/Processors/processorFactory.hpp>
 
 namespace seqwires {
 
-    /// A processor which limits a track to events between certain points.
-    class ExcerptProcessor : public babelwires::ParallelProcessor<seqwires::TrackFeature, seqwires::TrackFeature> {
+    class ExcerptProcessorInput : public babelwires::ParallelProcessorInputBase {
       public:
+        PRIMITIVE_TYPE("ExcerptTrckIn", "Excerpt In", "68577705-b5c2-499c-a2db-8ab5f63e5728", 1);
+
+        ExcerptProcessorInput();
+
+        DECLARE_INSTANCE_BEGIN(ExcerptProcessorInput)
+        DECLARE_INSTANCE_FIELD(Start, babelwires::RationalType)
+        DECLARE_INSTANCE_FIELD(Duratn, babelwires::RationalType)
+        // No need to mention the array here.
+        DECLARE_INSTANCE_END()
+    };
+
+    class ExcerptProcessorOutput : public babelwires::ParallelProcessorOutputBase {
+      public:
+        PRIMITIVE_TYPE("ExcerptTrckOut", "Excerpt Out", "73469491-111c-441a-b89c-2f8aceaa640c", 1);
+
+        ExcerptProcessorOutput();
+    };
+
+    /// A processor which limits a track to events between certain points.
+    class ExcerptProcessor : public babelwires::ParallelProcessor {
+      public:
+        BW_PROCESSOR_WITH_DEFAULT_FACTORY("TrackExcerpt", "Excerpt", "83c74dba-7861-447c-9abb-0b4439061baf");
+
         ExcerptProcessor(const babelwires::ProjectContext& projectContext);
 
-        void processEntry(babelwires::UserLogger& userLogger, const seqwires::TrackFeature& input, seqwires::TrackFeature& output) const override;
+        static babelwires::ShortId getCommonArrayId();
 
-        struct Factory : public babelwires::CommonProcessorFactory<ExcerptProcessor> {
-            Factory();
-        };
-
-      private:
-        babelwires::RationalFeature* m_start;
-        babelwires::RationalFeature* m_duration;
+        void processEntry(babelwires::UserLogger& userLogger, const babelwires::ValueFeature& inputFeature,
+                          const babelwires::ValueFeature& input, babelwires::ValueFeature& output) const override;
     };
 
 } // namespace seqwires

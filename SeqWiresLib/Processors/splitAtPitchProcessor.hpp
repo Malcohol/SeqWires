@@ -7,31 +7,51 @@
  **/
 #pragma once
 
-#include <BabelWiresLib/Processors/commonProcessor.hpp>
+#include <SeqWiresLib/Types/Track/trackInstance.hpp>
+#include <SeqWiresLib/Types/Track/trackType.hpp>
+#include <SeqWiresLib/pitch.hpp>
 
-namespace babelwires {
-    class EnumFeature;
-} // namespace babelwires
+#include <BabelWiresLib/Instance/instance.hpp>
+#include <BabelWiresLib/Processors/processorFactory.hpp>
+#include <BabelWiresLib/Processors/processor.hpp>
+#include <BabelWiresLib/TypeSystem/primitiveType.hpp>
+#include <BabelWiresLib/Types/Record/recordType.hpp>
 
 namespace seqwires {
-    class TrackFeature;
-
-    /// A processor which limits a track to events between certain points.
-    class SplitAtPitchProcessor : public babelwires::CommonProcessor {
+    class SplitAtPitchProcessorInput : public babelwires::RecordType {
       public:
+        PRIMITIVE_TYPE("PitchSplitIn", "Split At Pitch Input", "f901af3a-c27b-449c-961a-8f43dee7d9a6", 1);
+
+        SplitAtPitchProcessorInput();
+
+        DECLARE_INSTANCE_BEGIN(SplitAtPitchProcessorInput)
+        DECLARE_INSTANCE_FIELD(Pitch, seqwires::PitchEnum)
+        DECLARE_INSTANCE_FIELD(Input, seqwires::TrackType)
+        DECLARE_INSTANCE_END()
+    };
+
+    class SplitAtPitchProcessorOutput : public babelwires::RecordType {
+      public:
+        PRIMITIVE_TYPE("PitchSplitOut", "Split At Pitch Output", "50f790e1-0ef3-4f34-ad14-5a6762772e19", 1);
+
+        SplitAtPitchProcessorOutput();
+
+        DECLARE_INSTANCE_BEGIN(SplitAtPitchProcessorOutput)
+        DECLARE_INSTANCE_FIELD(Above, seqwires::TrackType)
+        DECLARE_INSTANCE_FIELD(Below, seqwires::TrackType)
+        DECLARE_INSTANCE_FIELD(Other, seqwires::TrackType)
+        DECLARE_INSTANCE_END()
+    };
+
+    class SplitAtPitchProcessor : public babelwires::Processor {
+      public:
+        BW_PROCESSOR_WITH_DEFAULT_FACTORY("SplitAtPitchProcessor", "Split At Pitch", "c7b79e31-98f4-4d20-b946-f55113eb3b75");
+
         SplitAtPitchProcessor(const babelwires::ProjectContext& projectContext);
 
-        virtual void process(babelwires::UserLogger& userLogger) override;
-
-        struct Factory : public babelwires::CommonProcessorFactory<SplitAtPitchProcessor> {
-            Factory();
-        };
-      private:
-        babelwires::EnumFeature* m_pitch;
-        TrackFeature* m_trackIn;
-        TrackFeature* m_equalOrAboveTrackOut;
-        TrackFeature* m_belowTrackOut;
-        TrackFeature* m_otherTrackOut;
+      protected:
+        void processValue(babelwires::UserLogger& userLogger, const babelwires::ValueFeature& inputFeature,
+                          babelwires::ValueFeature& outputFeature) const override;
     };
 
 } // namespace seqwires

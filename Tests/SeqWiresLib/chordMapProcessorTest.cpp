@@ -6,14 +6,15 @@
 #include <SeqWiresLib/Types/Track/track.hpp>
 #include <SeqWiresLib/Types/Track/trackType.hpp>
 #include <SeqWiresLib/chord.hpp>
+#include <SeqWiresLib/libRegistration.hpp>
 
+#include <BabelWiresLib/TypeSystem/typeSystem.hpp>
 #include <BabelWiresLib/Types/Enum/addBlankToEnum.hpp>
+#include <BabelWiresLib/Types/Enum/enumValue.hpp>
 #include <BabelWiresLib/Types/Map/MapEntries/allToSameFallbackMapEntryData.hpp>
 #include <BabelWiresLib/Types/Map/MapEntries/oneToOneMapEntryData.hpp>
-#include <BabelWiresLib/Types/Map/mapValue.hpp>
 #include <BabelWiresLib/Types/Map/mapFeature.hpp>
-#include <BabelWiresLib/Types/Enum/enumValue.hpp>
-#include <BabelWiresLib/TypeSystem/typeSystem.hpp>
+#include <BabelWiresLib/Types/Map/mapValue.hpp>
 
 #include <Tests/BabelWiresLib/TestUtils/testEnvironment.hpp>
 #include <Tests/TestUtils/seqTestUtils.hpp>
@@ -214,10 +215,7 @@ TEST(ChordMapProcessorTest, simpleFunction) {
 
 TEST(ChordMapProcessorTest, processor) {
     testUtils::TestEnvironment testEnvironment;
-    
-    testEnvironment.m_typeSystem.addEntry<seqwires::DefaultTrackType>();
-    testEnvironment.m_typeSystem.addEntry<seqwires::ChordType>();
-    testEnvironment.m_typeSystem.addEntry<seqwires::PitchClass>();
+    seqwires::registerLib(testEnvironment.m_projectContext);
 
     const seqwires::ChordType& chordTypeEnum =
         testEnvironment.m_typeSystem.getEntryByType<seqwires::ChordType>().is<seqwires::ChordType>();
@@ -226,38 +224,36 @@ TEST(ChordMapProcessorTest, processor) {
 
     seqwires::ChordMapProcessor processor(testEnvironment.m_projectContext);
 
-    processor.getInputFeature()->setToDefault();
-    processor.getOutputFeature()->setToDefault();
+    processor.getInputFeature().setToDefault();
+    processor.getOutputFeature().setToDefault();
 
-    auto* chordTypeMapFeature =
-        processor.getInputFeature()->getChildFromStep(babelwires::PathStep("TypMap")).as<babelwires::MapFeature>();
-    auto* pitchClassMapFeature =
-        processor.getInputFeature()->getChildFromStep(babelwires::PathStep("RtMap")).as<babelwires::MapFeature>();
-    auto* inputArray =
-        processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Tracks")).as<babelwires::ArrayFeature>();
-    auto* outputArray =
-        processor.getOutputFeature()->getChildFromStep(babelwires::PathStep("Tracks")).as<babelwires::ArrayFeature>();
-    ASSERT_NE(chordTypeMapFeature, nullptr);
-    ASSERT_NE(pitchClassMapFeature, nullptr);
-    ASSERT_NE(inputArray, nullptr);
-    ASSERT_NE(outputArray, nullptr);
+    babelwires::ValueFeature& inputValueFeature = processor.getInputFeature();
+    const babelwires::ValueFeature& outputValueFeature = processor.getOutputFeature();
 
-    EXPECT_EQ(inputArray->getNumFeatures(), 1);
-    EXPECT_EQ(outputArray->getNumFeatures(), 1);
+    babelwires::ValueFeature& inputArrayFeature =
+        inputValueFeature.getChildFromStep(babelwires::PathStep(seqwires::ChordMapProcessor::getCommonArrayId()))
+            .is<babelwires::ValueFeature>();
+    const babelwires::ValueFeature& outputArrayFeature =
+        outputValueFeature.getChildFromStep(babelwires::PathStep(seqwires::ChordMapProcessor::getCommonArrayId()))
+            .is<babelwires::ValueFeature>();
 
-    auto getInputTrack = [&inputArray](int i) { return inputArray->getChildFromStep(i).as<seqwires::TrackFeature>(); };
-    auto getOutputTrack = [&outputArray](int i) {
-        return outputArray->getChildFromStep(i).as<seqwires::TrackFeature>();
-    };
+    babelwires::ArrayInstanceImpl<babelwires::ValueFeature, seqwires::TrackType> inputArray(inputArrayFeature);
+    const babelwires::ArrayInstanceImpl<const babelwires::ValueFeature, seqwires::TrackType> outputArray(
+        outputArrayFeature);
 
-    ASSERT_NE(getInputTrack(0), nullptr);
-    ASSERT_NE(getOutputTrack(0), nullptr);
+    seqwires::ChordMapProcessorInput::Instance input(inputValueFeature);
 
-    chordTypeMapFeature->setValue(getTestChordTypeMap(testEnvironment.m_typeSystem));
-    pitchClassMapFeature->setValue(getTestPitchClassMap(testEnvironment.m_typeSystem));
-    getInputTrack(0)->set(getTestInputTrack());
+    EXPECT_EQ(inputArray.getSize(), 1);
+    EXPECT_EQ(outputArray.getSize(), 1);
+
+    EXPECT_EQ(inputArray.getEntry(0).get().getDuration(), 0);
+    EXPECT_EQ(outputArray.getEntry(0).get().getDuration(), 0);
+
+    input.getTypMap()->setValue(getTestChordTypeMap(testEnvironment.m_typeSystem));
+    input.getRtMap()->setValue(getTestPitchClassMap(testEnvironment.m_typeSystem));
+    inputArray.getEntry(0).set(getTestInputTrack());
 
     processor.process(testEnvironment.m_log);
 
-    testOutputTrack(getOutputTrack(0)->get());
+    testOutputTrack(outputArray.getEntry(0).get());
 }

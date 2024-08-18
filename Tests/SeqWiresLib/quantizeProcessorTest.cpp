@@ -1,9 +1,9 @@
 #include <gtest/gtest.h>
 
-#include <SeqWiresLib/Types/Track/trackFeature.hpp>
 #include <SeqWiresLib/Functions/quantizeFunction.hpp>
 #include <SeqWiresLib/Processors/quantizeProcessor.hpp>
 #include <SeqWiresLib/Types/Track/TrackEvents/noteEvents.hpp>
+#include <SeqWiresLib/libRegistration.hpp>
 
 #include <BabelWiresLib/Types/Rational/rationalFeature.hpp>
 
@@ -70,40 +70,38 @@ TEST(QuantizeProcessorTest, funcCollapsedGroup) {
 
 TEST(QuantizeProcessorTest, processor) {
     testUtils::TestEnvironment testEnvironment;
-    testEnvironment.m_typeSystem.addEntry<seqwires::DefaultTrackType>();
+    seqwires::registerLib(testEnvironment.m_projectContext);
 
     seqwires::QuantizeProcessor processor(testEnvironment.m_projectContext);
 
-    processor.getInputFeature()->setToDefault();
-    processor.getOutputFeature()->setToDefault();
+    processor.getInputFeature().setToDefault();
+    processor.getOutputFeature().setToDefault();
 
-    auto* beatFeature =
-        processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Beat")).as<babelwires::RationalFeature>();
-    auto* inputArray =
-        processor.getInputFeature()->getChildFromStep(babelwires::PathStep("Tracks")).as<babelwires::ArrayFeature>();
-    auto* outputArray =
-        processor.getOutputFeature()->getChildFromStep(babelwires::PathStep("Tracks")).as<babelwires::ArrayFeature>();
-    ASSERT_NE(beatFeature, nullptr);
-    ASSERT_NE(inputArray, nullptr);
-    ASSERT_NE(outputArray, nullptr);
-    EXPECT_GT(beatFeature->get(), 0);
-    beatFeature->set(babelwires::Rational(1, 8));
+    babelwires::ValueFeature& inputValueFeature = processor.getInputFeature();
+    const babelwires::ValueFeature& outputValueFeature = processor.getOutputFeature();
 
-    EXPECT_EQ(inputArray->getNumFeatures(), 1);
-    EXPECT_EQ(outputArray->getNumFeatures(), 1);
+    babelwires::ValueFeature& inputArrayFeature =
+        inputValueFeature.getChildFromStep(babelwires::PathStep(seqwires::QuantizeProcessor::getCommonArrayId()))
+            .is<babelwires::ValueFeature>();
+    const babelwires::ValueFeature& outputArrayFeature =
+        outputValueFeature.getChildFromStep(babelwires::PathStep(seqwires::QuantizeProcessor::getCommonArrayId()))
+            .is<babelwires::ValueFeature>();
 
-    auto getInputTrack = [&inputArray](int i) { return inputArray->getChildFromStep(i).as<seqwires::TrackFeature>(); };
-    auto getOutputTrack = [&outputArray](int i) {
-        return outputArray->getChildFromStep(i).as<seqwires::TrackFeature>();
-    };
+    babelwires::ArrayInstanceImpl<babelwires::ValueFeature, seqwires::TrackType> inputArray(inputArrayFeature);
+    const babelwires::ArrayInstanceImpl<const babelwires::ValueFeature, seqwires::TrackType> outputArray(
+        outputArrayFeature);
 
-    ASSERT_NE(getInputTrack(0), nullptr);
-    ASSERT_NE(getOutputTrack(0), nullptr);
+    seqwires::QuantizeProcessorInput::Instance input(inputValueFeature);
 
-    EXPECT_EQ(getInputTrack(0)->get().getDuration(), 0);
-    EXPECT_EQ(getOutputTrack(0)->get().getDuration(), 0);
+    EXPECT_EQ(inputArray.getSize(), 1);
+    EXPECT_EQ(outputArray.getSize(), 1);
+
+    EXPECT_EQ(inputArray.getEntry(0).get().getDuration(), 0);
+    EXPECT_EQ(outputArray.getEntry(0).get().getDuration(), 0);
 
     {
+        babelwires::BackupScope scope(processor.getInputFeature().is<babelwires::SimpleValueFeature>());
+        input.getBeat().set(babelwires::Rational(1, 8));
         seqwires::Track track;
         testUtils::addNotes(
             {
@@ -113,24 +111,32 @@ TEST(QuantizeProcessorTest, processor) {
                 {65, babelwires::Rational(1, 17), babelwires::Rational(22, 17)},
             },
             track);
-        getInputTrack(0)->set(std::move(track));
+        inputArray.getEntry(0).set(std::move(track));
     }
     processor.process(testEnvironment.m_log);
+
     testUtils::testNotes({{60, 0, babelwires::Rational(1, 1)},
                           {62, 0, babelwires::Rational(5, 8)},
                           {64, 0, babelwires::Rational(9, 8)},
                           {65, 0, babelwires::Rational(5, 4)}},
-                         getOutputTrack(0)->get());
+                         outputArray.getEntry(0).get());
 
-    beatFeature->set(babelwires::Rational(1, 4));
+    processor.getInputFeature().clearChanges();
+    {
+        babelwires::BackupScope scope(processor.getInputFeature().is<babelwires::SimpleValueFeature>());
+        input.getBeat().set(babelwires::Rational(1, 4));
+    }
     processor.process(testEnvironment.m_log);
+
     testUtils::testNotes({{60, 0, babelwires::Rational(1, 1)},
                           {62, 0, babelwires::Rational(1, 2)},
                           {64, babelwires::Rational(1, 4), babelwires::Rational(1, 1)},
                           {65, 0, babelwires::Rational(5, 4)}},
-                         getOutputTrack(0)->get());
+                         outputArray.getEntry(0).get());
 
+    processor.getInputFeature().clearChanges();
     {
+        babelwires::BackupScope scope(processor.getInputFeature().is<babelwires::SimpleValueFeature>());
         seqwires::Track track;
         testUtils::addNotes(
             {
@@ -140,14 +146,13 @@ TEST(QuantizeProcessorTest, processor) {
                 {65, babelwires::Rational(1, 17), babelwires::Rational(22, 17)},
             },
             track);
-        getInputTrack(0)->set(std::move(track));
+        inputArray.getEntry(0).set(std::move(track));
     }
-
     processor.process(testEnvironment.m_log);
+
     testUtils::testNotes({{60, 0, babelwires::Rational(1, 1)},
                           {62, 0, babelwires::Rational(3, 2)},
                           {64, babelwires::Rational(1, 4), babelwires::Rational(1, 1)},
                           {65, 0, babelwires::Rational(5, 4)}},
-                         getOutputTrack(0)->get());
-
+                         outputArray.getEntry(0).get());
 }

@@ -151,7 +151,7 @@
                 <identifier id="Meta&apos;1" name="Metadata" uuid="72bbbcee-2b53-4fb2-bfb8-4f5e495f9166"/>
                 <identifier id="Name&apos;1" name="Name" uuid="c2e4910f-d006-4a93-97a7-ae5973157ec8"/>
                 <identifier id="Offset&apos;1" name="Pitch Offset" uuid="5cfa1541-f25e-4671-ac11-2ff71c883418"/>
-                <identifier id="Output&apos;1" name="Output Track" uuid="873d5d66-c5ec-46a4-9aba-f5f4223bdfd4"/>
+                <identifier id="Output&apos;1" name="Output track" uuid="873d5d66-c5ec-46a4-9aba-f5f4223bdfd4"/>
                 <identifier id="RepeatTracks&apos;1" name="Repeat" uuid="6c5b3e89-bb57-4c90-8a66-1d8cdeb29db9"/>
                 <identifier id="SilentTrack&apos;1" name="Silence" uuid="c59e4643-b7d8-430b-980b-bd81b5aa007b"/>
                 <identifier id="SmfFile&apos;1" name="Standard MIDI file (out)" uuid="f29cd3b0-8a46-4a21-bb7d-53acd6702944"/>

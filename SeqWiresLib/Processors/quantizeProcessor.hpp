@@ -1,5 +1,5 @@
 /**
- * A processor which repeats quantizes a track to a given beat.
+ * A processor which quantizes quantizes a track to a given beat.
  *
  * (C) 2021 Malcolm Tyrrell
  *
@@ -7,29 +7,45 @@
  **/
 #pragma once
 
-#include <SeqWiresLib/Types/Track/trackFeature.hpp>
+#include <SeqWiresLib/instance.hpp>
 
 #include <BabelWiresLib/Processors/parallelProcessor.hpp>
+#include <BabelWiresLib/Types/Rational/rationalType.hpp>
+#include <BabelWiresLib/Processors/processorFactory.hpp>
 
-namespace babelwires {
-    class RationalFeature;
-    class ArrayFeature;
-} // namespace babelwires
 
 namespace seqwires {
 
-    /// A processor which limits a track to events between certain points.
-    class QuantizeProcessor : public babelwires::ParallelProcessor<seqwires::TrackFeature, seqwires::TrackFeature> {
+    class QuantizeProcessorInput : public babelwires::ParallelProcessorInputBase {
       public:
+        PRIMITIVE_TYPE("QuantTrcksIn", "Quantize In", "86a46b16-69a3-41bb-bbb3-19f8cb0a4e4d", 1);
+
+        QuantizeProcessorInput();
+
+        DECLARE_INSTANCE_BEGIN(QuantizeProcessorInput)
+        DECLARE_INSTANCE_FIELD(Beat, babelwires::RationalType)
+        // No need to mention the array here.
+        DECLARE_INSTANCE_END()
+    };
+
+    class QuantizeProcessorOutput : public babelwires::ParallelProcessorOutputBase {
+      public:
+        PRIMITIVE_TYPE("QuantTrcksOut", "Quantize Out", "89feb462-63b1-473a-bc77-29540bda43f7", 1);
+
+        QuantizeProcessorOutput();
+    };
+
+    /// A processor which quantizes the events in a track a specified number of times.
+    class QuantizeProcessor : public babelwires::ParallelProcessor {
+      public:
+        BW_PROCESSOR_WITH_DEFAULT_FACTORY("QuantizeTracks", "Quantize", "1ae89077-2cfb-4071-910c-2f5dcfc85b17");
+
         QuantizeProcessor(const babelwires::ProjectContext& projectContext);
 
-        void processEntry(babelwires::UserLogger& userLogger, const seqwires::TrackFeature& input, seqwires::TrackFeature& output) const override;
+        static babelwires::ShortId getCommonArrayId();
 
-        struct Factory : public babelwires::CommonProcessorFactory<QuantizeProcessor> {
-            Factory();
-        };
-      private:
-        babelwires::RationalFeature* m_beat;
+        void processEntry(babelwires::UserLogger& userLogger, const babelwires::ValueFeature& inputFeature,
+                          const babelwires::ValueFeature& input, babelwires::ValueFeature& output) const override;
     };
 
 } // namespace seqwires

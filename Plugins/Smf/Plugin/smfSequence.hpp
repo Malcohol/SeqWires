@@ -32,7 +32,7 @@ namespace smf {
         DECLARE_INSTANCE_BEGIN(SmfSequence)
         DECLARE_INSTANCE_FIELD(Meta, MidiMetadata)
         DECLARE_INSTANCE_FIELD(Trcks0, RecordOfMidiTracks);
-        DECLARE_INSTANCE_FIELD(Trcks1, MidiTrackAndChannelArray);
+        DECLARE_INSTANCE_ARRAY_FIELD(Trcks1, MidiTrackAndChannel);
         DECLARE_INSTANCE_END()
     };
 }

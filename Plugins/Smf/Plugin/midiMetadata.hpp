@@ -9,7 +9,7 @@
 
 #include <Plugins/Smf/Plugin/gmSpec.hpp>
 
-#include <SeqWiresLib/Features/tempoFeature.hpp>
+#include <SeqWiresLib/Types/tempo.hpp>
 
 #include <BabelWiresLib/Types/Record/recordType.hpp>
 #include <BabelWiresLib/Instance/instance.hpp>

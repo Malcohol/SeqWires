@@ -1,5 +1,5 @@
 /**
- * A processor which repeats sequence data a number of times.
+ * A processor that adjusts the pitch of note events.
  *
  * (C) 2021 Malcolm Tyrrell
  *
@@ -7,17 +7,29 @@
  **/
 #include <SeqWiresLib/Processors/transposeProcessor.hpp>
 
-#include <SeqWiresLib/Types/Track/trackFeature.hpp>
 #include <SeqWiresLib/Functions/transposeFunction.hpp>
+#include <SeqWiresLib/Types/Track/trackFeature.hpp>
+#include <SeqWiresLib/Types/Track/trackInstance.hpp>
 
 #include <BabelWiresLib/Features/arrayFeature.hpp>
 #include <BabelWiresLib/Features/featureMixins.hpp>
 #include <BabelWiresLib/Features/rootFeature.hpp>
 #include <BabelWiresLib/Types/Int/intFeature.hpp>
+#include <BabelWiresLib/Types/Int/intTypeConstructor.hpp>
+#include <BabelWiresLib/Types/Int/intValue.hpp>
 
 #include <Common/Identifiers/registeredIdentifier.hpp>
 
 #include <set>
+
+seqwires::TransposeProcessorInput::TransposeProcessorInput()
+    : babelwires::ParallelProcessorInputBase(
+          {{BW_SHORT_ID("Offset", "Pitch Offset", "5cfa1541-f25e-4671-ac11-2ff71c883418"),
+            babelwires::TypeRef{
+                babelwires::IntTypeConstructor::getThisIdentifier(),
+                babelwires::TypeConstructorArguments{
+                    {}, {babelwires::IntValue(-127), babelwires::IntValue(127), babelwires::IntValue(0)}}}}},
+          TransposeProcessor::getCommonArrayId(), seqwires::DefaultTrackType::getThisIdentifier()) {}
 
 namespace {
     using TransposeArrayFeature =
@@ -25,18 +37,24 @@ namespace {
 } // namespace
 
 seqwires::TransposeProcessor::TransposeProcessor(const babelwires::ProjectContext& projectContext)
-    : babelwires::ParallelProcessor<seqwires::TrackFeature, seqwires::TrackFeature>(projectContext) {
-    m_pitchOffset =
-        m_inputFeature->addField(std::make_unique<babelwires::IntFeature>(-127, 127),
-                                 BW_SHORT_ID("Offset", "Pitch Offset", "5cfa1541-f25e-4671-ac11-2ff71c883418"));
-    addArrayFeature(BW_SHORT_ID("Tracks", "Tracks", "83f05b66-7890-4542-8344-1409e50539b5"));
+    : babelwires::ParallelProcessor(projectContext, TransposeProcessorInput::getThisIdentifier(),
+                                         TransposeProcessorOutput::getThisIdentifier()) {}
+
+seqwires::TransposeProcessorOutput::TransposeProcessorOutput()
+    : babelwires::ParallelProcessorOutputBase(TransposeProcessor::getCommonArrayId(),
+                                                   seqwires::DefaultTrackType::getThisIdentifier()) {}
+
+babelwires::ShortId seqwires::TransposeProcessor::getCommonArrayId() {
+    return BW_SHORT_ID("Tracks", "Tracks", "83f05b66-7890-4542-8344-1409e50539b5");
 }
 
-seqwires::TransposeProcessor::Factory::Factory()
-    : CommonProcessorFactory(BW_LONG_ID("TransposeTracks", "Transpose", "3414f6cf-290a-421e-bce5-6a98ed0483af"), 1) {}
+void seqwires::TransposeProcessor::processEntry(babelwires::UserLogger& userLogger,
+                                                const babelwires::ValueFeature& inputFeature,
+                                                const babelwires::ValueFeature& inputEntry,
+                                                babelwires::ValueFeature& outputEntry) const {
+    TransposeProcessorInput::ConstInstance input{inputFeature};
+    babelwires::ConstInstance<TrackType> entryIn{inputEntry};
+    babelwires::Instance<TrackType> entryOut{outputEntry};
 
-void seqwires::TransposeProcessor::processEntry(babelwires::UserLogger& userLogger, const seqwires::TrackFeature& input,
-                                                seqwires::TrackFeature& output) const {
-    auto trackOut = transposeTrack(input.get(), m_pitchOffset->get());
-    output.set(std::move(trackOut));
+    entryOut.set(transposeTrack(entryIn.get(), input.getOffset().get()));
 }
