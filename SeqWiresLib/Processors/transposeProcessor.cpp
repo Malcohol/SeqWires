@@ -11,8 +11,6 @@
 #include <SeqWiresLib/Types/Track/trackFeature.hpp>
 #include <SeqWiresLib/Types/Track/trackInstance.hpp>
 
-#include <BabelWiresLib/Features/arrayFeature.hpp>
-#include <BabelWiresLib/Features/featureMixins.hpp>
 #include <BabelWiresLib/Features/rootFeature.hpp>
 #include <BabelWiresLib/Types/Int/intFeature.hpp>
 #include <BabelWiresLib/Types/Int/intTypeConstructor.hpp>
@@ -30,11 +28,6 @@ seqwires::TransposeProcessorInput::TransposeProcessorInput()
                 babelwires::TypeConstructorArguments{
                     {}, {babelwires::IntValue(-127), babelwires::IntValue(127), babelwires::IntValue(0)}}}}},
           TransposeProcessor::getCommonArrayId(), seqwires::DefaultTrackType::getThisIdentifier()) {}
-
-namespace {
-    using TransposeArrayFeature =
-        babelwires::HasStaticSizeRange<babelwires::StandardArrayFeature<seqwires::TrackFeature>, 1, 16>;
-} // namespace
 
 seqwires::TransposeProcessor::TransposeProcessor(const babelwires::ProjectContext& projectContext)
     : babelwires::ParallelProcessor(projectContext, TransposeProcessorInput::getThisIdentifier(),
