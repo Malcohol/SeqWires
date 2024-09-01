@@ -5,10 +5,11 @@
  *
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
-#include <SeqWiresLib/Features/durationFeature.hpp>
-#include <SeqWiresLib/Functions/excerptFunction.hpp>
 #include <SeqWiresLib/Processors/excerptProcessor.hpp>
+
+#include <SeqWiresLib/Functions/excerptFunction.hpp>
 #include <SeqWiresLib/Types/Track/trackInstance.hpp>
+#include <SeqWiresLib/Types/duration.hpp>
 
 #include <BabelWiresLib/Types/Rational/rationalValue.hpp>
 
