@@ -5,8 +5,6 @@
 #include <SeqWiresLib/Types/Track/TrackEvents/noteEvents.hpp>
 #include <SeqWiresLib/libRegistration.hpp>
 
-#include <BabelWiresLib/Types/Rational/rationalFeature.hpp>
-
 #include <Tests/BabelWiresLib/TestUtils/testEnvironment.hpp>
 #include <Tests/TestUtils/seqTestUtils.hpp>
 

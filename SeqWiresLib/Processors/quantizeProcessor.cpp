@@ -12,7 +12,6 @@
 
 #include <BabelWiresLib/Features/arrayFeature.hpp>
 #include <BabelWiresLib/Features/rootFeature.hpp>
-#include <BabelWiresLib/Types/Rational/rationalFeature.hpp>
 #include <BabelWiresLib/Types/Rational/rationalTypeConstructor.hpp>
 #include <BabelWiresLib/Types/Rational/rationalValue.hpp>
 
