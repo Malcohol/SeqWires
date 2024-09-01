@@ -11,7 +11,6 @@
 
 #include <BabelWiresLib/Features/rootFeature.hpp>
 #include <BabelWiresLib/Types/Array/arrayTypeConstructor.hpp>
-#include <BabelWiresLib/Types/Enum/enumFeature.hpp>
 #include <BabelWiresLib/Types/Int/intTypeConstructor.hpp>
 
 seqwires::MonophonicSubtracksProcessorInput::MonophonicSubtracksProcessorInput()

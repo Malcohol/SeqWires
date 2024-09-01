@@ -13,7 +13,6 @@
 #include <BabelWiresLib/Features/arrayFeature.hpp>
 #include <BabelWiresLib/Features/modelExceptions.hpp>
 #include <BabelWiresLib/Features/rootFeature.hpp>
-#include <BabelWiresLib/Types/Enum/enumFeature.hpp>
 
 #include <Common/Identifiers/registeredIdentifier.hpp>
 
