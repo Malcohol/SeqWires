@@ -13,6 +13,7 @@
 
 #include <BabelWiresLib/Types/Record/recordType.hpp>
 #include <BabelWiresLib/Instance/instance.hpp>
+#include <BabelWiresLib/Features/simpleValueFeature.hpp>
 
 namespace smf {
     class MidiMetadata : public babelwires::RecordType {

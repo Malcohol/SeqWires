@@ -7,7 +7,6 @@
 #include <SeqWiresLib/libRegistration.hpp>
 
 #include <BabelWiresLib/Features/rootFeature.hpp>
-#include <BabelWiresLib/Types/Enum/enumFeature.hpp>
 
 #include <Tests/BabelWiresLib/TestUtils/testEnvironment.hpp>
 #include <Tests/TestUtils/seqTestUtils.hpp>

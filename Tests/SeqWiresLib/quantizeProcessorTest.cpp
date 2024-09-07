@@ -1,11 +1,11 @@
 #include <gtest/gtest.h>
 
+#include <BabelWiresLib/Features/simpleValueFeature.hpp>
+
 #include <SeqWiresLib/Functions/quantizeFunction.hpp>
 #include <SeqWiresLib/Processors/quantizeProcessor.hpp>
 #include <SeqWiresLib/Types/Track/TrackEvents/noteEvents.hpp>
 #include <SeqWiresLib/libRegistration.hpp>
-
-#include <BabelWiresLib/Types/Rational/rationalFeature.hpp>
 
 #include <Tests/BabelWiresLib/TestUtils/testEnvironment.hpp>
 #include <Tests/TestUtils/seqTestUtils.hpp>

@@ -9,11 +9,8 @@
 
 #include <SeqWiresLib/Functions/appendTrackFunction.hpp>
 
-#include <BabelWiresLib/Features/arrayFeature.hpp>
-#include <BabelWiresLib/Features/featureMixins.hpp>
 #include <BabelWiresLib/Features/rootFeature.hpp>
 #include <BabelWiresLib/Types/Array/arrayTypeConstructor.hpp>
-#include <BabelWiresLib/Types/Enum/enumFeature.hpp>
 #include <BabelWiresLib/Types/Int/intTypeConstructor.hpp>
 
 seqwires::ConcatenateProcessorInput::ConcatenateProcessorInput()
