@@ -7,7 +7,6 @@
  **/
 #include <SeqWiresLibUi/libRegistration.hpp>
 
-#include <BabelWiresQtUi/ModelBridge/RowModels/rowModelRegistry.hpp>
 #include <BabelWiresQtUi/ValueModels/valueModelRegistry.hpp>
 #include <BabelWiresQtUi/uiProjectContext.hpp>
 
