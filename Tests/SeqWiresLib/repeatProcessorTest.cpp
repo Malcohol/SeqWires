@@ -6,7 +6,6 @@
 #include <SeqWiresLib/Types/Track/trackInstance.hpp>
 #include <SeqWiresLib/libRegistration.hpp>
 
-#include <BabelWiresLib/Features/arrayFeature.hpp>
 #include <BabelWiresLib/Types/Int/intFeature.hpp>
 
 #include <Tests/BabelWiresLib/TestUtils/testEnvironment.hpp>
