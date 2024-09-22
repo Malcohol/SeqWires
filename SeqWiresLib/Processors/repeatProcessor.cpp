@@ -10,7 +10,6 @@
 #include <SeqWiresLib/Functions/appendTrackFunction.hpp>
 #include <SeqWiresLib/Types/Track/trackInstance.hpp>
 
-#include <BabelWiresLib/Features/arrayFeature.hpp>
 #include <BabelWiresLib/Types/Int/intTypeConstructor.hpp>
 #include <BabelWiresLib/Types/Int/intValue.hpp>
 
