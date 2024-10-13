@@ -7,7 +7,6 @@
  **/
 #pragma once
 
-#include <BabelWiresQtUi/ModelBridge/RowModels/rowModelWithRichText.hpp>
 #include <BabelWiresQtUi/ValueModels/valueModelWithRichText.hpp>
 
 namespace seqwires {

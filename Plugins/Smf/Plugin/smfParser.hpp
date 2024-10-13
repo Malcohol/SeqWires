@@ -13,8 +13,6 @@
 
 #include <SeqWiresLib/musicTypes.hpp>
 
-#include <BabelWiresLib/FileFormat/fileFeature.hpp>
-
 #include <Common/IO/dataSource.hpp>
 #include <Common/Log/userLogger.hpp>
 

@@ -15,7 +15,6 @@
 #include <vector>
 
 namespace babelwires {
-    class FileFeature;
     struct AudioSource;
     struct AudioDest;
 } // namespace babelwires
