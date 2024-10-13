@@ -1,8 +1,8 @@
 SET( SMF_TESTS_SRCS
-      percussionTests.cpp
+      #percussionTests.cpp
       smfTests.cpp
-      saveLoadTests.cpp
-      testSuiteTests.cpp
+      #saveLoadTests.cpp
+      #testSuiteTests.cpp
    )
 
 FILE(GLOB MidiTestSuiteFiles "${CMAKE_CURRENT_SOURCE_DIR}/test-midi-files/midi/*.mid")

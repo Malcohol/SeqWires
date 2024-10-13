@@ -13,14 +13,14 @@
 
 namespace smf {
     /// Format for loading Standard MIDI Files..
-    class SmfSourceFormat : public babelwires::SourceFileFormat {
+    class SmfSourceFormat : public babelwires::SourceFileFormat2 {
       public:
         SmfSourceFormat();
         static babelwires::LongId getThisIdentifier();
 
         virtual std::string getManufacturerName() const override;
         virtual std::string getProductName() const override;
-        virtual std::unique_ptr<babelwires::FileFeature>
+        virtual std::unique_ptr<babelwires::SimpleValueFeature>
         loadFromFile(babelwires::DataSource& dataSource, const babelwires::ProjectContext& projectContext,
                      babelwires::UserLogger& userLogger) const override;
     };

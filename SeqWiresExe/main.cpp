@@ -67,6 +67,7 @@ int main(int argc, char* argv[]) {
         babelwires::OStreamLogListener logToCout(std::cout, log, features);
 
         SourceFileFormatRegistry sourceFileFormatReg;
+        SourceFileFormatRegistry2 sourceFileFormatReg2;
         TargetFileFormatRegistry targetFileFormatReg;
         ProcessorFactoryRegistry processorReg;
         babelwires::AutomaticDeserializationRegistry deserializationRegistry;
@@ -78,7 +79,7 @@ int main(int argc, char* argv[]) {
         std::default_random_engine randomEngine(seed);
 
         babelwires::UiProjectContext context{
-            deserializationRegistry, sourceFileFormatReg, targetFileFormatReg, processorReg, typeSystem, randomEngine,
+            deserializationRegistry, sourceFileFormatReg, sourceFileFormatReg2, targetFileFormatReg, processorReg, typeSystem, randomEngine,
             valueModelRegistry};
 
         context.m_applicationIdentity.m_applicationTitle = "Seqwires";

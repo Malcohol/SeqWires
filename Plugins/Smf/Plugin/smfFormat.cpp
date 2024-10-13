@@ -19,7 +19,7 @@ namespace {
 } // namespace
 
 smf::SmfSourceFormat::SmfSourceFormat()
-    : SourceFileFormat(
+    : SourceFileFormat2(
           BW_LONG_ID(s_formatIdentifier, "Standard MIDI file (in)", "418b8238-c184-4885-a369-b24c4e0d06ec"), 1,
           Extensions{"mid", "smf"}) {}
 
@@ -35,7 +35,7 @@ std::string smf::SmfSourceFormat::getProductName() const {
     return s_productName;
 }
 
-std::unique_ptr<babelwires::FileFeature>
+std::unique_ptr<babelwires::SimpleValueFeature>
 smf::SmfSourceFormat::loadFromFile(babelwires::DataSource& dataSource, const babelwires::ProjectContext& projectContext,
                                    babelwires::UserLogger& userLogger) const {
     return parseSmfSequence(dataSource, projectContext, userLogger);

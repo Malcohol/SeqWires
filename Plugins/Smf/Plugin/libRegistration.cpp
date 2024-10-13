@@ -52,7 +52,7 @@
 
 void smf::registerLib(babelwires::ProjectContext& context) {
     // Formats
-    context.m_sourceFileFormatReg.addEntry(std::make_unique<SmfSourceFormat>());
+    context.m_sourceFileFormatReg2.addEntry(std::make_unique<SmfSourceFormat>());
     context.m_targetFileFormatReg.addEntry(std::make_unique<SmfTargetFormat>());
 
     // Types
@@ -63,6 +63,7 @@ void smf::registerLib(babelwires::ProjectContext& context) {
     context.m_typeSystem.addEntry<MidiTrackAndChannelArray>();
     context.m_typeSystem.addEntry<RecordOfMidiTracks>();
     context.m_typeSystem.addEntry<SmfSequence>();
+    context.m_typeSystem.addEntry<SmfFile>();
 
     // Percussion types
     const seqwires::BuiltInPercussionInstruments& builtInPercussion =
