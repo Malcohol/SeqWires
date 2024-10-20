@@ -33,8 +33,8 @@
                             <value typeName="rational" value="7"/>
                         </assign>
                         <arraySize path="Tracks&apos;1" size="2"/>
-                        <assignFrom path="Tracks&apos;1/0" sourceId="15" sourcePath="SmfSeq&apos;1/Trcks0&apos;1/ch0&apos;1"/>
-                        <assignFrom path="Tracks&apos;1/1" sourceId="15" sourcePath="SmfSeq&apos;1/Trcks0&apos;1/ch1&apos;1"/>
+                        <assignFrom path="Tracks&apos;1/0" sourceId="15" sourcePath="Conts&apos;1/Trcks0&apos;1/ch0&apos;1"/>
+                        <assignFrom path="Tracks&apos;1/1" sourceId="15" sourcePath="Conts&apos;1/Trcks0&apos;1/ch1&apos;1"/>
                     </modifiers>
                     <uiData x="-90" y="25" width="250"/>
                     <expandedPaths>
@@ -64,8 +64,8 @@
                             <value typeName="rational" value="7"/>
                         </assign>
                         <arraySize path="Tracks&apos;1" size="2"/>
-                        <assignFrom path="Tracks&apos;1/0" sourceId="15" sourcePath="SmfSeq&apos;1/Trcks0&apos;1/ch0&apos;1"/>
-                        <assignFrom path="Tracks&apos;1/1" sourceId="15" sourcePath="SmfSeq&apos;1/Trcks0&apos;1/ch1&apos;1"/>
+                        <assignFrom path="Tracks&apos;1/0" sourceId="15" sourcePath="Conts&apos;1/Trcks0&apos;1/ch0&apos;1"/>
+                        <assignFrom path="Tracks&apos;1/1" sourceId="15" sourcePath="Conts&apos;1/Trcks0&apos;1/ch1&apos;1"/>
                     </modifiers>
                     <uiData x="-95" y="297" width="250"/>
                     <expandedPaths>
@@ -113,31 +113,33 @@
                 <sourceFile id="15" factory="StandardMIDIFile&apos;1" filePath="DucksInARow.mid">
                     <uiData x="-556" y="205" width="250"/>
                     <expandedPaths>
-                        <path value="SmfSeq&apos;1"/>
-                        <path value="SmfSeq&apos;1/Trcks0&apos;1"/>
+                        <path value=""/>
+                        <path value="Conts&apos;1"/>
+                        <path value="Conts&apos;1/Trcks0&apos;1"/>
                     </expandedPaths>
                 </sourceFile>
                 <targetFile id="17" factory="SmfFile&apos;1" filePath="DucksInARow_Round.mid">
                     <modifiers>
-                        <assignFrom path="SmfSeq&apos;1/Meta&apos;1" sourceId="15" sourcePath="SmfSeq&apos;1/Meta&apos;1"/>
-                        <assign path="SmfSeq&apos;1/Meta&apos;1/Name&apos;1">
+                        <assignFrom path="Conts&apos;1/Meta&apos;1" sourceId="15" sourcePath="Conts&apos;1/Meta&apos;1"/>
+                        <assign path="Conts&apos;1/Meta&apos;1/Name&apos;1">
                             <value typeName="string" value="Ducks in a Row (Round)"/>
                         </assign>
-                        <activatedOptionals path="SmfSeq&apos;1/Trcks0&apos;1">
+                        <activatedOptionals path="Conts&apos;1/Trcks0&apos;1">
                             <optionals>
                                 <activate value="ch0&apos;1"/>
                                 <activate value="ch1&apos;1"/>
                                 <activate value="ch2&apos;1"/>
                             </optionals>
                         </activatedOptionals>
-                        <assignFrom path="SmfSeq&apos;1/Trcks0&apos;1/ch0&apos;1" sourceId="12" sourcePath="Output&apos;1"/>
-                        <assignFrom path="SmfSeq&apos;1/Trcks0&apos;1/ch1&apos;1" sourceId="13" sourcePath="Output&apos;1"/>
-                        <assignFrom path="SmfSeq&apos;1/Trcks0&apos;1/ch2&apos;1" sourceId="10" sourcePath="Tracks&apos;2/0"/>
+                        <assignFrom path="Conts&apos;1/Trcks0&apos;1/ch0&apos;1" sourceId="12" sourcePath="Output&apos;1"/>
+                        <assignFrom path="Conts&apos;1/Trcks0&apos;1/ch1&apos;1" sourceId="13" sourcePath="Output&apos;1"/>
+                        <assignFrom path="Conts&apos;1/Trcks0&apos;1/ch2&apos;1" sourceId="10" sourcePath="Tracks&apos;2/0"/>
                     </modifiers>
                     <uiData x="1221" y="107" width="250"/>
                     <expandedPaths>
-                        <path value="SmfSeq&apos;1"/>
-                        <path value="SmfSeq&apos;1/Trcks0&apos;1"/>
+                        <path value=""/>
+                        <path value="Conts&apos;1"/>
+                        <path value="Conts&apos;1/Trcks0&apos;1"/>
                     </expandedPaths>
                 </targetFile>
             </elements>
@@ -154,6 +156,7 @@
         <identifierMetadata>
             <identifiers>
                 <identifier id="ConcatenateTracks&apos;1" name="Concatenate" uuid="42b00d10-9d16-42d2-8ba6-971aad016da0"/>
+                <identifier id="Conts&apos;1" name="Contents" uuid="5144fef7-7361-495b-8967-ac6a28aa13bd"/>
                 <identifier id="Count&apos;1" name="Count" uuid="f5d2ab08-4430-47fa-b26c-0ff2154826e3"/>
                 <identifier id="Duratn&apos;1" name="Duration" uuid="d83ebbc2-1492-4578-a3b8-4969eb6a2042"/>
                 <identifier id="Durn&apos;1" name="Duration" uuid="05d3ea91-cb90-42f5-9988-2fb2e02e231c"/>
@@ -165,7 +168,6 @@
                 <identifier id="RepeatTracks&apos;1" name="Repeat" uuid="6c5b3e89-bb57-4c90-8a66-1d8cdeb29db9"/>
                 <identifier id="SilentTrack&apos;1" name="Silence" uuid="c59e4643-b7d8-430b-980b-bd81b5aa007b"/>
                 <identifier id="SmfFile&apos;1" name="Standard MIDI file (out)" uuid="f29cd3b0-8a46-4a21-bb7d-53acd6702944"/>
-                <identifier id="SmfSeq&apos;1" name="Format" uuid="1f2eaefb-b48d-484d-8793-e14f2fa0193b"/>
                 <identifier id="StandardMIDIFile&apos;1" name="Standard MIDI file (in)" uuid="418b8238-c184-4885-a369-b24c4e0d06ec"/>
                 <identifier id="Start&apos;1" name="Start" uuid="4b95f5db-a542-4660-a8db-97d3a5f831ca"/>
                 <identifier id="Track&apos;1" name="Track" uuid="86f3d028-a616-4a95-a566-a010ffcabb19"/>
