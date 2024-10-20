@@ -40,7 +40,6 @@ SET( SMFLIB_SRCS
 	smfFormat.cpp
 	smfParser.cpp
 	smfSequence.cpp
-	smfFeature.cpp
 	smfWriter.cpp
 	)
 
