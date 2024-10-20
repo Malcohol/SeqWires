@@ -17,6 +17,7 @@
 
 namespace smf {
 
+    // TODO REMOVE
     class SmfFeature : public babelwires::FileFeature {
       public:
         SmfFeature(const babelwires::ProjectContext& projectContext);
