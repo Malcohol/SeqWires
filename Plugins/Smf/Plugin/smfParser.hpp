@@ -8,12 +8,10 @@
 #pragma once
 
 #include <Plugins/Smf/Plugin/gmSpec.hpp>
-#include <Plugins/Smf/Plugin/smfFeature.hpp>
 #include <Plugins/Smf/Plugin/Percussion/standardPercussionSets.hpp>
+#include <Plugins/Smf/Plugin/smfSequence.hpp>
 
 #include <SeqWiresLib/musicTypes.hpp>
-
-#include <BabelWiresLib/FileFormat/fileFeature.hpp>
 
 #include <Common/IO/dataSource.hpp>
 #include <Common/Log/userLogger.hpp>
@@ -36,9 +34,12 @@ namespace smf {
         virtual ~SmfParser();
 
         void parse();
-        std::unique_ptr<SmfFeature> getResult() { return std::move(m_result); }
+        std::unique_ptr<babelwires::SimpleValueFeature> getResult() { return std::move(m_result); }
 
       protected:
+        SmfSequence::ConstInstance getSmfSequenceConst() const;
+        SmfSequence::Instance getSmfSequence();
+
         babelwires::Byte getNext();
         babelwires::Byte peekNext();
 
@@ -105,7 +106,7 @@ namespace smf {
         const babelwires::ProjectContext& m_projectContext;
         babelwires::DataSource& m_dataSource;
         babelwires::UserLogger& m_userLogger;
-        std::unique_ptr<SmfFeature> m_result;
+        std::unique_ptr<babelwires::SimpleValueFeature> m_result;
         std::vector<babelwires::Byte> m_messageBuffer;
 
         enum class Format { SMF_FORMAT_0, SMF_FORMAT_1, SMF_FORMAT_2, SMF_UNKNOWN_FORMAT };
@@ -128,7 +129,7 @@ namespace smf {
         std::array<ChannelSetup, 16> m_channelSetup;
     };
 
-    std::unique_ptr<SmfFeature> parseSmfSequence(babelwires::DataSource& dataSource,
+    std::unique_ptr<babelwires::SimpleValueFeature> parseSmfSequence(babelwires::DataSource& dataSource,
                                                               const babelwires::ProjectContext& projectContext,
                                                               babelwires::UserLogger& userLogger);
 

@@ -7,7 +7,6 @@
  **/
 #pragma once
 
-#include <BabelWiresLib/FileFormat/fileFeature.hpp>
 #include <BabelWiresLib/FileFormat/sourceFileFormat.hpp>
 #include <BabelWiresLib/FileFormat/targetFileFormat.hpp>
 
@@ -20,7 +19,7 @@ namespace smf {
 
         virtual std::string getManufacturerName() const override;
         virtual std::string getProductName() const override;
-        virtual std::unique_ptr<babelwires::FileFeature>
+        virtual std::unique_ptr<babelwires::SimpleValueFeature>
         loadFromFile(babelwires::DataSource& dataSource, const babelwires::ProjectContext& projectContext,
                      babelwires::UserLogger& userLogger) const override;
     };
@@ -32,9 +31,9 @@ namespace smf {
 
         virtual std::string getManufacturerName() const override;
         virtual std::string getProductName() const override;
-        virtual std::unique_ptr<babelwires::FileFeature>
+        virtual std::unique_ptr<babelwires::SimpleValueFeature>
         createNewFeature(const babelwires::ProjectContext& projectContext) const override;
         virtual void writeToFile(const babelwires::ProjectContext& projectContext, babelwires::UserLogger& userLogger,
-                                 const babelwires::FileFeature& sequence, std::ostream& os) const override;
+                                 const babelwires::SimpleValueFeature& contents, std::ostream& os) const override;
     };
 } // namespace smf

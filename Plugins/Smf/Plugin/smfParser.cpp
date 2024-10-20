@@ -9,7 +9,6 @@
 
 #include <Plugins/Smf/Plugin/Percussion/gm2StandardPercussionSet.hpp>
 #include <Plugins/Smf/Plugin/Percussion/gmPercussionSet.hpp>
-#include <Plugins/Smf/Plugin/smfSequence.hpp>
 
 #include <SeqWiresLib/Percussion/builtInPercussionInstruments.hpp>
 #include <SeqWiresLib/Types/Track/TrackEvents/noteEvents.hpp>
@@ -42,11 +41,23 @@ smf::SmfParser::SmfParser(babelwires::DataSource& dataSource, const babelwires::
     , m_numTracks(-1)
     , m_division(-1)
     , m_standardPercussionSets(projectContext) {
-    m_result = std::make_unique<SmfFeature>(projectContext);
+
+    m_result = std::make_unique<babelwires::SimpleValueFeature>(projectContext.m_typeSystem, getSmfFileType());
     m_result->setToDefault();
 }
 
 smf::SmfParser::~SmfParser() = default;
+
+smf::SmfSequence::ConstInstance smf::SmfParser::getSmfSequenceConst() const {
+    return SmfSequence::ConstInstance(m_result->getFeature(0)->is<babelwires::ValueFeature>());
+}
+
+smf::SmfSequence::Instance smf::SmfParser::getSmfSequence() {
+    return SmfSequence::Instance(m_result->getFeature(0)->is<babelwires::ValueFeature>());
+}
+
+smf::SmfSequence::Instance getSmfSequence();
+
 
 babelwires::Byte smf::SmfParser::getNext() {
     try {
@@ -158,7 +169,7 @@ void smf::SmfParser::readHeaderChunk() {
 }
 
 void smf::SmfParser::parse() {
-    auto smfSequence = m_result->getSmfSequence();
+    auto smfSequence = getSmfSequence();
 
     readHeaderChunk();
     switch (m_sequenceType) {
@@ -785,7 +796,7 @@ void smf::SmfParser::readFormat0Sequence() {
     }
     TrackSplitter splitTracks(m_channelSetup);
     readTrack(0, splitTracks, true);
-    auto tracks = m_result->getSmfSequence().getTrcks0();
+    auto tracks = getSmfSequence().getTrcks0();
     for (int channelNumber = 0; channelNumber < MAX_CHANNELS; ++channelNumber) {
         if (splitTracks.m_channels[channelNumber] != nullptr) {
             tracks.activateAndGetTrack(channelNumber).set(std::move(splitTracks.m_channels[channelNumber]->m_track));
@@ -820,7 +831,7 @@ void smf::SmfParser::readFormat1SequenceTrack(MidiTrackAndChannel::Instance& tra
 }
 
 void smf::SmfParser::readFormat1Sequence() {
-    auto tracks = m_result->getSmfSequence().getTrcks1();
+    auto tracks = getSmfSequence().getTrcks1();
     tracks.setSize(m_numTracks);
     for (int i = 0; i < m_numTracks; ++i) {
         auto track = tracks.getEntry(i);
@@ -829,7 +840,7 @@ void smf::SmfParser::readFormat1Sequence() {
 }
 
 smf::MidiMetadata::Instance smf::SmfParser::getMidiMetadata() {
-    return m_result->getSmfSequence().getMeta();
+    return getSmfSequence().getMeta();
 }
 
 void smf::SmfParser::setGMSpec(GMSpecType::Value gmSpec) {
@@ -870,7 +881,7 @@ void smf::SmfParser::onChangeProgram(unsigned int channelNumber) {
         m_standardPercussionSets.getPercussionSetFromChannelSetupInfo(gmSpec, channelSetup.m_channelSetupInfo);
 }
 
-std::unique_ptr<smf::SmfFeature> smf::parseSmfSequence(babelwires::DataSource& dataSource,
+std::unique_ptr<babelwires::SimpleValueFeature> smf::parseSmfSequence(babelwires::DataSource& dataSource,
                                                        const babelwires::ProjectContext& projectContext,
                                                        babelwires::UserLogger& userLogger) {
     SmfParser parser(dataSource, projectContext, userLogger);

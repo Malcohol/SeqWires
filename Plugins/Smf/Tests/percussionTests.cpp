@@ -2,10 +2,9 @@
 
 #include <Plugins/Smf/Plugin/gmSpec.hpp>
 #include <Plugins/Smf/Plugin/libRegistration.hpp>
-#include <Plugins/Smf/Plugin/smfParser.hpp>
-#include <Plugins/Smf/Plugin/smfFeature.hpp>
-#include <Plugins/Smf/Plugin/smfWriter.hpp>
 #include <Plugins/Smf/Plugin/midiTrackAndChannel.hpp>
+#include <Plugins/Smf/Plugin/smfParser.hpp>
+#include <Plugins/Smf/Plugin/smfWriter.hpp>
 
 #include <SeqWiresLib/Types/Track/TrackEvents/noteEvents.hpp>
 #include <SeqWiresLib/Types/Track/TrackEvents/percussionEvents.hpp>
@@ -44,10 +43,10 @@ TEST_P(SmfStandardPercussionTest, saveLoad) {
                                      smf::GMSpecType::getIdentifierFromValue(testData.m_specificationId).toString());
 
     {
-        smf::SmfFeature smfFeature(testEnvironment.m_projectContext);
+        babelwires::SimpleValueFeature smfFeature(testEnvironment.m_projectContext.m_typeSystem, smf::getSmfFileType());
         smfFeature.setToDefault();
 
-        auto smfType = smfFeature.getSmfSequence();
+        smf::SmfSequence::Instance smfType{smfFeature.getFeature(0)->is<babelwires::ValueFeature>()};
         smfType.getMeta().getSpec().set(testData.m_specificationId);
 
         auto track9 = smfType.getTrcks0().activateAndGetTrack(9);
@@ -73,12 +72,12 @@ TEST_P(SmfStandardPercussionTest, saveLoad) {
         const auto feature = smf::parseSmfSequence(midiFile, testEnvironment.m_projectContext, testEnvironment.m_log);
         ASSERT_NE(feature, nullptr);
 
-        auto smfSequence = feature->getSmfSequence();
+        smf::SmfSequence::ConstInstance smfSequence{feature->getFeature(0)->is<babelwires::ValueFeature>()};
         ASSERT_EQ(smfSequence.getInstanceType().getIndexOfTag(smfSequence.getSelectedTag()), 0);
 
         auto tracks = smfSequence.getTrcks0();
         EXPECT_EQ(tracks->getNumFeatures(), 1);
-        
+
         auto track9 = tracks.tryGetTrack(9);
         ASSERT_TRUE(track9);
 
@@ -170,14 +169,15 @@ TEST_P(SmfTrackAllocationPercussionTest, trackAllocation) {
                                      smf::GMSpecType::getIdentifierFromValue(testData.m_specificationId).toString());
 
     {
-        smf::SmfFeature smfFeature(testEnvironment.m_projectContext);
+        babelwires::SimpleValueFeature smfFeature(testEnvironment.m_projectContext.m_typeSystem, smf::getSmfFileType());
         smfFeature.setToDefault();
 
-        smfFeature.getSmfSequence().getMeta().getSpec().set(testData.m_specificationId);
-        auto tracks = smfFeature.getSmfSequence().getTrcks0();
+        smf::SmfSequence::Instance smfType{smfFeature.getFeature(0)->is<babelwires::ValueFeature>()};
+        smfType.getMeta().getSpec().set(testData.m_specificationId);
+        auto tracks = smfType.getTrcks0();
 
         for (int i = 0; i < 3; ++i) {
-            auto trackI = tracks.activateAndGetTrack(8+i);
+            auto trackI = tracks.activateAndGetTrack(8 + i);
 
             seqwires::Track track;
 
@@ -202,7 +202,7 @@ TEST_P(SmfTrackAllocationPercussionTest, trackAllocation) {
         const auto feature = smf::parseSmfSequence(midiFile, testEnvironment.m_projectContext, testEnvironment.m_log);
         ASSERT_NE(feature, nullptr);
 
-        auto smfSequence = feature->getSmfSequence();
+        smf::SmfSequence::ConstInstance smfSequence{feature->getFeature(0)->is<babelwires::ValueFeature>()};
         ASSERT_EQ(smfSequence.getInstanceType().getIndexOfTag(smfSequence.getSelectedTag()), 0);
 
         auto tracks = smfSequence.getTrcks0();
@@ -247,7 +247,8 @@ INSTANTIATE_TEST_SUITE_P(
                                              {"AcBass", "HMTom", "OTrian"}},
                                             {true, false, true},
                                             {{}, {"AcBass", "HMTom", "OTrian"}, {}}},
-                    TrackAllocationTestData{smf::GMSpecType::Value::GM2,
+                    TrackAllocationTestData{
+                        smf::GMSpecType::Value::GM2,
                         {{"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}},
                         {true, false, false},
                         {{}, {"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}}},
@@ -255,7 +256,8 @@ INSTANTIATE_TEST_SUITE_P(
                                             {{"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}, {}},
                                             {true, false, true},
                                             {{}, {"AcBass", "HMTom", "OTrian"}, {}}},
-                    TrackAllocationTestData{smf::GMSpecType::Value::GS,
+                    TrackAllocationTestData{
+                        smf::GMSpecType::Value::GS,
                         {{"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}},
                         {true, false, false},
                         {{}, {"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}}},
@@ -263,7 +265,8 @@ INSTANTIATE_TEST_SUITE_P(
                                             {{"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}, {}},
                                             {true, false, true},
                                             {{}, {"AcBass", "HMTom", "OTrian"}, {}}},
-                    TrackAllocationTestData{smf::GMSpecType::Value::XG,
+                    TrackAllocationTestData{
+                        smf::GMSpecType::Value::XG,
                         {{"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}},
                         {false, false, false},
                         {{"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}, {"AcBass", "HMTom", "OTrian"}}},

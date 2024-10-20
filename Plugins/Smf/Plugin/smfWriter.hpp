@@ -7,8 +7,8 @@
  **/
 #pragma once
 
-#include <Plugins/Smf/Plugin/smfFeature.hpp>
 #include <Plugins/Smf/Plugin/Percussion/standardPercussionSets.hpp>
+#include <Plugins/Smf/Plugin/smfSequence.hpp>
 
 #include <SeqWiresLib/musicTypes.hpp>
 
@@ -29,11 +29,13 @@ namespace smf {
     class SmfWriter {
       public:
         SmfWriter(const babelwires::ProjectContext& projectContext, babelwires::UserLogger& userLogger,
-                  const SmfFeature& sequence, std::ostream& output);
+                  const babelwires::SimpleValueFeature& sequence, std::ostream& output);
 
         void write();
 
       protected:
+        SmfSequence::ConstInstance getSmfSequenceConst() const;
+
         void writeUint16(std::uint16_t i);
         void writeUint24(std::uint32_t i);
         void writeUint32(std::uint32_t i);
@@ -41,12 +43,9 @@ namespace smf {
         void writeModelDuration(const seqwires::ModelDuration& d);
 
         /// Returns true if the event was written.
-        enum class WriteTrackEventResult {
-          Written,
-          WrongCategory,
-          NotInPercussionSet
-        };
-        WriteTrackEventResult writeTrackEvent(int channelNumber, seqwires::ModelDuration timeSinceLastEvent, const seqwires::TrackEvent& e);
+        enum class WriteTrackEventResult { Written, WrongCategory, NotInPercussionSet };
+        WriteTrackEventResult writeTrackEvent(int channelNumber, seqwires::ModelDuration timeSinceLastEvent,
+                                              const seqwires::TrackEvent& e);
 
         void writeTempoEvent(int bpm);
 
@@ -67,7 +66,8 @@ namespace smf {
         /// Write non-channel-specific setup information.
         void writeGlobalSetup();
 
-        /// Determine from the events in the tracks what percussion kit (allowed for the channelNumber) includes the largest number of the events.
+        /// Determine from the events in the tracks what percussion kit (allowed for the channelNumber) includes the
+        /// largest number of the events.
         void setUpPercussionKit(const std::unordered_set<babelwires::ShortId>& instrumentsInUse, int channelNumber);
 
         void setUpPercussionSets();
@@ -77,7 +77,7 @@ namespace smf {
       private:
         const babelwires::ProjectContext& m_projectContext;
         babelwires::UserLogger& m_userLogger;
-        const SmfFeature& m_smfFeature;
+        const babelwires::SimpleValueFeature& m_smfFeature;
         std::ostream& m_ostream;
         std::ostream* m_os;
         /// Always use metrical time. Quater-note division.
@@ -91,7 +91,8 @@ namespace smf {
             // kit.
             const seqwires::PercussionSetWithPitchMap* m_kitIfPercussion = nullptr;
             // Has channel set-up information been written for this channel yet?
-            // (Since more than one track can correspond to a channel, we only want to write this for the first track for each channel.)
+            // (Since more than one track can correspond to a channel, we only want to write this for the first track
+            // for each channel.)
             bool m_setupWritten = false;
         };
 
@@ -99,6 +100,6 @@ namespace smf {
     };
 
     void writeToSmf(const babelwires::ProjectContext& projectContext, babelwires::UserLogger& userLogger,
-                    const SmfFeature& smfFeature, std::ostream& output);
+                    const babelwires::SimpleValueFeature& sequence, std::ostream& output);
 
 } // namespace smf
