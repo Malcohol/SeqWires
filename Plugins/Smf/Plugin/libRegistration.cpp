@@ -46,9 +46,9 @@
 #include <Plugins/Smf/Plugin/midiMetadata.hpp>
 #include <Plugins/Smf/Plugin/midiTrackAndChannel.hpp>
 #include <Plugins/Smf/Plugin/midiTrackAndChannelArray.hpp>
-#include <Plugins/Smf/Plugin/smfFormat.hpp>
-#include <Plugins/Smf/Plugin/smfFeature.hpp>
 #include <Plugins/Smf/Plugin/recordOfMidiTracks.hpp>
+#include <Plugins/Smf/Plugin/smfFormat.hpp>
+#include <Plugins/Smf/Plugin/smfSequence.hpp>
 
 void smf::registerLib(babelwires::ProjectContext& context) {
     // Formats
@@ -63,7 +63,6 @@ void smf::registerLib(babelwires::ProjectContext& context) {
     context.m_typeSystem.addEntry<MidiTrackAndChannelArray>();
     context.m_typeSystem.addEntry<RecordOfMidiTracks>();
     context.m_typeSystem.addEntry<SmfSequence>();
-    context.m_typeSystem.addEntry<SmfFile>();
 
     // Percussion types
     const seqwires::BuiltInPercussionInstruments& builtInPercussion =

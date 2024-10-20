@@ -1,5 +1,5 @@
 /**
- *
+ * Some definitions for use across the plugin.
  *
  * (C) 2021 Malcolm Tyrrell
  *
@@ -11,4 +11,7 @@
 
 namespace smf {
     using TypeOfTracks = seqwires::DefaultTrackType;
+
+    /// Get the FileType subclass which contains SMF data.
+    babelwires::TypeRef getSmfFileType();
 }

@@ -9,7 +9,6 @@
 
 #include <Plugins/Smf/Plugin/Percussion/gm2StandardPercussionSet.hpp>
 #include <Plugins/Smf/Plugin/Percussion/gmPercussionSet.hpp>
-#include <Plugins/Smf/Plugin/smfSequence.hpp>
 
 #include <SeqWiresLib/Percussion/builtInPercussionInstruments.hpp>
 #include <SeqWiresLib/Types/Track/TrackEvents/noteEvents.hpp>
@@ -43,18 +42,18 @@ smf::SmfParser::SmfParser(babelwires::DataSource& dataSource, const babelwires::
     , m_division(-1)
     , m_standardPercussionSets(projectContext) {
 
-    m_result = std::make_unique<babelwires::SimpleValueFeature>(projectContext.m_typeSystem, SmfFile::getThisIdentifier());
+    m_result = std::make_unique<babelwires::SimpleValueFeature>(projectContext.m_typeSystem, getSmfFileType());
     m_result->setToDefault();
 }
 
 smf::SmfParser::~SmfParser() = default;
 
 smf::SmfSequence::ConstInstance smf::SmfParser::getSmfSequenceConst() const {
-    return SmfFile::ConstInstance(*m_result).getSmfSeq();
+    return SmfSequence::ConstInstance(m_result->getFeature(0)->is<babelwires::ValueFeature>());
 }
 
 smf::SmfSequence::Instance smf::SmfParser::getSmfSequence() {
-    return SmfFile::Instance(*m_result).getSmfSeq();
+    return SmfSequence::Instance(m_result->getFeature(0)->is<babelwires::ValueFeature>());
 }
 
 smf::SmfSequence::Instance getSmfSequence();

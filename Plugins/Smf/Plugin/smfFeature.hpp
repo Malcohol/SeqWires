@@ -17,17 +17,6 @@
 
 namespace smf {
 
-    class SmfFile : public babelwires::FileType {
-      public:
-        PRIMITIVE_TYPE("SmfFile", "SMF File", "0656a8fa-dfbc-4a4c-a6d3-700eedbd86cd", 1);
-
-        SmfFile();
-
-        DECLARE_INSTANCE_BEGIN(SmfFile)
-        DECLARE_INSTANCE_FIELD(SmfSeq, SmfSequence);
-        DECLARE_INSTANCE_END()
-    };
-
     class SmfFeature : public babelwires::FileFeature {
       public:
         SmfFeature(const babelwires::ProjectContext& projectContext);

@@ -13,11 +13,6 @@
 
 #include <Common/Identifiers/registeredIdentifier.hpp>
 
-smf::SmfFile::SmfFile()
-    : babelwires::FileType(BW_SHORT_ID("SmfSeq", "Format", "11de9548-d0fb-424f-822d-a0a459035dfe"), SmfSequence::getThisIdentifier()) {
-        
-    }
-
 smf::SmfFeature::SmfFeature(const babelwires::ProjectContext& projectContext)
     : babelwires::FileFeature(projectContext, SmfSourceFormat::getThisIdentifier()) {
     m_smfTypeFeature = addField(std::make_unique<babelwires::SimpleValueFeature>(SmfSequence::getThisIdentifier()),

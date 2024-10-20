@@ -8,8 +8,8 @@
 #pragma once
 
 #include <Plugins/Smf/Plugin/gmSpec.hpp>
-#include <Plugins/Smf/Plugin/smfFeature.hpp>
 #include <Plugins/Smf/Plugin/Percussion/standardPercussionSets.hpp>
+#include <Plugins/Smf/Plugin/smfSequence.hpp>
 
 #include <SeqWiresLib/musicTypes.hpp>
 
