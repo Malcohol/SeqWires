@@ -7,6 +7,8 @@
  **/
 #include <Plugins/Smf/Plugin/smfFormat.hpp>
 
+#include <BabelWiresLib/Project/projectContext.hpp>
+
 #include <Plugins/Smf/Plugin/smfParser.hpp>
 #include <Plugins/Smf/Plugin/smfWriter.hpp>
 
@@ -53,13 +55,13 @@ std::string smf::SmfTargetFormat::getProductName() const {
     return s_productName;
 }
 
-std::unique_ptr<babelwires::FileFeature>
+std::unique_ptr<babelwires::SimpleValueFeature>
 smf::SmfTargetFormat::createNewFeature(const babelwires::ProjectContext& projectContext) const {
-    return std::make_unique<SmfFeature>(projectContext);
+    return std::make_unique<babelwires::SimpleValueFeature>(projectContext.m_typeSystem, getSmfFileType());
 }
 
 void smf::SmfTargetFormat::writeToFile(const babelwires::ProjectContext& projectContext,
-                                       babelwires::UserLogger& userLogger, const babelwires::FileFeature& sequence,
+                                       babelwires::UserLogger& userLogger, const babelwires::SimpleValueFeature& contents,
                                        std::ostream& os) const {
-    writeToSmf(projectContext, userLogger, sequence.is<SmfFeature>(), os);
+    writeToSmf(projectContext, userLogger, contents, os);
 }

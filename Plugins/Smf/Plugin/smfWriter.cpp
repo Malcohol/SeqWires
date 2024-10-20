@@ -34,14 +34,16 @@ namespace {
 } // namespace
 
 smf::SmfWriter::SmfWriter(const babelwires::ProjectContext& projectContext, babelwires::UserLogger& userLogger,
-                          const SmfFeature& sequence, std::ostream& ostream)
+                          const babelwires::SimpleValueFeature& sequence, std::ostream& ostream)
     : m_projectContext(projectContext)
     , m_userLogger(userLogger)
     , m_smfFeature(sequence)
     , m_ostream(ostream)
     , m_os(&m_ostream)
     , m_division(256)
-    , m_standardPercussionSets(projectContext) {}
+    , m_standardPercussionSets(projectContext) {
+        assert(sequence.getTypeRef() == getSmfFileType());
+    }
 
 void smf::SmfWriter::writeUint16(std::uint16_t i) {
     m_os->put(i >> 8);
@@ -107,8 +109,12 @@ void smf::SmfWriter::writeTextMetaEvent(int type, std::string text) {
     *m_os << text;
 }
 
+smf::SmfSequence::ConstInstance smf::SmfWriter::getSmfSequenceConst() const {
+    return SmfSequence::ConstInstance(m_smfFeature.getFeature(0)->is<babelwires::ValueFeature>());
+}
+
 void smf::SmfWriter::writeHeaderChunk(unsigned int numTracks) {
-    const auto& smfType = m_smfFeature.getSmfSequence();
+    const auto& smfType = getSmfSequenceConst();
 
     assert((m_division < (2 << 15)) && "division is too large");
 
@@ -245,7 +251,7 @@ template <std::size_t N> void smf::SmfWriter::writeMessage(const std::array<std:
 }
 
 void smf::SmfWriter::writeGlobalSetup() {
-    const auto& metadata = m_smfFeature.getSmfSequence().getMeta();
+    const auto& metadata = getSmfSequenceConst().getMeta();
 
     switch (metadata.getSpec().get()) {
         case GMSpecType::Value::GM:
@@ -295,7 +301,7 @@ void smf::SmfWriter::writeTrack(const std::vector<ChannelAndTrack>& tracks, bool
         writeGlobalSetup();
     }
 
-    const GMSpecType::Value gmSpec = m_smfFeature.getSmfSequence().getMeta().getSpec().get();
+    const GMSpecType::Value gmSpec = getSmfSequenceConst().getMeta().getSpec().get();
 
     for (int i = 0; i < tracks.size(); ++i) {
         const unsigned int channelNumber = std::get<0>(tracks[i]);
@@ -348,7 +354,7 @@ void smf::SmfWriter::writeTrack(const std::vector<ChannelAndTrack>& tracks, bool
 
 void smf::SmfWriter::setUpPercussionKit(const std::unordered_set<babelwires::ShortId>& instrumentsInUse,
                                         int channelNumber) {
-    const GMSpecType::Value gmSpec = m_smfFeature.getSmfSequence().getMeta().getSpec().get();
+    const GMSpecType::Value gmSpec = getSmfSequenceConst().getMeta().getSpec().get();
     std::unordered_set<babelwires::ShortId> excludedInstruments;
     m_channelSetup[channelNumber].m_kitIfPercussion =
         m_standardPercussionSets.getBestPercussionSet(gmSpec, channelNumber, instrumentsInUse, excludedInstruments);
@@ -379,7 +385,7 @@ void smf::SmfWriter::setUpPercussionSets() {
 }
 
 void smf::SmfWriter::applyToAllTracks(std::function<void(unsigned int, const seqwires::Track&)> func) {
-    const auto& smfType = m_smfFeature.getSmfSequence();
+    const auto& smfType = getSmfSequenceConst();
     if (smfType.getInstanceType().getIndexOfTag(smfType.getSelectedTag()) == 0) {
         const auto& tracks = smfType.getTrcks0();
         for (unsigned int c = 0; c < 16; ++c) {
@@ -402,7 +408,7 @@ void smf::SmfWriter::write() {
 
     std::vector<ChannelAndTrack> channelAndTrackValues;
 
-    const auto& smfType = m_smfFeature.getSmfSequence();
+    const auto& smfType = getSmfSequenceConst();
 
     if (smfType.getInstanceType().getIndexOfTag(smfType.getSelectedTag()) == 0) {
         const auto& tracks = smfType.getTrcks0();
@@ -433,7 +439,7 @@ void smf::SmfWriter::write() {
 }
 
 void smf::writeToSmf(const babelwires::ProjectContext& projectContext, babelwires::UserLogger& userLogger,
-                     const SmfFeature& smfFeature, std::ostream& output) {
-    smf::SmfWriter writer(projectContext, userLogger, smfFeature, output);
+                     const babelwires::SimpleValueFeature& sequence, std::ostream& output) {
+    smf::SmfWriter writer(projectContext, userLogger, sequence, output);
     writer.write();
 }
