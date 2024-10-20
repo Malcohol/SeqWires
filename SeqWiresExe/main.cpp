@@ -67,7 +67,7 @@ int main(int argc, char* argv[]) {
         babelwires::OStreamLogListener logToCout(std::cout, log, features);
 
         SourceFileFormatRegistry sourceFileFormatReg;
-        SourceFileFormatRegistry2 sourceFileFormatReg2;
+        SourceFileFormatRegistry sourceFileFormatReg2;
         TargetFileFormatRegistry targetFileFormatReg;
         ProcessorFactoryRegistry processorReg;
         babelwires::AutomaticDeserializationRegistry deserializationRegistry;

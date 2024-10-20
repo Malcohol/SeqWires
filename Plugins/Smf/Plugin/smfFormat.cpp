@@ -19,7 +19,7 @@ namespace {
 } // namespace
 
 smf::SmfSourceFormat::SmfSourceFormat()
-    : SourceFileFormat2(
+    : SourceFileFormat(
           BW_LONG_ID(s_formatIdentifier, "Standard MIDI file (in)", "418b8238-c184-4885-a369-b24c4e0d06ec"), 1,
           Extensions{"mid", "smf"}) {}
 

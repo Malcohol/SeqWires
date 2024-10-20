@@ -13,7 +13,7 @@
 
 namespace smf {
     /// Format for loading Standard MIDI Files..
-    class SmfSourceFormat : public babelwires::SourceFileFormat2 {
+    class SmfSourceFormat : public babelwires::SourceFileFormat {
       public:
         SmfSourceFormat();
         static babelwires::LongId getThisIdentifier();
