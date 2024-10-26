@@ -17,8 +17,6 @@
 #include <BabelWiresLib/Types/Record/recordType.hpp>
 
 namespace seqwires {
-    class TrackFeature;
-
     class SilenceProcessorInput : public babelwires::RecordType {
       public:
         PRIMITIVE_TYPE("SilentTrackIn", "Silence In", "b3d5c37c-aa07-47ac-9ebb-3cf81731b97b", 1);

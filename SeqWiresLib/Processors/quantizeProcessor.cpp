@@ -7,10 +7,8 @@
  **/
 #include <SeqWiresLib/Processors/quantizeProcessor.hpp>
 
-#include <SeqWiresLib/Types/Track/trackFeature.hpp>
 #include <SeqWiresLib/Functions/quantizeFunction.hpp>
 
-#include <BabelWiresLib/Features/rootFeature.hpp>
 #include <BabelWiresLib/Types/Rational/rationalTypeConstructor.hpp>
 #include <BabelWiresLib/Types/Rational/rationalValue.hpp>
 

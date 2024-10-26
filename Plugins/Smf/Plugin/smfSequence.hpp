@@ -18,7 +18,6 @@
 
 namespace seqwires {
     class Track;
-    class TrackFeature;
 } // namespace seqwires
 
 namespace smf {

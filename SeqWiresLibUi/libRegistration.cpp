@@ -14,8 +14,6 @@
 
 #include <SeqWiresLibUi/ValueModels/trackValueModel.hpp>
 
-#include <SeqWiresLib/Types/Track/trackFeature.hpp>
-
 void seqwiresUi::registerLib(babelwires::UiProjectContext& context) {
     context.m_valueModelReg.registryHandler<seqwires::TrackType, TrackValueModel>();
 }

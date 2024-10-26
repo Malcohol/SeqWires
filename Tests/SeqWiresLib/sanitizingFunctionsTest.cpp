@@ -1,6 +1,5 @@
 #include <gtest/gtest.h>
 
-#include <SeqWiresLib/Types/Track/trackFeature.hpp>
 #include <SeqWiresLib/Functions/sanitizingFunctions.hpp>
 #include <SeqWiresLib/Types/Track/TrackEvents/noteEvents.hpp>
 

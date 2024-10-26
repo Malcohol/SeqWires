@@ -8,9 +8,7 @@
 #include <SeqWiresLib/Processors/mergeProcessor.hpp>
 
 #include <SeqWiresLib/Functions/mergeFunction.hpp>
-#include <SeqWiresLib/Types/Track/trackFeature.hpp>
 
-#include <BabelWiresLib/Features/rootFeature.hpp>
 #include <BabelWiresLib/Types/Array/arrayTypeConstructor.hpp>
 
 #include <Common/Identifiers/registeredIdentifier.hpp>

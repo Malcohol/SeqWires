@@ -7,9 +7,6 @@
  **/
 #include <SeqWiresLib/Processors/monophonicSubtracksProcessor.hpp>
 
-#include <SeqWiresLib/Types/Track/trackFeature.hpp>
-
-#include <BabelWiresLib/Features/rootFeature.hpp>
 #include <BabelWiresLib/Types/Array/arrayTypeConstructor.hpp>
 #include <BabelWiresLib/Types/Int/intTypeConstructor.hpp>
 

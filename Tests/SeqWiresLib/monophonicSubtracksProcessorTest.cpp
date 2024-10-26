@@ -1,13 +1,13 @@
 #include <gtest/gtest.h>
 
+#include <BabelWiresLib/Features/simpleValueFeature.hpp>
+
 #include <SeqWiresLib/Functions/monophonicSubtracksFunction.hpp>
 #include <SeqWiresLib/Processors/monophonicSubtracksProcessor.hpp>
 #include <SeqWiresLib/Types/Track/TrackEvents/chordEvents.hpp>
 #include <SeqWiresLib/Types/Track/TrackEvents/noteEvents.hpp>
 #include <SeqWiresLib/Types/Track/TrackEvents/trackEventHolder.hpp>
-#include <SeqWiresLib/Types/Track/trackFeature.hpp>
 #include <SeqWiresLib/libRegistration.hpp>
-
 
 #include <Tests/BabelWiresLib/TestUtils/testEnvironment.hpp>
 #include <Tests/TestUtils/seqTestUtils.hpp>

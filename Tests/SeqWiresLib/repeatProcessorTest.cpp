@@ -1,12 +1,12 @@
 #include <gtest/gtest.h>
 
+#include <BabelWiresLib/Features/simpleValueFeature.hpp>
+
 #include <SeqWiresLib/Functions/repeatFunction.hpp>
 #include <SeqWiresLib/Processors/repeatProcessor.hpp>
 #include <SeqWiresLib/Types/Track/TrackEvents/noteEvents.hpp>
 #include <SeqWiresLib/Types/Track/trackInstance.hpp>
 #include <SeqWiresLib/libRegistration.hpp>
-
-#include <BabelWiresLib/Types/Int/intFeature.hpp>
 
 #include <Tests/BabelWiresLib/TestUtils/testEnvironment.hpp>
 #include <Tests/TestUtils/seqTestUtils.hpp>
