@@ -9,7 +9,6 @@
 
 #include <SeqWiresLib/Types/duration.hpp>
 
-#include <BabelWiresLib/Features/rootFeature.hpp>
 #include <BabelWiresLib/Types/Rational/rationalValue.hpp>
 
 seqwires::SilenceProcessorInput::SilenceProcessorInput()
