@@ -31,10 +31,10 @@ seqwires::MergeProcessor::MergeProcessor(const babelwires::ProjectContext& proje
                      MergeProcessorOutput::getThisIdentifier()) {}
 
 void seqwires::MergeProcessor::processValue(babelwires::UserLogger& userLogger,
-                                            const babelwires::Feature& inputFeature,
-                                            babelwires::Feature& outputFeature) const {
+                                            const babelwires::ValueTreeNode& inputFeature,
+                                            babelwires::ValueTreeNode& outputFeature) const {
     MergeProcessorInput::ConstInstance input{inputFeature};
-    if (input->isChanged(babelwires::Feature::Changes::SomethingChanged)) {
+    if (input->isChanged(babelwires::ValueTreeNode::Changes::SomethingChanged)) {
         std::vector<const Track*> tracksIn;
         for (int i = 0; i < input.getInput().getSize(); ++i) {
             tracksIn.emplace_back(&input.getInput().getEntry(i).get());

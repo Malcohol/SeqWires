@@ -52,7 +52,7 @@ namespace smf {
             DECLARE_INSTANCE_FIELD(Chan, MidiChannel)
             DECLARE_INSTANCE_FIELD(Track, seqwires::TrackType);
         };
-        using Instance = InstanceImpl<babelwires::Feature>;
-        using ConstInstance = InstanceImpl<const babelwires::Feature>;
+        using Instance = InstanceImpl<babelwires::ValueTreeNode>;
+        using ConstInstance = InstanceImpl<const babelwires::ValueTreeNode>;
     };
 } // namespace smf

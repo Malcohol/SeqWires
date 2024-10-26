@@ -34,10 +34,10 @@ seqwires::MonophonicSubtracksProcessor::MonophonicSubtracksProcessor(const babel
                      MonophonicSubtracksProcessorOutput::getThisIdentifier()) {}
 
 void seqwires::MonophonicSubtracksProcessor::processValue(babelwires::UserLogger& userLogger,
-                                                           const babelwires::Feature& inputFeature,
-                                                           babelwires::Feature& outputFeature) const {
+                                                           const babelwires::ValueTreeNode& inputFeature,
+                                                           babelwires::ValueTreeNode& outputFeature) const {
     MonophonicSubtracksProcessorInput::ConstInstance input{inputFeature};
-    if (input->isChanged(babelwires::Feature::Changes::SomethingChanged)) {
+    if (input->isChanged(babelwires::ValueTreeNode::Changes::SomethingChanged)) {
         const unsigned int numTracks = input.getNumTrk().get();
         const MonophonicSubtracksPolicyEnum::Value policy = input.getPolicy().get();
         const seqwires::Track& trackIn = input.getInput().get();

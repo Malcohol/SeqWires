@@ -24,10 +24,10 @@ seqwires::SilenceProcessor::SilenceProcessor(const babelwires::ProjectContext& p
                      SilenceProcessorOutput::getThisIdentifier()) {}
 
 void seqwires::SilenceProcessor::processValue(babelwires::UserLogger& userLogger,
-                                              const babelwires::Feature& inputFeature,
-                                              babelwires::Feature& outputFeature) const {
+                                              const babelwires::ValueTreeNode& inputFeature,
+                                              babelwires::ValueTreeNode& outputFeature) const {
     SilenceProcessorInput::ConstInstance input{inputFeature};
-    if (input->isChanged(babelwires::Feature::Changes::SomethingChanged)) {
+    if (input->isChanged(babelwires::ValueTreeNode::Changes::SomethingChanged)) {
         SilenceProcessorOutput::Instance output{outputFeature};
         output.getTrack().set(Track(input.getDurn().get()));
     }

@@ -33,12 +33,12 @@ seqwires::SplitAtPitchProcessor::SplitAtPitchProcessor(const babelwires::Project
     : Processor(projectContext, SplitAtPitchProcessorInput::getThisIdentifier(),
                      SplitAtPitchProcessorOutput::getThisIdentifier()) {}
 
-void seqwires::SplitAtPitchProcessor::processValue(babelwires::UserLogger& userLogger, const babelwires::Feature& inputFeature, babelwires::Feature& outputFeature) const {
+void seqwires::SplitAtPitchProcessor::processValue(babelwires::UserLogger& userLogger, const babelwires::ValueTreeNode& inputFeature, babelwires::ValueTreeNode& outputFeature) const {
     SplitAtPitchProcessorInput::ConstInstance input{inputFeature};
     auto pitch = input.getPitch();
     auto trackIn = input.getInput();
-    if (pitch->isChanged(babelwires::Feature::Changes::SomethingChanged) ||
-        trackIn->isChanged(babelwires::Feature::Changes::SomethingChanged)) {
+    if (pitch->isChanged(babelwires::ValueTreeNode::Changes::SomethingChanged) ||
+        trackIn->isChanged(babelwires::ValueTreeNode::Changes::SomethingChanged)) {
         const int pitchIndex = pitch.getInstanceType().tryGetIndexFromIdentifier(pitch.get().get());
         if (pitchIndex >= 0) {
             auto newTracksOut = splitAtPitch(Pitch(pitchIndex), trackIn.get());

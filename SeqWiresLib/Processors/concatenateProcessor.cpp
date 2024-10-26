@@ -28,10 +28,10 @@ seqwires::ConcatenateProcessor::ConcatenateProcessor(const babelwires::ProjectCo
                                  ConcatenateProcessorOutput::getThisIdentifier()) {}
 
 void seqwires::ConcatenateProcessor::processValue(babelwires::UserLogger& userLogger,
-                                                           const babelwires::Feature& inputFeature,
-                                                           babelwires::Feature& outputFeature) const {
+                                                           const babelwires::ValueTreeNode& inputFeature,
+                                                           babelwires::ValueTreeNode& outputFeature) const {
     ConcatenateProcessorInput::ConstInstance input{inputFeature};
-    if (input->isChanged(babelwires::Feature::Changes::SomethingChanged)) {
+    if (input->isChanged(babelwires::ValueTreeNode::Changes::SomethingChanged)) {
         Track trackOut;
 
         for (int i = 0; i < input.getInput().getSize(); ++i) {

@@ -42,8 +42,8 @@ namespace seqwires {
 
         static babelwires::ShortId getCommonArrayId();
 
-        void processEntry(babelwires::UserLogger& userLogger, const babelwires::Feature& inputFeature,
-                          const babelwires::Feature& input, babelwires::Feature& output) const override;
+        void processEntry(babelwires::UserLogger& userLogger, const babelwires::ValueTreeNode& inputFeature,
+                          const babelwires::ValueTreeNode& input, babelwires::ValueTreeNode& output) const override;
     };
 
 } // namespace seqwires

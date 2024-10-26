@@ -50,8 +50,8 @@ namespace seqwires {
         MonophonicSubtracksProcessor(const babelwires::ProjectContext& projectContext);
 
       protected:
-        void processValue(babelwires::UserLogger& userLogger, const babelwires::Feature& inputFeature,
-                          babelwires::Feature& outputFeature) const override;
+        void processValue(babelwires::UserLogger& userLogger, const babelwires::ValueTreeNode& inputFeature,
+                          babelwires::ValueTreeNode& outputFeature) const override;
     };
 
 } // namespace seqwires

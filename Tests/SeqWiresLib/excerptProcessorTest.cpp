@@ -130,18 +130,18 @@ TEST(ExcerptProcessorTest, processor) {
     processor.getInputFeature().setToDefault();
     processor.getOutputFeature().setToDefault();
 
-    babelwires::Feature& inputValueFeature = processor.getInputFeature();
-    const babelwires::Feature& outputValueFeature = processor.getOutputFeature();
+    babelwires::ValueTreeNode& inputValueFeature = processor.getInputFeature();
+    const babelwires::ValueTreeNode& outputValueFeature = processor.getOutputFeature();
 
-    babelwires::Feature& inputArrayFeature =
+    babelwires::ValueTreeNode& inputArrayFeature =
         inputValueFeature.getChildFromStep(babelwires::PathStep(seqwires::ExcerptProcessor::getCommonArrayId()))
-            .is<babelwires::Feature>();
-    const babelwires::Feature& outputArrayFeature =
+            .is<babelwires::ValueTreeNode>();
+    const babelwires::ValueTreeNode& outputArrayFeature =
         outputValueFeature.getChildFromStep(babelwires::PathStep(seqwires::ExcerptProcessor::getCommonArrayId()))
-            .is<babelwires::Feature>();
+            .is<babelwires::ValueTreeNode>();
 
-    babelwires::ArrayInstanceImpl<babelwires::Feature, seqwires::TrackType> inputArray(inputArrayFeature);
-    const babelwires::ArrayInstanceImpl<const babelwires::Feature, seqwires::TrackType> outputArray(outputArrayFeature);
+    babelwires::ArrayInstanceImpl<babelwires::ValueTreeNode, seqwires::TrackType> inputArray(inputArrayFeature);
+    const babelwires::ArrayInstanceImpl<const babelwires::ValueTreeNode, seqwires::TrackType> outputArray(outputArrayFeature);
 
     seqwires::ExcerptProcessorInput::Instance input(inputValueFeature);
 
@@ -216,6 +216,6 @@ TEST(ExcerptProcessorTest, processor) {
     EXPECT_EQ(outputArray.getEntry(0).get().getNumEvents(), 0);
 
     // The other entry is untouched.
-    EXPECT_FALSE(outputArray.getEntry(1)->isChanged(babelwires::Feature::Changes::SomethingChanged));
+    EXPECT_FALSE(outputArray.getEntry(1)->isChanged(babelwires::ValueTreeNode::Changes::SomethingChanged));
     testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{55, 57, 59, 60}, outputArray.getEntry(1).get());
 }

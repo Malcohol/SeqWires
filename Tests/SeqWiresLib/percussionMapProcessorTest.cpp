@@ -119,18 +119,18 @@ TEST(PercussionMapProcessorTest, processor) {
     processor.getInputFeature().setToDefault();
     processor.getOutputFeature().setToDefault();
 
-    babelwires::Feature& inputValueFeature = processor.getInputFeature();
-    const babelwires::Feature& outputValueFeature = processor.getOutputFeature();
+    babelwires::ValueTreeNode& inputValueFeature = processor.getInputFeature();
+    const babelwires::ValueTreeNode& outputValueFeature = processor.getOutputFeature();
 
-    babelwires::Feature& inputArrayFeature =
+    babelwires::ValueTreeNode& inputArrayFeature =
         inputValueFeature.getChildFromStep(babelwires::PathStep(seqwires::PercussionMapProcessor::getCommonArrayId()))
-            .is<babelwires::Feature>();
-    const babelwires::Feature& outputArrayFeature =
+            .is<babelwires::ValueTreeNode>();
+    const babelwires::ValueTreeNode& outputArrayFeature =
         outputValueFeature.getChildFromStep(babelwires::PathStep(seqwires::PercussionMapProcessor::getCommonArrayId()))
-            .is<babelwires::Feature>();
+            .is<babelwires::ValueTreeNode>();
 
-    babelwires::ArrayInstanceImpl<babelwires::Feature, seqwires::TrackType> inputArray(inputArrayFeature);
-    const babelwires::ArrayInstanceImpl<const babelwires::Feature, seqwires::TrackType> outputArray(
+    babelwires::ArrayInstanceImpl<babelwires::ValueTreeNode, seqwires::TrackType> inputArray(inputArrayFeature);
+    const babelwires::ArrayInstanceImpl<const babelwires::ValueTreeNode, seqwires::TrackType> outputArray(
         outputArrayFeature);
 
     seqwires::PercussionMapProcessorInput::Instance input(inputValueFeature);
