@@ -14,7 +14,7 @@
 #include <BabelWiresLib/Types/RecordWithVariants/recordWithVariantsType.hpp>
 #include <BabelWiresLib/Instance/instance.hpp>
 
-#include <BabelWiresLib/Features/feature.hpp>
+#include <BabelWiresLib/Features/valueTreeNode.hpp>
 
 namespace seqwires {
     class Track;
