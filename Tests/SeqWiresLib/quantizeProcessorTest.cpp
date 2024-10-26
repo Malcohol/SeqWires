@@ -100,7 +100,7 @@ TEST(QuantizeProcessorTest, processor) {
     EXPECT_EQ(outputArray.getEntry(0).get().getDuration(), 0);
 
     {
-        babelwires::BackupScope scope(processor.getInputFeature().is<babelwires::SimpleValueFeature>());
+        babelwires::BackupScope scope(processor.getInputFeature().is<babelwires::ValueTreeRoot>());
         input.getBeat().set(babelwires::Rational(1, 8));
         seqwires::Track track;
         testUtils::addNotes(
@@ -123,7 +123,7 @@ TEST(QuantizeProcessorTest, processor) {
 
     processor.getInputFeature().clearChanges();
     {
-        babelwires::BackupScope scope(processor.getInputFeature().is<babelwires::SimpleValueFeature>());
+        babelwires::BackupScope scope(processor.getInputFeature().is<babelwires::ValueTreeRoot>());
         input.getBeat().set(babelwires::Rational(1, 4));
     }
     processor.process(testEnvironment.m_log);
@@ -136,7 +136,7 @@ TEST(QuantizeProcessorTest, processor) {
 
     processor.getInputFeature().clearChanges();
     {
-        babelwires::BackupScope scope(processor.getInputFeature().is<babelwires::SimpleValueFeature>());
+        babelwires::BackupScope scope(processor.getInputFeature().is<babelwires::ValueTreeRoot>());
         seqwires::Track track;
         testUtils::addNotes(
             {

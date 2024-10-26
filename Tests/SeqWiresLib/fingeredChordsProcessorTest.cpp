@@ -708,7 +708,7 @@ TEST(FingeredChordsTest, processor) {
 
     processor.getInputFeature().clearChanges();
     {
-        babelwires::BackupScope scope(processor.getInputFeature().is<babelwires::SimpleValueFeature>());
+        babelwires::BackupScope scope(processor.getInputFeature().is<babelwires::ValueTreeRoot>());
         input.getPolicy().set(seqwires::FingeredChordsSustainPolicyEnum::Value::Hold);
     }
     processor.process(testEnvironment.m_log);
@@ -722,7 +722,7 @@ TEST(FingeredChordsTest, processor) {
 
     processor.getInputFeature().clearChanges();
     {
-        babelwires::BackupScope scope(processor.getInputFeature().is<babelwires::SimpleValueFeature>());
+        babelwires::BackupScope scope(processor.getInputFeature().is<babelwires::ValueTreeRoot>());
         seqwires::Track track;
         track.addEvent(seqwires::NoteOnEvent(0, 60));
         track.addEvent(seqwires::NoteOnEvent(0, 64));

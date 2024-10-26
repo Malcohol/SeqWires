@@ -120,7 +120,7 @@ TEST(SplitAtPitchProcessorTest, processor) {
 
     processor.getInputFeature().clearChanges();
     {
-        babelwires::BackupScope scope(processor.getInputFeature().is<babelwires::SimpleValueFeature>());
+        babelwires::BackupScope scope(processor.getInputFeature().is<babelwires::ValueTreeRoot>());
         input.getPitch().set(babelwires::EnumValue(input.getPitch().getInstanceType().getIdentifierFromIndex(64)));
     }
     processor.process(testEnvironment.m_log);

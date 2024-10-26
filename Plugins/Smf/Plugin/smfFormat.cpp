@@ -37,7 +37,7 @@ std::string smf::SmfSourceFormat::getProductName() const {
     return s_productName;
 }
 
-std::unique_ptr<babelwires::SimpleValueFeature>
+std::unique_ptr<babelwires::ValueTreeRoot>
 smf::SmfSourceFormat::loadFromFile(babelwires::DataSource& dataSource, const babelwires::ProjectContext& projectContext,
                                    babelwires::UserLogger& userLogger) const {
     return parseSmfSequence(dataSource, projectContext, userLogger);
@@ -55,13 +55,13 @@ std::string smf::SmfTargetFormat::getProductName() const {
     return s_productName;
 }
 
-std::unique_ptr<babelwires::SimpleValueFeature>
+std::unique_ptr<babelwires::ValueTreeRoot>
 smf::SmfTargetFormat::createNewFeature(const babelwires::ProjectContext& projectContext) const {
-    return std::make_unique<babelwires::SimpleValueFeature>(projectContext.m_typeSystem, getSmfFileType());
+    return std::make_unique<babelwires::ValueTreeRoot>(projectContext.m_typeSystem, getSmfFileType());
 }
 
 void smf::SmfTargetFormat::writeToFile(const babelwires::ProjectContext& projectContext,
-                                       babelwires::UserLogger& userLogger, const babelwires::SimpleValueFeature& contents,
+                                       babelwires::UserLogger& userLogger, const babelwires::ValueTreeRoot& contents,
                                        std::ostream& os) const {
     writeToSmf(projectContext, userLogger, contents, os);
 }

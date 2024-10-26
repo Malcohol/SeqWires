@@ -33,7 +33,7 @@ namespace {
 } // namespace
 
 smf::SmfWriter::SmfWriter(const babelwires::ProjectContext& projectContext, babelwires::UserLogger& userLogger,
-                          const babelwires::SimpleValueFeature& sequence, std::ostream& ostream)
+                          const babelwires::ValueTreeRoot& sequence, std::ostream& ostream)
     : m_projectContext(projectContext)
     , m_userLogger(userLogger)
     , m_smfFeature(sequence)
@@ -438,7 +438,7 @@ void smf::SmfWriter::write() {
 }
 
 void smf::writeToSmf(const babelwires::ProjectContext& projectContext, babelwires::UserLogger& userLogger,
-                     const babelwires::SimpleValueFeature& sequence, std::ostream& output) {
+                     const babelwires::ValueTreeRoot& sequence, std::ostream& output) {
     smf::SmfWriter writer(projectContext, userLogger, sequence, output);
     writer.write();
 }

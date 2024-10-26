@@ -41,7 +41,7 @@ smf::SmfParser::SmfParser(babelwires::DataSource& dataSource, const babelwires::
     , m_division(-1)
     , m_standardPercussionSets(projectContext) {
 
-    m_result = std::make_unique<babelwires::SimpleValueFeature>(projectContext.m_typeSystem, getSmfFileType());
+    m_result = std::make_unique<babelwires::ValueTreeRoot>(projectContext.m_typeSystem, getSmfFileType());
     m_result->setToDefault();
 }
 
@@ -880,7 +880,7 @@ void smf::SmfParser::onChangeProgram(unsigned int channelNumber) {
         m_standardPercussionSets.getPercussionSetFromChannelSetupInfo(gmSpec, channelSetup.m_channelSetupInfo);
 }
 
-std::unique_ptr<babelwires::SimpleValueFeature> smf::parseSmfSequence(babelwires::DataSource& dataSource,
+std::unique_ptr<babelwires::ValueTreeRoot> smf::parseSmfSequence(babelwires::DataSource& dataSource,
                                                        const babelwires::ProjectContext& projectContext,
                                                        babelwires::UserLogger& userLogger) {
     SmfParser parser(dataSource, projectContext, userLogger);

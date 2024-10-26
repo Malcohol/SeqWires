@@ -42,7 +42,7 @@ TEST_P(SmfStandardPercussionTest, saveLoad) {
                                      smf::GMSpecType::getIdentifierFromValue(testData.m_specificationId).toString());
 
     {
-        babelwires::SimpleValueFeature smfFeature(testEnvironment.m_projectContext.m_typeSystem, smf::getSmfFileType());
+        babelwires::ValueTreeRoot smfFeature(testEnvironment.m_projectContext.m_typeSystem, smf::getSmfFileType());
         smfFeature.setToDefault();
 
         smf::SmfSequence::Instance smfType{smfFeature.getFeature(0)->is<babelwires::ValueTreeNode>()};
@@ -168,7 +168,7 @@ TEST_P(SmfTrackAllocationPercussionTest, trackAllocation) {
                                      smf::GMSpecType::getIdentifierFromValue(testData.m_specificationId).toString());
 
     {
-        babelwires::SimpleValueFeature smfFeature(testEnvironment.m_projectContext.m_typeSystem, smf::getSmfFileType());
+        babelwires::ValueTreeRoot smfFeature(testEnvironment.m_projectContext.m_typeSystem, smf::getSmfFileType());
         smfFeature.setToDefault();
 
         smf::SmfSequence::Instance smfType{smfFeature.getFeature(0)->is<babelwires::ValueTreeNode>()};

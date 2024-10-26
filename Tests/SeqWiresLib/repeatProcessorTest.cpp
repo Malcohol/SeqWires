@@ -74,7 +74,7 @@ TEST(RepeatProcessorTest, processor) {
     EXPECT_EQ(outputArray.getEntry(0).get().getDuration(), 0);
 
     {
-        babelwires::BackupScope scope(processor.getInputFeature().is<babelwires::SimpleValueFeature>());
+        babelwires::BackupScope scope(processor.getInputFeature().is<babelwires::ValueTreeRoot>());
         seqwires::Track track;
         testUtils::addSimpleNotes({60, 62, 64, 65}, track);
         inputArray.getEntry(0).set(std::move(track));
@@ -86,7 +86,7 @@ TEST(RepeatProcessorTest, processor) {
 
     processor.getInputFeature().clearChanges();
     {
-        babelwires::BackupScope scope(processor.getInputFeature().is<babelwires::SimpleValueFeature>());
+        babelwires::BackupScope scope(processor.getInputFeature().is<babelwires::ValueTreeRoot>());
         input.getCount().set(1);
     }
     processor.process(testEnvironment.m_log);
@@ -95,7 +95,7 @@ TEST(RepeatProcessorTest, processor) {
 
     processor.getInputFeature().clearChanges();
     {
-        babelwires::BackupScope scope(processor.getInputFeature().is<babelwires::SimpleValueFeature>());
+        babelwires::BackupScope scope(processor.getInputFeature().is<babelwires::ValueTreeRoot>());
         inputArray.setSize(2);
         {
             seqwires::Track track;

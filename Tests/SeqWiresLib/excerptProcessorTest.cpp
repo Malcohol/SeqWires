@@ -160,7 +160,7 @@ TEST(ExcerptProcessorTest, processor) {
 
     processor.getInputFeature().clearChanges();
     {
-        babelwires::BackupScope scope(processor.getInputFeature().is<babelwires::SimpleValueFeature>());
+        babelwires::BackupScope scope(processor.getInputFeature().is<babelwires::ValueTreeRoot>());
         seqwires::Track track;
         testUtils::addSimpleNotes({60, 62, 64, 65, 67, 69, 71, 72}, track);
         inputArray.getEntry(0).set(std::move(track));
@@ -172,7 +172,7 @@ TEST(ExcerptProcessorTest, processor) {
 
     processor.getInputFeature().clearChanges();
     {
-        babelwires::BackupScope scope(processor.getInputFeature().is<babelwires::SimpleValueFeature>());
+        babelwires::BackupScope scope(processor.getInputFeature().is<babelwires::ValueTreeRoot>());
         input.getStart().set(1);
     }
     processor.process(testEnvironment.m_log);
@@ -184,7 +184,7 @@ TEST(ExcerptProcessorTest, processor) {
     // However that functionality didn't survive the switch to types/values.
     processor.getInputFeature().clearChanges();
     {
-        babelwires::BackupScope scope(processor.getInputFeature().is<babelwires::SimpleValueFeature>());
+        babelwires::BackupScope scope(processor.getInputFeature().is<babelwires::ValueTreeRoot>());
         inputArray.setSize(2);
         {
             seqwires::Track track;
@@ -204,7 +204,7 @@ TEST(ExcerptProcessorTest, processor) {
     processor.getInputFeature().clearChanges();
     processor.getOutputFeature().clearChanges();
     {
-        babelwires::BackupScope scope(processor.getInputFeature().is<babelwires::SimpleValueFeature>());
+        babelwires::BackupScope scope(processor.getInputFeature().is<babelwires::ValueTreeRoot>());
         // Set it to empty.
         inputArray.getEntry(0).set(seqwires::Track());
     }

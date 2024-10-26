@@ -29,7 +29,7 @@ TEST(SmfSaveLoadTest, cMajorScale) {
 
     const std::vector<seqwires::Pitch> pitches{60, 62, 64, 65, 67, 69, 71, 72};
     {
-        babelwires::SimpleValueFeature smfFeature(testEnvironment.m_projectContext.m_typeSystem, smf::getSmfFileType());
+        babelwires::ValueTreeRoot smfFeature(testEnvironment.m_projectContext.m_typeSystem, smf::getSmfFileType());
         smfFeature.setToDefault();
 
         smf::SmfSequence::Instance smfType{smfFeature.getFeature(0)->is<babelwires::ValueTreeNode>()};
@@ -108,7 +108,7 @@ TEST(SmfSaveLoadTest, cMajorScaleWithMetadata) {
     for (std::uint8_t metadata = 0; metadata < 8; ++metadata) {
         testUtils::TempFilePath tempFile("cMajorWithMetadata.mid", metadata);
         {
-            babelwires::SimpleValueFeature smfFeature(testEnvironment.m_projectContext.m_typeSystem,
+            babelwires::ValueTreeRoot smfFeature(testEnvironment.m_projectContext.m_typeSystem,
                                                       smf::getSmfFileType());
             smfFeature.setToDefault();
 
@@ -161,7 +161,7 @@ TEST(SmfSaveLoadTest, format0Chords) {
     const char* trackName[3] = {"ch0", "ch1", "ch2"};
 
     {
-        babelwires::SimpleValueFeature smfFeature(testEnvironment.m_projectContext.m_typeSystem, smf::getSmfFileType());
+        babelwires::ValueTreeRoot smfFeature(testEnvironment.m_projectContext.m_typeSystem, smf::getSmfFileType());
         smfFeature.setToDefault();
 
         smf::SmfSequence::Instance smfType{smfFeature.getFeature(0)->is<babelwires::ValueTreeNode>()};
@@ -207,7 +207,7 @@ TEST(SmfSaveLoadTest, format1Chords) {
     const char* trackName[3] = {"ch0", "ch1", "ch2"};
 
     {
-        babelwires::SimpleValueFeature smfFeature(testEnvironment.m_projectContext.m_typeSystem, smf::getSmfFileType());
+        babelwires::ValueTreeRoot smfFeature(testEnvironment.m_projectContext.m_typeSystem, smf::getSmfFileType());
         smfFeature.setToDefault();
 
         smf::SmfSequence::Instance smfType{smfFeature.getFeature(0)->is<babelwires::ValueTreeNode>()};

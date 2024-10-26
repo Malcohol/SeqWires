@@ -376,7 +376,7 @@ TEST(MonophonicSubtracksProcessorTest, processor) {
 
     processor.getInputFeature().clearChanges();
     {
-        babelwires::BackupScope scope(processor.getInputFeature().is<babelwires::SimpleValueFeature>());
+        babelwires::BackupScope scope(processor.getInputFeature().is<babelwires::ValueTreeRoot>());
         input.getNumTrk().set(3);
         input.getPolicy().set(seqwires::MonophonicSubtracksPolicyEnum::Value::High);
     }

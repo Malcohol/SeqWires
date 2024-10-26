@@ -89,7 +89,7 @@ TEST(MergeProcessorTest, processor) {
 
     processor.getInputFeature().clearChanges();
     {
-        babelwires::BackupScope scope(processor.getInputFeature().is<babelwires::SimpleValueFeature>());
+        babelwires::BackupScope scope(processor.getInputFeature().is<babelwires::ValueTreeRoot>());
         seqwires::Track track;
         testUtils::addSimpleNotes(std::vector<seqwires::Pitch>{48, 50}, track);
         input.getInput().getEntry(1).set(std::move(track));
@@ -127,7 +127,7 @@ TEST(MergeProcessorTest, processor) {
     processor.getInputFeature().clearChanges();
     // Insert a new track at position 1.
     {
-        babelwires::BackupScope scope(processor.getInputFeature().is<babelwires::SimpleValueFeature>());
+        babelwires::BackupScope scope(processor.getInputFeature().is<babelwires::ValueTreeRoot>());
         input.getInput().setSize(3);
         input.getInput().getEntry(2).set(input.getInput().getEntry(1)->getValue());
 
