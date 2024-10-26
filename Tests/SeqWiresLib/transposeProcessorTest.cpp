@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <BabelWiresLib/Features/simpleValueFeature.hpp>
+#include <BabelWiresLib/Features/valueTreeRoot.hpp>
 
 #include <SeqWiresLib/Functions/transposeFunction.hpp>
 #include <SeqWiresLib/Processors/transposeProcessor.hpp>

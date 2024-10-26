@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <BabelWiresLib/Features/simpleValueFeature.hpp>
+#include <BabelWiresLib/Features/valueTreeRoot.hpp>
 
 #include <SeqWiresLib/Functions/appendTrackFunction.hpp>
 #include <SeqWiresLib/Processors/concatenateProcessor.hpp>
