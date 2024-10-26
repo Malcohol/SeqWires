@@ -7,7 +7,6 @@
 #include <Plugins/Smf/Plugin/smfWriter.hpp>
 
 #include <SeqWiresLib/Types/Track/TrackEvents/noteEvents.hpp>
-#include <SeqWiresLib/Types/Track/trackFeature.hpp>
 #include <SeqWiresLib/libRegistration.hpp>
 
 #include <BabelWiresLib/Instance/arrayTypeInstance.hpp>

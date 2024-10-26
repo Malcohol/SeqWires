@@ -7,8 +7,6 @@
  **/
 #include <SeqWiresLib/Processors/fingeredChordsProcessor.hpp>
 
-#include <SeqWiresLib/Types/Track/trackFeature.hpp>
-
 seqwires::FingeredChordsProcessorInput::FingeredChordsProcessorInput()
     : babelwires::RecordType({{BW_SHORT_ID("Policy", "Policy", "a1dd2ae0-e91e-40fe-af4a-c74f2c7d978a"),
                                seqwires::FingeredChordsSustainPolicyEnum::getThisIdentifier()},

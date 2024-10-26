@@ -29,7 +29,6 @@ SET( SEQWIRESLIB_SRCS
 	Types/Track/TrackEvents/percussionEvents.cpp
 	Types/Track/TrackEvents/trackEvent.cpp
 	Types/Track/track.cpp
-	Types/Track/trackFeature.cpp
 	Types/Track/trackType.cpp
 	Types/Track/trackTypeConstructor.cpp
 	chord.cpp

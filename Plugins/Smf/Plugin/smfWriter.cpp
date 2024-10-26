@@ -13,7 +13,6 @@
 #include <Plugins/Smf/Plugin/midiTrackAndChannel.hpp>
 
 #include <SeqWiresLib/Types/Track/TrackEvents/percussionEvents.hpp>
-#include <SeqWiresLib/Types/Track/trackFeature.hpp>
 #include <SeqWiresLib/Utilities/filteredTrackIterator.hpp>
 #include <SeqWiresLib/Utilities/musicUtilities.hpp>
 #include <SeqWiresLib/Utilities/trackTraverser.hpp>

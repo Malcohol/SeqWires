@@ -8,10 +8,8 @@
 #include <SeqWiresLib/Processors/transposeProcessor.hpp>
 
 #include <SeqWiresLib/Functions/transposeFunction.hpp>
-#include <SeqWiresLib/Types/Track/trackFeature.hpp>
 #include <SeqWiresLib/Types/Track/trackInstance.hpp>
 
-#include <BabelWiresLib/Types/Int/intFeature.hpp>
 #include <BabelWiresLib/Types/Int/intTypeConstructor.hpp>
 #include <BabelWiresLib/Types/Int/intValue.hpp>
 

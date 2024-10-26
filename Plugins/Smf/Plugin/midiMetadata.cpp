@@ -9,7 +9,6 @@
 
 #include <Plugins/Smf/Plugin/smfFormat.hpp>
 
-#include <SeqWiresLib/Types/Track/trackFeature.hpp>
 #include <SeqWiresLib/Types/tempo.hpp>
 
 #include <BabelWiresLib/TypeSystem/typeSystem.hpp>
@@ -28,6 +27,3 @@ smf::MidiMetadata::MidiMetadata()
            {BW_SHORT_ID("CopyR", "Copyright", "a59dc914-d060-4f03-be83-5804fc4d6b6a"),
             babelwires::StringType::getThisIdentifier(),
             babelwires::RecordType::Optionality::optionalDefaultInactive}}) {}
-
-smf::MidiMetadataFeature::MidiMetadataFeature()
-    : babelwires::SimpleValueFeature(MidiMetadata::getThisIdentifier()) {}

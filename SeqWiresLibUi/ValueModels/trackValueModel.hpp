@@ -9,10 +9,6 @@
 
 #include <BabelWiresQtUi/ValueModels/valueModelWithRichText.hpp>
 
-namespace seqwires {
-    class TrackFeature;
-}
-
 namespace seqwiresUi {
 
     class TrackValueModel : public babelwires::ValueModelWithRichText {

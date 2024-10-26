@@ -8,7 +8,6 @@
 #include <SeqWiresLib/Processors/splitAtPitchProcessor.hpp>
 
 #include <SeqWiresLib/Functions/splitAtPitchFunction.hpp>
-#include <SeqWiresLib/Types/Track/trackFeature.hpp>
 
 #include <BabelWiresLib/Features/modelExceptions.hpp>
 

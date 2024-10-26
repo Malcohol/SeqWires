@@ -29,9 +29,4 @@ namespace smf {
         DECLARE_INSTANCE_FIELD_OPTIONAL(CopyR, babelwires::StringType)
         DECLARE_INSTANCE_END()
     };
-
-    class MidiMetadataFeature : public babelwires::SimpleValueFeature {
-      public:
-        MidiMetadataFeature();
-    };
 } // namespace smf
