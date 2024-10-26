@@ -48,9 +48,9 @@ babelwires::ShortId seqwires::ChordMapProcessor::getCommonArrayId() {
 }
 
 void seqwires::ChordMapProcessor::processEntry(babelwires::UserLogger& userLogger,
-                                               const babelwires::ValueFeature& inputFeature,
-                                               const babelwires::ValueFeature& inputEntry,
-                                               babelwires::ValueFeature& outputEntry) const {
+                                               const babelwires::Feature& inputFeature,
+                                               const babelwires::Feature& inputEntry,
+                                               babelwires::Feature& outputEntry) const {
     ChordMapProcessorInput::ConstInstance input{inputFeature};
     babelwires::ConstInstance<TrackType> entryIn{inputEntry};
     babelwires::Instance<TrackType> entryOut{outputEntry};

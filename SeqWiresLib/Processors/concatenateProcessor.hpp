@@ -48,7 +48,7 @@ namespace seqwires {
         ConcatenateProcessor(const babelwires::ProjectContext& projectContext);
 
       protected:
-        void processValue(babelwires::UserLogger& userLogger, const babelwires::ValueFeature& inputFeature,
-                          babelwires::ValueFeature& outputFeature) const override;
+        void processValue(babelwires::UserLogger& userLogger, const babelwires::Feature& inputFeature,
+                          babelwires::Feature& outputFeature) const override;
     };
 } // namespace seqwires

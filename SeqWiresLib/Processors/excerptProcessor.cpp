@@ -32,8 +32,8 @@ babelwires::ShortId seqwires::ExcerptProcessor::getCommonArrayId() {
 seqwires::ExcerptProcessor::ExcerptProcessor(const babelwires::ProjectContext& projectContext)
     : babelwires::ParallelProcessor(projectContext, ExcerptProcessorInput::getThisIdentifier(), ExcerptProcessorOutput::getThisIdentifier()) {}
 
-void seqwires::ExcerptProcessor::processEntry(babelwires::UserLogger& userLogger, const babelwires::ValueFeature& inputFeature,
-                          const babelwires::ValueFeature& inputEntry, babelwires::ValueFeature& outputEntry)  const {
+void seqwires::ExcerptProcessor::processEntry(babelwires::UserLogger& userLogger, const babelwires::Feature& inputFeature,
+                          const babelwires::Feature& inputEntry, babelwires::Feature& outputEntry)  const {
     ExcerptProcessorInput::ConstInstance input{inputFeature};                        
     babelwires::ConstInstance<TrackType> entryIn{inputEntry};
     babelwires::Instance<TrackType> entryOut{outputEntry};

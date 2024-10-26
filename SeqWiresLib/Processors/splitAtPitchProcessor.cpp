@@ -33,7 +33,7 @@ seqwires::SplitAtPitchProcessor::SplitAtPitchProcessor(const babelwires::Project
     : Processor(projectContext, SplitAtPitchProcessorInput::getThisIdentifier(),
                      SplitAtPitchProcessorOutput::getThisIdentifier()) {}
 
-void seqwires::SplitAtPitchProcessor::processValue(babelwires::UserLogger& userLogger, const babelwires::ValueFeature& inputFeature, babelwires::ValueFeature& outputFeature) const {
+void seqwires::SplitAtPitchProcessor::processValue(babelwires::UserLogger& userLogger, const babelwires::Feature& inputFeature, babelwires::Feature& outputFeature) const {
     SplitAtPitchProcessorInput::ConstInstance input{inputFeature};
     auto pitch = input.getPitch();
     auto trackIn = input.getInput();

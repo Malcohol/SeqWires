@@ -41,9 +41,9 @@ babelwires::ShortId seqwires::QuantizeProcessor::getCommonArrayId() {
 }
 
 void seqwires::QuantizeProcessor::processEntry(babelwires::UserLogger& userLogger,
-                                             const babelwires::ValueFeature& inputFeature,
-                                             const babelwires::ValueFeature& inputEntry,
-                                             babelwires::ValueFeature& outputEntry) const {
+                                             const babelwires::Feature& inputFeature,
+                                             const babelwires::Feature& inputEntry,
+                                             babelwires::Feature& outputEntry) const {
     QuantizeProcessorInput::ConstInstance input{inputFeature};
     babelwires::ConstInstance<TrackType> entryIn{inputEntry};
     babelwires::Instance<TrackType> entryOut{outputEntry};

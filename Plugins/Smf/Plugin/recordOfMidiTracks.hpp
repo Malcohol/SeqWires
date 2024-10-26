@@ -34,7 +34,7 @@ namespace smf {
             InstanceImpl(VALUE_FEATURE& valueFeature)
                 : InstanceWithChannelOptionals<VALUE_FEATURE, RecordOfMidiTracks>(valueFeature) {}
         };
-        using Instance = InstanceImpl<babelwires::ValueFeature>;
-        using ConstInstance = InstanceImpl<const babelwires::ValueFeature>;
+        using Instance = InstanceImpl<babelwires::Feature>;
+        using ConstInstance = InstanceImpl<const babelwires::Feature>;
     };
 } // namespace smf

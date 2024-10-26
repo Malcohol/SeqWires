@@ -48,11 +48,11 @@ smf::SmfParser::SmfParser(babelwires::DataSource& dataSource, const babelwires::
 smf::SmfParser::~SmfParser() = default;
 
 smf::SmfSequence::ConstInstance smf::SmfParser::getSmfSequenceConst() const {
-    return SmfSequence::ConstInstance(m_result->getFeature(0)->is<babelwires::ValueFeature>());
+    return SmfSequence::ConstInstance(m_result->getFeature(0)->is<babelwires::Feature>());
 }
 
 smf::SmfSequence::Instance smf::SmfParser::getSmfSequence() {
-    return SmfSequence::Instance(m_result->getFeature(0)->is<babelwires::ValueFeature>());
+    return SmfSequence::Instance(m_result->getFeature(0)->is<babelwires::Feature>());
 }
 
 smf::SmfSequence::Instance getSmfSequence();

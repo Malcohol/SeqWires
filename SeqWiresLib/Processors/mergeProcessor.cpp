@@ -31,8 +31,8 @@ seqwires::MergeProcessor::MergeProcessor(const babelwires::ProjectContext& proje
                      MergeProcessorOutput::getThisIdentifier()) {}
 
 void seqwires::MergeProcessor::processValue(babelwires::UserLogger& userLogger,
-                                            const babelwires::ValueFeature& inputFeature,
-                                            babelwires::ValueFeature& outputFeature) const {
+                                            const babelwires::Feature& inputFeature,
+                                            babelwires::Feature& outputFeature) const {
     MergeProcessorInput::ConstInstance input{inputFeature};
     if (input->isChanged(babelwires::Feature::Changes::SomethingChanged)) {
         std::vector<const Track*> tracksIn;

@@ -24,8 +24,8 @@ seqwires::SilenceProcessor::SilenceProcessor(const babelwires::ProjectContext& p
                      SilenceProcessorOutput::getThisIdentifier()) {}
 
 void seqwires::SilenceProcessor::processValue(babelwires::UserLogger& userLogger,
-                                              const babelwires::ValueFeature& inputFeature,
-                                              babelwires::ValueFeature& outputFeature) const {
+                                              const babelwires::Feature& inputFeature,
+                                              babelwires::Feature& outputFeature) const {
     SilenceProcessorInput::ConstInstance input{inputFeature};
     if (input->isChanged(babelwires::Feature::Changes::SomethingChanged)) {
         SilenceProcessorOutput::Instance output{outputFeature};

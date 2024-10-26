@@ -77,18 +77,18 @@ TEST(QuantizeProcessorTest, processor) {
     processor.getInputFeature().setToDefault();
     processor.getOutputFeature().setToDefault();
 
-    babelwires::ValueFeature& inputValueFeature = processor.getInputFeature();
-    const babelwires::ValueFeature& outputValueFeature = processor.getOutputFeature();
+    babelwires::Feature& inputValueFeature = processor.getInputFeature();
+    const babelwires::Feature& outputValueFeature = processor.getOutputFeature();
 
-    babelwires::ValueFeature& inputArrayFeature =
+    babelwires::Feature& inputArrayFeature =
         inputValueFeature.getChildFromStep(babelwires::PathStep(seqwires::QuantizeProcessor::getCommonArrayId()))
-            .is<babelwires::ValueFeature>();
-    const babelwires::ValueFeature& outputArrayFeature =
+            .is<babelwires::Feature>();
+    const babelwires::Feature& outputArrayFeature =
         outputValueFeature.getChildFromStep(babelwires::PathStep(seqwires::QuantizeProcessor::getCommonArrayId()))
-            .is<babelwires::ValueFeature>();
+            .is<babelwires::Feature>();
 
-    babelwires::ArrayInstanceImpl<babelwires::ValueFeature, seqwires::TrackType> inputArray(inputArrayFeature);
-    const babelwires::ArrayInstanceImpl<const babelwires::ValueFeature, seqwires::TrackType> outputArray(
+    babelwires::ArrayInstanceImpl<babelwires::Feature, seqwires::TrackType> inputArray(inputArrayFeature);
+    const babelwires::ArrayInstanceImpl<const babelwires::Feature, seqwires::TrackType> outputArray(
         outputArrayFeature);
 
     seqwires::QuantizeProcessorInput::Instance input(inputValueFeature);

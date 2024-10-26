@@ -32,7 +32,7 @@ TEST(SmfSaveLoadTest, cMajorScale) {
         babelwires::SimpleValueFeature smfFeature(testEnvironment.m_projectContext.m_typeSystem, smf::getSmfFileType());
         smfFeature.setToDefault();
 
-        smf::SmfSequence::Instance smfType{smfFeature.getFeature(0)->is<babelwires::ValueFeature>()};
+        smf::SmfSequence::Instance smfType{smfFeature.getFeature(0)->is<babelwires::Feature>()};
         auto tracks = smfType.getTrcks0();
         auto track2 = tracks.activateAndGetTrack(2);
 
@@ -49,7 +49,7 @@ TEST(SmfSaveLoadTest, cMajorScale) {
 
         const auto feature = smf::parseSmfSequence(midiFile, testEnvironment.m_projectContext, testEnvironment.m_log);
         ASSERT_NE(feature, nullptr);
-        smf::SmfSequence::ConstInstance smfSequence{feature->getFeature(0)->is<babelwires::ValueFeature>()};
+        smf::SmfSequence::ConstInstance smfSequence{feature->getFeature(0)->is<babelwires::Feature>()};
         ASSERT_EQ(smfSequence.getInstanceType().getIndexOfTag(smfSequence.getSelectedTag()), 0);
 
         auto tracks = smfSequence.getTrcks0();
@@ -112,7 +112,7 @@ TEST(SmfSaveLoadTest, cMajorScaleWithMetadata) {
                                                       smf::getSmfFileType());
             smfFeature.setToDefault();
 
-            smf::SmfSequence::Instance smfType{smfFeature.getFeature(0)->is<babelwires::ValueFeature>()};
+            smf::SmfSequence::Instance smfType{smfFeature.getFeature(0)->is<babelwires::Feature>()};
 
             addMetadata(smfType, metadata);
 
@@ -132,7 +132,7 @@ TEST(SmfSaveLoadTest, cMajorScaleWithMetadata) {
         const auto feature = smf::parseSmfSequence(midiFile, testEnvironment.m_projectContext, testEnvironment.m_log);
         ASSERT_NE(feature, nullptr);
 
-        smf::SmfSequence::ConstInstance smfSequence{feature->getFeature(0)->is<babelwires::ValueFeature>()};
+        smf::SmfSequence::ConstInstance smfSequence{feature->getFeature(0)->is<babelwires::Feature>()};
         ASSERT_EQ(smfSequence.getInstanceType().getIndexOfTag(smfSequence.getSelectedTag()), 0);
 
         checkMetadata(smfSequence, metadata);
@@ -164,7 +164,7 @@ TEST(SmfSaveLoadTest, format0Chords) {
         babelwires::SimpleValueFeature smfFeature(testEnvironment.m_projectContext.m_typeSystem, smf::getSmfFileType());
         smfFeature.setToDefault();
 
-        smf::SmfSequence::Instance smfType{smfFeature.getFeature(0)->is<babelwires::ValueFeature>()};
+        smf::SmfSequence::Instance smfType{smfFeature.getFeature(0)->is<babelwires::Feature>()};
         auto tracks = smfType.getTrcks0();
 
         for (int i = 0; i < 3; ++i) {
@@ -184,7 +184,7 @@ TEST(SmfSaveLoadTest, format0Chords) {
         const auto feature = smf::parseSmfSequence(midiFile, testEnvironment.m_projectContext, testEnvironment.m_log);
         ASSERT_NE(feature, nullptr);
 
-        smf::SmfSequence::ConstInstance smfSequence{feature->getFeature(0)->is<babelwires::ValueFeature>()};
+        smf::SmfSequence::ConstInstance smfSequence{feature->getFeature(0)->is<babelwires::Feature>()};
         ASSERT_EQ(smfSequence.getInstanceType().getIndexOfTag(smfSequence.getSelectedTag()), 0);
 
         auto tracks = smfSequence.getTrcks0();
@@ -210,7 +210,7 @@ TEST(SmfSaveLoadTest, format1Chords) {
         babelwires::SimpleValueFeature smfFeature(testEnvironment.m_projectContext.m_typeSystem, smf::getSmfFileType());
         smfFeature.setToDefault();
 
-        smf::SmfSequence::Instance smfType{smfFeature.getFeature(0)->is<babelwires::ValueFeature>()};
+        smf::SmfSequence::Instance smfType{smfFeature.getFeature(0)->is<babelwires::Feature>()};
 
         smfType.selectTag("SMF1");
         auto tracks = smfType.getTrcks1();
@@ -234,7 +234,7 @@ TEST(SmfSaveLoadTest, format1Chords) {
         const auto feature = smf::parseSmfSequence(midiFile, testEnvironment.m_projectContext, testEnvironment.m_log);
         ASSERT_NE(feature, nullptr);
 
-        smf::SmfSequence::ConstInstance smfSequence{feature->getFeature(0)->is<babelwires::ValueFeature>()};
+        smf::SmfSequence::ConstInstance smfSequence{feature->getFeature(0)->is<babelwires::Feature>()};
         ASSERT_EQ(smfSequence.getInstanceType().getIndexOfTag(smfSequence.getSelectedTag()), 1);
 
         auto tracks = smfSequence.getTrcks1();

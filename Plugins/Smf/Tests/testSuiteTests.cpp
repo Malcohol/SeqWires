@@ -53,7 +53,7 @@ TEST(SmfTestSuiteTest, cMajorScale) {
     const auto feature = smf::parseSmfSequence(midiFile, testEnvironment.m_projectContext, testEnvironment.m_log);
     ASSERT_NE(feature, nullptr);
 
-    smf::SmfSequence::ConstInstance smfSequence{feature->getFeature(0)->is<babelwires::ValueFeature>()};
+    smf::SmfSequence::ConstInstance smfSequence{feature->getFeature(0)->is<babelwires::Feature>()};
     ASSERT_EQ(smfSequence.getInstanceType().getIndexOfTag(smfSequence.getSelectedTag()), 0);
 
     const auto& metadata = smfSequence.getMeta();
@@ -87,7 +87,7 @@ TEST(SmfTestSuiteTest, multichannelChords0) {
     const auto feature = smf::parseSmfSequence(midiFile, testEnvironment.m_projectContext, testEnvironment.m_log);
     ASSERT_NE(feature, nullptr);
 
-    smf::SmfSequence::ConstInstance smfSequence{feature->getFeature(0)->is<babelwires::ValueFeature>()};
+    smf::SmfSequence::ConstInstance smfSequence{feature->getFeature(0)->is<babelwires::Feature>()};
     ASSERT_EQ(smfSequence.getInstanceType().getIndexOfTag(smfSequence.getSelectedTag()), 0);
 
     const auto& metadata = smfSequence.getMeta();
@@ -112,7 +112,7 @@ TEST(SmfTestSuiteTest, multichannelChords1) {
     const auto feature = smf::parseSmfSequence(midiFile, testEnvironment.m_projectContext, testEnvironment.m_log);
     ASSERT_NE(feature, nullptr);
 
-    smf::SmfSequence::ConstInstance smfSequence{feature->getFeature(0)->is<babelwires::ValueFeature>()};
+    smf::SmfSequence::ConstInstance smfSequence{feature->getFeature(0)->is<babelwires::Feature>()};
     ASSERT_EQ(smfSequence.getInstanceType().getIndexOfTag(smfSequence.getSelectedTag()), 1);
 
     const auto& metadata = smfSequence.getMeta();
@@ -144,7 +144,7 @@ TEST(SmfTestSuiteTest, multichannelChords2) {
     const auto feature = smf::parseSmfSequence(midiFile, testEnvironment.m_projectContext, testEnvironment.m_log);
     ASSERT_NE(feature, nullptr);
 
-    smf::SmfSequence::ConstInstance smfSequence{feature->getFeature(0)->is<babelwires::ValueFeature>()};
+    smf::SmfSequence::ConstInstance smfSequence{feature->getFeature(0)->is<babelwires::Feature>()};
     ASSERT_EQ(smfSequence.getInstanceType().getIndexOfTag(smfSequence.getSelectedTag()), 1);
 
     const auto& metadata = smfSequence.getMeta();
@@ -178,7 +178,7 @@ TEST(SmfTestSuiteTest, multichannelChords3) {
     const auto feature = smf::parseSmfSequence(midiFile, testEnvironment.m_projectContext, testEnvironment.m_log);
     ASSERT_NE(feature, nullptr);
 
-    smf::SmfSequence::ConstInstance smfSequence{feature->getFeature(0)->is<babelwires::ValueFeature>()};
+    smf::SmfSequence::ConstInstance smfSequence{feature->getFeature(0)->is<babelwires::Feature>()};
     ASSERT_EQ(smfSequence.getInstanceType().getIndexOfTag(smfSequence.getSelectedTag()), 1);
 
     auto tracks = smfSequence.getTrcks1();
@@ -213,7 +213,7 @@ TEST(SmfTestSuiteTest, trackLength) {
 
     const auto feature = smf::parseSmfSequence(midiFile, testEnvironment.m_projectContext, testEnvironment.m_log);
     ASSERT_NE(feature, nullptr);
-    smf::SmfSequence::ConstInstance smfSequence{feature->getFeature(0)->is<babelwires::ValueFeature>()};
+    smf::SmfSequence::ConstInstance smfSequence{feature->getFeature(0)->is<babelwires::Feature>()};
     ASSERT_EQ(smfSequence.getInstanceType().getIndexOfTag(smfSequence.getSelectedTag()), 0);
 
     auto tracks = smfSequence.getTrcks0();
@@ -236,7 +236,7 @@ TEST(SmfTestSuiteTest, tempoTest) {
     const auto feature = smf::parseSmfSequence(midiFile, testEnvironment.m_projectContext, testEnvironment.m_log);
     ASSERT_NE(feature, nullptr);
 
-    smf::SmfSequence::ConstInstance smfSequence{feature->getFeature(0)->is<babelwires::ValueFeature>()};
+    smf::SmfSequence::ConstInstance smfSequence{feature->getFeature(0)->is<babelwires::Feature>()};
 
     const auto& metadata = smfSequence.getMeta();
     ASSERT_TRUE(metadata.tryGetName().has_value());
@@ -272,7 +272,7 @@ TEST(SmfTestSuiteTest, testAllGMPercussion) {
     const auto feature = smf::parseSmfSequence(midiFile, testEnvironment.m_projectContext, testEnvironment.m_log);
     ASSERT_NE(feature, nullptr);
 
-    smf::SmfSequence::ConstInstance smfSequence{feature->getFeature(0)->is<babelwires::ValueFeature>()};
+    smf::SmfSequence::ConstInstance smfSequence{feature->getFeature(0)->is<babelwires::Feature>()};
     ASSERT_EQ(smfSequence.getInstanceType().getIndexOfTag(smfSequence.getSelectedTag()), 0);
 
     auto tracks = smfSequence.getTrcks0();
@@ -313,7 +313,7 @@ TEST(SmfTestSuiteTest, testGSDrumPartChange) {
     const auto feature = smf::parseSmfSequence(midiFile, testEnvironment.m_projectContext, testEnvironment.m_log);
     ASSERT_NE(feature, nullptr);
 
-    smf::SmfSequence::ConstInstance smfSequence{feature->getFeature(0)->is<babelwires::ValueFeature>()};
+    smf::SmfSequence::ConstInstance smfSequence{feature->getFeature(0)->is<babelwires::Feature>()};
     ASSERT_EQ(smfSequence.getInstanceType().getIndexOfTag(smfSequence.getSelectedTag()), 0);
 
     auto tracks = smfSequence.getTrcks0();

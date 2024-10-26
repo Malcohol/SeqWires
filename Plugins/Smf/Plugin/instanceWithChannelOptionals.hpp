@@ -38,7 +38,7 @@ namespace smf {
 
         std::optional<babelwires::ConstInstance<TypeOfTracks>>
         tryGetTrack(unsigned int channel) const {
-            if (const babelwires::ValueFeature* valueFeature = babelwires::InstanceUtils::tryGetChild(
+            if (const babelwires::Feature* valueFeature = babelwires::InstanceUtils::tryGetChild(
                     this->m_valueFeature, TypeWithChannelOptionals::getTrackIdFromChannel(channel))) {
                 return {*valueFeature};
             } else {

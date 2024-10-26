@@ -23,8 +23,8 @@ seqwires::FingeredChordsProcessor::FingeredChordsProcessor(const babelwires::Pro
                      FingeredChordsProcessorOutput::getThisIdentifier()) {}
 
 void seqwires::FingeredChordsProcessor::processValue(babelwires::UserLogger& userLogger,
-                                                      const babelwires::ValueFeature& inputFeature,
-                                                      babelwires::ValueFeature& outputFeature) const {
+                                                      const babelwires::Feature& inputFeature,
+                                                      babelwires::Feature& outputFeature) const {
     FingeredChordsProcessorInput::ConstInstance input{inputFeature};
     if (input->isChanged(babelwires::Feature::Changes::SomethingChanged)) {
         FingeredChordsProcessorOutput::Instance output{outputFeature};
