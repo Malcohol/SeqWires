@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <BabelWiresLib/Features/valueTreeRoot.hpp>
+#include <BabelWiresLib/ValueTree/valueTreeRoot.hpp>
 
 #include <SeqWiresLib/Functions/monophonicSubtracksFunction.hpp>
 #include <SeqWiresLib/Processors/monophonicSubtracksProcessor.hpp>

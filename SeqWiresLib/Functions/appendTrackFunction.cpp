@@ -9,7 +9,7 @@
 
 #include <SeqWiresLib/Types/Track/TrackEvents/trackEventHolder.hpp>
 
-#include <BabelWiresLib/Features/modelExceptions.hpp>
+#include <BabelWiresLib/ValueTree/modelExceptions.hpp>
 
 void seqwires::appendTrack(Track& targetTrack, const Track& sourceTrack) {
     assert((&targetTrack != &sourceTrack) && "You cannot have source and target track being the same");

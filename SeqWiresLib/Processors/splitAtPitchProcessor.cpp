@@ -9,7 +9,7 @@
 
 #include <SeqWiresLib/Functions/splitAtPitchFunction.hpp>
 
-#include <BabelWiresLib/Features/modelExceptions.hpp>
+#include <BabelWiresLib/ValueTree/modelExceptions.hpp>
 
 #include <Common/Identifiers/registeredIdentifier.hpp>
 

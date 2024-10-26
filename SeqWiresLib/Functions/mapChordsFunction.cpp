@@ -12,7 +12,7 @@
 #include <SeqWiresLib/chord.hpp>
 #include <SeqWiresLib/pitch.hpp>
 
-#include <BabelWiresLib/Features/modelExceptions.hpp>
+#include <BabelWiresLib/ValueTree/modelExceptions.hpp>
 #include <BabelWiresLib/Types/Map/Helpers/enumSourceMapApplicator.hpp>
 #include <BabelWiresLib/Types/Map/Helpers/enumValueAdapters.hpp>
 #include <BabelWiresLib/TypeSystem/typeSystem.hpp>
