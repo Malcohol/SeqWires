@@ -24,8 +24,8 @@ namespace babelwires {
         const typename seqwires::Track& get() const {
             return this->m_valueTreeNode.getValue()->template is<seqwires::Track>();
         }
-        template <typename VALUE_FEATURE_M = VALUE_TREE_NODE>
-        std::enable_if_t<!std::is_const_v<VALUE_FEATURE_M>, void> set(babelwires::ValueHolder newValue) {
+        template <typename VALUE_TREE_NODE_M = VALUE_TREE_NODE>
+        std::enable_if_t<!std::is_const_v<VALUE_TREE_NODE_M>, void> set(babelwires::ValueHolder newValue) {
             this->m_valueTreeNode.setValue(std::move(newValue));
         }
     };

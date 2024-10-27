@@ -28,8 +28,8 @@ namespace smf {
                                                        TypeWithChannelOptionals::getTrackIdFromChannel(channel));
         }
 
-        template <typename VALUE_FEATURE_M = VALUE_TREE_NODE>
-        std::enable_if_t<!std::is_const_v<VALUE_FEATURE_M>,
+        template <typename VALUE_TREE_NODE_M = VALUE_TREE_NODE>
+        std::enable_if_t<!std::is_const_v<VALUE_TREE_NODE_M>,
                          babelwires::Instance<TypeOfTracks>>
         getTrack(unsigned int channel) {
             return babelwires::InstanceUtils::getChild(this->m_valueTreeNode,
@@ -46,8 +46,8 @@ namespace smf {
             }
         }
 
-        template <typename VALUE_FEATURE_M = VALUE_TREE_NODE>
-        std::enable_if_t<!std::is_const_v<VALUE_FEATURE_M>,
+        template <typename VALUE_TREE_NODE_M = VALUE_TREE_NODE>
+        std::enable_if_t<!std::is_const_v<VALUE_TREE_NODE_M>,
                          babelwires::Instance<TypeOfTracks>>
         activateAndGetTrack(unsigned int channel) {
             return babelwires::InstanceUtils::activateAndGetChild(
