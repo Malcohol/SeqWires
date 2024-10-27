@@ -22,11 +22,11 @@ namespace babelwires {
             : InstanceCommonBase<VALUE_FEATURE, TRACK_TYPE>(valueFeature) {}
 
         const typename seqwires::Track& get() const {
-            return this->m_valueFeature.getValue()->template is<seqwires::Track>();
+            return this->m_valueTreeNode.getValue()->template is<seqwires::Track>();
         }
         template <typename VALUE_FEATURE_M = VALUE_FEATURE>
         std::enable_if_t<!std::is_const_v<VALUE_FEATURE_M>, void> set(babelwires::ValueHolder newValue) {
-            this->m_valueFeature.setValue(std::move(newValue));
+            this->m_valueTreeNode.setValue(std::move(newValue));
         }
     };
 

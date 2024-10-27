@@ -24,7 +24,7 @@ namespace smf {
             : babelwires::InstanceCommonBase<VALUE_FEATURE, TypeWithChannelOptionals>(valueFeature) {}
 
         babelwires::ConstInstance<TypeOfTracks> getTrack(unsigned int channel) const {
-            return babelwires::InstanceUtils::getChild(this->m_valueFeature,
+            return babelwires::InstanceUtils::getChild(this->m_valueTreeNode,
                                                        TypeWithChannelOptionals::getTrackIdFromChannel(channel));
         }
 
@@ -32,14 +32,14 @@ namespace smf {
         std::enable_if_t<!std::is_const_v<VALUE_FEATURE_M>,
                          babelwires::Instance<TypeOfTracks>>
         getTrack(unsigned int channel) {
-            return babelwires::InstanceUtils::getChild(this->m_valueFeature,
+            return babelwires::InstanceUtils::getChild(this->m_valueTreeNode,
                                                        TypeWithChannelOptionals::getTrackIdFromChannel(channel));
         }
 
         std::optional<babelwires::ConstInstance<TypeOfTracks>>
         tryGetTrack(unsigned int channel) const {
             if (const babelwires::ValueTreeNode* valueFeature = babelwires::InstanceUtils::tryGetChild(
-                    this->m_valueFeature, TypeWithChannelOptionals::getTrackIdFromChannel(channel))) {
+                    this->m_valueTreeNode, TypeWithChannelOptionals::getTrackIdFromChannel(channel))) {
                 return {*valueFeature};
             } else {
                 return {};
@@ -51,7 +51,7 @@ namespace smf {
                          babelwires::Instance<TypeOfTracks>>
         activateAndGetTrack(unsigned int channel) {
             return babelwires::InstanceUtils::activateAndGetChild(
-                this->m_valueFeature, TypeWithChannelOptionals::getTrackIdFromChannel(channel));
+                this->m_valueTreeNode, TypeWithChannelOptionals::getTrackIdFromChannel(channel));
         }
     };
 
