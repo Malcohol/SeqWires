@@ -48,11 +48,11 @@ TEST(RepeatProcessorTest, processor) {
 
     seqwires::RepeatProcessor processor(testEnvironment.m_projectContext);
 
-    processor.getInputFeature().setToDefault();
-    processor.getOutputFeature().setToDefault();
+    processor.getInput().setToDefault();
+    processor.getOutput().setToDefault();
 
-    babelwires::ValueTreeNode& inputValueFeature = processor.getInputFeature();
-    const babelwires::ValueTreeNode& outputValueFeature = processor.getOutputFeature();
+    babelwires::ValueTreeNode& inputValueFeature = processor.getInput();
+    const babelwires::ValueTreeNode& outputValueFeature = processor.getOutput();
 
     babelwires::ValueTreeNode& inputArrayFeature =
         inputValueFeature.getChildFromStep(babelwires::PathStep(seqwires::RepeatProcessor::getCommonArrayId()))
@@ -74,7 +74,7 @@ TEST(RepeatProcessorTest, processor) {
     EXPECT_EQ(outputArray.getEntry(0).get().getDuration(), 0);
 
     {
-        babelwires::BackupScope scope(processor.getInputFeature().is<babelwires::ValueTreeRoot>());
+        babelwires::BackupScope scope(processor.getInput().is<babelwires::ValueTreeRoot>());
         seqwires::Track track;
         testUtils::addSimpleNotes({60, 62, 64, 65}, track);
         inputArray.getEntry(0).set(std::move(track));
@@ -84,18 +84,18 @@ TEST(RepeatProcessorTest, processor) {
     testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65, 60, 62, 64, 65},
                                outputArray.getEntry(0).get());
 
-    processor.getInputFeature().clearChanges();
+    processor.getInput().clearChanges();
     {
-        babelwires::BackupScope scope(processor.getInputFeature().is<babelwires::ValueTreeRoot>());
+        babelwires::BackupScope scope(processor.getInput().is<babelwires::ValueTreeRoot>());
         input.getCount().set(1);
     }
     processor.process(testEnvironment.m_log);
 
     testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65}, outputArray.getEntry(0).get());
 
-    processor.getInputFeature().clearChanges();
+    processor.getInput().clearChanges();
     {
-        babelwires::BackupScope scope(processor.getInputFeature().is<babelwires::ValueTreeRoot>());
+        babelwires::BackupScope scope(processor.getInput().is<babelwires::ValueTreeRoot>());
         inputArray.setSize(2);
         {
             seqwires::Track track;

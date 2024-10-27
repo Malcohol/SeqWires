@@ -84,11 +84,11 @@ TEST(SplitAtPitchProcessorTest, processor) {
 
     seqwires::SplitAtPitchProcessor processor(testEnvironment.m_projectContext);
 
-    processor.getInputFeature().setToDefault();
-    processor.getOutputFeature().setToDefault();
+    processor.getInput().setToDefault();
+    processor.getOutput().setToDefault();
 
-    auto input = seqwires::SplitAtPitchProcessorInput::Instance(processor.getInputFeature());
-    const auto output = seqwires::SplitAtPitchProcessorOutput::ConstInstance(processor.getOutputFeature());
+    auto input = seqwires::SplitAtPitchProcessorInput::Instance(processor.getInput());
+    const auto output = seqwires::SplitAtPitchProcessorOutput::ConstInstance(processor.getOutput());
 
     input.getPitch().set(babelwires::EnumValue(input.getPitch().getInstanceType().getIdentifierFromIndex(67)));
     {
@@ -118,9 +118,9 @@ TEST(SplitAtPitchProcessorTest, processor) {
     EXPECT_EQ(output.getOther().get().getNumEvents(), 0);
     EXPECT_EQ(output.getOther().get().getDuration(), 2);
 
-    processor.getInputFeature().clearChanges();
+    processor.getInput().clearChanges();
     {
-        babelwires::BackupScope scope(processor.getInputFeature().is<babelwires::ValueTreeRoot>());
+        babelwires::BackupScope scope(processor.getInput().is<babelwires::ValueTreeRoot>());
         input.getPitch().set(babelwires::EnumValue(input.getPitch().getInstanceType().getIdentifierFromIndex(64)));
     }
     processor.process(testEnvironment.m_log);

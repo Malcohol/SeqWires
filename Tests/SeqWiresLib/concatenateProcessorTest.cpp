@@ -60,11 +60,11 @@ TEST(ConcatenateProcessorTest, processor) {
 
     seqwires::ConcatenateProcessor processor(testEnvironment.m_projectContext);
 
-    processor.getInputFeature().setToDefault();
-    processor.getOutputFeature().setToDefault();
+    processor.getInput().setToDefault();
+    processor.getOutput().setToDefault();
 
-    auto input = seqwires::ConcatenateProcessorInput::Instance(processor.getInputFeature());
-    const auto output = seqwires::ConcatenateProcessorOutput::ConstInstance(processor.getOutputFeature());
+    auto input = seqwires::ConcatenateProcessorInput::Instance(processor.getInput());
+    const auto output = seqwires::ConcatenateProcessorOutput::ConstInstance(processor.getOutput());
 
     ASSERT_EQ(input.getInput().getSize(), 2);
     EXPECT_EQ(input.getInput().getEntry(0).get().getDuration(), 0);
@@ -80,9 +80,9 @@ TEST(ConcatenateProcessorTest, processor) {
 
     testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65}, output.getOutput().get());
 
-    processor.getInputFeature().clearChanges();
+    processor.getInput().clearChanges();
     {
-        babelwires::BackupScope scope(processor.getInputFeature().is<babelwires::ValueTreeRoot>());
+        babelwires::BackupScope scope(processor.getInput().is<babelwires::ValueTreeRoot>());
         seqwires::Track track;
         testUtils::addSimpleNotes(std::vector<seqwires::Pitch>{67, 69, 71, 72}, track);
         input.getInput().getEntry(1).set(std::move(track));
@@ -91,10 +91,10 @@ TEST(ConcatenateProcessorTest, processor) {
 
     testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65, 67, 69, 71, 72}, output.getOutput().get());
 
-    processor.getInputFeature().clearChanges();
+    processor.getInput().clearChanges();
     // Insert a new track at position 1.
     {
-        babelwires::BackupScope scope(processor.getInputFeature().is<babelwires::ValueTreeRoot>());
+        babelwires::BackupScope scope(processor.getInput().is<babelwires::ValueTreeRoot>());
         input.getInput().setSize(3);
         input.getInput().getEntry(2).set(input.getInput().getEntry(1)->getValue());
         {
