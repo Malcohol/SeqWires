@@ -109,7 +109,7 @@ void smf::SmfWriter::writeTextMetaEvent(int type, std::string text) {
 }
 
 smf::SmfSequence::ConstInstance smf::SmfWriter::getSmfSequenceConst() const {
-    return SmfSequence::ConstInstance(m_smfFeature.getFeature(0)->is<babelwires::ValueTreeNode>());
+    return SmfSequence::ConstInstance(m_smfFeature.getChild(0)->is<babelwires::ValueTreeNode>());
 }
 
 void smf::SmfWriter::writeHeaderChunk(unsigned int numTracks) {

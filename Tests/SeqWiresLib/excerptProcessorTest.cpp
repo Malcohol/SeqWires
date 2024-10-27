@@ -194,7 +194,7 @@ TEST(ExcerptProcessorTest, processor) {
     }
     processor.process(testEnvironment.m_log);
 
-    ASSERT_EQ(outputArray->getNumFeatures(), 2);
+    ASSERT_EQ(outputArray->getNumChildren(), 2);
     EXPECT_EQ(outputArray.getEntry(0).get().getDuration(), 1);
     EXPECT_EQ(outputArray.getEntry(1).get().getDuration(), 1);
     testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{67, 69, 71, 72}, outputArray.getEntry(0).get());
@@ -210,7 +210,7 @@ TEST(ExcerptProcessorTest, processor) {
     }
     processor.process(testEnvironment.m_log);
 
-    ASSERT_EQ(outputArray->getNumFeatures(), 2);
+    ASSERT_EQ(outputArray->getNumChildren(), 2);
     EXPECT_EQ(outputArray.getEntry(0).get().getDuration(), 1);
     EXPECT_EQ(outputArray.getEntry(1).get().getDuration(), 1);
     EXPECT_EQ(outputArray.getEntry(0).get().getNumEvents(), 0);
