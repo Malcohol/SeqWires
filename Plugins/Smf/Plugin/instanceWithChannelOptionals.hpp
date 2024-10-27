@@ -16,19 +16,19 @@
 
 namespace smf {
     /// Provide indexed based access to a record of 16 optional tracks.
-    template <typename VALUE_FEATURE, typename TypeWithChannelOptionals>
+    template <typename VALUE_TREE_NODE, typename TypeWithChannelOptionals>
     class InstanceWithChannelOptionals
-        : public babelwires::InstanceCommonBase<VALUE_FEATURE, TypeWithChannelOptionals> {
+        : public babelwires::InstanceCommonBase<VALUE_TREE_NODE, TypeWithChannelOptionals> {
       public:
-        InstanceWithChannelOptionals(VALUE_FEATURE& valueFeature)
-            : babelwires::InstanceCommonBase<VALUE_FEATURE, TypeWithChannelOptionals>(valueFeature) {}
+        InstanceWithChannelOptionals(VALUE_TREE_NODE& valueFeature)
+            : babelwires::InstanceCommonBase<VALUE_TREE_NODE, TypeWithChannelOptionals>(valueFeature) {}
 
         babelwires::ConstInstance<TypeOfTracks> getTrack(unsigned int channel) const {
             return babelwires::InstanceUtils::getChild(this->m_valueTreeNode,
                                                        TypeWithChannelOptionals::getTrackIdFromChannel(channel));
         }
 
-        template <typename VALUE_FEATURE_M = VALUE_FEATURE>
+        template <typename VALUE_FEATURE_M = VALUE_TREE_NODE>
         std::enable_if_t<!std::is_const_v<VALUE_FEATURE_M>,
                          babelwires::Instance<TypeOfTracks>>
         getTrack(unsigned int channel) {
@@ -46,7 +46,7 @@ namespace smf {
             }
         }
 
-        template <typename VALUE_FEATURE_M = VALUE_FEATURE>
+        template <typename VALUE_FEATURE_M = VALUE_TREE_NODE>
         std::enable_if_t<!std::is_const_v<VALUE_FEATURE_M>,
                          babelwires::Instance<TypeOfTracks>>
         activateAndGetTrack(unsigned int channel) {

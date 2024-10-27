@@ -28,11 +28,11 @@ namespace smf {
 
         /// It's easier to work with a custom instance than the one the standard DSL would produce.
         /// The parent class provides index based access to the 16 optional tracks.
-        template <typename VALUE_FEATURE>
-        class InstanceImpl : public InstanceWithChannelOptionals<VALUE_FEATURE, RecordOfMidiTracks> {
+        template <typename VALUE_TREE_NODE>
+        class InstanceImpl : public InstanceWithChannelOptionals<VALUE_TREE_NODE, RecordOfMidiTracks> {
           public:
-            InstanceImpl(VALUE_FEATURE& valueFeature)
-                : InstanceWithChannelOptionals<VALUE_FEATURE, RecordOfMidiTracks>(valueFeature) {}
+            InstanceImpl(VALUE_TREE_NODE& valueFeature)
+                : InstanceWithChannelOptionals<VALUE_TREE_NODE, RecordOfMidiTracks>(valueFeature) {}
         };
         using Instance = InstanceImpl<babelwires::ValueTreeNode>;
         using ConstInstance = InstanceImpl<const babelwires::ValueTreeNode>;
