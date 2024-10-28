@@ -34,21 +34,21 @@ seqwires::MonophonicSubtracksProcessor::MonophonicSubtracksProcessor(const babel
                      MonophonicSubtracksProcessorOutput::getThisIdentifier()) {}
 
 void seqwires::MonophonicSubtracksProcessor::processValue(babelwires::UserLogger& userLogger,
-                                                           const babelwires::ValueTreeNode& inputFeature,
-                                                           babelwires::ValueTreeNode& outputFeature) const {
-    MonophonicSubtracksProcessorInput::ConstInstance input{inputFeature};
-    if (input->isChanged(babelwires::ValueTreeNode::Changes::SomethingChanged)) {
-        const unsigned int numTracks = input.getNumTrk().get();
-        const MonophonicSubtracksPolicyEnum::Value policy = input.getPolicy().get();
-        const seqwires::Track& trackIn = input.getInput().get();
+                                                           const babelwires::ValueTreeNode& input,
+                                                           babelwires::ValueTreeNode& output) const {
+    MonophonicSubtracksProcessorInput::ConstInstance in{input};
+    if (in->isChanged(babelwires::ValueTreeNode::Changes::SomethingChanged)) {
+        const unsigned int numTracks = in.getNumTrk().get();
+        const MonophonicSubtracksPolicyEnum::Value policy = in.getPolicy().get();
+        const seqwires::Track& trackIn = in.getInput().get();
         auto result = getMonophonicSubtracks(trackIn, numTracks, policy);
         
-        MonophonicSubtracksProcessorOutput::Instance output{outputFeature};
-        auto tracksOut = output.getSbtrks();
+        MonophonicSubtracksProcessorOutput::Instance out{output};
+        auto tracksOut = out.getSbtrks();
         tracksOut.setSize(numTracks);
         for (int i = 0; i < result.m_noteTracks.size(); ++i) {
             tracksOut.getEntry(i).set(std::move(result.m_noteTracks[i]));
         }
-        output.getOther().set(std::move(result.m_other));
+        out.getOther().set(std::move(result.m_other));
     }
 }

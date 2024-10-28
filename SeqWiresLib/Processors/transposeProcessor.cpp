@@ -39,12 +39,12 @@ babelwires::ShortId seqwires::TransposeProcessor::getCommonArrayId() {
 }
 
 void seqwires::TransposeProcessor::processEntry(babelwires::UserLogger& userLogger,
-                                                const babelwires::ValueTreeNode& inputFeature,
+                                                const babelwires::ValueTreeNode& input,
                                                 const babelwires::ValueTreeNode& inputEntry,
                                                 babelwires::ValueTreeNode& outputEntry) const {
-    TransposeProcessorInput::ConstInstance input{inputFeature};
+    TransposeProcessorInput::ConstInstance in{input};
     babelwires::ConstInstance<TrackType> entryIn{inputEntry};
     babelwires::Instance<TrackType> entryOut{outputEntry};
 
-    entryOut.set(transposeTrack(entryIn.get(), input.getOffset().get()));
+    entryOut.set(transposeTrack(entryIn.get(), in.getOffset().get()));
 }

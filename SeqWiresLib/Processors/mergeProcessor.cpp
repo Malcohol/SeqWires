@@ -31,16 +31,16 @@ seqwires::MergeProcessor::MergeProcessor(const babelwires::ProjectContext& proje
                      MergeProcessorOutput::getThisIdentifier()) {}
 
 void seqwires::MergeProcessor::processValue(babelwires::UserLogger& userLogger,
-                                            const babelwires::ValueTreeNode& inputFeature,
-                                            babelwires::ValueTreeNode& outputFeature) const {
-    MergeProcessorInput::ConstInstance input{inputFeature};
-    if (input->isChanged(babelwires::ValueTreeNode::Changes::SomethingChanged)) {
+                                            const babelwires::ValueTreeNode& input,
+                                            babelwires::ValueTreeNode& output) const {
+    MergeProcessorInput::ConstInstance in{input};
+    if (in->isChanged(babelwires::ValueTreeNode::Changes::SomethingChanged)) {
         std::vector<const Track*> tracksIn;
-        for (int i = 0; i < input.getInput().getSize(); ++i) {
-            tracksIn.emplace_back(&input.getInput().getEntry(i).get());
+        for (int i = 0; i < in.getInput().getSize(); ++i) {
+            tracksIn.emplace_back(&in.getInput().getEntry(i).get());
         }
-        MergeProcessorOutput::Instance output{outputFeature};
-        output.getOutput().set(mergeTracks(tracksIn));
+        MergeProcessorOutput::Instance out{output};
+        out.getOutput().set(mergeTracks(tracksIn));
     }
 }
 

@@ -145,62 +145,62 @@ TEST(TransposeProcessorTest, processor) {
     processor.getInput().setToDefault();
     processor.getOutput().setToDefault();
 
-    babelwires::ValueTreeNode& inputValueFeature = processor.getInput();
-    const babelwires::ValueTreeNode& outputValueFeature = processor.getOutput();
+    babelwires::ValueTreeNode& input = processor.getInput();
+    const babelwires::ValueTreeNode& output = processor.getOutput();
 
-    babelwires::ValueTreeNode& inputArrayFeature =
-        inputValueFeature.getChildFromStep(babelwires::PathStep(seqwires::TransposeProcessor::getCommonArrayId()))
+    babelwires::ValueTreeNode& inputArray =
+        input.getChildFromStep(babelwires::PathStep(seqwires::TransposeProcessor::getCommonArrayId()))
             .is<babelwires::ValueTreeNode>();
-    const babelwires::ValueTreeNode& outputArrayFeature =
-        outputValueFeature.getChildFromStep(babelwires::PathStep(seqwires::TransposeProcessor::getCommonArrayId()))
+    const babelwires::ValueTreeNode& outputArray =
+        output.getChildFromStep(babelwires::PathStep(seqwires::TransposeProcessor::getCommonArrayId()))
             .is<babelwires::ValueTreeNode>();
 
-    babelwires::ArrayInstanceImpl<babelwires::ValueTreeNode, seqwires::TrackType> inputArray(inputArrayFeature);
-    const babelwires::ArrayInstanceImpl<const babelwires::ValueTreeNode, seqwires::TrackType> outputArray(
-        outputArrayFeature);
+    babelwires::ArrayInstanceImpl<babelwires::ValueTreeNode, seqwires::TrackType> inArray(inputArray);
+    const babelwires::ArrayInstanceImpl<const babelwires::ValueTreeNode, seqwires::TrackType> outArray(
+        outputArray);
 
-    seqwires::TransposeProcessorInput::Instance input(inputValueFeature);
+    seqwires::TransposeProcessorInput::Instance in(input);
 
-    EXPECT_EQ(input.getOffset().get(), 0);
+    EXPECT_EQ(in.getOffset().get(), 0);
 
-    EXPECT_EQ(inputArray.getSize(), 1);
-    EXPECT_EQ(outputArray.getSize(), 1);
+    EXPECT_EQ(inArray.getSize(), 1);
+    EXPECT_EQ(outArray.getSize(), 1);
 
-    EXPECT_EQ(inputArray.getEntry(0).get().getDuration(), 0);
-    EXPECT_EQ(outputArray.getEntry(0).get().getDuration(), 0);
+    EXPECT_EQ(inArray.getEntry(0).get().getDuration(), 0);
+    EXPECT_EQ(outArray.getEntry(0).get().getDuration(), 0);
 
     {
         babelwires::BackupScope scope(processor.getInput().is<babelwires::ValueTreeRoot>());
         seqwires::Track track;
         testUtils::addSimpleNotes({60, 62, 64, 65}, track);
-        inputArray.getEntry(0).set(std::move(track));
+        inArray.getEntry(0).set(std::move(track));
     }
     processor.process(testEnvironment.m_log);
-    testUtils::testSimpleNotes({60, 62, 64, 65}, outputArray.getEntry(0).get());
+    testUtils::testSimpleNotes({60, 62, 64, 65}, outArray.getEntry(0).get());
 
     processor.getInput().clearChanges();
     {
         babelwires::BackupScope scope(processor.getInput().is<babelwires::ValueTreeRoot>());
-        input.getOffset().set(1);
+        in.getOffset().set(1);
     }
     processor.process(testEnvironment.m_log);
-    testUtils::testSimpleNotes({61, 63, 65, 66}, outputArray.getEntry(0).get());
+    testUtils::testSimpleNotes({61, 63, 65, 66}, outArray.getEntry(0).get());
 
     processor.getInput().clearChanges();
     {
         babelwires::BackupScope scope(processor.getInput().is<babelwires::ValueTreeRoot>());
-        inputArray.setSize(2);
+        inArray.setSize(2);
         {
             seqwires::Track track;
             testUtils::addSimpleNotes(std::vector<seqwires::Pitch>{48, 50, 52, 53}, track);
-            inputArray.getEntry(1).set(std::move(track));
+            inArray.getEntry(1).set(std::move(track));
         }
     }
     processor.process(testEnvironment.m_log);
 
-    ASSERT_EQ(outputArray.getSize(), 2);
-    EXPECT_EQ(outputArray.getEntry(0).get().getDuration(), 1);
-    EXPECT_EQ(outputArray.getEntry(1).get().getDuration(), 1);
-    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{61, 63, 65, 66}, outputArray.getEntry(0).get());
-    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{49, 51, 53, 54}, outputArray.getEntry(1).get());
+    ASSERT_EQ(outArray.getSize(), 2);
+    EXPECT_EQ(outArray.getEntry(0).get().getDuration(), 1);
+    EXPECT_EQ(outArray.getEntry(1).get().getDuration(), 1);
+    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{61, 63, 65, 66}, outArray.getEntry(0).get());
+    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{49, 51, 53, 54}, outArray.getEntry(1).get());
 }

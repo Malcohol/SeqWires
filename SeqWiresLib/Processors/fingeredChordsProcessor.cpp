@@ -23,11 +23,11 @@ seqwires::FingeredChordsProcessor::FingeredChordsProcessor(const babelwires::Pro
                      FingeredChordsProcessorOutput::getThisIdentifier()) {}
 
 void seqwires::FingeredChordsProcessor::processValue(babelwires::UserLogger& userLogger,
-                                                      const babelwires::ValueTreeNode& inputFeature,
-                                                      babelwires::ValueTreeNode& outputFeature) const {
-    FingeredChordsProcessorInput::ConstInstance input{inputFeature};
-    if (input->isChanged(babelwires::ValueTreeNode::Changes::SomethingChanged)) {
-        FingeredChordsProcessorOutput::Instance output{outputFeature};
-        output.getChords().set(fingeredChordsFunction(input.getNotes().get(), input.getPolicy().get()));
+                                                      const babelwires::ValueTreeNode& input,
+                                                      babelwires::ValueTreeNode& output) const {
+    FingeredChordsProcessorInput::ConstInstance in{input};
+    if (in->isChanged(babelwires::ValueTreeNode::Changes::SomethingChanged)) {
+        FingeredChordsProcessorOutput::Instance out{output};
+        out.getChords().set(fingeredChordsFunction(in.getNotes().get(), in.getPolicy().get()));
     }
 }

@@ -119,35 +119,35 @@ TEST(PercussionMapProcessorTest, processor) {
     processor.getInput().setToDefault();
     processor.getOutput().setToDefault();
 
-    babelwires::ValueTreeNode& inputValueFeature = processor.getInput();
-    const babelwires::ValueTreeNode& outputValueFeature = processor.getOutput();
+    babelwires::ValueTreeNode& input = processor.getInput();
+    const babelwires::ValueTreeNode& output = processor.getOutput();
 
-    babelwires::ValueTreeNode& inputArrayFeature =
-        inputValueFeature.getChildFromStep(babelwires::PathStep(seqwires::PercussionMapProcessor::getCommonArrayId()))
+    babelwires::ValueTreeNode& inputArray =
+        input.getChildFromStep(babelwires::PathStep(seqwires::PercussionMapProcessor::getCommonArrayId()))
             .is<babelwires::ValueTreeNode>();
-    const babelwires::ValueTreeNode& outputArrayFeature =
-        outputValueFeature.getChildFromStep(babelwires::PathStep(seqwires::PercussionMapProcessor::getCommonArrayId()))
+    const babelwires::ValueTreeNode& outputArray =
+        output.getChildFromStep(babelwires::PathStep(seqwires::PercussionMapProcessor::getCommonArrayId()))
             .is<babelwires::ValueTreeNode>();
 
-    babelwires::ArrayInstanceImpl<babelwires::ValueTreeNode, seqwires::TrackType> inputArray(inputArrayFeature);
-    const babelwires::ArrayInstanceImpl<const babelwires::ValueTreeNode, seqwires::TrackType> outputArray(
-        outputArrayFeature);
+    babelwires::ArrayInstanceImpl<babelwires::ValueTreeNode, seqwires::TrackType> inArray(inputArray);
+    const babelwires::ArrayInstanceImpl<const babelwires::ValueTreeNode, seqwires::TrackType> outArray(
+        outputArray);
 
-    seqwires::PercussionMapProcessorInput::Instance input(inputValueFeature);
+    seqwires::PercussionMapProcessorInput::Instance in(input);
 
-    EXPECT_EQ(inputArray.getSize(), 1);
-    EXPECT_EQ(outputArray.getSize(), 1);
+    EXPECT_EQ(inArray.getSize(), 1);
+    EXPECT_EQ(outArray.getSize(), 1);
 
-    EXPECT_EQ(inputArray.getEntry(0).get().getDuration(), 0);
-    EXPECT_EQ(outputArray.getEntry(0).get().getDuration(), 0);
+    EXPECT_EQ(inArray.getEntry(0).get().getDuration(), 0);
+    EXPECT_EQ(outArray.getEntry(0).get().getDuration(), 0);
     processor.getOutput().setToDefault();
 
-    input.getMap()->setValue(getTestPercussionMap(testEnvironment.m_typeSystem));
-    inputArray.getEntry(0).set(getTestInputTrack());
+    in.getMap()->setValue(getTestPercussionMap(testEnvironment.m_typeSystem));
+    inArray.getEntry(0).set(getTestInputTrack());
 
     processor.process(testEnvironment.m_log);
 
-    const seqwires::Track outputTrack = outputArray.getEntry(0).get();
+    const seqwires::Track outputTrack = outArray.getEntry(0).get();
     const seqwires::Track expectedOutputTrack = getTestOutputTrack();
 
     EXPECT_EQ(outputTrack, expectedOutputTrack);

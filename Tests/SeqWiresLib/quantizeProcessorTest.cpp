@@ -77,31 +77,31 @@ TEST(QuantizeProcessorTest, processor) {
     processor.getInput().setToDefault();
     processor.getOutput().setToDefault();
 
-    babelwires::ValueTreeNode& inputValueFeature = processor.getInput();
-    const babelwires::ValueTreeNode& outputValueFeature = processor.getOutput();
+    babelwires::ValueTreeNode& input = processor.getInput();
+    const babelwires::ValueTreeNode& output = processor.getOutput();
 
-    babelwires::ValueTreeNode& inputArrayFeature =
-        inputValueFeature.getChildFromStep(babelwires::PathStep(seqwires::QuantizeProcessor::getCommonArrayId()))
+    babelwires::ValueTreeNode& inputArray =
+        input.getChildFromStep(babelwires::PathStep(seqwires::QuantizeProcessor::getCommonArrayId()))
             .is<babelwires::ValueTreeNode>();
-    const babelwires::ValueTreeNode& outputArrayFeature =
-        outputValueFeature.getChildFromStep(babelwires::PathStep(seqwires::QuantizeProcessor::getCommonArrayId()))
+    const babelwires::ValueTreeNode& outputArray =
+        output.getChildFromStep(babelwires::PathStep(seqwires::QuantizeProcessor::getCommonArrayId()))
             .is<babelwires::ValueTreeNode>();
 
-    babelwires::ArrayInstanceImpl<babelwires::ValueTreeNode, seqwires::TrackType> inputArray(inputArrayFeature);
-    const babelwires::ArrayInstanceImpl<const babelwires::ValueTreeNode, seqwires::TrackType> outputArray(
-        outputArrayFeature);
+    babelwires::ArrayInstanceImpl<babelwires::ValueTreeNode, seqwires::TrackType> inArray(inputArray);
+    const babelwires::ArrayInstanceImpl<const babelwires::ValueTreeNode, seqwires::TrackType> outArray(
+        outputArray);
 
-    seqwires::QuantizeProcessorInput::Instance input(inputValueFeature);
+    seqwires::QuantizeProcessorInput::Instance in(input);
 
-    EXPECT_EQ(inputArray.getSize(), 1);
-    EXPECT_EQ(outputArray.getSize(), 1);
+    EXPECT_EQ(inArray.getSize(), 1);
+    EXPECT_EQ(outArray.getSize(), 1);
 
-    EXPECT_EQ(inputArray.getEntry(0).get().getDuration(), 0);
-    EXPECT_EQ(outputArray.getEntry(0).get().getDuration(), 0);
+    EXPECT_EQ(inArray.getEntry(0).get().getDuration(), 0);
+    EXPECT_EQ(outArray.getEntry(0).get().getDuration(), 0);
 
     {
         babelwires::BackupScope scope(processor.getInput().is<babelwires::ValueTreeRoot>());
-        input.getBeat().set(babelwires::Rational(1, 8));
+        in.getBeat().set(babelwires::Rational(1, 8));
         seqwires::Track track;
         testUtils::addNotes(
             {
@@ -111,7 +111,7 @@ TEST(QuantizeProcessorTest, processor) {
                 {65, babelwires::Rational(1, 17), babelwires::Rational(22, 17)},
             },
             track);
-        inputArray.getEntry(0).set(std::move(track));
+        inArray.getEntry(0).set(std::move(track));
     }
     processor.process(testEnvironment.m_log);
 
@@ -119,12 +119,12 @@ TEST(QuantizeProcessorTest, processor) {
                           {62, 0, babelwires::Rational(5, 8)},
                           {64, 0, babelwires::Rational(9, 8)},
                           {65, 0, babelwires::Rational(5, 4)}},
-                         outputArray.getEntry(0).get());
+                         outArray.getEntry(0).get());
 
     processor.getInput().clearChanges();
     {
         babelwires::BackupScope scope(processor.getInput().is<babelwires::ValueTreeRoot>());
-        input.getBeat().set(babelwires::Rational(1, 4));
+        in.getBeat().set(babelwires::Rational(1, 4));
     }
     processor.process(testEnvironment.m_log);
 
@@ -132,7 +132,7 @@ TEST(QuantizeProcessorTest, processor) {
                           {62, 0, babelwires::Rational(1, 2)},
                           {64, babelwires::Rational(1, 4), babelwires::Rational(1, 1)},
                           {65, 0, babelwires::Rational(5, 4)}},
-                         outputArray.getEntry(0).get());
+                         outArray.getEntry(0).get());
 
     processor.getInput().clearChanges();
     {
@@ -146,7 +146,7 @@ TEST(QuantizeProcessorTest, processor) {
                 {65, babelwires::Rational(1, 17), babelwires::Rational(22, 17)},
             },
             track);
-        inputArray.getEntry(0).set(std::move(track));
+        inArray.getEntry(0).set(std::move(track));
     }
     processor.process(testEnvironment.m_log);
 
@@ -154,5 +154,5 @@ TEST(QuantizeProcessorTest, processor) {
                           {62, 0, babelwires::Rational(3, 2)},
                           {64, babelwires::Rational(1, 4), babelwires::Rational(1, 1)},
                           {65, 0, babelwires::Rational(5, 4)}},
-                         outputArray.getEntry(0).get());
+                         outArray.getEntry(0).get());
 }

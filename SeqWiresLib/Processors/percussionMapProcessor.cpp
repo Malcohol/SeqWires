@@ -33,14 +33,14 @@ babelwires::ShortId seqwires::PercussionMapProcessor::getCommonArrayId() {
 }
 
 void seqwires::PercussionMapProcessor::processEntry(babelwires::UserLogger& userLogger,
-                                                    const babelwires::ValueTreeNode& inputFeature,
+                                                    const babelwires::ValueTreeNode& input,
                                                     const babelwires::ValueTreeNode& inputEntry,
                                                     babelwires::ValueTreeNode& outputEntry) const {
-    PercussionMapProcessorInput::ConstInstance input{inputFeature};
+    PercussionMapProcessorInput::ConstInstance in{input};
     babelwires::ConstInstance<TrackType> entryIn{inputEntry};
     babelwires::Instance<TrackType> entryOut{outputEntry};
 
-    const auto& percMap = input.getMap()->getValue()->is<babelwires::MapValue>();
+    const auto& percMap = in.getMap()->getValue()->is<babelwires::MapValue>();
 
-    entryOut.set(mapPercussionFunction(input->getTypeSystem(), entryIn.get(), percMap));
+    entryOut.set(mapPercussionFunction(in->getTypeSystem(), entryIn.get(), percMap));
 }
