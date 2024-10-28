@@ -14,19 +14,19 @@
 #include <BabelWiresLib/Instance/instanceTemplates.hpp>
 
 namespace babelwires {
-    template <typename VALUE_FEATURE, typename TRACK_TYPE>
+    template <typename VALUE_TREE_NODE, typename TRACK_TYPE>
         requires std::is_base_of_v<seqwires::TrackType, TRACK_TYPE>
-    class InstanceImpl<VALUE_FEATURE, TRACK_TYPE> : public InstanceCommonBase<VALUE_FEATURE, TRACK_TYPE> {
+    class InstanceImpl<VALUE_TREE_NODE, TRACK_TYPE> : public InstanceCommonBase<VALUE_TREE_NODE, TRACK_TYPE> {
       public:
-        InstanceImpl(VALUE_FEATURE& valueFeature)
-            : InstanceCommonBase<VALUE_FEATURE, TRACK_TYPE>(valueFeature) {}
+        InstanceImpl(VALUE_TREE_NODE& valueFeature)
+            : InstanceCommonBase<VALUE_TREE_NODE, TRACK_TYPE>(valueFeature) {}
 
         const typename seqwires::Track& get() const {
-            return this->m_valueFeature.getValue()->template is<seqwires::Track>();
+            return this->m_valueTreeNode.getValue()->template is<seqwires::Track>();
         }
-        template <typename VALUE_FEATURE_M = VALUE_FEATURE>
-        std::enable_if_t<!std::is_const_v<VALUE_FEATURE_M>, void> set(babelwires::ValueHolder newValue) {
-            this->m_valueFeature.setValue(std::move(newValue));
+        template <typename VALUE_TREE_NODE_M = VALUE_TREE_NODE>
+        std::enable_if_t<!std::is_const_v<VALUE_TREE_NODE_M>, void> set(babelwires::ValueHolder newValue) {
+            this->m_valueTreeNode.setValue(std::move(newValue));
         }
     };
 

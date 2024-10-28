@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <BabelWiresLib/Features/simpleValueFeature.hpp>
+#include <BabelWiresLib/ValueTree/valueTreeRoot.hpp>
 
 #include <SeqWiresLib/Functions/mergeFunction.hpp>
 #include <SeqWiresLib/Processors/mergeProcessor.hpp>
@@ -64,12 +64,12 @@ TEST(MergeProcessorTest, processor) {
 
     seqwires::MergeProcessor processor(testEnvironment.m_projectContext);
 
-    processor.getInputFeature().setToDefault();
-    processor.getOutputFeature().setToDefault();
+    processor.getInput().setToDefault();
+    processor.getOutput().setToDefault();
 
-    auto input = seqwires::MergeProcessorInput::Instance(processor.getInputFeature());
+    auto input = seqwires::MergeProcessorInput::Instance(processor.getInput());
     const auto output =
-        seqwires::MergeProcessorOutput::ConstInstance(processor.getOutputFeature());
+        seqwires::MergeProcessorOutput::ConstInstance(processor.getOutput());
 
     ASSERT_EQ(input.getInput().getSize(), 2);
     EXPECT_EQ(input.getInput().getEntry(0).get().getDuration(), 0);
@@ -87,9 +87,9 @@ TEST(MergeProcessorTest, processor) {
 
     testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{72, 74}, outputTrackInstance.get());
 
-    processor.getInputFeature().clearChanges();
+    processor.getInput().clearChanges();
     {
-        babelwires::BackupScope scope(processor.getInputFeature().is<babelwires::SimpleValueFeature>());
+        babelwires::BackupScope scope(processor.getInput().is<babelwires::ValueTreeRoot>());
         seqwires::Track track;
         testUtils::addSimpleNotes(std::vector<seqwires::Pitch>{48, 50}, track);
         input.getInput().getEntry(1).set(std::move(track));
@@ -124,10 +124,10 @@ TEST(MergeProcessorTest, processor) {
         EXPECT_EQ(it, end);
     }
 
-    processor.getInputFeature().clearChanges();
+    processor.getInput().clearChanges();
     // Insert a new track at position 1.
     {
-        babelwires::BackupScope scope(processor.getInputFeature().is<babelwires::SimpleValueFeature>());
+        babelwires::BackupScope scope(processor.getInput().is<babelwires::ValueTreeRoot>());
         input.getInput().setSize(3);
         input.getInput().getEntry(2).set(input.getInput().getEntry(1)->getValue());
 

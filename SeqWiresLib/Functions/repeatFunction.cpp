@@ -10,7 +10,7 @@
 #include <SeqWiresLib/Functions/appendTrackFunction.hpp>
 #include <SeqWiresLib/Types/Track/TrackEvents/trackEventHolder.hpp>
 
-#include <BabelWiresLib/Features/modelExceptions.hpp>
+#include <BabelWiresLib/ValueTree/modelExceptions.hpp>
 
 seqwires::Track seqwires::repeatTrack(const Track& trackIn, int count) {
     if (count < 0) {

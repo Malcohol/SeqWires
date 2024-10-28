@@ -48,15 +48,15 @@ babelwires::ShortId seqwires::ChordMapProcessor::getCommonArrayId() {
 }
 
 void seqwires::ChordMapProcessor::processEntry(babelwires::UserLogger& userLogger,
-                                               const babelwires::ValueFeature& inputFeature,
-                                               const babelwires::ValueFeature& inputEntry,
-                                               babelwires::ValueFeature& outputEntry) const {
-    ChordMapProcessorInput::ConstInstance input{inputFeature};
+                                               const babelwires::ValueTreeNode& input,
+                                               const babelwires::ValueTreeNode& inputEntry,
+                                               babelwires::ValueTreeNode& outputEntry) const {
+    ChordMapProcessorInput::ConstInstance in{input};
     babelwires::ConstInstance<TrackType> entryIn{inputEntry};
     babelwires::Instance<TrackType> entryOut{outputEntry};
 
-    const auto& chordTypeMap = input.getTypMap()->getValue()->is<babelwires::MapValue>();
-    const auto& chordRootMap = input.getRtMap()->getValue()->is<babelwires::MapValue>();
+    const auto& chordTypeMap = in.getTypMap()->getValue()->is<babelwires::MapValue>();
+    const auto& chordRootMap = in.getRtMap()->getValue()->is<babelwires::MapValue>();
 
-    entryOut.set(mapChordsFunction(input->getTypeSystem(), entryIn.get(), chordTypeMap, chordRootMap));
+    entryOut.set(mapChordsFunction(in->getTypeSystem(), entryIn.get(), chordTypeMap, chordRootMap));
 }

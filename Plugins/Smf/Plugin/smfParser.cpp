@@ -41,18 +41,18 @@ smf::SmfParser::SmfParser(babelwires::DataSource& dataSource, const babelwires::
     , m_division(-1)
     , m_standardPercussionSets(projectContext) {
 
-    m_result = std::make_unique<babelwires::SimpleValueFeature>(projectContext.m_typeSystem, getSmfFileType());
+    m_result = std::make_unique<babelwires::ValueTreeRoot>(projectContext.m_typeSystem, getSmfFileType());
     m_result->setToDefault();
 }
 
 smf::SmfParser::~SmfParser() = default;
 
 smf::SmfSequence::ConstInstance smf::SmfParser::getSmfSequenceConst() const {
-    return SmfSequence::ConstInstance(m_result->getFeature(0)->is<babelwires::ValueFeature>());
+    return SmfSequence::ConstInstance(m_result->getChild(0)->is<babelwires::ValueTreeNode>());
 }
 
 smf::SmfSequence::Instance smf::SmfParser::getSmfSequence() {
-    return SmfSequence::Instance(m_result->getFeature(0)->is<babelwires::ValueFeature>());
+    return SmfSequence::Instance(m_result->getChild(0)->is<babelwires::ValueTreeNode>());
 }
 
 smf::SmfSequence::Instance getSmfSequence();
@@ -880,7 +880,7 @@ void smf::SmfParser::onChangeProgram(unsigned int channelNumber) {
         m_standardPercussionSets.getPercussionSetFromChannelSetupInfo(gmSpec, channelSetup.m_channelSetupInfo);
 }
 
-std::unique_ptr<babelwires::SimpleValueFeature> smf::parseSmfSequence(babelwires::DataSource& dataSource,
+std::unique_ptr<babelwires::ValueTreeRoot> smf::parseSmfSequence(babelwires::DataSource& dataSource,
                                                        const babelwires::ProjectContext& projectContext,
                                                        babelwires::UserLogger& userLogger) {
     SmfParser parser(dataSource, projectContext, userLogger);

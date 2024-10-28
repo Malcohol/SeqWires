@@ -9,7 +9,7 @@
 
 #include <SeqWiresLib/Types/Track/TrackEvents/trackEventHolder.hpp>
 
-#include <BabelWiresLib/Features/modelExceptions.hpp>
+#include <BabelWiresLib/ValueTree/modelExceptions.hpp>
 
 seqwires::Track seqwires::transposeTrack(const Track& trackIn, int pitchOffset) {
     assert(pitchOffset >= -127 && "pitchOffset too low");

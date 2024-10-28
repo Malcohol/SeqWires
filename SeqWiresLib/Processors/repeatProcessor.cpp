@@ -39,16 +39,16 @@ babelwires::ShortId seqwires::RepeatProcessor::getCommonArrayId() {
 }
 
 void seqwires::RepeatProcessor::processEntry(babelwires::UserLogger& userLogger,
-                                             const babelwires::ValueFeature& inputFeature,
-                                             const babelwires::ValueFeature& inputEntry,
-                                             babelwires::ValueFeature& outputEntry) const {
-    RepeatProcessorInput::ConstInstance input{inputFeature};
+                                             const babelwires::ValueTreeNode& input,
+                                             const babelwires::ValueTreeNode& inputEntry,
+                                             babelwires::ValueTreeNode& outputEntry) const {
+    RepeatProcessorInput::ConstInstance in{input};
     babelwires::ConstInstance<TrackType> entryIn{inputEntry};
     babelwires::Instance<TrackType> entryOut{outputEntry};
     Track trackOut;
 
     const Track& trackIn = entryIn.get();
-    for (int i = 0; i < input.getCount().get(); ++i) {
+    for (int i = 0; i < in.getCount().get(); ++i) {
         appendTrack(trackOut, trackIn);
     }
     entryOut.set(std::move(trackOut));

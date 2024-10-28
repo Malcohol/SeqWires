@@ -33,7 +33,7 @@ namespace {
 } // namespace
 
 smf::SmfWriter::SmfWriter(const babelwires::ProjectContext& projectContext, babelwires::UserLogger& userLogger,
-                          const babelwires::SimpleValueFeature& sequence, std::ostream& ostream)
+                          const babelwires::ValueTreeRoot& sequence, std::ostream& ostream)
     : m_projectContext(projectContext)
     , m_userLogger(userLogger)
     , m_smfFeature(sequence)
@@ -109,7 +109,7 @@ void smf::SmfWriter::writeTextMetaEvent(int type, std::string text) {
 }
 
 smf::SmfSequence::ConstInstance smf::SmfWriter::getSmfSequenceConst() const {
-    return SmfSequence::ConstInstance(m_smfFeature.getFeature(0)->is<babelwires::ValueFeature>());
+    return SmfSequence::ConstInstance(m_smfFeature.getChild(0)->is<babelwires::ValueTreeNode>());
 }
 
 void smf::SmfWriter::writeHeaderChunk(unsigned int numTracks) {
@@ -438,7 +438,7 @@ void smf::SmfWriter::write() {
 }
 
 void smf::writeToSmf(const babelwires::ProjectContext& projectContext, babelwires::UserLogger& userLogger,
-                     const babelwires::SimpleValueFeature& sequence, std::ostream& output) {
+                     const babelwires::ValueTreeRoot& sequence, std::ostream& output) {
     smf::SmfWriter writer(projectContext, userLogger, sequence, output);
     writer.write();
 }

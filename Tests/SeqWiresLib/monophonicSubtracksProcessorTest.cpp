@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <BabelWiresLib/Features/simpleValueFeature.hpp>
+#include <BabelWiresLib/ValueTree/valueTreeRoot.hpp>
 
 #include <SeqWiresLib/Functions/monophonicSubtracksFunction.hpp>
 #include <SeqWiresLib/Processors/monophonicSubtracksProcessor.hpp>
@@ -355,11 +355,11 @@ TEST(MonophonicSubtracksProcessorTest, processor) {
 
     seqwires::MonophonicSubtracksProcessor processor(testEnvironment.m_projectContext);
 
-    processor.getInputFeature().setToDefault();
-    processor.getOutputFeature().setToDefault();
+    processor.getInput().setToDefault();
+    processor.getOutput().setToDefault();
 
-    auto input = seqwires::MonophonicSubtracksProcessorInput::Instance(processor.getInputFeature());
-    const auto output = seqwires::MonophonicSubtracksProcessorOutput::ConstInstance(processor.getOutputFeature());
+    auto input = seqwires::MonophonicSubtracksProcessorInput::Instance(processor.getInput());
+    const auto output = seqwires::MonophonicSubtracksProcessorOutput::ConstInstance(processor.getOutput());
 
     input.getNumTrk().set(2);
     input.getPolicy().set(seqwires::MonophonicSubtracksPolicyEnum::Value::Low);
@@ -374,9 +374,9 @@ TEST(MonophonicSubtracksProcessorTest, processor) {
                            {seqwires::PitchClass::Value::D, seqwires::ChordType::ChordType::Value::m}},
                           output.getOther().get());
 
-    processor.getInputFeature().clearChanges();
+    processor.getInput().clearChanges();
     {
-        babelwires::BackupScope scope(processor.getInputFeature().is<babelwires::SimpleValueFeature>());
+        babelwires::BackupScope scope(processor.getInput().is<babelwires::ValueTreeRoot>());
         input.getNumTrk().set(3);
         input.getPolicy().set(seqwires::MonophonicSubtracksPolicyEnum::Value::High);
     }

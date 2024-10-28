@@ -34,7 +34,7 @@ namespace smf {
         virtual ~SmfParser();
 
         void parse();
-        std::unique_ptr<babelwires::SimpleValueFeature> getResult() { return std::move(m_result); }
+        std::unique_ptr<babelwires::ValueTreeRoot> getResult() { return std::move(m_result); }
 
       protected:
         SmfSequence::ConstInstance getSmfSequenceConst() const;
@@ -106,7 +106,7 @@ namespace smf {
         const babelwires::ProjectContext& m_projectContext;
         babelwires::DataSource& m_dataSource;
         babelwires::UserLogger& m_userLogger;
-        std::unique_ptr<babelwires::SimpleValueFeature> m_result;
+        std::unique_ptr<babelwires::ValueTreeRoot> m_result;
         std::vector<babelwires::Byte> m_messageBuffer;
 
         enum class Format { SMF_FORMAT_0, SMF_FORMAT_1, SMF_FORMAT_2, SMF_UNKNOWN_FORMAT };
@@ -129,7 +129,7 @@ namespace smf {
         std::array<ChannelSetup, 16> m_channelSetup;
     };
 
-    std::unique_ptr<babelwires::SimpleValueFeature> parseSmfSequence(babelwires::DataSource& dataSource,
+    std::unique_ptr<babelwires::ValueTreeRoot> parseSmfSequence(babelwires::DataSource& dataSource,
                                                               const babelwires::ProjectContext& projectContext,
                                                               babelwires::UserLogger& userLogger);
 

@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <BabelWiresLib/Features/simpleValueFeature.hpp>
+#include <BabelWiresLib/ValueTree/valueTreeRoot.hpp>
 
 #include <SeqWiresLib/Functions/fingeredChordsFunction.hpp>
 #include <SeqWiresLib/Processors/fingeredChordsProcessor.hpp>
@@ -672,11 +672,11 @@ TEST(FingeredChordsTest, processor) {
 
     seqwires::FingeredChordsProcessor processor(testEnvironment.m_projectContext);
 
-    processor.getInputFeature().setToDefault();
-    processor.getOutputFeature().setToDefault();
+    processor.getInput().setToDefault();
+    processor.getOutput().setToDefault();
 
-    auto input = seqwires::FingeredChordsProcessorInput::Instance(processor.getInputFeature());
-    const auto output = seqwires::FingeredChordsProcessorOutput::ConstInstance(processor.getOutputFeature());
+    auto input = seqwires::FingeredChordsProcessorInput::Instance(processor.getInput());
+    const auto output = seqwires::FingeredChordsProcessorOutput::ConstInstance(processor.getOutput());
 
     input.getPolicy().set(seqwires::FingeredChordsSustainPolicyEnum::Value::Notes);
 
@@ -706,9 +706,9 @@ TEST(FingeredChordsTest, processor) {
         },
         output.getChords().get());
 
-    processor.getInputFeature().clearChanges();
+    processor.getInput().clearChanges();
     {
-        babelwires::BackupScope scope(processor.getInputFeature().is<babelwires::SimpleValueFeature>());
+        babelwires::BackupScope scope(processor.getInput().is<babelwires::ValueTreeRoot>());
         input.getPolicy().set(seqwires::FingeredChordsSustainPolicyEnum::Value::Hold);
     }
     processor.process(testEnvironment.m_log);
@@ -720,9 +720,9 @@ TEST(FingeredChordsTest, processor) {
         },
         output.getChords().get());
 
-    processor.getInputFeature().clearChanges();
+    processor.getInput().clearChanges();
     {
-        babelwires::BackupScope scope(processor.getInputFeature().is<babelwires::SimpleValueFeature>());
+        babelwires::BackupScope scope(processor.getInput().is<babelwires::ValueTreeRoot>());
         seqwires::Track track;
         track.addEvent(seqwires::NoteOnEvent(0, 60));
         track.addEvent(seqwires::NoteOnEvent(0, 64));

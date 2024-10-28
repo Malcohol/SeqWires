@@ -43,16 +43,16 @@ namespace smf {
 
         /// It's easier to work with a custom instance than the one the standard DSL would produce.
         /// The parent class provides index based access to the 16 optional tracks.
-        template <typename VALUE_FEATURE>
-        class InstanceImpl : public InstanceWithChannelOptionals<VALUE_FEATURE, MidiTrackAndChannel> {
+        template <typename VALUE_TREE_NODE>
+        class InstanceImpl : public InstanceWithChannelOptionals<VALUE_TREE_NODE, MidiTrackAndChannel> {
           public:
-            InstanceImpl(VALUE_FEATURE& valueFeature)
-                : InstanceWithChannelOptionals<VALUE_FEATURE, MidiTrackAndChannel>(valueFeature) {}
+            InstanceImpl(VALUE_TREE_NODE& valueFeature)
+                : InstanceWithChannelOptionals<VALUE_TREE_NODE, MidiTrackAndChannel>(valueFeature) {}
 
             DECLARE_INSTANCE_FIELD(Chan, MidiChannel)
             DECLARE_INSTANCE_FIELD(Track, seqwires::TrackType);
         };
-        using Instance = InstanceImpl<babelwires::ValueFeature>;
-        using ConstInstance = InstanceImpl<const babelwires::ValueFeature>;
+        using Instance = InstanceImpl<babelwires::ValueTreeNode>;
+        using ConstInstance = InstanceImpl<const babelwires::ValueTreeNode>;
     };
 } // namespace smf

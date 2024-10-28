@@ -28,18 +28,18 @@ seqwires::ConcatenateProcessor::ConcatenateProcessor(const babelwires::ProjectCo
                                  ConcatenateProcessorOutput::getThisIdentifier()) {}
 
 void seqwires::ConcatenateProcessor::processValue(babelwires::UserLogger& userLogger,
-                                                           const babelwires::ValueFeature& inputFeature,
-                                                           babelwires::ValueFeature& outputFeature) const {
-    ConcatenateProcessorInput::ConstInstance input{inputFeature};
-    if (input->isChanged(babelwires::Feature::Changes::SomethingChanged)) {
+                                                           const babelwires::ValueTreeNode& input,
+                                                           babelwires::ValueTreeNode& output) const {
+    ConcatenateProcessorInput::ConstInstance in{input};
+    if (in->isChanged(babelwires::ValueTreeNode::Changes::SomethingChanged)) {
         Track trackOut;
 
-        for (int i = 0; i < input.getInput().getSize(); ++i) {
-            appendTrack(trackOut, input.getInput().getEntry(i).get());
+        for (int i = 0; i < in.getInput().getSize(); ++i) {
+            appendTrack(trackOut, in.getInput().getEntry(i).get());
         }
 
-        ConcatenateProcessorOutput::Instance output{outputFeature};
+        ConcatenateProcessorOutput::Instance out{output};
 
-        output.getOutput().set(std::move(trackOut));
+        out.getOutput().set(std::move(trackOut));
     }
 }

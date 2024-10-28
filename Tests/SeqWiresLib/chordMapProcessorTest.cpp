@@ -223,36 +223,36 @@ TEST(ChordMapProcessorTest, processor) {
 
     seqwires::ChordMapProcessor processor(testEnvironment.m_projectContext);
 
-    processor.getInputFeature().setToDefault();
-    processor.getOutputFeature().setToDefault();
+    processor.getInput().setToDefault();
+    processor.getOutput().setToDefault();
 
-    babelwires::ValueFeature& inputValueFeature = processor.getInputFeature();
-    const babelwires::ValueFeature& outputValueFeature = processor.getOutputFeature();
+    babelwires::ValueTreeNode& input = processor.getInput();
+    const babelwires::ValueTreeNode& output = processor.getOutput();
 
-    babelwires::ValueFeature& inputArrayFeature =
-        inputValueFeature.getChildFromStep(babelwires::PathStep(seqwires::ChordMapProcessor::getCommonArrayId()))
-            .is<babelwires::ValueFeature>();
-    const babelwires::ValueFeature& outputArrayFeature =
-        outputValueFeature.getChildFromStep(babelwires::PathStep(seqwires::ChordMapProcessor::getCommonArrayId()))
-            .is<babelwires::ValueFeature>();
+    babelwires::ValueTreeNode& inputArray =
+        input.getChildFromStep(babelwires::PathStep(seqwires::ChordMapProcessor::getCommonArrayId()))
+            .is<babelwires::ValueTreeNode>();
+    const babelwires::ValueTreeNode& outputArray =
+        output.getChildFromStep(babelwires::PathStep(seqwires::ChordMapProcessor::getCommonArrayId()))
+            .is<babelwires::ValueTreeNode>();
 
-    babelwires::ArrayInstanceImpl<babelwires::ValueFeature, seqwires::TrackType> inputArray(inputArrayFeature);
-    const babelwires::ArrayInstanceImpl<const babelwires::ValueFeature, seqwires::TrackType> outputArray(
-        outputArrayFeature);
+    babelwires::ArrayInstanceImpl<babelwires::ValueTreeNode, seqwires::TrackType> inArray(inputArray);
+    const babelwires::ArrayInstanceImpl<const babelwires::ValueTreeNode, seqwires::TrackType> outArray(
+        outputArray);
 
-    seqwires::ChordMapProcessorInput::Instance input(inputValueFeature);
+    seqwires::ChordMapProcessorInput::Instance in(input);
 
-    EXPECT_EQ(inputArray.getSize(), 1);
-    EXPECT_EQ(outputArray.getSize(), 1);
+    EXPECT_EQ(inArray.getSize(), 1);
+    EXPECT_EQ(outArray.getSize(), 1);
 
-    EXPECT_EQ(inputArray.getEntry(0).get().getDuration(), 0);
-    EXPECT_EQ(outputArray.getEntry(0).get().getDuration(), 0);
+    EXPECT_EQ(inArray.getEntry(0).get().getDuration(), 0);
+    EXPECT_EQ(outArray.getEntry(0).get().getDuration(), 0);
 
-    input.getTypMap()->setValue(getTestChordTypeMap(testEnvironment.m_typeSystem));
-    input.getRtMap()->setValue(getTestPitchClassMap(testEnvironment.m_typeSystem));
-    inputArray.getEntry(0).set(getTestInputTrack());
+    in.getTypMap()->setValue(getTestChordTypeMap(testEnvironment.m_typeSystem));
+    in.getRtMap()->setValue(getTestPitchClassMap(testEnvironment.m_typeSystem));
+    inArray.getEntry(0).set(getTestInputTrack());
 
     processor.process(testEnvironment.m_log);
 
-    testOutputTrack(outputArray.getEntry(0).get());
+    testOutputTrack(outArray.getEntry(0).get());
 }

@@ -41,12 +41,12 @@ babelwires::ShortId seqwires::QuantizeProcessor::getCommonArrayId() {
 }
 
 void seqwires::QuantizeProcessor::processEntry(babelwires::UserLogger& userLogger,
-                                             const babelwires::ValueFeature& inputFeature,
-                                             const babelwires::ValueFeature& inputEntry,
-                                             babelwires::ValueFeature& outputEntry) const {
-    QuantizeProcessorInput::ConstInstance input{inputFeature};
+                                             const babelwires::ValueTreeNode& input,
+                                             const babelwires::ValueTreeNode& inputEntry,
+                                             babelwires::ValueTreeNode& outputEntry) const {
+    QuantizeProcessorInput::ConstInstance in{input};
     babelwires::ConstInstance<TrackType> entryIn{inputEntry};
     babelwires::Instance<TrackType> entryOut{outputEntry};
 
-    entryOut.set(quantize(entryIn.get(), input.getBeat().get()));
+    entryOut.set(quantize(entryIn.get(), in.getBeat().get()));
 }

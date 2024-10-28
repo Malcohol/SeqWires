@@ -12,7 +12,7 @@
 #include <SeqWiresLib/Types/Track/TrackEvents/percussionEvents.hpp>
 #include <SeqWiresLib/Types/Track/TrackEvents/trackEventHolder.hpp>
 
-#include <BabelWiresLib/Features/modelExceptions.hpp>
+#include <BabelWiresLib/ValueTree/modelExceptions.hpp>
 #include <BabelWiresLib/TypeSystem/typeSystem.hpp>
 #include <BabelWiresLib/Types/Enum/addBlankToEnum.hpp>
 #include <BabelWiresLib/Types/Map/Helpers/enumSourceMapApplicator.hpp>

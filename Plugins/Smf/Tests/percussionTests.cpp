@@ -42,10 +42,10 @@ TEST_P(SmfStandardPercussionTest, saveLoad) {
                                      smf::GMSpecType::getIdentifierFromValue(testData.m_specificationId).toString());
 
     {
-        babelwires::SimpleValueFeature smfFeature(testEnvironment.m_projectContext.m_typeSystem, smf::getSmfFileType());
+        babelwires::ValueTreeRoot smfFeature(testEnvironment.m_projectContext.m_typeSystem, smf::getSmfFileType());
         smfFeature.setToDefault();
 
-        smf::SmfSequence::Instance smfType{smfFeature.getFeature(0)->is<babelwires::ValueFeature>()};
+        smf::SmfSequence::Instance smfType{smfFeature.getChild(0)->is<babelwires::ValueTreeNode>()};
         smfType.getMeta().getSpec().set(testData.m_specificationId);
 
         auto track9 = smfType.getTrcks0().activateAndGetTrack(9);
@@ -71,11 +71,11 @@ TEST_P(SmfStandardPercussionTest, saveLoad) {
         const auto feature = smf::parseSmfSequence(midiFile, testEnvironment.m_projectContext, testEnvironment.m_log);
         ASSERT_NE(feature, nullptr);
 
-        smf::SmfSequence::ConstInstance smfSequence{feature->getFeature(0)->is<babelwires::ValueFeature>()};
+        smf::SmfSequence::ConstInstance smfSequence{feature->getChild(0)->is<babelwires::ValueTreeNode>()};
         ASSERT_EQ(smfSequence.getInstanceType().getIndexOfTag(smfSequence.getSelectedTag()), 0);
 
         auto tracks = smfSequence.getTrcks0();
-        EXPECT_EQ(tracks->getNumFeatures(), 1);
+        EXPECT_EQ(tracks->getNumChildren(), 1);
 
         auto track9 = tracks.tryGetTrack(9);
         ASSERT_TRUE(track9);
@@ -168,10 +168,10 @@ TEST_P(SmfTrackAllocationPercussionTest, trackAllocation) {
                                      smf::GMSpecType::getIdentifierFromValue(testData.m_specificationId).toString());
 
     {
-        babelwires::SimpleValueFeature smfFeature(testEnvironment.m_projectContext.m_typeSystem, smf::getSmfFileType());
+        babelwires::ValueTreeRoot smfFeature(testEnvironment.m_projectContext.m_typeSystem, smf::getSmfFileType());
         smfFeature.setToDefault();
 
-        smf::SmfSequence::Instance smfType{smfFeature.getFeature(0)->is<babelwires::ValueFeature>()};
+        smf::SmfSequence::Instance smfType{smfFeature.getChild(0)->is<babelwires::ValueTreeNode>()};
         smfType.getMeta().getSpec().set(testData.m_specificationId);
         auto tracks = smfType.getTrcks0();
 
@@ -201,11 +201,11 @@ TEST_P(SmfTrackAllocationPercussionTest, trackAllocation) {
         const auto feature = smf::parseSmfSequence(midiFile, testEnvironment.m_projectContext, testEnvironment.m_log);
         ASSERT_NE(feature, nullptr);
 
-        smf::SmfSequence::ConstInstance smfSequence{feature->getFeature(0)->is<babelwires::ValueFeature>()};
+        smf::SmfSequence::ConstInstance smfSequence{feature->getChild(0)->is<babelwires::ValueTreeNode>()};
         ASSERT_EQ(smfSequence.getInstanceType().getIndexOfTag(smfSequence.getSelectedTag()), 0);
 
         auto tracks = smfSequence.getTrcks0();
-        EXPECT_EQ(tracks->getNumFeatures(), 3);
+        EXPECT_EQ(tracks->getNumChildren(), 3);
 
         const auto& metadata = smfSequence.getMeta();
         EXPECT_EQ(metadata.getSpec().get(), testData.m_specificationId);

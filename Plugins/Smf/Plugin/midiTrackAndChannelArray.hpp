@@ -7,7 +7,7 @@
  **/
 #pragma once
 
-#include <BabelWiresLib/Features/valueFeature.hpp>
+#include <BabelWiresLib/ValueTree/valueTreeNode.hpp>
 #include <BabelWiresLib/TypeSystem/primitiveType.hpp>
 #include <BabelWiresLib/Types/Array/arrayType.hpp>
 #include <Plugins/Smf/Plugin/midiTrackAndChannel.hpp>
