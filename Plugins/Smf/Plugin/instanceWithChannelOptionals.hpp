@@ -20,8 +20,8 @@ namespace smf {
     class InstanceWithChannelOptionals
         : public babelwires::InstanceCommonBase<VALUE_TREE_NODE, TypeWithChannelOptionals> {
       public:
-        InstanceWithChannelOptionals(VALUE_TREE_NODE& valueFeature)
-            : babelwires::InstanceCommonBase<VALUE_TREE_NODE, TypeWithChannelOptionals>(valueFeature) {}
+        InstanceWithChannelOptionals(VALUE_TREE_NODE& valueTree)
+            : babelwires::InstanceCommonBase<VALUE_TREE_NODE, TypeWithChannelOptionals>(valueTree) {}
 
         babelwires::ConstInstance<TypeOfTracks> getTrack(unsigned int channel) const {
             return babelwires::InstanceUtils::getChild(this->m_valueTreeNode,
@@ -38,9 +38,9 @@ namespace smf {
 
         std::optional<babelwires::ConstInstance<TypeOfTracks>>
         tryGetTrack(unsigned int channel) const {
-            if (const babelwires::ValueTreeNode* valueFeature = babelwires::InstanceUtils::tryGetChild(
+            if (const babelwires::ValueTreeNode* valueTreeNode = babelwires::InstanceUtils::tryGetChild(
                     this->m_valueTreeNode, TypeWithChannelOptionals::getTrackIdFromChannel(channel))) {
-                return {*valueFeature};
+                return {*valueTreeNode};
             } else {
                 return {};
             }
