@@ -160,7 +160,6 @@ TEST(ExcerptProcessorTest, processor) {
 
     processor.getInput().clearChanges();
     {
-        babelwires::BackupScope scope(processor.getInput().is<babelwires::ValueTreeRoot>());
         seqwires::Track track;
         testUtils::addSimpleNotes({60, 62, 64, 65, 67, 69, 71, 72}, track);
         inArray.getEntry(0).set(std::move(track));
@@ -171,10 +170,7 @@ TEST(ExcerptProcessorTest, processor) {
     testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65}, outArray.getEntry(0).get());
 
     processor.getInput().clearChanges();
-    {
-        babelwires::BackupScope scope(processor.getInput().is<babelwires::ValueTreeRoot>());
-        in.getStart().set(1);
-    }
+    in.getStart().set(1);
     processor.process(testEnvironment.m_log);
 
     EXPECT_EQ(outArray.getEntry(0).get().getDuration(), 1);
@@ -184,7 +180,6 @@ TEST(ExcerptProcessorTest, processor) {
     // However that functionality didn't survive the switch to types/values.
     processor.getInput().clearChanges();
     {
-        babelwires::BackupScope scope(processor.getInput().is<babelwires::ValueTreeRoot>());
         inArray.setSize(2);
         {
             seqwires::Track track;
@@ -203,11 +198,8 @@ TEST(ExcerptProcessorTest, processor) {
     // Check that input changes to an entry only affect its output entry. For this test, we clear the output changes too.
     processor.getInput().clearChanges();
     processor.getOutput().clearChanges();
-    {
-        babelwires::BackupScope scope(processor.getInput().is<babelwires::ValueTreeRoot>());
-        // Set it to empty.
-        inArray.getEntry(0).set(seqwires::Track());
-    }
+    // Set it to empty.
+    inArray.getEntry(0).set(seqwires::Track());
     processor.process(testEnvironment.m_log);
 
     ASSERT_EQ(outArray->getNumChildren(), 2);
