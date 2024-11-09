@@ -119,10 +119,7 @@ TEST(SplitAtPitchProcessorTest, processor) {
     EXPECT_EQ(output.getOther().get().getDuration(), 2);
 
     processor.getInput().clearChanges();
-    {
-        babelwires::BackupScope scope(processor.getInput().is<babelwires::ValueTreeRoot>());
-        input.getPitch().set(babelwires::EnumValue(input.getPitch().getInstanceType().getIdentifierFromIndex(64)));
-    }
+    input.getPitch().set(babelwires::EnumValue(input.getPitch().getInstanceType().getIdentifierFromIndex(64)));
     processor.process(testEnvironment.m_log);
 
     expectedNotesAbove = {

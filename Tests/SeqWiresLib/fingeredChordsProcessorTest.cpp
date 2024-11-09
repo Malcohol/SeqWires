@@ -707,10 +707,7 @@ TEST(FingeredChordsTest, processor) {
         output.getChords().get());
 
     processor.getInput().clearChanges();
-    {
-        babelwires::BackupScope scope(processor.getInput().is<babelwires::ValueTreeRoot>());
-        input.getPolicy().set(seqwires::FingeredChordsSustainPolicyEnum::Value::Hold);
-    }
+    input.getPolicy().set(seqwires::FingeredChordsSustainPolicyEnum::Value::Hold);
     processor.process(testEnvironment.m_log);
 
     testUtils::testChords(
@@ -722,7 +719,6 @@ TEST(FingeredChordsTest, processor) {
 
     processor.getInput().clearChanges();
     {
-        babelwires::BackupScope scope(processor.getInput().is<babelwires::ValueTreeRoot>());
         seqwires::Track track;
         track.addEvent(seqwires::NoteOnEvent(0, 60));
         track.addEvent(seqwires::NoteOnEvent(0, 64));

@@ -170,7 +170,6 @@ TEST(TransposeProcessorTest, processor) {
     EXPECT_EQ(outArray.getEntry(0).get().getDuration(), 0);
 
     {
-        babelwires::BackupScope scope(processor.getInput().is<babelwires::ValueTreeRoot>());
         seqwires::Track track;
         testUtils::addSimpleNotes({60, 62, 64, 65}, track);
         inArray.getEntry(0).set(std::move(track));
@@ -179,16 +178,12 @@ TEST(TransposeProcessorTest, processor) {
     testUtils::testSimpleNotes({60, 62, 64, 65}, outArray.getEntry(0).get());
 
     processor.getInput().clearChanges();
-    {
-        babelwires::BackupScope scope(processor.getInput().is<babelwires::ValueTreeRoot>());
-        in.getOffset().set(1);
-    }
+    in.getOffset().set(1);
     processor.process(testEnvironment.m_log);
     testUtils::testSimpleNotes({61, 63, 65, 66}, outArray.getEntry(0).get());
 
     processor.getInput().clearChanges();
     {
-        babelwires::BackupScope scope(processor.getInput().is<babelwires::ValueTreeRoot>());
         inArray.setSize(2);
         {
             seqwires::Track track;

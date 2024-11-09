@@ -82,7 +82,6 @@ TEST(ConcatenateProcessorTest, processor) {
 
     processor.getInput().clearChanges();
     {
-        babelwires::BackupScope scope(processor.getInput().is<babelwires::ValueTreeRoot>());
         seqwires::Track track;
         testUtils::addSimpleNotes(std::vector<seqwires::Pitch>{67, 69, 71, 72}, track);
         input.getInput().getEntry(1).set(std::move(track));
@@ -94,7 +93,6 @@ TEST(ConcatenateProcessorTest, processor) {
     processor.getInput().clearChanges();
     // Insert a new track at position 1.
     {
-        babelwires::BackupScope scope(processor.getInput().is<babelwires::ValueTreeRoot>());
         input.getInput().setSize(3);
         input.getInput().getEntry(2).set(input.getInput().getEntry(1)->getValue());
         {
