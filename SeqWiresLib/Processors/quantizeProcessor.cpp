@@ -26,15 +26,15 @@ seqwires::QuantizeProcessorInput::QuantizeProcessorInput()
                                     {babelwires::RationalValue(0),
                                      babelwires::RationalValue(std::numeric_limits<babelwires::Rational::ComponentType>::max()),
                                      babelwires::RationalValue(babelwires::Rational(1, 16))}}}}},
-          QuantizeProcessor::getCommonArrayId(), seqwires::DefaultTrackType::getThisIdentifier()) {}
+          QuantizeProcessor::getCommonArrayId(), seqwires::DefaultTrackType::getThisType()) {}
 
 seqwires::QuantizeProcessorOutput::QuantizeProcessorOutput()
     : babelwires::ParallelProcessorOutputBase(QuantizeProcessor::getCommonArrayId(),
-                                                   seqwires::DefaultTrackType::getThisIdentifier()) {}
+                                                   seqwires::DefaultTrackType::getThisType()) {}
 
 seqwires::QuantizeProcessor::QuantizeProcessor(const babelwires::ProjectContext& projectContext)
-    : babelwires::ParallelProcessor(projectContext, QuantizeProcessorInput::getThisIdentifier(),
-                                         QuantizeProcessorOutput::getThisIdentifier()) {}
+    : babelwires::ParallelProcessor(projectContext, QuantizeProcessorInput::getThisType(),
+                                         QuantizeProcessorOutput::getThisType()) {}
 
 babelwires::ShortId seqwires::QuantizeProcessor::getCommonArrayId() {
     return BW_SHORT_ID("Tracks", "Tracks", "e00623bf-c0f0-4fee-b6c4-4f65df896bf3");

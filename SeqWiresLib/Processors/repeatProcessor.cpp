@@ -24,15 +24,15 @@ seqwires::RepeatProcessorInput::RepeatProcessorInput()
                                     {babelwires::IntValue(0),
                                      babelwires::IntValue(std::numeric_limits<babelwires::IntValue::NativeType>::max()),
                                      babelwires::IntValue(2)}}}}},
-          RepeatProcessor::getCommonArrayId(), seqwires::DefaultTrackType::getThisIdentifier()) {}
+          RepeatProcessor::getCommonArrayId(), seqwires::DefaultTrackType::getThisType()) {}
 
 seqwires::RepeatProcessorOutput::RepeatProcessorOutput()
     : babelwires::ParallelProcessorOutputBase(RepeatProcessor::getCommonArrayId(),
-                                                   seqwires::DefaultTrackType::getThisIdentifier()) {}
+                                                   seqwires::DefaultTrackType::getThisType()) {}
 
 seqwires::RepeatProcessor::RepeatProcessor(const babelwires::ProjectContext& projectContext)
-    : babelwires::ParallelProcessor(projectContext, RepeatProcessorInput::getThisIdentifier(),
-                                         RepeatProcessorOutput::getThisIdentifier()) {}
+    : babelwires::ParallelProcessor(projectContext, RepeatProcessorInput::getThisType(),
+                                         RepeatProcessorOutput::getThisType()) {}
 
 babelwires::ShortId seqwires::RepeatProcessor::getCommonArrayId() {
     return BW_SHORT_ID("Tracks", "Tracks", "f727937f-0215-4527-bab4-0eca269d6c5c");

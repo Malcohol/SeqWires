@@ -8,5 +8,5 @@
 #include <Plugins/Smf/Plugin/midiTrackAndChannelArray.hpp>
 
 smf::MidiTrackAndChannelArray::MidiTrackAndChannelArray()
-    : ArrayType(MidiTrackAndChannel::getThisIdentifier(), 1, 16, 1) {}
+    : ArrayType(MidiTrackAndChannel::getThisType(), 1, 16, 1) {}
 

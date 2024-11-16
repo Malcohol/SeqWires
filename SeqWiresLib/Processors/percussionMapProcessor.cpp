@@ -18,15 +18,15 @@
 seqwires::PercussionMapProcessorInput::PercussionMapProcessorInput()
     : babelwires::ParallelProcessorInputBase(
           {{BW_SHORT_ID("Map", "Map", "b8cbf8c9-579b-4292-bdef-524b7d1010bc"), seqwires::getPercussionMapType()}},
-          PercussionMapProcessor::getCommonArrayId(), seqwires::DefaultTrackType::getThisIdentifier()) {}
+          PercussionMapProcessor::getCommonArrayId(), seqwires::DefaultTrackType::getThisType()) {}
 
 seqwires::PercussionMapProcessorOutput::PercussionMapProcessorOutput()
     : babelwires::ParallelProcessorOutputBase(PercussionMapProcessor::getCommonArrayId(),
-                                                   seqwires::DefaultTrackType::getThisIdentifier()) {}
+                                                   seqwires::DefaultTrackType::getThisType()) {}
 
 seqwires::PercussionMapProcessor::PercussionMapProcessor(const babelwires::ProjectContext& projectContext)
-    : babelwires::ParallelProcessor(projectContext, PercussionMapProcessorInput::getThisIdentifier(),
-                                         PercussionMapProcessorOutput::getThisIdentifier()) {}
+    : babelwires::ParallelProcessor(projectContext, PercussionMapProcessorInput::getThisType(),
+                                         PercussionMapProcessorOutput::getThisType()) {}
 
 babelwires::ShortId seqwires::PercussionMapProcessor::getCommonArrayId() {
     return BW_SHORT_ID("Tracks", "Tracks", "fe71b1c6-6604-430b-a731-f40b2692d2cf");

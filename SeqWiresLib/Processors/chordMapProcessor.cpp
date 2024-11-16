@@ -33,15 +33,15 @@ seqwires::ChordMapProcessorInput::ChordMapProcessorInput()
                     {seqwires::getMapChordFunctionPitchClassRef(), seqwires::getMapChordFunctionPitchClassRef()},
                     {babelwires::EnumValue(babelwires::MapEntryFallbackKind::getIdentifierFromValue(
                         babelwires::MapEntryData::Kind::All2Sm))}}}}},
-          ChordMapProcessor::getCommonArrayId(), seqwires::DefaultTrackType::getThisIdentifier()) {}
+          ChordMapProcessor::getCommonArrayId(), seqwires::DefaultTrackType::getThisType()) {}
 
 seqwires::ChordMapProcessorOutput::ChordMapProcessorOutput()
     : babelwires::ParallelProcessorOutputBase(ChordMapProcessor::getCommonArrayId(),
-                                                   seqwires::DefaultTrackType::getThisIdentifier()) {}
+                                              seqwires::DefaultTrackType::getThisType()) {}
 
 seqwires::ChordMapProcessor::ChordMapProcessor(const babelwires::ProjectContext& projectContext)
-    : babelwires::ParallelProcessor(projectContext, ChordMapProcessorInput::getThisIdentifier(),
-                                         ChordMapProcessorOutput::getThisIdentifier()) {}
+    : babelwires::ParallelProcessor(projectContext, ChordMapProcessorInput::getThisType(),
+                                    ChordMapProcessorOutput::getThisType()) {}
 
 babelwires::ShortId seqwires::ChordMapProcessor::getCommonArrayId() {
     return BW_SHORT_ID("Tracks", "Tracks", "24e56b0d-eb1e-4c93-97fd-ba4d639e112a");
