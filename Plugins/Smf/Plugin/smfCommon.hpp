@@ -9,9 +9,7 @@
 
 #include <SeqWiresLib/Types/Track/trackType.hpp>
 
+
 namespace smf {
     using TypeOfTracks = seqwires::DefaultTrackType;
-
-    /// Get the FileType subclass which contains SMF data.
-    babelwires::TypeRef getSmfFileType();
 }

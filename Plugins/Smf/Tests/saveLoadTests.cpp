@@ -11,6 +11,7 @@
 
 #include <BabelWiresLib/Instance/arrayTypeInstance.hpp>
 #include <BabelWiresLib/libRegistration.hpp>
+#include <BabelWiresLib/Types/File/fileTypeT.hpp>
 
 #include <Common/IO/fileDataSource.hpp>
 
@@ -29,10 +30,11 @@ TEST(SmfSaveLoadTest, cMajorScale) {
 
     const std::vector<seqwires::Pitch> pitches{60, 62, 64, 65, 67, 69, 71, 72};
     {
-        babelwires::ValueTreeRoot smfFeature(testEnvironment.m_projectContext.m_typeSystem, smf::getSmfFileType());
+        babelwires::ValueTreeRoot smfFeature(testEnvironment.m_projectContext.m_typeSystem, babelwires::FileTypeT<smf::SmfSequence>::getThisType());
         smfFeature.setToDefault();
 
-        smf::SmfSequence::Instance smfType{smfFeature.getChild(0)->is<babelwires::ValueTreeNode>()};
+        babelwires::FileTypeT<smf::SmfSequence>::Instance smfSequence{smfFeature};
+        smf::SmfSequence::Instance smfType = smfSequence.getConts();
         auto tracks = smfType.getTrcks0();
         auto track2 = tracks.activateAndGetTrack(2);
 
@@ -109,7 +111,7 @@ TEST(SmfSaveLoadTest, cMajorScaleWithMetadata) {
         testUtils::TempFilePath tempFile("cMajorWithMetadata.mid", metadata);
         {
             babelwires::ValueTreeRoot smfFeature(testEnvironment.m_projectContext.m_typeSystem,
-                                                      smf::getSmfFileType());
+                                                      babelwires::FileTypeT<smf::SmfSequence>::getThisType());
             smfFeature.setToDefault();
 
             smf::SmfSequence::Instance smfType{smfFeature.getChild(0)->is<babelwires::ValueTreeNode>()};
@@ -161,7 +163,7 @@ TEST(SmfSaveLoadTest, format0Chords) {
     const char* trackName[3] = {"ch0", "ch1", "ch2"};
 
     {
-        babelwires::ValueTreeRoot smfFeature(testEnvironment.m_projectContext.m_typeSystem, smf::getSmfFileType());
+        babelwires::ValueTreeRoot smfFeature(testEnvironment.m_projectContext.m_typeSystem, babelwires::FileTypeT<smf::SmfSequence>::getThisType());
         smfFeature.setToDefault();
 
         smf::SmfSequence::Instance smfType{smfFeature.getChild(0)->is<babelwires::ValueTreeNode>()};
@@ -207,7 +209,7 @@ TEST(SmfSaveLoadTest, format1Chords) {
     const char* trackName[3] = {"ch0", "ch1", "ch2"};
 
     {
-        babelwires::ValueTreeRoot smfFeature(testEnvironment.m_projectContext.m_typeSystem, smf::getSmfFileType());
+        babelwires::ValueTreeRoot smfFeature(testEnvironment.m_projectContext.m_typeSystem, babelwires::FileTypeT<smf::SmfSequence>::getThisType());
         smfFeature.setToDefault();
 
         smf::SmfSequence::Instance smfType{smfFeature.getChild(0)->is<babelwires::ValueTreeNode>()};
