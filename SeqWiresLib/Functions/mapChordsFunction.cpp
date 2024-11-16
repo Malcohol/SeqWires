@@ -12,20 +12,18 @@
 #include <SeqWiresLib/chord.hpp>
 #include <SeqWiresLib/pitch.hpp>
 
-#include <BabelWiresLib/ValueTree/modelExceptions.hpp>
-#include <BabelWiresLib/Types/Map/Helpers/enumSourceMapApplicator.hpp>
-#include <BabelWiresLib/Types/Map/Helpers/enumValueAdapters.hpp>
 #include <BabelWiresLib/TypeSystem/typeSystem.hpp>
 #include <BabelWiresLib/Types/Enum/addBlankToEnum.hpp>
+#include <BabelWiresLib/Types/Map/Helpers/enumSourceMapApplicator.hpp>
+#include <BabelWiresLib/Types/Map/Helpers/enumValueAdapters.hpp>
+#include <BabelWiresLib/ValueTree/modelExceptions.hpp>
 
 babelwires::TypeRef seqwires::getMapChordFunctionChordTypeRef() {
-    return babelwires::TypeRef(babelwires::AddBlankToEnum::getThisIdentifier(),
-                               seqwires::ChordType::getThisIdentifier());
+    return babelwires::TypeRef(babelwires::AddBlankToEnum::getThisIdentifier(), seqwires::ChordType::getThisType());
 }
 
 babelwires::TypeRef seqwires::getMapChordFunctionPitchClassRef() {
-    return babelwires::TypeRef(babelwires::AddBlankToEnum::getThisIdentifier(),
-                               seqwires::PitchClass::getThisIdentifier());
+    return babelwires::TypeRef(babelwires::AddBlankToEnum::getThisIdentifier(), seqwires::PitchClass::getThisType());
 }
 
 seqwires::Track seqwires::mapChordsFunction(const babelwires::TypeSystem& typeSystem, const Track& sourceTrack,
@@ -40,7 +38,8 @@ seqwires::Track seqwires::mapChordsFunction(const babelwires::TypeSystem& typeSy
     }
 
     const babelwires::TypeRef chordTypeWithBlankTypeRef = getMapChordFunctionChordTypeRef();
-    const babelwires::EnumType& chordTypeWithBlank = chordTypeWithBlankTypeRef.resolve(typeSystem).is<babelwires::EnumType>();
+    const babelwires::EnumType& chordTypeWithBlank =
+        chordTypeWithBlankTypeRef.resolve(typeSystem).is<babelwires::EnumType>();
     const babelwires::EnumToIndexValueAdapter chordTypeTargetAdapter{chordTypeWithBlank};
     const babelwires::EnumSourceIndexMapApplicator<unsigned int> chordTypeApplicator(
         chordTypeMapValue, chordTypeWithBlank, chordTypeTargetAdapter);
@@ -48,7 +47,8 @@ seqwires::Track seqwires::mapChordsFunction(const babelwires::TypeSystem& typeSy
     const unsigned int indexOfBlankChordValue = chordTypeWithBlank.getValueSet().size() - 1;
 
     const babelwires::TypeRef pitchClassWithBlankTypeRef = getMapChordFunctionPitchClassRef();
-    const babelwires::EnumType& pitchClassWithBlank = pitchClassWithBlankTypeRef.resolve(typeSystem).is<babelwires::EnumType>();
+    const babelwires::EnumType& pitchClassWithBlank =
+        pitchClassWithBlankTypeRef.resolve(typeSystem).is<babelwires::EnumType>();
     const babelwires::EnumToIndexValueAdapter pitchClassTargetAdapter{pitchClassWithBlank};
     const babelwires::EnumSourceIndexMapApplicator<unsigned int> pitchClassApplicator(
         pitchClassMapValue, pitchClassWithBlank, pitchClassTargetAdapter);

@@ -36,7 +36,6 @@ SET( SMFLIB_SRCS
 	Percussion/xgSFX2PercussionSet.cpp
 	Percussion/xgStandard1PercussionSet.cpp
 	recordOfMidiTracks.cpp
-	smfCommon.cpp
 	smfFormat.cpp
 	smfParser.cpp
 	smfSequence.cpp

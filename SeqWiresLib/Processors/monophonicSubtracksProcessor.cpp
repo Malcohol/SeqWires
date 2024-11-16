@@ -16,22 +16,22 @@ seqwires::MonophonicSubtracksProcessorInput::MonophonicSubtracksProcessorInput()
             babelwires::TypeRef{babelwires::IntTypeConstructor::getThisIdentifier(),
                                 {{}, {babelwires::IntValue(1), babelwires::IntValue(16), babelwires::IntValue(1)}}}},
            {BW_SHORT_ID("Policy", "Policy", "c3192ee7-adec-4239-83a1-ef2d130ce421"),
-            MonophonicSubtracksPolicyEnum::getThisIdentifier()},
+            MonophonicSubtracksPolicyEnum::getThisType()},
            {BW_SHORT_ID("Input", "Input Track", "16e6745d-2456-489f-b73b-8704a442591b"),
-            DefaultTrackType::getThisIdentifier()}}) {}
+            DefaultTrackType::getThisType()}}) {}
 
 seqwires::MonophonicSubtracksProcessorOutput::MonophonicSubtracksProcessorOutput()
     : babelwires::RecordType(
           {{BW_SHORT_ID("Sbtrks", "Mono tracks", "27c5fbe2-1060-4dc4-b46a-735b48128e17"),
             babelwires::TypeRef{babelwires::ArrayTypeConstructor::getThisIdentifier(),
-                                {{DefaultTrackType::getThisIdentifier()},
+                                {{DefaultTrackType::getThisType()},
                                  {babelwires::IntValue(0), babelwires::IntValue(16), babelwires::IntValue(1)}}}},
            {BW_SHORT_ID("Other", "Other", "bc3a5261-630c-43d7-bda5-f85dd6a1fe2b"),
-            DefaultTrackType::getThisIdentifier()}}) {}
+            DefaultTrackType::getThisType()}}) {}
 
 seqwires::MonophonicSubtracksProcessor::MonophonicSubtracksProcessor(const babelwires::ProjectContext& projectContext)
-    : Processor(projectContext, MonophonicSubtracksProcessorInput::getThisIdentifier(),
-                     MonophonicSubtracksProcessorOutput::getThisIdentifier()) {}
+    : Processor(projectContext, MonophonicSubtracksProcessorInput::getThisType(),
+                     MonophonicSubtracksProcessorOutput::getThisType()) {}
 
 void seqwires::MonophonicSubtracksProcessor::processValue(babelwires::UserLogger& userLogger,
                                                            const babelwires::ValueTreeNode& input,

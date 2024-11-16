@@ -32,7 +32,7 @@ seqwires::PercussionMapType::constructType(const babelwires::TypeSystem& typeSys
                   [&sourceSummands](babelwires::PrimitiveTypeId typeId) { sourceSummands.emplace_back(typeId); });
 
     const auto it =
-        std::find(sourceSummands.begin(), sourceSummands.end(), seqwires::BuiltInPercussionInstruments::getThisIdentifier());
+        std::find(sourceSummands.begin(), sourceSummands.end(), seqwires::BuiltInPercussionInstruments::getThisType());
     assert(it != sourceSummands.end());
     unsigned int indexOfDefault = std::distance(sourceSummands.begin(), it);
 

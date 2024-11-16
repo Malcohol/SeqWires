@@ -25,13 +25,13 @@ namespace {
             typeSystem.getEntryByType<seqwires::BuiltInPercussionInstruments>();
 
         babelwires::TypeRef targetTypeRef(babelwires::AddBlankToEnum::getThisIdentifier(),
-                                          seqwires::BuiltInPercussionInstruments::getThisIdentifier());
+                                          seqwires::BuiltInPercussionInstruments::getThisType());
 
         babelwires::MapValue percussionMap;
-        percussionMap.setSourceTypeRef(seqwires::BuiltInPercussionInstruments::getThisIdentifier());
+        percussionMap.setSourceTypeRef(seqwires::BuiltInPercussionInstruments::getThisType());
         percussionMap.setTargetTypeRef(targetTypeRef);
 
-        babelwires::OneToOneMapEntryData maplet(typeSystem, seqwires::BuiltInPercussionInstruments::getThisIdentifier(),
+        babelwires::OneToOneMapEntryData maplet(typeSystem, seqwires::BuiltInPercussionInstruments::getThisType(),
                                                 targetTypeRef);
 
         babelwires::EnumValue sourceValue;

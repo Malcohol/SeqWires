@@ -19,6 +19,7 @@
 
 #include <BabelWiresLib/Project/projectContext.hpp>
 #include <BabelWiresLib/TypeSystem/typeSystem.hpp>
+#include <BabelWiresLib/Types/File/fileTypeT.hpp>
 
 #include <Common/Log/userLogger.hpp>
 
@@ -40,9 +41,7 @@ smf::SmfWriter::SmfWriter(const babelwires::ProjectContext& projectContext, babe
     , m_ostream(ostream)
     , m_os(&m_ostream)
     , m_division(256)
-    , m_standardPercussionSets(projectContext) {
-        assert(sequence.getTypeRef() == getSmfFileType());
-    }
+    , m_standardPercussionSets(projectContext) {}
 
 void smf::SmfWriter::writeUint16(std::uint16_t i) {
     m_os->put(i >> 8);
@@ -109,7 +108,7 @@ void smf::SmfWriter::writeTextMetaEvent(int type, std::string text) {
 }
 
 smf::SmfSequence::ConstInstance smf::SmfWriter::getSmfSequenceConst() const {
-    return SmfSequence::ConstInstance(m_smfFeature.getChild(0)->is<babelwires::ValueTreeNode>());
+    return babelwires::FileTypeT<SmfSequence>::ConstInstance(m_smfFeature).getConts();
 }
 
 void smf::SmfWriter::writeHeaderChunk(unsigned int numTracks) {

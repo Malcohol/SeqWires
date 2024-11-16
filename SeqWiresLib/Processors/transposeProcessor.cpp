@@ -24,15 +24,15 @@ seqwires::TransposeProcessorInput::TransposeProcessorInput()
                 babelwires::IntTypeConstructor::getThisIdentifier(),
                 babelwires::TypeConstructorArguments{
                     {}, {babelwires::IntValue(-127), babelwires::IntValue(127), babelwires::IntValue(0)}}}}},
-          TransposeProcessor::getCommonArrayId(), seqwires::DefaultTrackType::getThisIdentifier()) {}
+          TransposeProcessor::getCommonArrayId(), seqwires::DefaultTrackType::getThisType()) {}
 
 seqwires::TransposeProcessor::TransposeProcessor(const babelwires::ProjectContext& projectContext)
-    : babelwires::ParallelProcessor(projectContext, TransposeProcessorInput::getThisIdentifier(),
-                                         TransposeProcessorOutput::getThisIdentifier()) {}
+    : babelwires::ParallelProcessor(projectContext, TransposeProcessorInput::getThisType(),
+                                         TransposeProcessorOutput::getThisType()) {}
 
 seqwires::TransposeProcessorOutput::TransposeProcessorOutput()
     : babelwires::ParallelProcessorOutputBase(TransposeProcessor::getCommonArrayId(),
-                                                   seqwires::DefaultTrackType::getThisIdentifier()) {}
+                                                   seqwires::DefaultTrackType::getThisType()) {}
 
 babelwires::ShortId seqwires::TransposeProcessor::getCommonArrayId() {
     return BW_SHORT_ID("Tracks", "Tracks", "83f05b66-7890-4542-8344-1409e50539b5");
