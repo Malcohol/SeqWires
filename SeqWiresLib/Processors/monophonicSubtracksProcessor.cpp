@@ -13,8 +13,7 @@
 seqwires::MonophonicSubtracksProcessorInput::MonophonicSubtracksProcessorInput()
     : babelwires::RecordType(
           {{BW_SHORT_ID("NumTrk", "Num subtracks", "30bc74d2-b678-4986-8296-929db40fc8c2"),
-            babelwires::TypeRef{babelwires::IntTypeConstructor::getThisIdentifier(),
-                                {{}, {babelwires::IntValue(1), babelwires::IntValue(16), babelwires::IntValue(1)}}}},
+            babelwires::IntTypeConstructor::makeTypeRef(1, 16, 1)},
            {BW_SHORT_ID("Policy", "Policy", "c3192ee7-adec-4239-83a1-ef2d130ce421"),
             MonophonicSubtracksPolicyEnum::getThisType()},
            {BW_SHORT_ID("Input", "Input Track", "16e6745d-2456-489f-b73b-8704a442591b"),
