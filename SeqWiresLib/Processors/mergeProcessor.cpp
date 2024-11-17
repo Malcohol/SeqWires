@@ -18,20 +18,16 @@
 seqwires::MergeProcessorInput::MergeProcessorInput()
     : babelwires::RecordType(
           {{BW_SHORT_ID("Input", "Input tracks", "80b175ae-c954-4943-96d8-eaffcd7ed6e1"),
-            babelwires::TypeRef{babelwires::ArrayTypeConstructor::getThisIdentifier(),
-                                {{DefaultTrackType::getThisType()},
-                                 {babelwires::IntValue(2), babelwires::IntValue(16), babelwires::IntValue(2)}}}}}) {}
+            babelwires::ArrayTypeConstructor::makeTypeRef(DefaultTrackType::getThisType(), 2, 16)}}) {}
 
 seqwires::MergeProcessorOutput::MergeProcessorOutput()
     : babelwires::RecordType({{BW_SHORT_ID("Output", "Output track", "ab56e996-d361-42ed-a0df-44a90a73dc20"),
                                DefaultTrackType::getThisType()}}) {}
 
 seqwires::MergeProcessor::MergeProcessor(const babelwires::ProjectContext& projectContext)
-    : Processor(projectContext, MergeProcessorInput::getThisType(),
-                     MergeProcessorOutput::getThisType()) {}
+    : Processor(projectContext, MergeProcessorInput::getThisType(), MergeProcessorOutput::getThisType()) {}
 
-void seqwires::MergeProcessor::processValue(babelwires::UserLogger& userLogger,
-                                            const babelwires::ValueTreeNode& input,
+void seqwires::MergeProcessor::processValue(babelwires::UserLogger& userLogger, const babelwires::ValueTreeNode& input,
                                             babelwires::ValueTreeNode& output) const {
     MergeProcessorInput::ConstInstance in{input};
     if (in->isChanged(babelwires::ValueTreeNode::Changes::SomethingChanged)) {
@@ -43,4 +39,3 @@ void seqwires::MergeProcessor::processValue(babelwires::UserLogger& userLogger,
         out.getOutput().set(mergeTracks(tracksIn));
     }
 }
-
