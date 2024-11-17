@@ -15,9 +15,7 @@
 seqwires::ConcatenateProcessorInput::ConcatenateProcessorInput()
     : babelwires::RecordType(
           {{BW_SHORT_ID("Input", "Input tracks", "3b8d8cd7-21d9-44a1-877e-134915fe5aca"),
-            babelwires::TypeRef{babelwires::ArrayTypeConstructor::getThisIdentifier(),
-                                {{DefaultTrackType::getThisType()},
-                                 {babelwires::IntValue(2), babelwires::IntValue(16), babelwires::IntValue(2)}}}}}) {}
+            babelwires::ArrayTypeConstructor::makeTypeRef(DefaultTrackType::getThisType(), 2, 16)}}) {}
 
 seqwires::ConcatenateProcessorOutput::ConcatenateProcessorOutput()
     : babelwires::RecordType({{BW_SHORT_ID("Output", "Output track", "873d5d66-c5ec-46a4-9aba-f5f4223bdfd4"),

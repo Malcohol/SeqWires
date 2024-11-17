@@ -19,13 +19,9 @@
 seqwires::QuantizeProcessorInput::QuantizeProcessorInput()
     : babelwires::ParallelProcessorInputBase(
           {{BW_SHORT_ID("Beat", "Beat", "1651ab49-3313-4cd3-b92d-16742b7f5921"),
-            babelwires::TypeRef{babelwires::RationalTypeConstructor::getThisIdentifier(),
-                                babelwires::TypeConstructorArguments{
-                                    {},
-                                    // TODO: Don't want to allow zero, so would like to be able to express an open interval here.
-                                    {babelwires::RationalValue(0),
-                                     babelwires::RationalValue(std::numeric_limits<babelwires::Rational::ComponentType>::max()),
-                                     babelwires::RationalValue(babelwires::Rational(1, 16))}}}}},
+            babelwires::RationalTypeConstructor::makeTypeRef(0,
+                                    std::numeric_limits<babelwires::Rational::ComponentType>::max(),
+                                     babelwires::Rational(1, 16))}},
           QuantizeProcessor::getCommonArrayId(), seqwires::DefaultTrackType::getThisType()) {}
 
 seqwires::QuantizeProcessorOutput::QuantizeProcessorOutput()

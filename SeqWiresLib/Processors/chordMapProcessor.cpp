@@ -20,19 +20,13 @@
 seqwires::ChordMapProcessorInput::ChordMapProcessorInput()
     : babelwires::ParallelProcessorInputBase(
           {{BW_SHORT_ID("TypMap", "Type map", "6054b8e9-5f48-4e9f-8807-b6377d36d6aa"),
-            babelwires::TypeRef{
-                babelwires::MapTypeConstructor::getThisIdentifier(),
-                babelwires::TypeConstructorArguments{
-                    {seqwires::getMapChordFunctionChordTypeRef(), seqwires::getMapChordFunctionChordTypeRef()},
-                    {babelwires::EnumValue(babelwires::MapEntryFallbackKind::getIdentifierFromValue(
-                        babelwires::MapEntryData::Kind::All2Sm))}}}},
+            babelwires::MapTypeConstructor::makeTypeRef(seqwires::getMapChordFunctionChordTypeRef(),
+                                                        seqwires::getMapChordFunctionChordTypeRef(),
+                                                        babelwires::MapEntryData::Kind::All2Sm)},
            {BW_SHORT_ID("RtMap", "Root map", "4df92989-554b-426a-aa0c-2c0c7ca2dfd6"),
-            babelwires::TypeRef{
-                babelwires::MapTypeConstructor::getThisIdentifier(),
-                babelwires::TypeConstructorArguments{
-                    {seqwires::getMapChordFunctionPitchClassRef(), seqwires::getMapChordFunctionPitchClassRef()},
-                    {babelwires::EnumValue(babelwires::MapEntryFallbackKind::getIdentifierFromValue(
-                        babelwires::MapEntryData::Kind::All2Sm))}}}}},
+            babelwires::MapTypeConstructor::makeTypeRef(seqwires::getMapChordFunctionPitchClassRef(),
+                                                        seqwires::getMapChordFunctionPitchClassRef(),
+                                                        babelwires::MapEntryData::Kind::All2Sm)}},
           ChordMapProcessor::getCommonArrayId(), seqwires::DefaultTrackType::getThisType()) {}
 
 seqwires::ChordMapProcessorOutput::ChordMapProcessorOutput()
