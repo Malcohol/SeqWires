@@ -39,7 +39,7 @@ seqwires::PercussionMapType::constructType(const babelwires::TypeSystem& typeSys
     std::vector<babelwires::TypeRef> targetSummands;
     targetSummands.reserve(sourceSummands.size());
     for (const auto& s : sourceSummands) {
-        targetSummands.emplace_back(babelwires::TypeRef(babelwires::AddBlankToEnum::getThisIdentifier(), s));
+        targetSummands.emplace_back(babelwires::AddBlankToEnum::makeTypeRef(s));
     }
 
     return std::make_unique<babelwires::ConstructedType<babelwires::SumOfMapsType>>(std::move(newTypeRef),

@@ -19,11 +19,11 @@
 #include <BabelWiresLib/ValueTree/modelExceptions.hpp>
 
 babelwires::TypeRef seqwires::getMapChordFunctionChordTypeRef() {
-    return babelwires::TypeRef(babelwires::AddBlankToEnum::getThisIdentifier(), seqwires::ChordType::getThisType());
+    return babelwires::AddBlankToEnum::makeTypeRef(seqwires::ChordType::getThisType());
 }
 
 babelwires::TypeRef seqwires::getMapChordFunctionPitchClassRef() {
-    return babelwires::TypeRef(babelwires::AddBlankToEnum::getThisIdentifier(), seqwires::PitchClass::getThisType());
+    return babelwires::AddBlankToEnum::makeTypeRef(seqwires::PitchClass::getThisType());
 }
 
 seqwires::Track seqwires::mapChordsFunction(const babelwires::TypeSystem& typeSystem, const Track& sourceTrack,
