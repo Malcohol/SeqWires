@@ -36,7 +36,7 @@ jobs:
           }
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
       with:
         submodules: recursive
 
@@ -44,7 +44,7 @@ jobs:
       if: startsWith(matrix.config.name, 'Ubuntu_Latest_GCC')
       run: |
         sudo apt-get update
-        sudo apt-get install cmake ${{ matrix.config.cc }} ${{ matrix.config.cxx }} libtbb-dev qtbase5-dev qtchooser qt5-qmake qtbase5-dev-tools libasound2-dev
+        sudo apt-get install cmake ${{ matrix.config.cc }} ${{ matrix.config.cxx }} qtbase5-dev qtchooser qt5-qmake qtbase5-dev-tools libasound2-dev
         cmake --version
         gcc --version
         g++ --version
@@ -57,7 +57,7 @@ jobs:
 
     - name: Install Qt on Windows
       if: startsWith(matrix.config.os, 'windows')
-      uses: jurplel/install-qt-action@v2
+      uses: jurplel/install-qt-action@v4
       with:
         version: '5.15.2'
         host: 'windows'
