@@ -32,7 +32,7 @@ namespace smf {
         virtual std::string getManufacturerName() const override;
         virtual std::string getProductName() const override;
         virtual std::unique_ptr<babelwires::ValueTreeRoot>
-        createNewFeature(const babelwires::ProjectContext& projectContext) const override;
+        createNewValue(const babelwires::ProjectContext& projectContext) const override;
         virtual void writeToFile(const babelwires::ProjectContext& projectContext, babelwires::UserLogger& userLogger,
                                  const babelwires::ValueTreeRoot& contents, std::ostream& os) const override;
     };

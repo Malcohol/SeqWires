@@ -57,7 +57,7 @@ std::string smf::SmfTargetFormat::getProductName() const {
 }
 
 std::unique_ptr<babelwires::ValueTreeRoot>
-smf::SmfTargetFormat::createNewFeature(const babelwires::ProjectContext& projectContext) const {
+smf::SmfTargetFormat::createNewValue(const babelwires::ProjectContext& projectContext) const {
     return std::make_unique<babelwires::ValueTreeRoot>(projectContext.m_typeSystem, babelwires::FileTypeT<SmfSequence>::getThisType());
 }
 
