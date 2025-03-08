@@ -85,4 +85,14 @@ namespace seqwires {
         bool operator!=(Chord other) const { return (m_root != other.m_root) || (m_chordType != other.m_chordType); }
     };
 
+    /// A type with a single value meaning "NoChord".
+    class NoChord : public babelwires::EnumType {
+      public:
+        PRIMITIVE_TYPE("NoChord", "No Chord", "5f51a358-0121-4d1d-a0ab-cce5bddf92f1", 1);
+
+        NoChord();
+
+        static babelwires::ShortId getNoChordValue();
+    };
+
 } // namespace seqwires
