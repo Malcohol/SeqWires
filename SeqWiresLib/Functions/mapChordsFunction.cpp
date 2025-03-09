@@ -14,57 +14,227 @@
 
 #include <BabelWiresLib/TypeSystem/typeSystem.hpp>
 #include <BabelWiresLib/Types/Enum/addBlankToEnum.hpp>
+#include <BabelWiresLib/Types/Enum/enumAtomTypeConstructor.hpp>
+#include <BabelWiresLib/Types/Enum/enumUnionTypeConstructor.hpp>
 #include <BabelWiresLib/Types/Map/Helpers/enumSourceMapApplicator.hpp>
 #include <BabelWiresLib/Types/Map/Helpers/enumValueAdapters.hpp>
+#include <BabelWiresLib/Types/Map/standardMapIdentifiers.hpp>
+#include <BabelWiresLib/Types/Sum/sumType.hpp>
+#include <BabelWiresLib/Types/Sum/sumTypeConstructor.hpp>
+#include <BabelWiresLib/Types/Tuple/tupleType.hpp>
+#include <BabelWiresLib/Types/Tuple/tupleTypeConstructor.hpp>
+#include <BabelWiresLib/Types/Tuple/tupleValue.hpp>
 #include <BabelWiresLib/ValueTree/modelExceptions.hpp>
 
-babelwires::TypeRef seqwires::getMapChordFunctionChordTypeRef() {
-    return babelwires::AddBlankToEnum::makeTypeRef(seqwires::ChordType::getThisType());
+#include <optional>
+
+babelwires::TypeRef seqwires::getMapChordFunctionSourceTypeRef() {
+    return babelwires::SumTypeConstructor::makeTypeRef(
+        {babelwires::TupleTypeConstructor::makeTypeRef(
+             {babelwires::EnumUnionTypeConstructor::makeTypeRef(
+                  babelwires::EnumAtomTypeConstructor::makeTypeRef(babelwires::getWildcardId()),
+                  seqwires::PitchClass::getThisType()),
+              babelwires::EnumUnionTypeConstructor::makeTypeRef(
+                  babelwires::EnumAtomTypeConstructor::makeTypeRef(babelwires::getWildcardId()),
+                  seqwires::ChordType::getThisType())}),
+         seqwires::NoChord::getThisType()});
 }
 
-babelwires::TypeRef seqwires::getMapChordFunctionPitchClassRef() {
-    return babelwires::AddBlankToEnum::makeTypeRef(seqwires::PitchClass::getThisType());
+babelwires::TypeRef seqwires::getMapChordFunctionTargetTypeRef() {
+    return babelwires::SumTypeConstructor::makeTypeRef(
+        {babelwires::TupleTypeConstructor::makeTypeRef(
+             {babelwires::EnumUnionTypeConstructor::makeTypeRef(
+                  babelwires::EnumAtomTypeConstructor::makeTypeRef(babelwires::getWildcardMatchId()),
+                  seqwires::PitchClass::getThisType()),
+              babelwires::EnumUnionTypeConstructor::makeTypeRef(
+                  babelwires::EnumAtomTypeConstructor::makeTypeRef(babelwires::getWildcardMatchId()),
+                  seqwires::ChordType::getThisType())}),
+         seqwires::NoChord::getThisType()});
 }
+
+namespace {
+
+    /// As yet, there is no generic handling of wildcards when they occur within tuples, as in this case.
+    /// Therefore, I cannot use one of the preexisting applicators.
+    /// TODO: Can this be made generic?
+    class ChordMapHelper {
+      public:
+        ChordMapHelper(const babelwires::MapValue& mapValue, const babelwires::EnumType& sourcePitchClassWCType,
+                       const babelwires::EnumType& sourceChordTypeWCType,
+                       const babelwires::EnumType& targetPitchClassWCType,
+                       const babelwires::EnumType& targetChordTypeWCType)
+            : m_mapValue(mapValue)
+            , m_sourcePitchClassAdapter(sourcePitchClassWCType)
+            , m_sourceChordTypeAdapter(sourceChordTypeWCType)
+            , m_targetPitchClassAdapter(targetPitchClassWCType)
+            , m_targetChordTypeAdapter(targetChordTypeWCType)
+            , m_indexOfPitchClassWildCardValue(sourcePitchClassWCType.getValueSet().size() - 1)
+            , m_indexOfChordTypeWildCardValue(sourceChordTypeWCType.getValueSet().size() - 1) {}
+
+        /// This isn't memoized, so the caller should remember it.
+        std::optional<seqwires::Chord> getNoChordTarget() {
+            // Since the map is valid, the last entry only will be a fallback.
+            for (int i = 0; i < m_mapValue.getNumMapEntries() - 1; ++i) {
+                const babelwires::MapEntryData& entry = m_mapValue.getMapEntry(i);
+                if (entry.getSourceValue()->as<babelwires::EnumValue>()) {
+                    assert(entry.getSourceValue()->as<babelwires::EnumValue>()->get() ==
+                               seqwires::NoChord::getNoChordValue() &&
+                           "Bare EnumValue in ChordMap source that wasn't the NoChord value");
+                    if (entry.getTargetValue()->as<babelwires::EnumValue>()) {
+                        assert(entry.getTargetValue()->as<babelwires::EnumValue>()->get() ==
+                                   seqwires::NoChord::getNoChordValue() &&
+                               "Bare EnumValue in ChordMap target that wasn't the NoChord value");
+                        return {};
+                    } else {
+                        const babelwires::TupleValue& target = entry.getTargetValue()->is<babelwires::TupleValue>();
+                        const unsigned int pitchClass =
+                            m_targetPitchClassAdapter(target.getValue(0)->is<babelwires::EnumValue>());
+                        const unsigned int chordType =
+                            m_targetChordTypeAdapter(target.getValue(1)->is<babelwires::EnumValue>());
+                        if ((pitchClass == m_indexOfPitchClassWildCardValue) ||
+                            (chordType == m_indexOfChordTypeWildCardValue)) {
+                            throw babelwires::ModelException() << "NoChord cannot be mapped to wildcard value";
+                        }
+                        return seqwires::Chord{seqwires::PitchClass::Value(pitchClass),
+                                               seqwires::ChordType::Value(chordType)};
+                    }
+                }
+            }
+            // I think it would be expected that NoChord->NoChord if not specified, so the fallback is ignored.
+            return {};
+        };
+
+        std::optional<seqwires::Chord> getChordTarget(const seqwires::Chord& chord) {
+            const std::uint16_t code = chordToCode(chord);
+            const auto [it, wasInserted] = m_memo.try_emplace(code, -2);
+            std::uint16_t& newCode = it->second;
+            if (wasInserted) {
+                unsigned int matchingEntry = 0;
+                while (matchingEntry < m_mapValue.getNumMapEntries() - 1) {
+                    const babelwires::MapEntryData& entry = m_mapValue.getMapEntry(matchingEntry);
+                    if (const babelwires::TupleValue* sourceTuple =
+                            entry.getSourceValue()->as<babelwires::TupleValue>()) {
+                        const unsigned int pitchClass =
+                            m_targetPitchClassAdapter(sourceTuple->getValue(0)->is<babelwires::EnumValue>());
+                        const unsigned int chordType =
+                            m_targetChordTypeAdapter(sourceTuple->getValue(1)->is<babelwires::EnumValue>());
+                        if (((static_cast<unsigned int>(chord.m_root) == pitchClass) ||
+                             (pitchClass == m_indexOfPitchClassWildCardValue)) &&
+                            ((static_cast<unsigned int>(chord.m_chordType) == chordType) ||
+                             (chordType == m_indexOfChordTypeWildCardValue))) {
+                            // Found match.
+                            break;
+                        }
+                        ++matchingEntry;
+                    }
+                }
+                const babelwires::MapEntryData& entry = m_mapValue.getMapEntry(matchingEntry);
+                if (entry.getTargetValue()->as<babelwires::EnumValue>()) {
+                    assert(entry.getTargetValue()->as<babelwires::EnumValue>()->get() ==
+                               seqwires::NoChord::getNoChordValue() &&
+                           "Bare EnumValue in ChordMap target that wasn't the NoChord value");
+                    newCode = -1;
+                } else {
+                    const babelwires::TupleValue& target = entry.getTargetValue()->is<babelwires::TupleValue>();
+                    unsigned int targetPitchClass =
+                        m_targetPitchClassAdapter(target.getValue(0)->is<babelwires::EnumValue>());
+                    seqwires::PitchClass::Value newPitchClass =
+                        (targetPitchClass == m_indexOfPitchClassWildCardValue)
+                            ? chord.m_root
+                            : static_cast<seqwires::PitchClass::Value>(targetPitchClass);
+
+                    unsigned int targetChordType =
+                        m_targetChordTypeAdapter(target.getValue(1)->is<babelwires::EnumValue>());
+                    seqwires::ChordType::Value newChordType =
+                        (targetChordType == m_indexOfChordTypeWildCardValue)
+                            ? chord.m_chordType
+                            : static_cast<seqwires::ChordType::Value>(targetChordType);
+
+                    newCode = chordToCode(seqwires::Chord(newPitchClass, newChordType));
+                }
+            }
+            assert((newCode != -2) && "Entry not inserted");
+            return codeToChord(newCode);
+        }
+
+      private:
+        std::uint16_t chordToCode(const seqwires::Chord& chord) {
+            return (static_cast<std::uint8_t>(chord.m_root) << 8) | static_cast<std::uint8_t>(chord.m_chordType);
+        }
+
+        std::optional<seqwires::Chord> codeToChord(std::uint16_t code) {
+            if (code != -1) {
+                return seqwires::Chord{static_cast<seqwires::PitchClass::Value>(code >> 8),
+                                       static_cast<seqwires::ChordType::Value>(code & 255)};
+            } else {
+                return {};
+            }
+        }
+
+        std::unordered_map<std::uint16_t, std::uint16_t> m_memo;
+        const babelwires::MapValue& m_mapValue;
+        babelwires::EnumToIndexValueAdapter m_sourcePitchClassAdapter;
+        babelwires::EnumToIndexValueAdapter m_sourceChordTypeAdapter;
+        babelwires::EnumToIndexValueAdapter m_targetPitchClassAdapter;
+        babelwires::EnumToIndexValueAdapter m_targetChordTypeAdapter;
+        const unsigned int m_indexOfPitchClassWildCardValue;
+        const unsigned int m_indexOfChordTypeWildCardValue;
+    };
+} // namespace
 
 seqwires::Track seqwires::mapChordsFunction(const babelwires::TypeSystem& typeSystem, const Track& sourceTrack,
-                                            const babelwires::MapValue& chordTypeMapValue,
-                                            const babelwires::MapValue& pitchClassMapValue) {
-
-    if (!chordTypeMapValue.isValid(typeSystem)) {
+                                            const babelwires::MapValue& chordMapValue) {
+    if (!chordMapValue.isValid(typeSystem)) {
         throw babelwires::ModelException() << "The Chord Type Map is not valid.";
     }
-    if (!pitchClassMapValue.isValid(typeSystem)) {
-        throw babelwires::ModelException() << "The Pitch Class Map is not valid.";
-    }
 
-    const babelwires::TypeRef chordTypeWithBlankTypeRef = getMapChordFunctionChordTypeRef();
-    const babelwires::EnumType& chordTypeWithBlank =
-        chordTypeWithBlankTypeRef.resolve(typeSystem).is<babelwires::EnumType>();
-    const babelwires::EnumToIndexValueAdapter chordTypeTargetAdapter{chordTypeWithBlank};
-    const babelwires::EnumSourceIndexMapApplicator<unsigned int> chordTypeApplicator(
-        chordTypeMapValue, chordTypeWithBlank, chordTypeTargetAdapter);
-    // The blank value is always last.
-    const unsigned int indexOfBlankChordValue = chordTypeWithBlank.getValueSet().size() - 1;
+    // Since the types are not directly registered and are instead built using TypeConstructors, I have to
+    // explicitly decompose them. Might be easier to register some of the pieces. Similarly, building the
+    // enum from parts means I cannot use the native enum adapters and have to convert to and from indices
+    // in the helper above.
 
-    const babelwires::TypeRef pitchClassWithBlankTypeRef = getMapChordFunctionPitchClassRef();
-    const babelwires::EnumType& pitchClassWithBlank =
-        pitchClassWithBlankTypeRef.resolve(typeSystem).is<babelwires::EnumType>();
-    const babelwires::EnumToIndexValueAdapter pitchClassTargetAdapter{pitchClassWithBlank};
-    const babelwires::EnumSourceIndexMapApplicator<unsigned int> pitchClassApplicator(
-        pitchClassMapValue, pitchClassWithBlank, pitchClassTargetAdapter);
-    const unsigned int indexOfBlankPitchClass = pitchClassWithBlank.getValueSet().size() - 1;
+    const babelwires::TypeRef sourceTypeRef = getMapChordFunctionSourceTypeRef();
+    const babelwires::TypeRef targetTypeRef = getMapChordFunctionTargetTypeRef();
+
+    const babelwires::SumType& sourceSumType = sourceTypeRef.resolve(typeSystem).is<babelwires::SumType>();
+    const babelwires::SumType& targetSumType = targetTypeRef.resolve(typeSystem).is<babelwires::SumType>();
+
+    assert(sourceSumType.getSummands().size() == 2);
+    assert(targetSumType.getSummands().size() == 2);
+
+    const babelwires::TypeRef& sourceTupleTypeRef = sourceSumType.getSummands()[0];
+    const babelwires::TypeRef& targetTupleTypeRef = targetSumType.getSummands()[0];
+
+    const babelwires::TupleType& sourceTupleType = sourceTupleTypeRef.resolve(typeSystem).is<babelwires::TupleType>();
+    const babelwires::TupleType& targetTupleType = targetTupleTypeRef.resolve(typeSystem).is<babelwires::TupleType>();
+
+    assert(sourceTupleType.getComponentTypes().size() == 2);
+    assert(targetTupleType.getComponentTypes().size() == 2);
+
+    const babelwires::TypeRef& sourcePitchClassWCTypeRef = sourceTupleType.getComponentTypes()[0];
+    const babelwires::TypeRef& targetPitchClassWCTypeRef = targetTupleType.getComponentTypes()[0];
+
+    const babelwires::EnumType& sourcePitchClassWCType =
+        sourcePitchClassWCTypeRef.resolve(typeSystem).is<babelwires::EnumType>();
+    const babelwires::EnumType& targetPitchClassWCType =
+        targetPitchClassWCTypeRef.resolve(typeSystem).is<babelwires::EnumType>();
+
+    const babelwires::TypeRef& sourceChordTypeWCTypeRef = sourceTupleType.getComponentTypes()[1];
+    const babelwires::TypeRef& targetChordTypeWCTypeRef = targetTupleType.getComponentTypes()[1];
+
+    const babelwires::EnumType& sourceChordTypeWCType =
+        sourceChordTypeWCTypeRef.resolve(typeSystem).is<babelwires::EnumType>();
+    const babelwires::EnumType& targetChordTypeWCType =
+        targetChordTypeWCTypeRef.resolve(typeSystem).is<babelwires::EnumType>();
+
+    ChordMapHelper mapHelper(chordMapValue, sourcePitchClassWCType, sourceChordTypeWCType, targetPitchClassWCType,
+                             targetChordTypeWCType);
 
     Track trackOut;
     ModelDuration totalEventDuration;
 
-    // Blank source handling:
-    const unsigned int noChordChordTypeIndex = chordTypeApplicator[indexOfBlankChordValue];
-    const unsigned int noChordPitchClassIndex = pitchClassApplicator[indexOfBlankPitchClass];
-    const bool hasNoChordChord =
-        (noChordChordTypeIndex != indexOfBlankChordValue) && (noChordPitchClassIndex != indexOfBlankPitchClass);
-    const Chord noChordChord{
-        hasNoChordChord ? static_cast<PitchClass::Value>(noChordPitchClassIndex) : PitchClass::Value::C,
-        hasNoChordChord ? static_cast<ChordType::Value>(noChordChordTypeIndex) : ChordType::Value::M};
+    std::optional<seqwires::Chord> noChordChord = mapHelper.getNoChordTarget();
+
     bool isChordPlaying = false;
 
     // Blank target handling:
@@ -76,17 +246,15 @@ seqwires::Track seqwires::mapChordsFunction(const babelwires::TypeSystem& typeSy
         timeSinceLastEvent += it->getTimeSinceLastEvent();
         totalEventDuration += it->getTimeSinceLastEvent();
 
-        if (hasNoChordChord && !isChordPlaying && (timeSinceLastEvent > 0)) {
-            trackOut.addEvent(ChordOnEvent(0, noChordChord));
+        if (noChordChord && !isChordPlaying && (timeSinceLastEvent > 0)) {
+            trackOut.addEvent(ChordOnEvent(0, *noChordChord));
             isChordPlaying = true;
         }
 
         if (it->as<ChordOnEvent>()) {
             TrackEventHolder holder(*it);
             Chord& chord = holder->is<ChordOnEvent>().m_chord;
-            const unsigned int mappedChordTypeIndex = chordTypeApplicator[static_cast<unsigned int>(chord.m_chordType)];
-            const unsigned int mappedPitchClassIndex = pitchClassApplicator[static_cast<unsigned int>(chord.m_root)];
-            if ((mappedChordTypeIndex != indexOfBlankChordValue) && (mappedPitchClassIndex != indexOfBlankPitchClass)) {
+            if (std::optional<seqwires::Chord> targetChord = mapHelper.getChordTarget(chord)) {
                 if (isChordPlaying) {
                     // Only if a noChordChord was added.
                     trackOut.addEvent(ChordOffEvent(timeSinceLastEvent));
@@ -94,8 +262,7 @@ seqwires::Track seqwires::mapChordsFunction(const babelwires::TypeSystem& typeSy
                 }
                 holder->setTimeSinceLastEvent(timeSinceLastEvent);
                 timeSinceLastEvent = 0;
-                chord.m_chordType = static_cast<ChordType::Value>(mappedChordTypeIndex);
-                chord.m_root = static_cast<PitchClass::Value>(mappedPitchClassIndex);
+                chord = *targetChord;
                 trackOut.addEvent(holder.release());
                 isChordPlaying = true;
             } else {
@@ -120,8 +287,8 @@ seqwires::Track seqwires::mapChordsFunction(const babelwires::TypeSystem& typeSy
             timeSinceLastEvent = 0;
         }
     }
-    if (hasNoChordChord && (totalEventDuration < sourceTrack.getDuration())) {
-        trackOut.addEvent(ChordOnEvent(0, noChordChord));
+    if (noChordChord && (totalEventDuration < sourceTrack.getDuration())) {
+        trackOut.addEvent(ChordOnEvent(0, *noChordChord));
         trackOut.addEvent(ChordOffEvent(sourceTrack.getDuration() - totalEventDuration));
     }
 

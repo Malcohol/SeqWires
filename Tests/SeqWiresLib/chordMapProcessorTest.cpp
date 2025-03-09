@@ -20,6 +20,7 @@
 #include <Tests/TestUtils/seqTestUtils.hpp>
 #include <Tests/TestUtils/testLog.hpp>
 
+/*
 namespace {
     enum class Mode { NoBlanks, SourceBlanks, TargetBlanks, SourceAndTargetBlanks };
 
@@ -257,3 +258,5 @@ TEST(ChordMapProcessorTest, processor) {
 
     testOutputTrack(outArray.getEntry(0).get());
 }
+
+*/

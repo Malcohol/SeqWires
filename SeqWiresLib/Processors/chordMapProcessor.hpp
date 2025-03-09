@@ -23,8 +23,7 @@ namespace seqwires {
         ChordMapProcessorInput();
 
         DECLARE_INSTANCE_BEGIN(ChordMapProcessorInput)
-        DECLARE_INSTANCE_MAP_FIELD(TypMap, babelwires::EnumType, babelwires::EnumType)
-        DECLARE_INSTANCE_MAP_FIELD(RtMap, babelwires::EnumType, babelwires::EnumType)
+        DECLARE_INSTANCE_MAP_FIELD(ChrdMp, babelwires::EnumType, babelwires::EnumType)
         DECLARE_INSTANCE_END()
     };
 
