@@ -16,7 +16,7 @@
 #include <BabelWiresLib/Types/Enum/addBlankToEnum.hpp>
 #include <BabelWiresLib/Types/Enum/enumAtomTypeConstructor.hpp>
 #include <BabelWiresLib/Types/Enum/enumUnionTypeConstructor.hpp>
-#include <BabelWiresLib/Types/Map/Helpers/enumSourceMapApplicator.hpp>
+#include <BabelWiresLib/Types/Map/mapValue.hpp>
 #include <BabelWiresLib/Types/Map/Helpers/enumValueAdapters.hpp>
 #include <BabelWiresLib/Types/Map/standardMapIdentifiers.hpp>
 #include <BabelWiresLib/Types/Sum/sumType.hpp>
@@ -54,22 +54,55 @@ babelwires::TypeRef seqwires::getMapChordFunctionTargetTypeRef() {
 
 namespace {
 
+    // Since the types are not directly registered and are instead built using TypeConstructors, I have to
+    // explicitly decompose them. Might be easier to register some of the pieces. Similarly, building the
+    // enum from parts means I cannot use the native enum adapters and have to convert to and from indices
+    // in the helper above.
+
+    std::tuple<const babelwires::EnumType&, const babelwires::EnumType&>
+    getSourceTupleComponentTypes(const babelwires::TypeSystem& typeSystem) {
+        const babelwires::TypeRef sourceTypeRef = seqwires::getMapChordFunctionSourceTypeRef();
+        const babelwires::SumType& sourceSumType = sourceTypeRef.resolve(typeSystem).is<babelwires::SumType>();
+        assert(sourceSumType.getSummands().size() == 2);
+        const babelwires::TypeRef& sourceTupleTypeRef = sourceSumType.getSummands()[0];
+        const babelwires::TupleType& sourceTupleType =
+            sourceTupleTypeRef.resolve(typeSystem).is<babelwires::TupleType>();
+        assert(sourceTupleType.getComponentTypes().size() == 2);
+        const babelwires::TypeRef& sourcePitchClassWCTypeRef = sourceTupleType.getComponentTypes()[0];
+        const babelwires::EnumType& sourcePitchClassWCType =
+            sourcePitchClassWCTypeRef.resolve(typeSystem).is<babelwires::EnumType>();
+        const babelwires::TypeRef& sourceChordTypeWCTypeRef = sourceTupleType.getComponentTypes()[1];
+        const babelwires::EnumType& sourceChordTypeWCType =
+            sourceChordTypeWCTypeRef.resolve(typeSystem).is<babelwires::EnumType>();
+        return {sourcePitchClassWCType, sourceChordTypeWCType};
+    }
+
+    std::tuple<const babelwires::EnumType&, const babelwires::EnumType&>
+    getTargetTupleComponentTypes(const babelwires::TypeSystem& typeSystem) {
+        const babelwires::TypeRef targetTypeRef = seqwires::getMapChordFunctionTargetTypeRef();
+        const babelwires::SumType& targetSumType = targetTypeRef.resolve(typeSystem).is<babelwires::SumType>();
+        assert(targetSumType.getSummands().size() == 2);
+        const babelwires::TypeRef& targetTupleTypeRef = targetSumType.getSummands()[0];
+        const babelwires::TupleType& targetTupleType =
+            targetTupleTypeRef.resolve(typeSystem).is<babelwires::TupleType>();
+        assert(targetTupleType.getComponentTypes().size() == 2);
+        const babelwires::TypeRef& targetPitchClassWCTypeRef = targetTupleType.getComponentTypes()[0];
+        const babelwires::EnumType& targetPitchClassWCType =
+            targetPitchClassWCTypeRef.resolve(typeSystem).is<babelwires::EnumType>();
+        const babelwires::TypeRef& targetChordTypeWCTypeRef = targetTupleType.getComponentTypes()[1];
+        const babelwires::EnumType& targetChordTypeWCType =
+            targetChordTypeWCTypeRef.resolve(typeSystem).is<babelwires::EnumType>();
+        return {targetPitchClassWCType, targetChordTypeWCType};
+    }
+
     /// As yet, there is no generic handling of wildcards when they occur within tuples, as in this case.
     /// Therefore, I cannot use one of the preexisting applicators.
     /// TODO: Can this be made generic?
-    class ChordMapHelper {
+    class ChordMapApplicator {
       public:
-        ChordMapHelper(const babelwires::MapValue& mapValue, const babelwires::EnumType& sourcePitchClassWCType,
-                       const babelwires::EnumType& sourceChordTypeWCType,
-                       const babelwires::EnumType& targetPitchClassWCType,
-                       const babelwires::EnumType& targetChordTypeWCType)
-            : m_mapValue(mapValue)
-            , m_sourcePitchClassAdapter(sourcePitchClassWCType)
-            , m_sourceChordTypeAdapter(sourceChordTypeWCType)
-            , m_targetPitchClassAdapter(targetPitchClassWCType)
-            , m_targetChordTypeAdapter(targetChordTypeWCType)
-            , m_indexOfPitchClassWildCardValue(sourcePitchClassWCType.getValueSet().size() - 1)
-            , m_indexOfChordTypeWildCardValue(sourceChordTypeWCType.getValueSet().size() - 1) {}
+        ChordMapApplicator(const babelwires::TypeSystem& typeSystem, const babelwires::MapValue& mapValue)
+            : ChordMapApplicator(mapValue, getSourceTupleComponentTypes(typeSystem),
+                             getTargetTupleComponentTypes(typeSystem)) {}
 
         /// This isn't memoized, so the caller should remember it.
         std::optional<seqwires::Chord> getNoChordTarget() {
@@ -104,7 +137,7 @@ namespace {
             return {};
         };
 
-        std::optional<seqwires::Chord> getChordTarget(const seqwires::Chord& chord) {
+        std::optional<seqwires::Chord> operator[](const seqwires::Chord& chord) {
             const std::uint16_t code = chordToCode(chord);
             const auto [it, wasInserted] = m_memo.try_emplace(code, -2);
             std::uint16_t& newCode = it->second;
@@ -158,6 +191,20 @@ namespace {
         }
 
       private:
+        ChordMapApplicator(const babelwires::MapValue& mapValue,
+                       std::tuple<const babelwires::EnumType&, const babelwires::EnumType&> sourceTupleComponentTypes,
+                       std::tuple<const babelwires::EnumType&, const babelwires::EnumType&> targetTupleComponentTypes)
+            : m_mapValue(mapValue)
+            , m_sourcePitchClassAdapter(std::get<0>(sourceTupleComponentTypes))
+            , m_sourceChordTypeAdapter(std::get<1>(sourceTupleComponentTypes))
+            , m_targetPitchClassAdapter(std::get<0>(targetTupleComponentTypes))
+            , m_targetChordTypeAdapter(std::get<1>(targetTupleComponentTypes))
+            , m_indexOfPitchClassWildCardValue(std::get<0>(sourceTupleComponentTypes).getValueSet().size() - 1)
+            , m_indexOfChordTypeWildCardValue(std::get<1>(sourceTupleComponentTypes).getValueSet().size() - 1) {
+            assert(m_indexOfPitchClassWildCardValue == std::get<0>(targetTupleComponentTypes).getValueSet().size() - 1);
+            assert(m_indexOfChordTypeWildCardValue == std::get<1>(targetTupleComponentTypes).getValueSet().size() - 1);
+        }
+
         std::uint16_t chordToCode(const seqwires::Chord& chord) {
             return (static_cast<std::uint8_t>(chord.m_root) << 8) | static_cast<std::uint8_t>(chord.m_chordType);
         }
@@ -171,6 +218,7 @@ namespace {
             }
         }
 
+      private:
         std::unordered_map<std::uint16_t, std::uint16_t> m_memo;
         const babelwires::MapValue& m_mapValue;
         babelwires::EnumToIndexValueAdapter m_sourcePitchClassAdapter;
@@ -188,52 +236,12 @@ seqwires::Track seqwires::mapChordsFunction(const babelwires::TypeSystem& typeSy
         throw babelwires::ModelException() << "The Chord Type Map is not valid.";
     }
 
-    // Since the types are not directly registered and are instead built using TypeConstructors, I have to
-    // explicitly decompose them. Might be easier to register some of the pieces. Similarly, building the
-    // enum from parts means I cannot use the native enum adapters and have to convert to and from indices
-    // in the helper above.
-
-    const babelwires::TypeRef sourceTypeRef = getMapChordFunctionSourceTypeRef();
-    const babelwires::TypeRef targetTypeRef = getMapChordFunctionTargetTypeRef();
-
-    const babelwires::SumType& sourceSumType = sourceTypeRef.resolve(typeSystem).is<babelwires::SumType>();
-    const babelwires::SumType& targetSumType = targetTypeRef.resolve(typeSystem).is<babelwires::SumType>();
-
-    assert(sourceSumType.getSummands().size() == 2);
-    assert(targetSumType.getSummands().size() == 2);
-
-    const babelwires::TypeRef& sourceTupleTypeRef = sourceSumType.getSummands()[0];
-    const babelwires::TypeRef& targetTupleTypeRef = targetSumType.getSummands()[0];
-
-    const babelwires::TupleType& sourceTupleType = sourceTupleTypeRef.resolve(typeSystem).is<babelwires::TupleType>();
-    const babelwires::TupleType& targetTupleType = targetTupleTypeRef.resolve(typeSystem).is<babelwires::TupleType>();
-
-    assert(sourceTupleType.getComponentTypes().size() == 2);
-    assert(targetTupleType.getComponentTypes().size() == 2);
-
-    const babelwires::TypeRef& sourcePitchClassWCTypeRef = sourceTupleType.getComponentTypes()[0];
-    const babelwires::TypeRef& targetPitchClassWCTypeRef = targetTupleType.getComponentTypes()[0];
-
-    const babelwires::EnumType& sourcePitchClassWCType =
-        sourcePitchClassWCTypeRef.resolve(typeSystem).is<babelwires::EnumType>();
-    const babelwires::EnumType& targetPitchClassWCType =
-        targetPitchClassWCTypeRef.resolve(typeSystem).is<babelwires::EnumType>();
-
-    const babelwires::TypeRef& sourceChordTypeWCTypeRef = sourceTupleType.getComponentTypes()[1];
-    const babelwires::TypeRef& targetChordTypeWCTypeRef = targetTupleType.getComponentTypes()[1];
-
-    const babelwires::EnumType& sourceChordTypeWCType =
-        sourceChordTypeWCTypeRef.resolve(typeSystem).is<babelwires::EnumType>();
-    const babelwires::EnumType& targetChordTypeWCType =
-        targetChordTypeWCTypeRef.resolve(typeSystem).is<babelwires::EnumType>();
-
-    ChordMapHelper mapHelper(chordMapValue, sourcePitchClassWCType, sourceChordTypeWCType, targetPitchClassWCType,
-                             targetChordTypeWCType);
+    ChordMapApplicator mapApplicator(typeSystem, chordMapValue);
 
     Track trackOut;
     ModelDuration totalEventDuration;
 
-    std::optional<seqwires::Chord> noChordChord = mapHelper.getNoChordTarget();
+    std::optional<seqwires::Chord> noChordChord = mapApplicator.getNoChordTarget();
 
     bool isChordPlaying = false;
 
@@ -254,7 +262,7 @@ seqwires::Track seqwires::mapChordsFunction(const babelwires::TypeSystem& typeSy
         if (it->as<ChordOnEvent>()) {
             TrackEventHolder holder(*it);
             Chord& chord = holder->is<ChordOnEvent>().m_chord;
-            if (std::optional<seqwires::Chord> targetChord = mapHelper.getChordTarget(chord)) {
+            if (std::optional<seqwires::Chord> targetChord = mapApplicator[chord]) {
                 if (isChordPlaying) {
                     // Only if a noChordChord was added.
                     trackOut.addEvent(ChordOffEvent(timeSinceLastEvent));

@@ -15,7 +15,6 @@
 #include <BabelWiresLib/ValueTree/modelExceptions.hpp>
 #include <BabelWiresLib/TypeSystem/typeSystem.hpp>
 #include <BabelWiresLib/Types/Enum/addBlankToEnum.hpp>
-#include <BabelWiresLib/Types/Map/Helpers/enumSourceMapApplicator.hpp>
 #include <BabelWiresLib/Types/Map/Helpers/enumValueAdapters.hpp>
 #include <BabelWiresLib/Types/Map/Helpers/unorderedMapApplicator.hpp>
 #include <BabelWiresLib/Types/Map/mapTypeConstructor.hpp>
