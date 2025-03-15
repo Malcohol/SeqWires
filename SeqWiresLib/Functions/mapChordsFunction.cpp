@@ -16,8 +16,8 @@
 #include <BabelWiresLib/Types/Enum/addBlankToEnum.hpp>
 #include <BabelWiresLib/Types/Enum/enumAtomTypeConstructor.hpp>
 #include <BabelWiresLib/Types/Enum/enumUnionTypeConstructor.hpp>
-#include <BabelWiresLib/Types/Map/mapValue.hpp>
 #include <BabelWiresLib/Types/Map/Helpers/enumValueAdapters.hpp>
+#include <BabelWiresLib/Types/Map/mapValue.hpp>
 #include <BabelWiresLib/Types/Map/standardMapIdentifiers.hpp>
 #include <BabelWiresLib/Types/Sum/sumType.hpp>
 #include <BabelWiresLib/Types/Sum/sumTypeConstructor.hpp>
@@ -102,7 +102,7 @@ namespace {
       public:
         ChordMapApplicator(const babelwires::TypeSystem& typeSystem, const babelwires::MapValue& mapValue)
             : ChordMapApplicator(mapValue, getSourceTupleComponentTypes(typeSystem),
-                             getTargetTupleComponentTypes(typeSystem)) {}
+                                 getTargetTupleComponentTypes(typeSystem)) {}
 
         /// This isn't memoized, so the caller should remember it.
         std::optional<seqwires::Chord> getNoChordTarget() {
@@ -120,16 +120,15 @@ namespace {
                         return {};
                     } else {
                         const babelwires::TupleValue& target = entry.getTargetValue()->is<babelwires::TupleValue>();
-                        const unsigned int pitchClass =
+                        const unsigned int pitchClassIndex =
                             m_targetPitchClassAdapter(target.getValue(0)->is<babelwires::EnumValue>());
-                        const unsigned int chordType =
+                        const unsigned int chordTypeIndex =
                             m_targetChordTypeAdapter(target.getValue(1)->is<babelwires::EnumValue>());
-                        if ((pitchClass == m_indexOfPitchClassWildCardValue) ||
-                            (chordType == m_indexOfChordTypeWildCardValue)) {
+                        if ((pitchClassIndex == 0) || (chordTypeIndex == 0)) {
                             throw babelwires::ModelException() << "NoChord cannot be mapped to wildcard value";
                         }
-                        return seqwires::Chord{seqwires::PitchClass::Value(pitchClass),
-                                               seqwires::ChordType::Value(chordType)};
+                        return seqwires::Chord{seqwires::PitchClass::Value(pitchClassIndex - 1),
+                                               seqwires::ChordType::Value(chordTypeIndex - 1)};
                     }
                 }
             }
@@ -147,19 +146,19 @@ namespace {
                     const babelwires::MapEntryData& entry = m_mapValue.getMapEntry(matchingEntry);
                     if (const babelwires::TupleValue* sourceTuple =
                             entry.getSourceValue()->as<babelwires::TupleValue>()) {
-                        const unsigned int pitchClass =
+                        const unsigned int pitchClassIndex =
                             m_targetPitchClassAdapter(sourceTuple->getValue(0)->is<babelwires::EnumValue>());
-                        const unsigned int chordType =
+                        const unsigned int chordTypeIndex =
                             m_targetChordTypeAdapter(sourceTuple->getValue(1)->is<babelwires::EnumValue>());
-                        if (((static_cast<unsigned int>(chord.m_root) == pitchClass) ||
-                             (pitchClass == m_indexOfPitchClassWildCardValue)) &&
-                            ((static_cast<unsigned int>(chord.m_chordType) == chordType) ||
-                             (chordType == m_indexOfChordTypeWildCardValue))) {
+                        if (((static_cast<unsigned int>(chord.m_root) + 1 == pitchClassIndex) ||
+                             (pitchClassIndex == 0)) &&
+                            ((static_cast<unsigned int>(chord.m_chordType) + 1 == chordTypeIndex) ||
+                             (chordTypeIndex == 0))) {
                             // Found match.
                             break;
                         }
-                        ++matchingEntry;
                     }
+                    ++matchingEntry;
                 }
                 const babelwires::MapEntryData& entry = m_mapValue.getMapEntry(matchingEntry);
                 if (entry.getTargetValue()->as<babelwires::EnumValue>()) {
@@ -169,19 +168,18 @@ namespace {
                     newCode = -1;
                 } else {
                     const babelwires::TupleValue& target = entry.getTargetValue()->is<babelwires::TupleValue>();
-                    unsigned int targetPitchClass =
+                    unsigned int targetPitchClassIndex =
                         m_targetPitchClassAdapter(target.getValue(0)->is<babelwires::EnumValue>());
                     seqwires::PitchClass::Value newPitchClass =
-                        (targetPitchClass == m_indexOfPitchClassWildCardValue)
+                        (targetPitchClassIndex == 0)
                             ? chord.m_root
-                            : static_cast<seqwires::PitchClass::Value>(targetPitchClass);
+                            : static_cast<seqwires::PitchClass::Value>(targetPitchClassIndex - 1);
 
-                    unsigned int targetChordType =
+                    unsigned int targetChordTypeIndex =
                         m_targetChordTypeAdapter(target.getValue(1)->is<babelwires::EnumValue>());
                     seqwires::ChordType::Value newChordType =
-                        (targetChordType == m_indexOfChordTypeWildCardValue)
-                            ? chord.m_chordType
-                            : static_cast<seqwires::ChordType::Value>(targetChordType);
+                        (targetChordTypeIndex == 0) ? chord.m_chordType
+                                                    : static_cast<seqwires::ChordType::Value>(targetChordTypeIndex - 1);
 
                     newCode = chordToCode(seqwires::Chord(newPitchClass, newChordType));
                 }
@@ -191,26 +189,22 @@ namespace {
         }
 
       private:
-        ChordMapApplicator(const babelwires::MapValue& mapValue,
-                       std::tuple<const babelwires::EnumType&, const babelwires::EnumType&> sourceTupleComponentTypes,
-                       std::tuple<const babelwires::EnumType&, const babelwires::EnumType&> targetTupleComponentTypes)
+        ChordMapApplicator(
+            const babelwires::MapValue& mapValue,
+            std::tuple<const babelwires::EnumType&, const babelwires::EnumType&> sourceTupleComponentTypes,
+            std::tuple<const babelwires::EnumType&, const babelwires::EnumType&> targetTupleComponentTypes)
             : m_mapValue(mapValue)
             , m_sourcePitchClassAdapter(std::get<0>(sourceTupleComponentTypes))
             , m_sourceChordTypeAdapter(std::get<1>(sourceTupleComponentTypes))
             , m_targetPitchClassAdapter(std::get<0>(targetTupleComponentTypes))
-            , m_targetChordTypeAdapter(std::get<1>(targetTupleComponentTypes))
-            , m_indexOfPitchClassWildCardValue(std::get<0>(sourceTupleComponentTypes).getValueSet().size() - 1)
-            , m_indexOfChordTypeWildCardValue(std::get<1>(sourceTupleComponentTypes).getValueSet().size() - 1) {
-            assert(m_indexOfPitchClassWildCardValue == std::get<0>(targetTupleComponentTypes).getValueSet().size() - 1);
-            assert(m_indexOfChordTypeWildCardValue == std::get<1>(targetTupleComponentTypes).getValueSet().size() - 1);
-        }
+            , m_targetChordTypeAdapter(std::get<1>(targetTupleComponentTypes)) {}
 
-        std::uint16_t chordToCode(const seqwires::Chord& chord) {
+        std::uint16_t chordToCode(const seqwires::Chord& chord) const {
             return (static_cast<std::uint8_t>(chord.m_root) << 8) | static_cast<std::uint8_t>(chord.m_chordType);
         }
 
-        std::optional<seqwires::Chord> codeToChord(std::uint16_t code) {
-            if (code != -1) {
+        std::optional<seqwires::Chord> codeToChord(std::uint16_t code) const {
+            if (code != static_cast<std::uint16_t>(-1)) {
                 return seqwires::Chord{static_cast<seqwires::PitchClass::Value>(code >> 8),
                                        static_cast<seqwires::ChordType::Value>(code & 255)};
             } else {
@@ -225,8 +219,6 @@ namespace {
         babelwires::EnumToIndexValueAdapter m_sourceChordTypeAdapter;
         babelwires::EnumToIndexValueAdapter m_targetPitchClassAdapter;
         babelwires::EnumToIndexValueAdapter m_targetChordTypeAdapter;
-        const unsigned int m_indexOfPitchClassWildCardValue;
-        const unsigned int m_indexOfChordTypeWildCardValue;
     };
 } // namespace
 
@@ -243,28 +235,30 @@ seqwires::Track seqwires::mapChordsFunction(const babelwires::TypeSystem& typeSy
 
     std::optional<seqwires::Chord> noChordChord = mapApplicator.getNoChordTarget();
 
-    bool isChordPlaying = false;
+    enum {
+        pending,
+        chordToChord,
+        silenceToChord,
+        chordToSilence,
+        chordToSilencePending,
+    } state = pending;
 
-    // Blank target handling:
-    // If an event is dropped, then we need to carry its time forward for the next event.
-    bool droppingChordEvent = false;
     ModelDuration timeSinceLastEvent;
 
     for (auto it = sourceTrack.begin(); it != sourceTrack.end(); ++it) {
         timeSinceLastEvent += it->getTimeSinceLastEvent();
         totalEventDuration += it->getTimeSinceLastEvent();
 
-        if (noChordChord && !isChordPlaying && (timeSinceLastEvent > 0)) {
+        if (noChordChord && (state == pending) && (timeSinceLastEvent > 0)) {
             trackOut.addEvent(ChordOnEvent(0, *noChordChord));
-            isChordPlaying = true;
+            state = silenceToChord;
         }
 
         if (it->as<ChordOnEvent>()) {
             TrackEventHolder holder(*it);
             Chord& chord = holder->is<ChordOnEvent>().m_chord;
             if (std::optional<seqwires::Chord> targetChord = mapApplicator[chord]) {
-                if (isChordPlaying) {
-                    // Only if a noChordChord was added.
+                if (state == silenceToChord) {
                     trackOut.addEvent(ChordOffEvent(timeSinceLastEvent));
                     timeSinceLastEvent = 0;
                 }
@@ -272,32 +266,35 @@ seqwires::Track seqwires::mapChordsFunction(const babelwires::TypeSystem& typeSy
                 timeSinceLastEvent = 0;
                 chord = *targetChord;
                 trackOut.addEvent(holder.release());
-                isChordPlaying = true;
+                state = chordToChord;
             } else {
-                droppingChordEvent = true;
-                isChordPlaying = false;
+                state = chordToSilence;
             }
-        } else if (droppingChordEvent && it->as<ChordOffEvent>()) {
-            droppingChordEvent = false;
-        } else if (timeSinceLastEvent != it->getTimeSinceLastEvent()) {
-            if (it->as<ChordOffEvent>()) {
-                isChordPlaying = false;
-            }
-            TrackEventHolder holder(*it);
-            holder->setTimeSinceLastEvent(timeSinceLastEvent);
-            timeSinceLastEvent = 0;
-            trackOut.addEvent(holder.release());
+        } else if ((state == chordToSilence) && it->as<ChordOffEvent>()) {
+            state = chordToSilencePending;
         } else {
             if (it->as<ChordOffEvent>()) {
-                isChordPlaying = false;
+                state = pending;
             }
-            trackOut.addEvent(*it);
-            timeSinceLastEvent = 0;
+            // Write the event.
+            if (timeSinceLastEvent != it->getTimeSinceLastEvent()) {
+                TrackEventHolder holder(*it);
+                holder->setTimeSinceLastEvent(timeSinceLastEvent);
+                timeSinceLastEvent = 0;
+                trackOut.addEvent(holder.release());
+            } else {
+                trackOut.addEvent(*it);
+                timeSinceLastEvent = 0;
+            }
         }
     }
-    if (noChordChord && (totalEventDuration < sourceTrack.getDuration())) {
+    timeSinceLastEvent += sourceTrack.getDuration() - totalEventDuration;
+    if (noChordChord && (state == pending) && (timeSinceLastEvent > 0)) {
         trackOut.addEvent(ChordOnEvent(0, *noChordChord));
-        trackOut.addEvent(ChordOffEvent(sourceTrack.getDuration() - totalEventDuration));
+        state = silenceToChord;
+    }
+    if (state == silenceToChord) {
+        trackOut.addEvent(ChordOffEvent(timeSinceLastEvent));
     }
 
     trackOut.setDuration(sourceTrack.getDuration());
