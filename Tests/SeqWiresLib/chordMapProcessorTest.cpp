@@ -22,11 +22,12 @@
 #include <Tests/TestUtils/testLog.hpp>
 
 namespace {
-    enum class SourceMode { ChordOnly, NoChordToChord };
-    enum class TargetMode { ChordOnly, ChordToNoChord };
+    enum class SourceMode { ChordToChord, SilenceToChord };
+    enum class TargetMode { ChordToChord, ChordToSilence };
+    enum class WildcardMode { NoWildcards, Wildcards };
 
     babelwires::MapValue getTestChordMap(const babelwires::TypeSystem& typeSystem, SourceMode sourceMode,
-                                         TargetMode targetMode) {
+                                         TargetMode targetMode, WildcardMode wildcardMode) {
         const seqwires::ChordType& chordTypeEnum = typeSystem.getEntryByType<seqwires::ChordType>();
         const seqwires::PitchClass& pitchClassEnum =
             typeSystem.getEntryByType<seqwires::PitchClass>().is<seqwires::PitchClass>();
@@ -60,7 +61,7 @@ namespace {
 
             chordMap.emplaceBack(chordMaplet.clone());
         }
-        if (sourceMode == SourceMode::NoChordToChord) {
+        if (sourceMode == SourceMode::SilenceToChord) {
             babelwires::OneToOneMapEntryData chordMaplet(typeSystem, seqwires::getMapChordFunctionSourceTypeRef(),
                                                          seqwires::getMapChordFunctionTargetTypeRef());
 
@@ -80,25 +81,46 @@ namespace {
 
             chordMap.emplaceBack(chordMaplet.clone());
         }
-        if (targetMode == TargetMode::ChordToNoChord) {
-            babelwires::OneToOneMapEntryData chordMaplet(typeSystem, seqwires::getMapChordFunctionSourceTypeRef(),
-                                                         seqwires::getMapChordFunctionTargetTypeRef());
+        if (targetMode == TargetMode::ChordToSilence) {
+            {
+                babelwires::OneToOneMapEntryData chordMaplet(typeSystem, seqwires::getMapChordFunctionSourceTypeRef(),
+                                                             seqwires::getMapChordFunctionTargetTypeRef());
 
-            babelwires::EnumValue pitchClassSourceValue;
-            pitchClassSourceValue.set(pitchClassEnum.getIdentifierFromValue(seqwires::PitchClass::Value::Gsh));
+                babelwires::EnumValue pitchClassSourceValue;
+                pitchClassSourceValue.set(pitchClassEnum.getIdentifierFromValue(seqwires::PitchClass::Value::Gsh));
 
-            babelwires::EnumValue chordTypeSourceValue;
-            chordTypeSourceValue.set(chordTypeEnum.getIdentifierFromValue(seqwires::ChordType::Value::M6));
+                babelwires::EnumValue chordTypeSourceValue;
+                chordTypeSourceValue.set(chordTypeEnum.getIdentifierFromValue(seqwires::ChordType::Value::M6));
 
-            babelwires::TupleValue sourceValue({pitchClassSourceValue, chordTypeSourceValue});
+                babelwires::TupleValue sourceValue({pitchClassSourceValue, chordTypeSourceValue});
 
-            babelwires::EnumValue targetValue;
-            targetValue.set(seqwires::NoChord::getNoChordValue());
+                babelwires::EnumValue targetValue;
+                targetValue.set(seqwires::NoChord::getNoChordValue());
 
-            chordMaplet.setSourceValue(sourceValue);
-            chordMaplet.setTargetValue(targetValue);
+                chordMaplet.setSourceValue(sourceValue);
+                chordMaplet.setTargetValue(targetValue);
 
-            chordMap.emplaceBack(chordMaplet.clone());
+                chordMap.emplaceBack(chordMaplet.clone());
+            }
+            if (wildcardMode == WildcardMode::Wildcards) {
+                babelwires::OneToOneMapEntryData chordMaplet(typeSystem, seqwires::getMapChordFunctionSourceTypeRef(),
+                                                             seqwires::getMapChordFunctionTargetTypeRef());
+
+                babelwires::EnumValue pitchClassSourceValue;
+                pitchClassSourceValue.set(pitchClassEnum.getIdentifierFromValue(seqwires::PitchClass::Value::Dsh));
+
+                babelwires::EnumValue wildcardValue(babelwires::getWildcardId());
+
+                babelwires::TupleValue sourceValue({pitchClassSourceValue, wildcardValue});
+
+                babelwires::EnumValue targetValue;
+                targetValue.set(seqwires::NoChord::getNoChordValue());
+
+                chordMaplet.setSourceValue(sourceValue);
+                chordMaplet.setTargetValue(targetValue);
+
+                chordMap.emplaceBack(chordMaplet.clone());
+            }
         }
         {
             babelwires::AllToOneFallbackMapEntryData chordMaplet(typeSystem,
@@ -123,66 +145,124 @@ namespace {
                                babelwires::Rational(1, 2), babelwires::Rational(1, 2)},
                               {seqwires::PitchClass::Value::D, seqwires::ChordType::ChordType::Value::m},
                               {seqwires::PitchClass::Value::Gsh, seqwires::ChordType::ChordType::Value::M6},
+                              {seqwires::PitchClass::Value::Dsh, seqwires::ChordType::ChordType::Value::M},
                               {seqwires::PitchClass::Value::C, seqwires::ChordType::ChordType::Value::m},
                               {seqwires::PitchClass::Value::E, seqwires::ChordType::ChordType::Value::m,
                                babelwires::Rational(1, 2), babelwires::Rational(1, 2)},
                               {seqwires::PitchClass::Value::D, seqwires::ChordType::ChordType::Value::m}},
                              track);
 
-        track.setDuration(babelwires::Rational(9, 2));
+        track.setDuration(babelwires::Rational(10, 2));
 
         return track;
     }
 
-    void testOutputTrack(const seqwires::Track& outputTrack, SourceMode sourceMode, TargetMode targetMode) {
-        EXPECT_EQ(outputTrack.getDuration(), babelwires::Rational(9, 2));
+    void testOutputTrack(const seqwires::Track& outputTrack, SourceMode sourceMode, TargetMode targetMode,
+                         WildcardMode wildcardMode) {
+        EXPECT_EQ(outputTrack.getDuration(), babelwires::Rational(10, 2));
 
-        if ((sourceMode == SourceMode::ChordOnly) && (targetMode == TargetMode::ChordOnly)) {
-            testUtils::testChords({{seqwires::PitchClass::Value::C, seqwires::ChordType::ChordType::Value::M,
-                                    babelwires::Rational(1, 2), babelwires::Rational(1, 2)},
-                                   {seqwires::PitchClass::Value::A, seqwires::ChordType::ChordType::Value::m7},
-                                   {seqwires::PitchClass::Value::Gsh, seqwires::ChordType::ChordType::Value::M6},
-                                   {seqwires::PitchClass::Value::C, seqwires::ChordType::ChordType::Value::m},
-                                   {seqwires::PitchClass::Value::E, seqwires::ChordType::ChordType::Value::m,
-                                    babelwires::Rational(1, 2), babelwires::Rational(1, 2)},
-                                   {seqwires::PitchClass::Value::A, seqwires::ChordType::ChordType::Value::m7}},
-                                  outputTrack);
-        } else if ((sourceMode == SourceMode::ChordOnly) && (targetMode == TargetMode::ChordToNoChord)) {
-            testUtils::testChords({{seqwires::PitchClass::Value::C, seqwires::ChordType::ChordType::Value::M,
-                                    babelwires::Rational(1, 2), babelwires::Rational(1, 2)},
-                                   {seqwires::PitchClass::Value::A, seqwires::ChordType::ChordType::Value::m7},
-                                   {seqwires::PitchClass::Value::C, seqwires::ChordType::ChordType::Value::m,
-                                    babelwires::Rational(1, 2), babelwires::Rational(1, 2)},
-                                   {seqwires::PitchClass::Value::E, seqwires::ChordType::ChordType::Value::m,
-                                    babelwires::Rational(1, 2), babelwires::Rational(1, 2)},
-                                   {seqwires::PitchClass::Value::A, seqwires::ChordType::ChordType::Value::m7}},
-                                  outputTrack);
-        } else if ((sourceMode == SourceMode::NoChordToChord) && (targetMode == TargetMode::ChordOnly)) {
-            testUtils::testChords({{seqwires::PitchClass::Value::Fsh, seqwires::ChordType::ChordType::Value::m7_11},
-                                   {seqwires::PitchClass::Value::C, seqwires::ChordType::ChordType::Value::M},
-                                   {seqwires::PitchClass::Value::A, seqwires::ChordType::ChordType::Value::m7},
-                                   {seqwires::PitchClass::Value::Gsh, seqwires::ChordType::ChordType::Value::M6},
-                                   {seqwires::PitchClass::Value::C, seqwires::ChordType::ChordType::Value::m},
-                                   {seqwires::PitchClass::Value::Fsh, seqwires::ChordType::ChordType::Value::m7_11},
-                                   {seqwires::PitchClass::Value::E, seqwires::ChordType::ChordType::Value::m},
-                                   {seqwires::PitchClass::Value::A, seqwires::ChordType::ChordType::Value::m7},
-                                   {seqwires::PitchClass::Value::Fsh, seqwires::ChordType::ChordType::Value::m7_11}},
-                                  outputTrack);
-        } else if ((sourceMode == SourceMode::NoChordToChord) && (targetMode == TargetMode::ChordToNoChord)) {
-            testUtils::testChords({{seqwires::PitchClass::Value::Fsh, seqwires::ChordType::ChordType::Value::m7_11},
-                                   {seqwires::PitchClass::Value::C, seqwires::ChordType::ChordType::Value::M},
-                                   {seqwires::PitchClass::Value::A, seqwires::ChordType::ChordType::Value::m7},
-                                   {seqwires::PitchClass::Value::C, seqwires::ChordType::ChordType::Value::m,
-                                    babelwires::Rational(1, 2), babelwires::Rational(1, 2)},
-                                   {seqwires::PitchClass::Value::Fsh, seqwires::ChordType::ChordType::Value::m7_11},
-                                   {seqwires::PitchClass::Value::E, seqwires::ChordType::ChordType::Value::m},
-                                   {seqwires::PitchClass::Value::A, seqwires::ChordType::ChordType::Value::m7},
-                                   {seqwires::PitchClass::Value::Fsh, seqwires::ChordType::ChordType::Value::m7_11}},
-                                  outputTrack);
+        if (wildcardMode == WildcardMode::NoWildcards) {
+            if ((sourceMode == SourceMode::ChordToChord) && (targetMode == TargetMode::ChordToChord)) {
+                testUtils::testChords({{seqwires::PitchClass::Value::C, seqwires::ChordType::ChordType::Value::M,
+                                        babelwires::Rational(1, 2), babelwires::Rational(1, 2)},
+                                       {seqwires::PitchClass::Value::A, seqwires::ChordType::ChordType::Value::m7},
+                                       {seqwires::PitchClass::Value::Gsh, seqwires::ChordType::ChordType::Value::M6},
+                                       {seqwires::PitchClass::Value::Dsh, seqwires::ChordType::ChordType::Value::M},
+                                       {seqwires::PitchClass::Value::C, seqwires::ChordType::ChordType::Value::m},
+                                       {seqwires::PitchClass::Value::E, seqwires::ChordType::ChordType::Value::m,
+                                        babelwires::Rational(1, 2), babelwires::Rational(1, 2)},
+                                       {seqwires::PitchClass::Value::A, seqwires::ChordType::ChordType::Value::m7}},
+                                      outputTrack);
+            } else if ((sourceMode == SourceMode::ChordToChord) && (targetMode == TargetMode::ChordToSilence)) {
+                testUtils::testChords({{seqwires::PitchClass::Value::C, seqwires::ChordType::ChordType::Value::M,
+                                        babelwires::Rational(1, 2), babelwires::Rational(1, 2)},
+                                       {seqwires::PitchClass::Value::A, seqwires::ChordType::ChordType::Value::m7},
+                                       {seqwires::PitchClass::Value::Dsh, seqwires::ChordType::ChordType::Value::M,
+                                        babelwires::Rational(1, 2), babelwires::Rational(1, 2)},
+                                       {seqwires::PitchClass::Value::C, seqwires::ChordType::ChordType::Value::m},
+                                       {seqwires::PitchClass::Value::E, seqwires::ChordType::ChordType::Value::m,
+                                        babelwires::Rational(1, 2), babelwires::Rational(1, 2)},
+                                       {seqwires::PitchClass::Value::A, seqwires::ChordType::ChordType::Value::m7}},
+                                      outputTrack);
+            } else if ((sourceMode == SourceMode::SilenceToChord) && (targetMode == TargetMode::ChordToChord)) {
+                testUtils::testChords(
+                    {{seqwires::PitchClass::Value::Fsh, seqwires::ChordType::ChordType::Value::m7_11},
+                     {seqwires::PitchClass::Value::C, seqwires::ChordType::ChordType::Value::M},
+                     {seqwires::PitchClass::Value::A, seqwires::ChordType::ChordType::Value::m7},
+                     {seqwires::PitchClass::Value::Gsh, seqwires::ChordType::ChordType::Value::M6},
+                     {seqwires::PitchClass::Value::Dsh, seqwires::ChordType::ChordType::Value::M},
+                     {seqwires::PitchClass::Value::C, seqwires::ChordType::ChordType::Value::m},
+                     {seqwires::PitchClass::Value::Fsh, seqwires::ChordType::ChordType::Value::m7_11},
+                     {seqwires::PitchClass::Value::E, seqwires::ChordType::ChordType::Value::m},
+                     {seqwires::PitchClass::Value::A, seqwires::ChordType::ChordType::Value::m7},
+                     {seqwires::PitchClass::Value::Fsh, seqwires::ChordType::ChordType::Value::m7_11}},
+                    outputTrack);
+            } else if ((sourceMode == SourceMode::SilenceToChord) && (targetMode == TargetMode::ChordToSilence)) {
+                testUtils::testChords(
+                    {{seqwires::PitchClass::Value::Fsh, seqwires::ChordType::ChordType::Value::m7_11},
+                     {seqwires::PitchClass::Value::C, seqwires::ChordType::ChordType::Value::M},
+                     {seqwires::PitchClass::Value::A, seqwires::ChordType::ChordType::Value::m7},
+                     {seqwires::PitchClass::Value::Dsh, seqwires::ChordType::ChordType::Value::M,
+                      babelwires::Rational(1, 2), babelwires::Rational(1, 2)},
+                     {seqwires::PitchClass::Value::C, seqwires::ChordType::ChordType::Value::m},
+                     {seqwires::PitchClass::Value::Fsh, seqwires::ChordType::ChordType::Value::m7_11},
+                     {seqwires::PitchClass::Value::E, seqwires::ChordType::ChordType::Value::m},
+                     {seqwires::PitchClass::Value::A, seqwires::ChordType::ChordType::Value::m7},
+                     {seqwires::PitchClass::Value::Fsh, seqwires::ChordType::ChordType::Value::m7_11}},
+                    outputTrack);
+            }
+        } else {
+            if ((sourceMode == SourceMode::ChordToChord) && (targetMode == TargetMode::ChordToChord)) {
+                testUtils::testChords({{seqwires::PitchClass::Value::C, seqwires::ChordType::ChordType::Value::M,
+                                        babelwires::Rational(1, 2), babelwires::Rational(1, 2)},
+                                       {seqwires::PitchClass::Value::A, seqwires::ChordType::ChordType::Value::m7},
+                                       {seqwires::PitchClass::Value::Gsh, seqwires::ChordType::ChordType::Value::M6},
+                                       {seqwires::PitchClass::Value::Dsh, seqwires::ChordType::ChordType::Value::M},
+                                       {seqwires::PitchClass::Value::C, seqwires::ChordType::ChordType::Value::m},
+                                       {seqwires::PitchClass::Value::E, seqwires::ChordType::ChordType::Value::m,
+                                        babelwires::Rational(1, 2), babelwires::Rational(1, 2)},
+                                       {seqwires::PitchClass::Value::A, seqwires::ChordType::ChordType::Value::m7}},
+                                      outputTrack);
+            } else if ((sourceMode == SourceMode::ChordToChord) && (targetMode == TargetMode::ChordToSilence)) {
+                testUtils::testChords({{seqwires::PitchClass::Value::C, seqwires::ChordType::ChordType::Value::M,
+                                        babelwires::Rational(1, 2), babelwires::Rational(1, 2)},
+                                       {seqwires::PitchClass::Value::A, seqwires::ChordType::ChordType::Value::m7},
+                                       {seqwires::PitchClass::Value::C, seqwires::ChordType::ChordType::Value::m,
+                                        babelwires::Rational(1, 2), babelwires::Rational(1)},
+                                       {seqwires::PitchClass::Value::E, seqwires::ChordType::ChordType::Value::m,
+                                        babelwires::Rational(1, 2), babelwires::Rational(1, 2)},
+                                       {seqwires::PitchClass::Value::A, seqwires::ChordType::ChordType::Value::m7}},
+                                      outputTrack);
+            } else if ((sourceMode == SourceMode::SilenceToChord) && (targetMode == TargetMode::ChordToChord)) {
+                testUtils::testChords(
+                    {{seqwires::PitchClass::Value::Fsh, seqwires::ChordType::ChordType::Value::m7_11},
+                     {seqwires::PitchClass::Value::C, seqwires::ChordType::ChordType::Value::M},
+                     {seqwires::PitchClass::Value::A, seqwires::ChordType::ChordType::Value::m7},
+                     {seqwires::PitchClass::Value::Gsh, seqwires::ChordType::ChordType::Value::M6},
+                     {seqwires::PitchClass::Value::Dsh, seqwires::ChordType::ChordType::Value::M},
+                     {seqwires::PitchClass::Value::C, seqwires::ChordType::ChordType::Value::m},
+                     {seqwires::PitchClass::Value::Fsh, seqwires::ChordType::ChordType::Value::m7_11},
+                     {seqwires::PitchClass::Value::E, seqwires::ChordType::ChordType::Value::m},
+                     {seqwires::PitchClass::Value::A, seqwires::ChordType::ChordType::Value::m7},
+                     {seqwires::PitchClass::Value::Fsh, seqwires::ChordType::ChordType::Value::m7_11}},
+                    outputTrack);
+            } else if ((sourceMode == SourceMode::SilenceToChord) && (targetMode == TargetMode::ChordToSilence)) {
+                testUtils::testChords(
+                    {{seqwires::PitchClass::Value::Fsh, seqwires::ChordType::ChordType::Value::m7_11},
+                     {seqwires::PitchClass::Value::C, seqwires::ChordType::ChordType::Value::M},
+                     {seqwires::PitchClass::Value::A, seqwires::ChordType::ChordType::Value::m7},
+                     {seqwires::PitchClass::Value::C, seqwires::ChordType::ChordType::Value::m,
+                        babelwires::Rational(1, 2), babelwires::Rational(1)},
+                     {seqwires::PitchClass::Value::Fsh, seqwires::ChordType::ChordType::Value::m7_11},
+                     {seqwires::PitchClass::Value::E, seqwires::ChordType::ChordType::Value::m},
+                     {seqwires::PitchClass::Value::A, seqwires::ChordType::ChordType::Value::m7},
+                     {seqwires::PitchClass::Value::Fsh, seqwires::ChordType::ChordType::Value::m7_11}},
+                    outputTrack);
+            }
         }
     }
 
-    using TestData = std::tuple<SourceMode, TargetMode>;
+    using TestData = std::tuple<SourceMode, TargetMode, WildcardMode>;
 } // namespace
 
 class ChordMapProcessorTest : public testing::TestWithParam<TestData> {};
@@ -191,19 +271,26 @@ TEST_P(ChordMapProcessorTest, simpleFunction) {
     testUtils::TestEnvironment testEnvironment;
     seqwires::registerLib(testEnvironment.m_projectContext);
 
-    const auto [sourceMode, targetMode] = GetParam();
-    babelwires::MapValue chordMap = getTestChordMap(testEnvironment.m_typeSystem, sourceMode, targetMode);
+    const auto [sourceMode, targetMode, wildcardMode] = GetParam();
+    babelwires::MapValue chordMap = getTestChordMap(testEnvironment.m_typeSystem, sourceMode, targetMode, wildcardMode);
 
     seqwires::Track inputTrack = getTestInputTrack();
     seqwires::Track outputTrack = seqwires::mapChordsFunction(testEnvironment.m_typeSystem, inputTrack, chordMap);
-    testOutputTrack(outputTrack, sourceMode, targetMode);
+    testOutputTrack(outputTrack, sourceMode, targetMode, wildcardMode);
 }
 
-INSTANTIATE_TEST_SUITE_P(ChordMapProcessorTest, ChordMapProcessorTest,
-                         testing::Values(TestData{SourceMode::ChordOnly, TargetMode::ChordOnly},
-                                         TestData{SourceMode::NoChordToChord, TargetMode::ChordOnly},
-                                         TestData{SourceMode::ChordOnly, TargetMode::ChordToNoChord},
-                                         TestData{SourceMode::NoChordToChord, TargetMode::ChordToNoChord}));
+INSTANTIATE_TEST_SUITE_P(
+    ChordMapProcessorTest, ChordMapProcessorTest,
+    testing::Values(
+                    TestData{SourceMode::ChordToChord, TargetMode::ChordToChord, WildcardMode::NoWildcards},
+                    TestData{SourceMode::ChordToChord, TargetMode::ChordToSilence, WildcardMode::NoWildcards},
+                    TestData{SourceMode::SilenceToChord, TargetMode::ChordToChord, WildcardMode::NoWildcards},
+                    TestData{SourceMode::SilenceToChord, TargetMode::ChordToSilence, WildcardMode::NoWildcards},
+                    TestData{SourceMode::ChordToChord, TargetMode::ChordToChord, WildcardMode::Wildcards},
+                    TestData{SourceMode::ChordToChord, TargetMode::ChordToSilence, WildcardMode::Wildcards},
+                    TestData{SourceMode::SilenceToChord, TargetMode::ChordToChord, WildcardMode::Wildcards},
+                    TestData{SourceMode::SilenceToChord, TargetMode::ChordToSilence, WildcardMode::Wildcards}
+                ));
 
 /*
 TEST(ChordMapProcessorTest, processor) {

@@ -233,7 +233,7 @@ seqwires::Track seqwires::mapChordsFunction(const babelwires::TypeSystem& typeSy
     Track trackOut;
     ModelDuration totalEventDuration;
 
-    std::optional<seqwires::Chord> noChordChord = mapApplicator.getNoChordTarget();
+    std::optional<seqwires::Chord> silenceToChordChord = mapApplicator.getNoChordTarget();
 
     enum {
         pending,
@@ -249,8 +249,8 @@ seqwires::Track seqwires::mapChordsFunction(const babelwires::TypeSystem& typeSy
         timeSinceLastEvent += it->getTimeSinceLastEvent();
         totalEventDuration += it->getTimeSinceLastEvent();
 
-        if (noChordChord && (state == pending) && (timeSinceLastEvent > 0)) {
-            trackOut.addEvent(ChordOnEvent(0, *noChordChord));
+        if (silenceToChordChord && (state == pending) && (timeSinceLastEvent > 0)) {
+            trackOut.addEvent(ChordOnEvent(0, *silenceToChordChord));
             state = silenceToChord;
         }
 
@@ -289,8 +289,8 @@ seqwires::Track seqwires::mapChordsFunction(const babelwires::TypeSystem& typeSy
         }
     }
     timeSinceLastEvent += sourceTrack.getDuration() - totalEventDuration;
-    if (noChordChord && (state == pending) && (timeSinceLastEvent > 0)) {
-        trackOut.addEvent(ChordOnEvent(0, *noChordChord));
+    if (silenceToChordChord && (state == pending) && (timeSinceLastEvent > 0)) {
+        trackOut.addEvent(ChordOnEvent(0, *silenceToChordChord));
         state = silenceToChord;
     }
     if (state == silenceToChord) {
