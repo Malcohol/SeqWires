@@ -40,20 +40,12 @@ namespace {
             babelwires::OneToOneMapEntryData chordMaplet(typeSystem, seqwires::getMapChordFunctionSourceTypeRef(),
                                                          seqwires::getMapChordFunctionTargetTypeRef());
 
-            babelwires::EnumValue pitchClassSourceValue;
-            pitchClassSourceValue.set(pitchClassEnum.getIdentifierFromValue(seqwires::PitchClass::Value::D));
-
-            babelwires::EnumValue chordTypeSourceValue;
-            chordTypeSourceValue.set(chordTypeEnum.getIdentifierFromValue(seqwires::ChordType::Value::m));
-
+            babelwires::EnumValue pitchClassSourceValue(pitchClassEnum.getIdentifierFromValue(seqwires::PitchClass::Value::D));
+            babelwires::EnumValue chordTypeSourceValue(chordTypeEnum.getIdentifierFromValue(seqwires::ChordType::Value::m));
             babelwires::TupleValue sourceValue({pitchClassSourceValue, chordTypeSourceValue});
 
-            babelwires::EnumValue pitchClassTargetValue;
-            pitchClassTargetValue.set(pitchClassEnum.getIdentifierFromValue(seqwires::PitchClass::Value::A));
-
-            babelwires::EnumValue chordTypeTargetValue;
-            chordTypeTargetValue.set(chordTypeEnum.getIdentifierFromValue(seqwires::ChordType::Value::m7));
-
+            babelwires::EnumValue pitchClassTargetValue(pitchClassEnum.getIdentifierFromValue(seqwires::PitchClass::Value::A));
+            babelwires::EnumValue chordTypeTargetValue(chordTypeEnum.getIdentifierFromValue(seqwires::ChordType::Value::m7));
             babelwires::TupleValue targetValue({pitchClassTargetValue, chordTypeTargetValue});
 
             chordMaplet.setSourceValue(sourceValue);
@@ -65,15 +57,10 @@ namespace {
             babelwires::OneToOneMapEntryData chordMaplet(typeSystem, seqwires::getMapChordFunctionSourceTypeRef(),
                                                          seqwires::getMapChordFunctionTargetTypeRef());
 
-            babelwires::EnumValue sourceValue;
-            sourceValue.set(seqwires::NoChord::getNoChordValue());
+            babelwires::EnumValue sourceValue(seqwires::NoChord::getNoChordValue());
 
-            babelwires::EnumValue pitchClassTargetValue;
-            pitchClassTargetValue.set(pitchClassEnum.getIdentifierFromValue(seqwires::PitchClass::Value::Fsh));
-
-            babelwires::EnumValue chordTypeTargetValue;
-            chordTypeTargetValue.set(chordTypeEnum.getIdentifierFromValue(seqwires::ChordType::Value::m7_11));
-
+            babelwires::EnumValue pitchClassTargetValue(pitchClassEnum.getIdentifierFromValue(seqwires::PitchClass::Value::Fsh));
+            babelwires::EnumValue chordTypeTargetValue(chordTypeEnum.getIdentifierFromValue(seqwires::ChordType::Value::m7_11));
             babelwires::TupleValue targetValue({pitchClassTargetValue, chordTypeTargetValue});
 
             chordMaplet.setSourceValue(sourceValue);
@@ -86,12 +73,8 @@ namespace {
                 babelwires::OneToOneMapEntryData chordMaplet(typeSystem, seqwires::getMapChordFunctionSourceTypeRef(),
                                                              seqwires::getMapChordFunctionTargetTypeRef());
 
-                babelwires::EnumValue pitchClassSourceValue;
-                pitchClassSourceValue.set(pitchClassEnum.getIdentifierFromValue(seqwires::PitchClass::Value::Gsh));
-
-                babelwires::EnumValue chordTypeSourceValue;
-                chordTypeSourceValue.set(chordTypeEnum.getIdentifierFromValue(seqwires::ChordType::Value::M6));
-
+                babelwires::EnumValue pitchClassSourceValue(pitchClassEnum.getIdentifierFromValue(seqwires::PitchClass::Value::Gsh));
+                babelwires::EnumValue chordTypeSourceValue(chordTypeEnum.getIdentifierFromValue(seqwires::ChordType::Value::M6));
                 babelwires::TupleValue sourceValue({pitchClassSourceValue, chordTypeSourceValue});
 
                 babelwires::EnumValue targetValue;
@@ -106,11 +89,8 @@ namespace {
                 babelwires::OneToOneMapEntryData chordMaplet(typeSystem, seqwires::getMapChordFunctionSourceTypeRef(),
                                                              seqwires::getMapChordFunctionTargetTypeRef());
 
-                babelwires::EnumValue pitchClassSourceValue;
-                pitchClassSourceValue.set(pitchClassEnum.getIdentifierFromValue(seqwires::PitchClass::Value::Dsh));
-
+                babelwires::EnumValue pitchClassSourceValue(pitchClassEnum.getIdentifierFromValue(seqwires::PitchClass::Value::Dsh));
                 babelwires::EnumValue wildcardValue(babelwires::getWildcardId());
-
                 babelwires::TupleValue sourceValue({pitchClassSourceValue, wildcardValue});
 
                 babelwires::EnumValue targetValue;
@@ -126,9 +106,7 @@ namespace {
             babelwires::AllToOneFallbackMapEntryData chordMaplet(typeSystem,
                                                                  seqwires::getMapChordFunctionTargetTypeRef());
 
-            babelwires::EnumValue wildcardValue;
-            wildcardValue.set(babelwires::getWildcardMatchId());
-
+            babelwires::EnumValue wildcardValue(babelwires::getWildcardMatchId());
             babelwires::TupleValue targetValue({wildcardValue, wildcardValue});
 
             chordMaplet.setTargetValue(targetValue);
