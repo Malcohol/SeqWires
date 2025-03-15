@@ -147,9 +147,9 @@ namespace {
                     if (const babelwires::TupleValue* sourceTuple =
                             entry.getSourceValue()->as<babelwires::TupleValue>()) {
                         const unsigned int pitchClassIndex =
-                            m_targetPitchClassAdapter(sourceTuple->getValue(0)->is<babelwires::EnumValue>());
+                            m_sourcePitchClassAdapter(sourceTuple->getValue(0)->is<babelwires::EnumValue>());
                         const unsigned int chordTypeIndex =
-                            m_targetChordTypeAdapter(sourceTuple->getValue(1)->is<babelwires::EnumValue>());
+                            m_sourceChordTypeAdapter(sourceTuple->getValue(1)->is<babelwires::EnumValue>());
                         if (((static_cast<unsigned int>(chord.m_root) + 1 == pitchClassIndex) ||
                              (pitchClassIndex == 0)) &&
                             ((static_cast<unsigned int>(chord.m_chordType) + 1 == chordTypeIndex) ||
