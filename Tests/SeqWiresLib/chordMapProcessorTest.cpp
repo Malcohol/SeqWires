@@ -291,7 +291,6 @@ INSTANTIATE_TEST_SUITE_P(
                     TestData{SourceMode::SilenceToChord, TargetMode::ChordToChord, WildcardMode::Wildcards},
                     TestData{SourceMode::SilenceToChord, TargetMode::ChordToSilence, WildcardMode::Wildcards}));
 
-/*
 TEST(ChordMapProcessorTest, processor) {
     testUtils::TestEnvironment testEnvironment;
     seqwires::registerLib(testEnvironment.m_projectContext);
@@ -327,13 +326,11 @@ TEST(ChordMapProcessorTest, processor) {
     EXPECT_EQ(inArray.getEntry(0).get().getDuration(), 0);
     EXPECT_EQ(outArray.getEntry(0).get().getDuration(), 0);
 
-    in.getTypMap()->setValue(getTestChordTypeMap(testEnvironment.m_typeSystem));
-    in.getRtMap()->setValue(getTestPitchClassMap(testEnvironment.m_typeSystem));
+    in.getChrdMp()->setValue(getTestChordMap(testEnvironment.m_typeSystem, SourceMode::ChordToChord, TargetMode::ChordToChord, WildcardMode::NoWildcards));
     inArray.getEntry(0).set(getTestInputTrack());
 
     processor.process(testEnvironment.m_log);
 
-    testOutputTrack(outArray.getEntry(0).get());
+    testOutputTrack(outArray.getEntry(0).get(), SourceMode::ChordToChord, TargetMode::ChordToChord, WildcardMode::NoWildcards);
 }
 
-*/
