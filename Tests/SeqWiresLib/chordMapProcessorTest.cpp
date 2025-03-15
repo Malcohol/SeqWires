@@ -124,16 +124,18 @@ namespace {
                               {seqwires::PitchClass::Value::D, seqwires::ChordType::ChordType::Value::m},
                               {seqwires::PitchClass::Value::Gsh, seqwires::ChordType::ChordType::Value::M6},
                               {seqwires::PitchClass::Value::C, seqwires::ChordType::ChordType::Value::m},
+                              {seqwires::PitchClass::Value::E, seqwires::ChordType::ChordType::Value::m,
+                               babelwires::Rational(1, 2), babelwires::Rational(1, 2)},
                               {seqwires::PitchClass::Value::D, seqwires::ChordType::ChordType::Value::m}},
                              track);
 
-        track.setDuration(babelwires::Rational(7, 2));
+        track.setDuration(babelwires::Rational(9, 2));
 
         return track;
     }
 
     void testOutputTrack(const seqwires::Track& outputTrack, SourceMode sourceMode, TargetMode targetMode) {
-        EXPECT_EQ(outputTrack.getDuration(), babelwires::Rational(7, 2));
+        EXPECT_EQ(outputTrack.getDuration(), babelwires::Rational(9, 2));
 
         if ((sourceMode == SourceMode::ChordOnly) && (targetMode == TargetMode::ChordOnly)) {
             testUtils::testChords({{seqwires::PitchClass::Value::C, seqwires::ChordType::ChordType::Value::M,
@@ -141,6 +143,8 @@ namespace {
                                    {seqwires::PitchClass::Value::A, seqwires::ChordType::ChordType::Value::m7},
                                    {seqwires::PitchClass::Value::Gsh, seqwires::ChordType::ChordType::Value::M6},
                                    {seqwires::PitchClass::Value::C, seqwires::ChordType::ChordType::Value::m},
+                                   {seqwires::PitchClass::Value::E, seqwires::ChordType::ChordType::Value::m,
+                                    babelwires::Rational(1, 2), babelwires::Rational(1, 2)},
                                    {seqwires::PitchClass::Value::A, seqwires::ChordType::ChordType::Value::m7}},
                                   outputTrack);
         } else if ((sourceMode == SourceMode::ChordOnly) && (targetMode == TargetMode::ChordToNoChord)) {
@@ -148,6 +152,8 @@ namespace {
                                     babelwires::Rational(1, 2), babelwires::Rational(1, 2)},
                                    {seqwires::PitchClass::Value::A, seqwires::ChordType::ChordType::Value::m7},
                                    {seqwires::PitchClass::Value::C, seqwires::ChordType::ChordType::Value::m,
+                                    babelwires::Rational(1, 2), babelwires::Rational(1, 2)},
+                                   {seqwires::PitchClass::Value::E, seqwires::ChordType::ChordType::Value::m,
                                     babelwires::Rational(1, 2), babelwires::Rational(1, 2)},
                                    {seqwires::PitchClass::Value::A, seqwires::ChordType::ChordType::Value::m7}},
                                   outputTrack);
@@ -157,6 +163,8 @@ namespace {
                                    {seqwires::PitchClass::Value::A, seqwires::ChordType::ChordType::Value::m7},
                                    {seqwires::PitchClass::Value::Gsh, seqwires::ChordType::ChordType::Value::M6},
                                    {seqwires::PitchClass::Value::C, seqwires::ChordType::ChordType::Value::m},
+                                   {seqwires::PitchClass::Value::Fsh, seqwires::ChordType::ChordType::Value::m7_11},
+                                   {seqwires::PitchClass::Value::E, seqwires::ChordType::ChordType::Value::m},
                                    {seqwires::PitchClass::Value::A, seqwires::ChordType::ChordType::Value::m7},
                                    {seqwires::PitchClass::Value::Fsh, seqwires::ChordType::ChordType::Value::m7_11}},
                                   outputTrack);
@@ -166,6 +174,8 @@ namespace {
                                    {seqwires::PitchClass::Value::A, seqwires::ChordType::ChordType::Value::m7},
                                    {seqwires::PitchClass::Value::C, seqwires::ChordType::ChordType::Value::m,
                                     babelwires::Rational(1, 2), babelwires::Rational(1, 2)},
+                                   {seqwires::PitchClass::Value::Fsh, seqwires::ChordType::ChordType::Value::m7_11},
+                                   {seqwires::PitchClass::Value::E, seqwires::ChordType::ChordType::Value::m},
                                    {seqwires::PitchClass::Value::A, seqwires::ChordType::ChordType::Value::m7},
                                    {seqwires::PitchClass::Value::Fsh, seqwires::ChordType::ChordType::Value::m7_11}},
                                   outputTrack);
@@ -174,7 +184,6 @@ namespace {
 
     using TestData = std::tuple<SourceMode, TargetMode>;
 } // namespace
-
 
 class ChordMapProcessorTest : public testing::TestWithParam<TestData> {};
 
@@ -190,12 +199,11 @@ TEST_P(ChordMapProcessorTest, simpleFunction) {
     testOutputTrack(outputTrack, sourceMode, targetMode);
 }
 
-INSTANTIATE_TEST_SUITE_P(
-    ChordMapProcessorTest, ChordMapProcessorTest,
-    testing::Values(TestData{SourceMode::ChordOnly, TargetMode::ChordOnly},
-                    TestData{SourceMode::NoChordToChord, TargetMode::ChordOnly},
-                    TestData{SourceMode::ChordOnly, TargetMode::ChordToNoChord},
-                    TestData{SourceMode::NoChordToChord, TargetMode::ChordToNoChord}));
+INSTANTIATE_TEST_SUITE_P(ChordMapProcessorTest, ChordMapProcessorTest,
+                         testing::Values(TestData{SourceMode::ChordOnly, TargetMode::ChordOnly},
+                                         TestData{SourceMode::NoChordToChord, TargetMode::ChordOnly},
+                                         TestData{SourceMode::ChordOnly, TargetMode::ChordToNoChord},
+                                         TestData{SourceMode::NoChordToChord, TargetMode::ChordToNoChord}));
 
 /*
 TEST(ChordMapProcessorTest, processor) {
