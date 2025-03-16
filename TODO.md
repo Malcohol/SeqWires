@@ -6,6 +6,7 @@ SeqWires:
 * Improved handling of event truncation: 
   - Use new group events to denote truncated end and start. 
   - When truncated end meets truncated start, act as though event was not truncated.
+* TrackEvent::Category should be an identifier.
 
 Seq2tape:
 * Add support for setting name and copyright from commandline.
@@ -23,4 +24,6 @@ SMF
 Processors:
 * Harmonize - Attempted to adapt notes to a given chord (This is supported by arranger keyboards)
 * First note, last note - Can be combined with the excerpt processor (and possibly quantize) to trim a track.
-* etc.
+* Split by event category - Build a record of tracks by category
+  - Would need category to be an identifier (see above)
+  - Record type constructors (See BabelWires PR) OR registry of categories.

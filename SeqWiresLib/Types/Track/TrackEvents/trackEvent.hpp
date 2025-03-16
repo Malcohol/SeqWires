@@ -49,6 +49,7 @@ namespace seqwires {
         /// all of the same pitch.
         struct GroupingInfo {
             /// A static string can act as a category.
+            // TODO Use an identifier for this.
             using Category = const char*;
 
             /// A category that can be used for events of no particular category.

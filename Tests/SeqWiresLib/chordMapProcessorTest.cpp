@@ -7,6 +7,7 @@
 #include <SeqWiresLib/Types/Track/trackType.hpp>
 #include <SeqWiresLib/chord.hpp>
 #include <SeqWiresLib/libRegistration.hpp>
+#include <SeqWiresLib/Functions/mergeFunction.hpp>
 
 #include <BabelWiresLib/TypeSystem/typeSystem.hpp>
 #include <BabelWiresLib/Types/Enum/enumValue.hpp>
@@ -290,6 +291,40 @@ INSTANTIATE_TEST_SUITE_P(
                     TestData{SourceMode::ChordToChord, TargetMode::ChordToSilence, WildcardMode::Wildcards},
                     TestData{SourceMode::SilenceToChord, TargetMode::ChordToChord, WildcardMode::Wildcards},
                     TestData{SourceMode::SilenceToChord, TargetMode::ChordToSilence, WildcardMode::Wildcards}));
+
+
+TEST(ChordMapProcessorTest, chordsAndNotes) {
+    testUtils::TestEnvironment testEnvironment;
+    seqwires::registerLib(testEnvironment.m_projectContext);
+
+    babelwires::MapValue chordMap = getTestChordMap(testEnvironment.m_typeSystem, SourceMode::SilenceToChord, TargetMode::ChordToSilence, WildcardMode::Wildcards);
+
+    seqwires::Track chordTrack = getTestInputTrack();
+
+    seqwires::Track noteTrack;
+
+    testUtils::addNotes(
+    {
+        {60, babelwires::Rational(1, 4), babelwires::Rational(1, 4)},
+        {62, babelwires::Rational(1, 4), babelwires::Rational(1, 4)},
+        {64, babelwires::Rational(0, 4), babelwires::Rational(3, 4)},
+        {65, babelwires::Rational(0, 4), babelwires::Rational(3, 4)},
+        {67, babelwires::Rational(1, 4), babelwires::Rational(1, 4)},
+        {69, babelwires::Rational(1, 4), babelwires::Rational(1, 4)},
+        {71, babelwires::Rational(0, 4), babelwires::Rational(3, 4)},
+        {72, babelwires::Rational(1, 4), babelwires::Rational(1, 4)},
+    }, noteTrack);
+
+    seqwires::Track preCombinedInput = seqwires::mergeTracks({&noteTrack, &chordTrack});
+    seqwires::Track preCombinedOutput = seqwires::mapChordsFunction(testEnvironment.m_typeSystem, preCombinedInput, chordMap);
+
+    seqwires::Track mappedChords = seqwires::mapChordsFunction(testEnvironment.m_typeSystem, chordTrack, chordMap);
+    seqwires::Track postCombinedOutput = seqwires::mergeTracks({&noteTrack, &mappedChords});
+
+    // This test exploits the fact that the the resulting events end up in the same relative order.
+    // That's not guaranteed, and the test may have to sanitize both sides if that changes.
+    EXPECT_EQ(preCombinedOutput, postCombinedOutput);
+}
 
 TEST(ChordMapProcessorTest, processor) {
     testUtils::TestEnvironment testEnvironment;
