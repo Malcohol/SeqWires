@@ -13,12 +13,11 @@ namespace babelwires {
 }
 
 namespace seqwires {
-    babelwires::TypeRef getMapChordFunctionChordTypeRef();
-    babelwires::TypeRef getMapChordFunctionPitchClassRef();
+    babelwires::TypeRef getMapChordFunctionSourceTypeRef();
+    babelwires::TypeRef getMapChordFunctionTargetTypeRef();
 
     /// Apply maps to chord events in the track.
     /// You can specify a chord that should be active when no chord in the sourceTrack is active
     /// by having blanks in the source map.
-    /// Until the type system has cross products, this will be somewhat limited in value.
-    Track mapChordsFunction(const babelwires::TypeSystem& typeSystem, const Track& sourceTrack, const babelwires::MapValue& chordTypeMapValue, const babelwires::MapValue& pitchClassMapValue);
+    Track mapChordsFunction(const babelwires::TypeSystem& typeSystem, const Track& sourceTrack, const babelwires::MapValue& chordMapValue);
 }

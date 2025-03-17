@@ -19,14 +19,10 @@
 
 seqwires::ChordMapProcessorInput::ChordMapProcessorInput()
     : babelwires::ParallelProcessorInputBase(
-          {{BW_SHORT_ID("TypMap", "Type map", "6054b8e9-5f48-4e9f-8807-b6377d36d6aa"),
-            babelwires::MapTypeConstructor::makeTypeRef(seqwires::getMapChordFunctionChordTypeRef(),
-                                                        seqwires::getMapChordFunctionChordTypeRef(),
-                                                        babelwires::MapEntryData::Kind::All2Sm)},
-           {BW_SHORT_ID("RtMap", "Root map", "4df92989-554b-426a-aa0c-2c0c7ca2dfd6"),
-            babelwires::MapTypeConstructor::makeTypeRef(seqwires::getMapChordFunctionPitchClassRef(),
-                                                        seqwires::getMapChordFunctionPitchClassRef(),
-                                                        babelwires::MapEntryData::Kind::All2Sm)}},
+          {{BW_SHORT_ID("ChrdMp", "Chord map", "6054b8e9-5f48-4e9f-8807-b6377d36d6aa"),
+            babelwires::MapTypeConstructor::makeTypeRef(seqwires::getMapChordFunctionSourceTypeRef(),
+                                                        seqwires::getMapChordFunctionTargetTypeRef(),
+                                                        babelwires::MapEntryData::Kind::All21)}},
           ChordMapProcessor::getCommonArrayId(), seqwires::DefaultTrackType::getThisType()) {}
 
 seqwires::ChordMapProcessorOutput::ChordMapProcessorOutput()
@@ -49,8 +45,7 @@ void seqwires::ChordMapProcessor::processEntry(babelwires::UserLogger& userLogge
     babelwires::ConstInstance<TrackType> entryIn{inputEntry};
     babelwires::Instance<TrackType> entryOut{outputEntry};
 
-    const auto& chordTypeMap = in.getTypMap()->getValue()->is<babelwires::MapValue>();
-    const auto& chordRootMap = in.getRtMap()->getValue()->is<babelwires::MapValue>();
+    const auto& chordMap = in.getChrdMp()->getValue()->is<babelwires::MapValue>();
 
-    entryOut.set(mapChordsFunction(in->getTypeSystem(), entryIn.get(), chordTypeMap, chordRootMap));
+    entryOut.set(mapChordsFunction(in->getTypeSystem(), entryIn.get(), chordMap));
 }
