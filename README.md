@@ -1,17 +1,13 @@
 # SeqWires
 
-SeqWires is a "domain plugin" for [BabelWires](https://github.com/Malcohol/BabelWires), providing common types for music sequence data and plugins for music sequence data formats.
+SeqWires is the Music plugin for [BabelWires](https://github.com/Malcohol/BabelWires), providing common types for music sequence data and plugins for music sequence data formats.
 
-The following screenshot shows an example of music data processing in SeqWires.
+The following screenshot shows an example of music data processing in BabelWires.
 The source file has two tracks: a melody and a simple accompanyment.
 The project repeats the melody, and adds an offset and transposed copy of it.
 The result is like a simple [musical round](https://en.wikipedia.org/wiki/Round_(music)).
 
 ![Screenshot showing several nodes wired together](https://raw.githubusercontent.com/Malcohol/BabelWires/main/Docs/screenshot.png "An example SeqWires project")
-
-Here's a screenshot of the MapEditor defining a map between percussion instruments:
-
-![Screenshot showing the MapEditor](https://raw.githubusercontent.com/Malcohol/BabelWires/main/Docs/mapEditor.png "Screenshot of the MapEditor defining a map between percussion instruments")
 
 Right now, the supported formats are:
 * SMF (standard MIDI file)
