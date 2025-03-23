@@ -13,8 +13,6 @@ Right now, the supported formats are:
 * SMF (standard MIDI file)
 * Many more formats to come :D 
 
-See also, the [FAQ](Docs/FAQ.md).
-
 ## Seq2tape
 
 Many pre-MIDI or low-end sequencers and drum machines use cassette tapes to store their sequence data.
