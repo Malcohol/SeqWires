@@ -149,10 +149,10 @@ TEST(TransposeProcessorTest, processor) {
     const babelwires::ValueTreeNode& output = processor.getOutput();
 
     babelwires::ValueTreeNode& inputArray =
-        input.getChildFromStep(babelwires::PathStep(seqwires::TransposeProcessor::getCommonArrayId()))
+        input.getChildFromStep(seqwires::TransposeProcessor::getCommonArrayId())
             .is<babelwires::ValueTreeNode>();
     const babelwires::ValueTreeNode& outputArray =
-        output.getChildFromStep(babelwires::PathStep(seqwires::TransposeProcessor::getCommonArrayId()))
+        output.getChildFromStep(seqwires::TransposeProcessor::getCommonArrayId())
             .is<babelwires::ValueTreeNode>();
 
     babelwires::ArrayInstanceImpl<babelwires::ValueTreeNode, seqwires::TrackType> inArray(inputArray);

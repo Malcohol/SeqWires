@@ -55,10 +55,10 @@ TEST(RepeatProcessorTest, processor) {
     const babelwires::ValueTreeNode& output = processor.getOutput();
 
     babelwires::ValueTreeNode& inputArray =
-        input.getChildFromStep(babelwires::PathStep(seqwires::RepeatProcessor::getCommonArrayId()))
+        input.getChildFromStep(seqwires::RepeatProcessor::getCommonArrayId())
             .is<babelwires::ValueTreeNode>();
     const babelwires::ValueTreeNode& outputArray =
-        output.getChildFromStep(babelwires::PathStep(seqwires::RepeatProcessor::getCommonArrayId()))
+        output.getChildFromStep(seqwires::RepeatProcessor::getCommonArrayId())
             .is<babelwires::ValueTreeNode>();
 
     babelwires::ArrayInstanceImpl<babelwires::ValueTreeNode, seqwires::TrackType> inArray(inputArray);

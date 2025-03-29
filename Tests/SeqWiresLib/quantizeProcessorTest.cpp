@@ -81,10 +81,10 @@ TEST(QuantizeProcessorTest, processor) {
     const babelwires::ValueTreeNode& output = processor.getOutput();
 
     babelwires::ValueTreeNode& inputArray =
-        input.getChildFromStep(babelwires::PathStep(seqwires::QuantizeProcessor::getCommonArrayId()))
+        input.getChildFromStep(seqwires::QuantizeProcessor::getCommonArrayId())
             .is<babelwires::ValueTreeNode>();
     const babelwires::ValueTreeNode& outputArray =
-        output.getChildFromStep(babelwires::PathStep(seqwires::QuantizeProcessor::getCommonArrayId()))
+        output.getChildFromStep(seqwires::QuantizeProcessor::getCommonArrayId())
             .is<babelwires::ValueTreeNode>();
 
     babelwires::ArrayInstanceImpl<babelwires::ValueTreeNode, seqwires::TrackType> inArray(inputArray);

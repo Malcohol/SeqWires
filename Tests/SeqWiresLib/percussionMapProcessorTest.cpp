@@ -123,10 +123,10 @@ TEST(PercussionMapProcessorTest, processor) {
     const babelwires::ValueTreeNode& output = processor.getOutput();
 
     babelwires::ValueTreeNode& inputArray =
-        input.getChildFromStep(babelwires::PathStep(seqwires::PercussionMapProcessor::getCommonArrayId()))
+        input.getChildFromStep(seqwires::PercussionMapProcessor::getCommonArrayId())
             .is<babelwires::ValueTreeNode>();
     const babelwires::ValueTreeNode& outputArray =
-        output.getChildFromStep(babelwires::PathStep(seqwires::PercussionMapProcessor::getCommonArrayId()))
+        output.getChildFromStep(seqwires::PercussionMapProcessor::getCommonArrayId())
             .is<babelwires::ValueTreeNode>();
 
     babelwires::ArrayInstanceImpl<babelwires::ValueTreeNode, seqwires::TrackType> inArray(inputArray);
