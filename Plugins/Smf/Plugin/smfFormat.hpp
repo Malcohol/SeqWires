@@ -20,7 +20,7 @@ namespace smf {
         virtual std::string getManufacturerName() const override;
         virtual std::string getProductName() const override;
         virtual std::unique_ptr<babelwires::ValueTreeRoot>
-        loadFromFile(babelwires::DataSource& dataSource, const babelwires::ProjectContext& projectContext,
+        loadFromFile(const std::filesystem::path& path, const babelwires::ProjectContext& projectContext,
                      babelwires::UserLogger& userLogger) const override;
     };
 
@@ -34,6 +34,6 @@ namespace smf {
         virtual std::unique_ptr<babelwires::ValueTreeRoot>
         createNewValue(const babelwires::ProjectContext& projectContext) const override;
         virtual void writeToFile(const babelwires::ProjectContext& projectContext, babelwires::UserLogger& userLogger,
-                                 const babelwires::ValueTreeRoot& contents, std::ostream& os) const override;
+                                 const babelwires::ValueTreeRoot& contents, const std::filesystem::path& path) const override;
     };
 } // namespace smf

@@ -13,6 +13,9 @@
 #include <Plugins/Smf/Plugin/smfParser.hpp>
 #include <Plugins/Smf/Plugin/smfWriter.hpp>
 
+#include <Common/IO/fileDataSource.hpp>
+#include <Common/IO/outFileStream.hpp>
+
 namespace {
 
     const char s_formatIdentifier[] = "StandardMIDIFile";
@@ -39,14 +42,15 @@ std::string smf::SmfSourceFormat::getProductName() const {
 }
 
 std::unique_ptr<babelwires::ValueTreeRoot>
-smf::SmfSourceFormat::loadFromFile(babelwires::DataSource& dataSource, const babelwires::ProjectContext& projectContext,
+smf::SmfSourceFormat::loadFromFile(const std::filesystem::path& path, const babelwires::ProjectContext& projectContext,
                                    babelwires::UserLogger& userLogger) const {
+    babelwires::FileDataSource dataSource(path);
     return parseSmfSequence(dataSource, projectContext, userLogger);
 }
 
 smf::SmfTargetFormat::SmfTargetFormat()
-    : TargetFileFormat(BW_LONG_ID("SmfFile", "Standard MIDI file (out)", "f29cd3b0-8a46-4a21-bb7d-53acd6702944"),
-                       1, Extensions{"mid", "smf"}) {}
+    : TargetFileFormat(BW_LONG_ID("SmfFile", "Standard MIDI file (out)", "f29cd3b0-8a46-4a21-bb7d-53acd6702944"), 1,
+                       Extensions{"mid", "smf"}) {}
 
 std::string smf::SmfTargetFormat::getManufacturerName() const {
     return s_manufacturerName;
@@ -58,11 +62,14 @@ std::string smf::SmfTargetFormat::getProductName() const {
 
 std::unique_ptr<babelwires::ValueTreeRoot>
 smf::SmfTargetFormat::createNewValue(const babelwires::ProjectContext& projectContext) const {
-    return std::make_unique<babelwires::ValueTreeRoot>(projectContext.m_typeSystem, babelwires::FileTypeT<SmfSequence>::getThisType());
+    return std::make_unique<babelwires::ValueTreeRoot>(projectContext.m_typeSystem,
+                                                       babelwires::FileTypeT<SmfSequence>::getThisType());
 }
 
 void smf::SmfTargetFormat::writeToFile(const babelwires::ProjectContext& projectContext,
                                        babelwires::UserLogger& userLogger, const babelwires::ValueTreeRoot& contents,
-                                       std::ostream& os) const {
-    writeToSmf(projectContext, userLogger, contents, os);
+                                       const std::filesystem::path& path) const {
+    babelwires::OutFileStream outStream(path);
+    writeToSmf(projectContext, userLogger, contents, outStream);
+    outStream.close();
 }
