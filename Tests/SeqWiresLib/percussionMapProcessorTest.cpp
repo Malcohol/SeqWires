@@ -8,11 +8,13 @@
 #include <SeqWiresLib/libRegistration.hpp>
 
 #include <BabelWiresLib/TypeSystem/typeSystem.hpp>
-#include <BabelWiresLib/Types/Enum/addBlankToEnum.hpp>
+#include <BabelWiresLib/Types/Enum/enumAtomTypeConstructor.hpp>
+#include <BabelWiresLib/Types/Enum/enumUnionTypeConstructor.hpp>
 #include <BabelWiresLib/Types/Enum/enumValue.hpp>
 #include <BabelWiresLib/Types/Map/MapEntries/allToSameFallbackMapEntryData.hpp>
 #include <BabelWiresLib/Types/Map/MapEntries/oneToOneMapEntryData.hpp>
 #include <BabelWiresLib/Types/Map/mapValue.hpp>
+#include <BabelWiresLib/Types/Map/standardMapIdentifiers.hpp>
 #include <BabelWiresLib/ValueTree/valueTreeRoot.hpp>
 
 #include <Tests/BabelWiresLib/TestUtils/testEnvironment.hpp>
@@ -24,7 +26,9 @@ namespace {
         const seqwires::BuiltInPercussionInstruments& builtInPercussion =
             typeSystem.getEntryByType<seqwires::BuiltInPercussionInstruments>();
 
-        babelwires::TypeRef targetTypeRef = babelwires::AddBlankToEnum::makeTypeRef(seqwires::BuiltInPercussionInstruments::getThisType());
+        babelwires::TypeRef targetTypeRef =
+            babelwires::EnumUnionTypeConstructor::makeTypeRef(seqwires::BuiltInPercussionInstruments::getThisType(),
+            babelwires::EnumAtomTypeConstructor::makeTypeRef(babelwires::getBlankValueId()));
 
         babelwires::MapValue percussionMap;
         percussionMap.setSourceTypeRef(seqwires::BuiltInPercussionInstruments::getThisType());
@@ -53,7 +57,7 @@ namespace {
 
         sourceValue.set(
             builtInPercussion.getIdentifierFromValue(seqwires::BuiltInPercussionInstruments::Value::LFlTom));
-        targetValue.set(babelwires::AddBlankToEnum::getBlankValue());
+        targetValue.set(babelwires::getBlankValueId());
         maplet.setSourceValue(sourceValue);
         maplet.setTargetValue(targetValue);
         percussionMap.emplaceBack(maplet.clone());
@@ -100,7 +104,8 @@ TEST(PercussionMapProcessorTest, funcSimple) {
     babelwires::TypeSystem typeSystem;
     const seqwires::BuiltInPercussionInstruments* const builtInPercussion =
         typeSystem.addEntry<seqwires::BuiltInPercussionInstruments>();
-    typeSystem.addTypeConstructor<babelwires::AddBlankToEnum>();
+    typeSystem.addTypeConstructor<babelwires::EnumAtomTypeConstructor>();
+    typeSystem.addTypeConstructor<babelwires::EnumUnionTypeConstructor>();
 
     const babelwires::MapValue mapValue = getTestPercussionMap(typeSystem);
     const seqwires::Track inputTrack = getTestInputTrack();
@@ -123,15 +128,12 @@ TEST(PercussionMapProcessorTest, processor) {
     const babelwires::ValueTreeNode& output = processor.getOutput();
 
     babelwires::ValueTreeNode& inputArray =
-        input.getChildFromStep(seqwires::PercussionMapProcessor::getCommonArrayId())
-            .is<babelwires::ValueTreeNode>();
+        input.getChildFromStep(seqwires::PercussionMapProcessor::getCommonArrayId()).is<babelwires::ValueTreeNode>();
     const babelwires::ValueTreeNode& outputArray =
-        output.getChildFromStep(seqwires::PercussionMapProcessor::getCommonArrayId())
-            .is<babelwires::ValueTreeNode>();
+        output.getChildFromStep(seqwires::PercussionMapProcessor::getCommonArrayId()).is<babelwires::ValueTreeNode>();
 
     babelwires::ArrayInstanceImpl<babelwires::ValueTreeNode, seqwires::TrackType> inArray(inputArray);
-    const babelwires::ArrayInstanceImpl<const babelwires::ValueTreeNode, seqwires::TrackType> outArray(
-        outputArray);
+    const babelwires::ArrayInstanceImpl<const babelwires::ValueTreeNode, seqwires::TrackType> outArray(outputArray);
 
     seqwires::PercussionMapProcessorInput::Instance in(input);
 
