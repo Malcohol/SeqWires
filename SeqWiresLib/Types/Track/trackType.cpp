@@ -25,12 +25,12 @@ std::string seqwires::TrackType::getKind() const {
     return "Track";
 }
 
-babelwires::SubtypeOrder
+std::optional<babelwires::SubtypeOrder>
 seqwires::TrackType::compareSubtypeHelper(const babelwires::TypeSystem& typeSystem,
                                                      const babelwires::Type& other) const {
     const babelwires::Type* const otherTrackType = other.as<TrackType>();
     if (!otherTrackType) {
-        return babelwires::SubtypeOrder::IsUnrelated;
+        return {};
     }
     return babelwires::SubtypeOrder::IsEquivalent;
 }

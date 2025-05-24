@@ -12,7 +12,6 @@
 
 #include <algorithm>
 #include <assert.h>
-#include <iostream>
 #include <memory>
 
 #include <cmath>
