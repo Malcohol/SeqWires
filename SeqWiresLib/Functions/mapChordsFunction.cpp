@@ -13,7 +13,6 @@
 #include <SeqWiresLib/pitch.hpp>
 
 #include <BabelWiresLib/TypeSystem/typeSystem.hpp>
-#include <BabelWiresLib/Types/Enum/addBlankToEnum.hpp>
 #include <BabelWiresLib/Types/Enum/enumAtomTypeConstructor.hpp>
 #include <BabelWiresLib/Types/Enum/enumUnionTypeConstructor.hpp>
 #include <BabelWiresLib/Types/Map/Helpers/enumValueAdapters.hpp>
