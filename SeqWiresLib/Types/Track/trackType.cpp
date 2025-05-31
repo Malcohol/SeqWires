@@ -20,9 +20,8 @@ bool seqwires::TrackType::isValidValue(const babelwires::TypeSystem& typeSystem,
     return v.as<Track>();
 }
 
-std::string seqwires::TrackType::getKind() const {
-    // TODO: Decide on a standard scheme for non-serialized types.
-    return "Track";
+std::string seqwires::TrackType::getFlavour() const {
+    return "track";
 }
 
 std::optional<babelwires::SubtypeOrder>
