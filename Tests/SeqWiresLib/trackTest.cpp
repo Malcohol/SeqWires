@@ -104,7 +104,6 @@ namespace {
             , m_payload(std::make_unique<Payload>(*other.m_payload)) {}
 
         ~EventWithPayload() {
-            std::cout << "Hello\n";
             m_payload.reset();
         }
 
