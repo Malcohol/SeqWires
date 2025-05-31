@@ -35,7 +35,7 @@ TEST(TrackType, defaultTrackTypeIsValidValue) {
 TEST(TrackType, defaultIntTypeGetKind) {
     seqwires::DefaultTrackType trackType;
 
-    EXPECT_FALSE(trackType.getKind().empty());
+    EXPECT_FALSE(trackType.getFlavour().empty());
 }
 
 TEST(TrackType, constructedTrackTypeCreateValue) {
