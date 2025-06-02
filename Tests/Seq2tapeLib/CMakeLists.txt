@@ -1,4 +1,5 @@
 SET( SEQ2TAPELIB_TESTS_SRCS
+      audioInterfaceRegistryTest.cpp
       seq2tapeLibTests.cpp
       waveReaderTest.cpp
    )

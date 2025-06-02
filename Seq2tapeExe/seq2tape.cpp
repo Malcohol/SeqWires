@@ -7,15 +7,15 @@
  **/
 #include <Seq2tapeExe/seq2tapeOptions.hpp>
 
+#include <Seq2tapeExe/audioInit.hpp>
+
+#include <Seq2tapeLib/Audio/FileAudio/fileAudioDest.hpp>
+#include <Seq2tapeLib/Audio/FileAudio/fileAudioSource.hpp>
+#include <Seq2tapeLib/Audio/audioInterface.hpp>
+#include <Seq2tapeLib/seq2tapeContext.hpp>
 #include <Seq2tapeLib/tapeFile.hpp>
 #include <Seq2tapeLib/tapeFileFormat.hpp>
-#include <Seq2tapeLib/seq2tapeContext.hpp>
 
-#include <BabelWiresAudio/Common/audioInit.hpp>
-
-#include <Common/Audio/audioInterface.hpp>
-#include <Common/Audio/fileAudioDest.hpp>
-#include <Common/Audio/fileAudioSource.hpp>
 #include <Common/IO/fileDataSource.hpp>
 #include <Common/IO/outFileStream.hpp>
 #include <Common/Identifiers/identifierRegistry.hpp>
@@ -162,12 +162,11 @@ int main(int argc, char* argv[]) {
     babelwires::DebugLogger::swapGlobalDebugLogger(&log);
     babelwires::IdentifierRegistryScope identifierRegistry;
 
-
     seq2tape::TapeFileFormatRegistry tapeFileRegistry;
     babelwires::AudioInterfaceRegistry audioInterfaceRegistry;
     babelwires::FileAudioDestRegistry fileAudioDestRegistry;
 
-    Context context { tapeFileRegistry, audioInterfaceRegistry, fileAudioDestRegistry };
+    Context context{tapeFileRegistry, audioInterfaceRegistry, fileAudioDestRegistry};
 
     // Register plugins here.
 
