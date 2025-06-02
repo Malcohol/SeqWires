@@ -6,8 +6,8 @@
 #include <Plugins/Smf/Plugin/smfParser.hpp>
 #include <Plugins/Smf/Plugin/smfWriter.hpp>
 
-#include <SeqWiresLib/Types/Track/TrackEvents/noteEvents.hpp>
-#include <SeqWiresLib/libRegistration.hpp>
+#include <MusicLib/Types/Track/TrackEvents/noteEvents.hpp>
+#include <MusicLib/libRegistration.hpp>
 
 #include <BabelWiresLib/Instance/arrayTypeInstance.hpp>
 #include <BabelWiresLib/libRegistration.hpp>

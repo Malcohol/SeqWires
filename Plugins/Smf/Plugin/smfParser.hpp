@@ -11,7 +11,7 @@
 #include <Plugins/Smf/Plugin/Percussion/standardPercussionSets.hpp>
 #include <Plugins/Smf/Plugin/smfSequence.hpp>
 
-#include <SeqWiresLib/musicTypes.hpp>
+#include <MusicLib/musicTypes.hpp>
 
 #include <Common/IO/dataSource.hpp>
 #include <Common/Log/userLogger.hpp>

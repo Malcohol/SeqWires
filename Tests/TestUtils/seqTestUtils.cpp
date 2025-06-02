@@ -1,8 +1,8 @@
 #include <Tests/TestUtils/seqTestUtils.hpp>
 
-#include <SeqWiresLib/Types/Track/TrackEvents/noteEvents.hpp>
-#include <SeqWiresLib/Types/Track/TrackEvents/chordEvents.hpp>
-#include <SeqWiresLib/Types/Track/track.hpp>
+#include <MusicLib/Types/Track/TrackEvents/noteEvents.hpp>
+#include <MusicLib/Types/Track/TrackEvents/chordEvents.hpp>
+#include <MusicLib/Types/Track/track.hpp>
 
 #include <gtest/gtest.h>
 

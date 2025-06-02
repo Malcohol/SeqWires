@@ -14,8 +14,8 @@
 #include <BabelWiresLib/TypeSystem/primitiveType.hpp>
 #include <BabelWiresLib/Types/Record/recordType.hpp>
 
-#include <SeqWiresLib/Types/Track/trackInstance.hpp>
-#include <SeqWiresLib/Types/Track/trackType.hpp>
+#include <MusicLib/Types/Track/trackInstance.hpp>
+#include <MusicLib/Types/Track/trackType.hpp>
 
 #include <Plugins/Smf/Plugin/midiChannel.hpp>
 

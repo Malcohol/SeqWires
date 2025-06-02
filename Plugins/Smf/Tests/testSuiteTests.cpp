@@ -4,10 +4,10 @@
 #include <Plugins/Smf/Plugin/libRegistration.hpp>
 #include <Plugins/Smf/Plugin/smfParser.hpp>
 
-#include <SeqWiresLib/Types/Track/TrackEvents/noteEvents.hpp>
-#include <SeqWiresLib/Types/Track/TrackEvents/percussionEvents.hpp>
-#include <SeqWiresLib/Utilities/filteredTrackIterator.hpp>
-#include <SeqWiresLib/libRegistration.hpp>
+#include <MusicLib/Types/Track/TrackEvents/noteEvents.hpp>
+#include <MusicLib/Types/Track/TrackEvents/percussionEvents.hpp>
+#include <MusicLib/Utilities/filteredTrackIterator.hpp>
+#include <MusicLib/libRegistration.hpp>
 
 #include <Common/IO/fileDataSource.hpp>
 

@@ -7,10 +7,10 @@
  **/
 #pragma once
 
-#include <SeqWiresLib/Percussion/percussionSetWithPitchMap.hpp>
+#include <MusicLib/Percussion/percussionSetWithPitchMap.hpp>
 #include <Plugins/Smf/Plugin/gmSpec.hpp>
 
-#include <SeqWiresLib/Percussion/builtInPercussionInstruments.hpp>
+#include <MusicLib/Percussion/builtInPercussionInstruments.hpp>
 
 #include <unordered_set>
 

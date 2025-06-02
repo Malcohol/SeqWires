@@ -12,10 +12,10 @@
 #include <Plugins/Smf/Plugin/gmSpec.hpp>
 #include <Plugins/Smf/Plugin/midiTrackAndChannel.hpp>
 
-#include <SeqWiresLib/Types/Track/TrackEvents/percussionEvents.hpp>
-#include <SeqWiresLib/Utilities/filteredTrackIterator.hpp>
-#include <SeqWiresLib/Utilities/musicUtilities.hpp>
-#include <SeqWiresLib/Utilities/trackTraverser.hpp>
+#include <MusicLib/Types/Track/TrackEvents/percussionEvents.hpp>
+#include <MusicLib/Utilities/filteredTrackIterator.hpp>
+#include <MusicLib/Utilities/musicUtilities.hpp>
+#include <MusicLib/Utilities/trackTraverser.hpp>
 
 #include <BabelWiresLib/Project/projectContext.hpp>
 #include <BabelWiresLib/TypeSystem/typeSystem.hpp>

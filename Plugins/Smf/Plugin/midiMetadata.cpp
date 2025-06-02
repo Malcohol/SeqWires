@@ -9,7 +9,7 @@
 
 #include <Plugins/Smf/Plugin/smfFormat.hpp>
 
-#include <SeqWiresLib/Types/tempo.hpp>
+#include <MusicLib/Types/tempo.hpp>
 
 #include <BabelWiresLib/TypeSystem/typeSystem.hpp>
 #include <BabelWiresLib/Types/String/stringType.hpp>

@@ -10,7 +10,7 @@
 #include <Plugins/Smf/Plugin/Percussion/standardPercussionSets.hpp>
 #include <Plugins/Smf/Plugin/smfSequence.hpp>
 
-#include <SeqWiresLib/musicTypes.hpp>
+#include <MusicLib/musicTypes.hpp>
 
 #include <cstdint>
 #include <ostream>

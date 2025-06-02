@@ -1,8 +1,8 @@
 #pragma once
 
-#include <SeqWiresLib/musicTypes.hpp>
-#include <SeqWiresLib/Types/Track/TrackEvents/trackEventHolder.hpp>
-#include <SeqWiresLib/chord.hpp>
+#include <MusicLib/musicTypes.hpp>
+#include <MusicLib/Types/Track/TrackEvents/trackEventHolder.hpp>
+#include <MusicLib/chord.hpp>
 
 #include <vector>
 

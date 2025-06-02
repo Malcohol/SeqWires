@@ -7,7 +7,7 @@
  **/
 #pragma once
 
-#include <SeqWiresLib/Percussion/percussionSetWithPitchMap.hpp>
+#include <MusicLib/Percussion/percussionSetWithPitchMap.hpp>
 
 #include <BabelWiresLib/TypeSystem/primitiveType.hpp>
 

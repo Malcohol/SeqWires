@@ -7,7 +7,7 @@
  **/
 #include <Plugins/Smf/Plugin/midiTrackAndChannel.hpp>
 
-#include <SeqWiresLib/Types/Track/trackType.hpp>
+#include <MusicLib/Types/Track/trackType.hpp>
 
 namespace {
     static const babelwires::IdentifiersSource s_extraTrackNames = {
