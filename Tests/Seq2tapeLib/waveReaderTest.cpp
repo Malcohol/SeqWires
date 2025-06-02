@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
-#include <Common/Audio/audioSource.hpp>
-#include <Common/Audio/fileAudioDest.hpp>
+#include <Seq2tapeLib/Audio/audioSource.hpp>
+#include <Seq2tapeLib/Audio/FileAudio/fileAudioDest.hpp>
 
 #include <Seq2tapeLib/waveReader.hpp>
 

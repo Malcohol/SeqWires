@@ -5,7 +5,7 @@
  *
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
-#include <Common/Audio/fileAudioDest.hpp>
+#include <Seq2tapeLib/Audio/FileAudio/fileAudioDest.hpp>
 #include <Seq2tapeExe/seq2tapeOptions.hpp>
 
 namespace {

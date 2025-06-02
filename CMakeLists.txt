@@ -5,8 +5,6 @@ ADD_SUBDIRECTORY( MusicLibUi )
 ADD_SUBDIRECTORY( Plugins/Smf/Plugin )
 ADD_SUBDIRECTORY( Plugins/Smf/Tests )
 
-ADD_SUBDIRECTORY( BabelWiresAudio )
-
 ADD_SUBDIRECTORY( Seq2tapeExe )
 
 ADD_SUBDIRECTORY( Tests/TestUtils )
