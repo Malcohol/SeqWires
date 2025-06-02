@@ -11,7 +11,7 @@
 
 #include <memory>
 
-namespace seqwires {
+namespace bw_music {
     /// A function which repeats a section of sequence data a number of times.
     Track repeatTrack(const Track& trackIn, int count);
-} // namespace seqwires
+} // namespace bw_music

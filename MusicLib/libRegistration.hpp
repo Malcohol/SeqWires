@@ -11,7 +11,7 @@ namespace babelwires {
     struct ProjectContext;
 }
 
-namespace seqwires {
+namespace bw_music {
     /// This is not a true plugin model, because everything is statically linked.
     void registerLib(babelwires::ProjectContext& context);
-} // namespace seqwires
+} // namespace bw_music

@@ -21,7 +21,7 @@
 #include <sstream>
 #include <vector>
 
-namespace seqwires {
+namespace bw_music {
     class PercussionSetWithPitchMap;
 }
 
@@ -61,7 +61,7 @@ namespace smf {
 
         void readTrack(int trackIndex, TrackSplitter& tracks, bool hasMainMetadata = false);
 
-        seqwires::ModelDuration readModelDuration();
+        bw_music::ModelDuration readModelDuration();
 
         void readTempoEvent(std::uint32_t tempoValue);
 
@@ -123,7 +123,7 @@ namespace smf {
             StandardPercussionSets::ChannelSetupInfo m_channelSetupInfo;
             // This is non-null when the pitches in the data should be interpreted as percussion events from the given
             // kit.
-            const seqwires::PercussionSetWithPitchMap* m_kitIfPercussion = nullptr;
+            const bw_music::PercussionSetWithPitchMap* m_kitIfPercussion = nullptr;
         };
 
         std::array<ChannelSetup, 16> m_channelSetup;

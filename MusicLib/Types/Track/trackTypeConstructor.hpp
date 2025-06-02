@@ -12,7 +12,7 @@
 
 #include <BabelWiresLib/TypeSystem/typeConstructor.hpp>
 
-namespace seqwires {
+namespace bw_music {
     /// Construct a track type with an initial duration.
     class TrackTypeConstructor : public babelwires::TypeConstructor {
       public:

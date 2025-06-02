@@ -11,7 +11,7 @@
 #include <BabelWiresLib/Processors/parallelProcessor.hpp>
 #include <BabelWiresLib/Processors/processorFactory.hpp>
 
-namespace seqwires {
+namespace bw_music {
 
     class ExcerptProcessorInput : public babelwires::ParallelProcessorInputBase {
       public:
@@ -46,4 +46,4 @@ namespace seqwires {
                           const babelwires::ValueTreeNode& inputEntry, babelwires::ValueTreeNode& outputEntry) const override;
     };
 
-} // namespace seqwires
+} // namespace bw_music

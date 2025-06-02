@@ -17,27 +17,27 @@
 
 #include <Common/Identifiers/registeredIdentifier.hpp>
 
-seqwires::ChordMapProcessorInput::ChordMapProcessorInput()
+bw_music::ChordMapProcessorInput::ChordMapProcessorInput()
     : babelwires::ParallelProcessorInputBase(
           {{BW_SHORT_ID("ChrdMp", "Chord map", "6054b8e9-5f48-4e9f-8807-b6377d36d6aa"),
-            babelwires::MapTypeConstructor::makeTypeRef(seqwires::getMapChordFunctionSourceTypeRef(),
-                                                        seqwires::getMapChordFunctionTargetTypeRef(),
+            babelwires::MapTypeConstructor::makeTypeRef(bw_music::getMapChordFunctionSourceTypeRef(),
+                                                        bw_music::getMapChordFunctionTargetTypeRef(),
                                                         babelwires::MapEntryData::Kind::All21)}},
-          ChordMapProcessor::getCommonArrayId(), seqwires::DefaultTrackType::getThisType()) {}
+          ChordMapProcessor::getCommonArrayId(), bw_music::DefaultTrackType::getThisType()) {}
 
-seqwires::ChordMapProcessorOutput::ChordMapProcessorOutput()
+bw_music::ChordMapProcessorOutput::ChordMapProcessorOutput()
     : babelwires::ParallelProcessorOutputBase(ChordMapProcessor::getCommonArrayId(),
-                                              seqwires::DefaultTrackType::getThisType()) {}
+                                              bw_music::DefaultTrackType::getThisType()) {}
 
-seqwires::ChordMapProcessor::ChordMapProcessor(const babelwires::ProjectContext& projectContext)
+bw_music::ChordMapProcessor::ChordMapProcessor(const babelwires::ProjectContext& projectContext)
     : babelwires::ParallelProcessor(projectContext, ChordMapProcessorInput::getThisType(),
                                     ChordMapProcessorOutput::getThisType()) {}
 
-babelwires::ShortId seqwires::ChordMapProcessor::getCommonArrayId() {
+babelwires::ShortId bw_music::ChordMapProcessor::getCommonArrayId() {
     return BW_SHORT_ID("Tracks", "Tracks", "24e56b0d-eb1e-4c93-97fd-ba4d639e112a");
 }
 
-void seqwires::ChordMapProcessor::processEntry(babelwires::UserLogger& userLogger,
+void bw_music::ChordMapProcessor::processEntry(babelwires::UserLogger& userLogger,
                                                const babelwires::ValueTreeNode& input,
                                                const babelwires::ValueTreeNode& inputEntry,
                                                babelwires::ValueTreeNode& outputEntry) const {

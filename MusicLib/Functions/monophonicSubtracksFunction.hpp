@@ -12,7 +12,7 @@
 #include <BabelWiresLib/Types/Enum/enumWithCppEnum.hpp>
 #include <BabelWiresLib/TypeSystem/primitiveType.hpp>
 
-namespace seqwires {
+namespace bw_music {
 #define MONOPHONIC_SUBTRACK_POLICY(X)                                                                                  \
     X(High, "Higher pitches", "00b17c7c-f520-4058-b57d-15f9cc89a890")                                                  \
     X(Low, "Lower pitches", "9a0b8072-11a2-492d-a21a-4e568c3483e0")                                                    \
@@ -35,4 +35,4 @@ namespace seqwires {
 
     MonophonicSubtracksResult getMonophonicSubtracks(const Track& trackIn, int numTracks,
                                                      MonophonicSubtracksPolicyEnum::Value policy);
-} // namespace seqwires
+} // namespace bw_music

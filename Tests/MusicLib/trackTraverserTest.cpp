@@ -4,9 +4,9 @@
 #include <MusicLib/Utilities/trackTraverser.hpp>
 
 namespace {
-    struct TestEvent : seqwires::TrackEvent {
+    struct TestEvent : bw_music::TrackEvent {
         STREAM_EVENT(TestEvent);
-        TestEvent(seqwires::ModelDuration d, int value)
+        TestEvent(bw_music::ModelDuration d, int value)
             : m_value(value) {
             setTimeSinceLastEvent(d);
         }
@@ -14,9 +14,9 @@ namespace {
         int m_value;
     };
 
-    struct TestEvent2 : seqwires::TrackEvent {
+    struct TestEvent2 : bw_music::TrackEvent {
         STREAM_EVENT(TestEvent2);
-        TestEvent2(seqwires::ModelDuration d, float value)
+        TestEvent2(bw_music::ModelDuration d, float value)
             : m_value(value) {
             setTimeSinceLastEvent(d);
         }
@@ -26,13 +26,13 @@ namespace {
 } // namespace
 
 TEST(TrackTraverser, leastUpperBoundDuration) {
-    seqwires::Track track;
+    bw_music::Track track;
 
     track.setDuration(10);
 
-    seqwires::TrackTraverser traverser(track, track);
+    bw_music::TrackTraverser traverser(track, track);
 
-    seqwires::ModelDuration trackDuration = 0;
+    bw_music::ModelDuration trackDuration = 0;
     traverser.leastUpperBoundDuration(trackDuration);
     EXPECT_EQ(trackDuration, 10);
 
@@ -46,19 +46,19 @@ TEST(TrackTraverser, leastUpperBoundDuration) {
 }
 
 TEST(TrackTraverser, greatestLowerBoundNextEvent) {
-    seqwires::Track track1;
-    seqwires::Track track2;
-    seqwires::Track track3;
+    bw_music::Track track1;
+    bw_music::Track track2;
+    bw_music::Track track3;
 
     track1.addEvent(TestEvent(10, 0));
     track2.addEvent(TestEvent(5, 0));
     track3.addEvent(TestEvent2(20, 0));
 
-    seqwires::TrackTraverser traverser1(track1, track1);
-    seqwires::TrackTraverser traverser2(track2, track2);
-    seqwires::TrackTraverser traverser3(track3, track3);
+    bw_music::TrackTraverser traverser1(track1, track1);
+    bw_music::TrackTraverser traverser2(track2, track2);
+    bw_music::TrackTraverser traverser3(track3, track3);
 
-    seqwires::ModelDuration timeToNextEvent = std::numeric_limits<seqwires::ModelDuration>::max();
+    bw_music::ModelDuration timeToNextEvent = std::numeric_limits<bw_music::ModelDuration>::max();
     traverser1.greatestLowerBoundNextEvent(timeToNextEvent);
     EXPECT_EQ(timeToNextEvent, 10);
 
@@ -70,7 +70,7 @@ TEST(TrackTraverser, greatestLowerBoundNextEvent) {
 }
 
 TEST(TrackTraverser, filteredIteration) {
-    seqwires::Track track;
+    bw_music::Track track;
 
     for (int i = 0; i < 10; ++i) {
         track.addEvent(TestEvent(1, 2 * i));
@@ -79,22 +79,22 @@ TEST(TrackTraverser, filteredIteration) {
         track.addEvent(TestEvent2(1, (2 * i) + 1));
     }
 
-    seqwires::TrackTraverser<seqwires::FilteredTrackIterator<TestEvent>> traverser1(
-        track, seqwires::iterateOver<TestEvent>(track));
-    seqwires::TrackTraverser<seqwires::FilteredTrackIterator<TestEvent2>> traverser2(
-        track, seqwires::iterateOver<TestEvent2>(track));
+    bw_music::TrackTraverser<bw_music::FilteredTrackIterator<TestEvent>> traverser1(
+        track, bw_music::iterateOver<TestEvent>(track));
+    bw_music::TrackTraverser<bw_music::FilteredTrackIterator<TestEvent2>> traverser2(
+        track, bw_music::iterateOver<TestEvent2>(track));
 
-    seqwires::ModelDuration trackDuration = 0;
+    bw_music::ModelDuration trackDuration = 0;
     traverser1.leastUpperBoundDuration(trackDuration);
     EXPECT_EQ(trackDuration, track.getDuration());
     traverser2.leastUpperBoundDuration(trackDuration);
     EXPECT_EQ(trackDuration, track.getDuration());
 
-    seqwires::ModelDuration totalEventDuration = 0;
+    bw_music::ModelDuration totalEventDuration = 0;
     for (int i = 0; i < 10; ++i) {
         EXPECT_TRUE(traverser1.hasMoreEvents());
         EXPECT_TRUE(traverser2.hasMoreEvents());
-        seqwires::ModelDuration timeToNextEvent = std::numeric_limits<seqwires::ModelDuration>::max();
+        bw_music::ModelDuration timeToNextEvent = std::numeric_limits<bw_music::ModelDuration>::max();
         traverser1.greatestLowerBoundNextEvent(timeToNextEvent);
         traverser2.greatestLowerBoundNextEvent(timeToNextEvent);
         EXPECT_EQ(timeToNextEvent, 1);
@@ -115,7 +115,7 @@ TEST(TrackTraverser, filteredIteration) {
             const auto& event2_0 = events2[0];
             EXPECT_EQ(event2_0->m_value, 2 * i);
         }
-        timeToNextEvent = std::numeric_limits<seqwires::ModelDuration>::max();
+        timeToNextEvent = std::numeric_limits<bw_music::ModelDuration>::max();
         traverser1.greatestLowerBoundNextEvent(timeToNextEvent);
         traverser2.greatestLowerBoundNextEvent(timeToNextEvent);
         EXPECT_EQ(timeToNextEvent, 1);

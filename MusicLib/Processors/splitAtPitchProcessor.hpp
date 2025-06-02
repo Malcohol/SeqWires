@@ -17,7 +17,7 @@
 #include <BabelWiresLib/TypeSystem/primitiveType.hpp>
 #include <BabelWiresLib/Types/Record/recordType.hpp>
 
-namespace seqwires {
+namespace bw_music {
     class SplitAtPitchProcessorInput : public babelwires::RecordType {
       public:
         PRIMITIVE_TYPE("PitchSplitIn", "Split At Pitch Input", "f901af3a-c27b-449c-961a-8f43dee7d9a6", 1);
@@ -25,8 +25,8 @@ namespace seqwires {
         SplitAtPitchProcessorInput();
 
         DECLARE_INSTANCE_BEGIN(SplitAtPitchProcessorInput)
-        DECLARE_INSTANCE_FIELD(Pitch, seqwires::PitchEnum)
-        DECLARE_INSTANCE_FIELD(Input, seqwires::TrackType)
+        DECLARE_INSTANCE_FIELD(Pitch, bw_music::PitchEnum)
+        DECLARE_INSTANCE_FIELD(Input, bw_music::TrackType)
         DECLARE_INSTANCE_END()
     };
 
@@ -37,9 +37,9 @@ namespace seqwires {
         SplitAtPitchProcessorOutput();
 
         DECLARE_INSTANCE_BEGIN(SplitAtPitchProcessorOutput)
-        DECLARE_INSTANCE_FIELD(Above, seqwires::TrackType)
-        DECLARE_INSTANCE_FIELD(Below, seqwires::TrackType)
-        DECLARE_INSTANCE_FIELD(Other, seqwires::TrackType)
+        DECLARE_INSTANCE_FIELD(Above, bw_music::TrackType)
+        DECLARE_INSTANCE_FIELD(Below, bw_music::TrackType)
+        DECLARE_INSTANCE_FIELD(Other, bw_music::TrackType)
         DECLARE_INSTANCE_END()
     };
 
@@ -54,4 +54,4 @@ namespace seqwires {
                           babelwires::ValueTreeNode& output) const override;
     };
 
-} // namespace seqwires
+} // namespace bw_music

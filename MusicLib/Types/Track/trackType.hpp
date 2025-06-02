@@ -11,7 +11,7 @@
 
 #include <MusicLib/musicTypes.hpp>
 
-namespace seqwires {
+namespace bw_music {
     /// TrackType is the type of Tracks.
     class TrackType : public babelwires::Type {
       public:
@@ -36,4 +36,4 @@ namespace seqwires {
       public:
         PRIMITIVE_TYPE("track", "Track", "346ec14c-25dd-43fc-a942-d24722be6802", 1);
     };
-} // namespace seqwires
+} // namespace bw_music

@@ -12,7 +12,7 @@
 
 #include <functional>
 
-namespace seqwires {
+namespace bw_music {
 
     /// This class aids the traversal of a track in time chunks which may lie between events.
     /// When multiplexing the events of several tracks together, it is convenient to use
@@ -69,6 +69,6 @@ namespace seqwires {
         ModelDuration m_timeToNextEvent;
     };
 
-} // namespace seqwires
+} // namespace bw_music
 
 #include <MusicLib/Utilities/trackTraverser_inl.hpp>

@@ -58,7 +58,7 @@
 
 #define CHORD_TYPE_SELECT_FIRST_ARGUMENT(A, B, C) A,
 
-namespace seqwires {
+namespace bw_music {
 
     typedef babelwires::Rational ModelDuration;
     typedef babelwires::Byte Pitch;
@@ -77,8 +77,8 @@ namespace seqwires {
     /// Defines the state of a chord event.
     // Note: This does not currently include all the data in a XF chord event.
     struct Chord {
-        PitchClass::Value m_root = seqwires::PitchClass::Value::C;
-        ChordType::Value m_chordType = seqwires::ChordType::Value::NotAValue;
+        PitchClass::Value m_root = bw_music::PitchClass::Value::C;
+        ChordType::Value m_chordType = bw_music::ChordType::Value::NotAValue;
 
         bool operator==(Chord other) const { return (m_root == other.m_root) && (m_chordType == other.m_chordType); }
 
@@ -95,4 +95,4 @@ namespace seqwires {
         static babelwires::ShortId getNoChordValue();
     };
 
-} // namespace seqwires
+} // namespace bw_music

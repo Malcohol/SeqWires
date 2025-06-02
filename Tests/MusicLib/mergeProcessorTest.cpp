@@ -12,35 +12,35 @@
 #include <Tests/TestUtils/seqTestUtils.hpp>
 
 TEST(MergeProcessorTest, simpleFunction) {
-    seqwires::Track trackA;
+    bw_music::Track trackA;
     testUtils::addSimpleNotes({72, 74, 76, 77}, trackA);
 
-    seqwires::Track trackB;
+    bw_music::Track trackB;
     testUtils::addSimpleNotes({48, 50, 52, 53, 55, 57}, trackB);
 
-    seqwires::Track track = seqwires::mergeTracks({&trackA, &trackB});
+    bw_music::Track track = bw_music::mergeTracks({&trackA, &trackB});
     ASSERT_EQ(track.getDuration(), babelwires::Rational(3, 2));
 
-    std::vector<seqwires::TrackEventHolder> expectedEvents = {seqwires::NoteOnEvent{0, 72},
-                                                              seqwires::NoteOnEvent{0, 48},
-                                                              seqwires::NoteOffEvent{babelwires::Rational(1, 4), 72},
-                                                              seqwires::NoteOnEvent{0, 74},
-                                                              seqwires::NoteOffEvent{0, 48},
-                                                              seqwires::NoteOnEvent{0, 50},
-                                                              seqwires::NoteOffEvent{babelwires::Rational(1, 4), 74},
-                                                              seqwires::NoteOnEvent{0, 76},
-                                                              seqwires::NoteOffEvent{0, 50},
-                                                              seqwires::NoteOnEvent{0, 52},
-                                                              seqwires::NoteOffEvent{babelwires::Rational(1, 4), 76},
-                                                              seqwires::NoteOnEvent{0, 77},
-                                                              seqwires::NoteOffEvent{0, 52},
-                                                              seqwires::NoteOnEvent{0, 53},
-                                                              seqwires::NoteOffEvent{babelwires::Rational(1, 4), 77},
-                                                              seqwires::NoteOffEvent{0, 53},
-                                                              seqwires::NoteOnEvent{0, 55},
-                                                              seqwires::NoteOffEvent{babelwires::Rational(1, 4), 55},
-                                                              seqwires::NoteOnEvent{0, 57},
-                                                              seqwires::NoteOffEvent{babelwires::Rational(1, 4), 57}};
+    std::vector<bw_music::TrackEventHolder> expectedEvents = {bw_music::NoteOnEvent{0, 72},
+                                                              bw_music::NoteOnEvent{0, 48},
+                                                              bw_music::NoteOffEvent{babelwires::Rational(1, 4), 72},
+                                                              bw_music::NoteOnEvent{0, 74},
+                                                              bw_music::NoteOffEvent{0, 48},
+                                                              bw_music::NoteOnEvent{0, 50},
+                                                              bw_music::NoteOffEvent{babelwires::Rational(1, 4), 74},
+                                                              bw_music::NoteOnEvent{0, 76},
+                                                              bw_music::NoteOffEvent{0, 50},
+                                                              bw_music::NoteOnEvent{0, 52},
+                                                              bw_music::NoteOffEvent{babelwires::Rational(1, 4), 76},
+                                                              bw_music::NoteOnEvent{0, 77},
+                                                              bw_music::NoteOffEvent{0, 52},
+                                                              bw_music::NoteOnEvent{0, 53},
+                                                              bw_music::NoteOffEvent{babelwires::Rational(1, 4), 77},
+                                                              bw_music::NoteOffEvent{0, 53},
+                                                              bw_music::NoteOnEvent{0, 55},
+                                                              bw_music::NoteOffEvent{babelwires::Rational(1, 4), 55},
+                                                              bw_music::NoteOnEvent{0, 57},
+                                                              bw_music::NoteOffEvent{babelwires::Rational(1, 4), 57}};
 
     auto it = track.begin();
     const auto end = track.end();
@@ -48,11 +48,11 @@ TEST(MergeProcessorTest, simpleFunction) {
     for (auto e : expectedEvents) {
         ASSERT_NE(it, end);
         EXPECT_EQ(it->getTimeSinceLastEvent(), e->getTimeSinceLastEvent());
-        EXPECT_NE(it->as<seqwires::NoteEvent>(), nullptr);
-        EXPECT_EQ((it->as<seqwires::NoteOnEvent>() == nullptr), (e->as<seqwires::NoteOnEvent>() == nullptr));
-        EXPECT_EQ((it->as<seqwires::NoteOffEvent>() == nullptr), (e->as<seqwires::NoteOffEvent>() == nullptr));
-        EXPECT_EQ(it->as<seqwires::NoteEvent>()->m_pitch, e->as<seqwires::NoteEvent>()->m_pitch);
-        EXPECT_EQ(it->as<seqwires::NoteEvent>()->m_velocity, e->as<seqwires::NoteEvent>()->m_velocity);
+        EXPECT_NE(it->as<bw_music::NoteEvent>(), nullptr);
+        EXPECT_EQ((it->as<bw_music::NoteOnEvent>() == nullptr), (e->as<bw_music::NoteOnEvent>() == nullptr));
+        EXPECT_EQ((it->as<bw_music::NoteOffEvent>() == nullptr), (e->as<bw_music::NoteOffEvent>() == nullptr));
+        EXPECT_EQ(it->as<bw_music::NoteEvent>()->m_pitch, e->as<bw_music::NoteEvent>()->m_pitch);
+        EXPECT_EQ(it->as<bw_music::NoteEvent>()->m_velocity, e->as<bw_music::NoteEvent>()->m_velocity);
         ++it;
     }
     EXPECT_EQ(it, end);
@@ -60,24 +60,24 @@ TEST(MergeProcessorTest, simpleFunction) {
 
 TEST(MergeProcessorTest, processor) {
     testUtils::TestEnvironment testEnvironment;
-    seqwires::registerLib(testEnvironment.m_projectContext);
+    bw_music::registerLib(testEnvironment.m_projectContext);
 
-    seqwires::MergeProcessor processor(testEnvironment.m_projectContext);
+    bw_music::MergeProcessor processor(testEnvironment.m_projectContext);
 
     processor.getInput().setToDefault();
     processor.getOutput().setToDefault();
 
-    auto input = seqwires::MergeProcessorInput::Instance(processor.getInput());
+    auto input = bw_music::MergeProcessorInput::Instance(processor.getInput());
     const auto output =
-        seqwires::MergeProcessorOutput::ConstInstance(processor.getOutput());
+        bw_music::MergeProcessorOutput::ConstInstance(processor.getOutput());
 
     ASSERT_EQ(input.getInput().getSize(), 2);
     EXPECT_EQ(input.getInput().getEntry(0).get().getDuration(), 0);
     EXPECT_EQ(input.getInput().getEntry(1).get().getDuration(), 0);
 
     {
-        seqwires::Track track;
-        testUtils::addSimpleNotes(std::vector<seqwires::Pitch>{72, 74}, track);
+        bw_music::Track track;
+        testUtils::addSimpleNotes(std::vector<bw_music::Pitch>{72, 74}, track);
         input.getInput().getEntry(0).set(std::move(track));
     }
 
@@ -85,25 +85,25 @@ TEST(MergeProcessorTest, processor) {
 
     auto outputTrackInstance = output.getOutput();
 
-    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{72, 74}, outputTrackInstance.get());
+    testUtils::testSimpleNotes(std::vector<bw_music::Pitch>{72, 74}, outputTrackInstance.get());
 
     processor.getInput().clearChanges();
     {
-        seqwires::Track track;
-        testUtils::addSimpleNotes(std::vector<seqwires::Pitch>{48, 50}, track);
+        bw_music::Track track;
+        testUtils::addSimpleNotes(std::vector<bw_music::Pitch>{48, 50}, track);
         input.getInput().getEntry(1).set(std::move(track));
     }
     processor.process(testEnvironment.m_log);
 
-    std::vector<seqwires::TrackEventHolder> expectedEvents = {
-        seqwires::NoteOnEvent{0, 72},
-        seqwires::NoteOnEvent{0, 48},
-        seqwires::NoteOffEvent{babelwires::Rational(1, 4), 72},
-        seqwires::NoteOnEvent{0, 74},
-        seqwires::NoteOffEvent{0, 48},
-        seqwires::NoteOnEvent{0, 50},
-        seqwires::NoteOffEvent{babelwires::Rational(1, 4), 74},
-        seqwires::NoteOffEvent{0, 50},
+    std::vector<bw_music::TrackEventHolder> expectedEvents = {
+        bw_music::NoteOnEvent{0, 72},
+        bw_music::NoteOnEvent{0, 48},
+        bw_music::NoteOffEvent{babelwires::Rational(1, 4), 72},
+        bw_music::NoteOnEvent{0, 74},
+        bw_music::NoteOffEvent{0, 48},
+        bw_music::NoteOnEvent{0, 50},
+        bw_music::NoteOffEvent{babelwires::Rational(1, 4), 74},
+        bw_music::NoteOffEvent{0, 50},
     };
 
     {
@@ -113,11 +113,11 @@ TEST(MergeProcessorTest, processor) {
         for (auto e : expectedEvents) {
             ASSERT_NE(it, end);
             EXPECT_EQ(it->getTimeSinceLastEvent(), e->getTimeSinceLastEvent());
-            EXPECT_NE(it->as<seqwires::NoteEvent>(), nullptr);
-            EXPECT_EQ((it->as<seqwires::NoteOnEvent>() == nullptr), (e->as<seqwires::NoteOnEvent>() == nullptr));
-            EXPECT_EQ((it->as<seqwires::NoteOffEvent>() == nullptr), (e->as<seqwires::NoteOffEvent>() == nullptr));
-            EXPECT_EQ(it->as<seqwires::NoteEvent>()->m_pitch, e->as<seqwires::NoteEvent>()->m_pitch);
-            EXPECT_EQ(it->as<seqwires::NoteEvent>()->m_velocity, e->as<seqwires::NoteEvent>()->m_velocity);
+            EXPECT_NE(it->as<bw_music::NoteEvent>(), nullptr);
+            EXPECT_EQ((it->as<bw_music::NoteOnEvent>() == nullptr), (e->as<bw_music::NoteOnEvent>() == nullptr));
+            EXPECT_EQ((it->as<bw_music::NoteOffEvent>() == nullptr), (e->as<bw_music::NoteOffEvent>() == nullptr));
+            EXPECT_EQ(it->as<bw_music::NoteEvent>()->m_pitch, e->as<bw_music::NoteEvent>()->m_pitch);
+            EXPECT_EQ(it->as<bw_music::NoteEvent>()->m_velocity, e->as<bw_music::NoteEvent>()->m_velocity);
             ++it;
         }
         EXPECT_EQ(it, end);
@@ -129,19 +129,19 @@ TEST(MergeProcessorTest, processor) {
         input.getInput().setSize(3);
         input.getInput().getEntry(2).set(input.getInput().getEntry(1)->getValue());
 
-        seqwires::Track track;
-        testUtils::addSimpleNotes(std::vector<seqwires::Pitch>{60, 62}, track);
+        bw_music::Track track;
+        testUtils::addSimpleNotes(std::vector<bw_music::Pitch>{60, 62}, track);
         input.getInput().getEntry(1).set(std::move(track));
     }
     processor.process(testEnvironment.m_log);
 
     expectedEvents = {
-        seqwires::NoteOnEvent{0, 72},  seqwires::NoteOnEvent{0, 60},
-        seqwires::NoteOnEvent{0, 48},  seqwires::NoteOffEvent{babelwires::Rational(1, 4), 72},
-        seqwires::NoteOnEvent{0, 74},  seqwires::NoteOffEvent{0, 60},
-        seqwires::NoteOnEvent{0, 62},  seqwires::NoteOffEvent{0, 48},
-        seqwires::NoteOnEvent{0, 50},  seqwires::NoteOffEvent{babelwires::Rational(1, 4), 74},
-        seqwires::NoteOffEvent{0, 62}, seqwires::NoteOffEvent{0, 50},
+        bw_music::NoteOnEvent{0, 72},  bw_music::NoteOnEvent{0, 60},
+        bw_music::NoteOnEvent{0, 48},  bw_music::NoteOffEvent{babelwires::Rational(1, 4), 72},
+        bw_music::NoteOnEvent{0, 74},  bw_music::NoteOffEvent{0, 60},
+        bw_music::NoteOnEvent{0, 62},  bw_music::NoteOffEvent{0, 48},
+        bw_music::NoteOnEvent{0, 50},  bw_music::NoteOffEvent{babelwires::Rational(1, 4), 74},
+        bw_music::NoteOffEvent{0, 62}, bw_music::NoteOffEvent{0, 50},
     };
 
     {
@@ -151,11 +151,11 @@ TEST(MergeProcessorTest, processor) {
         for (auto e : expectedEvents) {
             ASSERT_NE(it, end);
             EXPECT_EQ(it->getTimeSinceLastEvent(), e->getTimeSinceLastEvent());
-            EXPECT_NE(it->as<seqwires::NoteEvent>(), nullptr);
-            EXPECT_EQ((it->as<seqwires::NoteOnEvent>() == nullptr), (e->as<seqwires::NoteOnEvent>() == nullptr));
-            EXPECT_EQ((it->as<seqwires::NoteOffEvent>() == nullptr), (e->as<seqwires::NoteOffEvent>() == nullptr));
-            EXPECT_EQ(it->as<seqwires::NoteEvent>()->m_pitch, e->as<seqwires::NoteEvent>()->m_pitch);
-            EXPECT_EQ(it->as<seqwires::NoteEvent>()->m_velocity, e->as<seqwires::NoteEvent>()->m_velocity);
+            EXPECT_NE(it->as<bw_music::NoteEvent>(), nullptr);
+            EXPECT_EQ((it->as<bw_music::NoteOnEvent>() == nullptr), (e->as<bw_music::NoteOnEvent>() == nullptr));
+            EXPECT_EQ((it->as<bw_music::NoteOffEvent>() == nullptr), (e->as<bw_music::NoteOffEvent>() == nullptr));
+            EXPECT_EQ(it->as<bw_music::NoteEvent>()->m_pitch, e->as<bw_music::NoteEvent>()->m_pitch);
+            EXPECT_EQ(it->as<bw_music::NoteEvent>()->m_velocity, e->as<bw_music::NoteEvent>()->m_velocity);
             ++it;
         }
         EXPECT_EQ(it, end);

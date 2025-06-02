@@ -37,7 +37,7 @@ babelwires::ShortId smf::MidiTrackAndChannel::getTrackIdFromChannel(unsigned int
 smf::MidiTrackAndChannel::MidiTrackAndChannel()
     : babelwires::RecordType(
           {{BW_SHORT_ID("Track", "Track", "a6db15c9-9f29-4fb3-92c4-771746b2b97f"),
-            seqwires::DefaultTrackType::getThisType()},
+            bw_music::DefaultTrackType::getThisType()},
            {BW_SHORT_ID("Chan", "Channel", "cad592ef-2355-4837-a265-38b49eae7599"), MidiChannel::getThisType()},
            {getTrackIdFromChannel(0), TypeOfTracks::getThisType(),
             babelwires::RecordType::Optionality::optionalDefaultInactive},

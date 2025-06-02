@@ -13,7 +13,7 @@
 #include <Common/BlockStream/streamEventHolder.hpp>
 #include <Common/types.hpp>
 
-namespace seqwires {
+namespace bw_music {
     /// Iterate over a track, skipping events that are not of interest.
     /// The iterator provides access to events whose timeSinceLastEvents are adjusted
     /// so they match the last event returned by the iterator.
@@ -58,6 +58,6 @@ namespace seqwires {
 
     /// Return a span of iterators which only return events of the specified type.
     template <typename EVENT> babelwires::Span<FilteredTrackIterator<EVENT>> iterateOver(const Track& track);
-} // namespace seqwires
+} // namespace bw_music
 
 #include <MusicLib/Utilities/filteredTrackIterator_inl.hpp>

@@ -131,9 +131,9 @@ std::uint32_t smf::SmfParser::readVariableLengthQuantity() {
     return result;
 }
 
-seqwires::ModelDuration smf::SmfParser::readModelDuration() {
+bw_music::ModelDuration smf::SmfParser::readModelDuration() {
     const int numDivisions = readVariableLengthQuantity();
-    return seqwires::ModelDuration(numDivisions) * seqwires::ModelDuration(1, m_division * 4);
+    return bw_music::ModelDuration(numDivisions) * bw_music::ModelDuration(1, m_division * 4);
 }
 
 std::string smf::SmfParser::readTextMetaEvent(int length) {
@@ -204,41 +204,41 @@ class smf::SmfParser::TrackSplitter {
         : m_channels{}
         , m_channelSetup(channelSetup) {}
 
-    bool addNoteOn(unsigned int channelNumber, seqwires::ModelDuration timeSinceLastTrackEvent, seqwires::Pitch pitch,
-                   seqwires::Velocity velocity) {
-        if (const seqwires::PercussionSetWithPitchMap* const percussionSet =
+    bool addNoteOn(unsigned int channelNumber, bw_music::ModelDuration timeSinceLastTrackEvent, bw_music::Pitch pitch,
+                   bw_music::Velocity velocity) {
+        if (const bw_music::PercussionSetWithPitchMap* const percussionSet =
                 m_channelSetup[channelNumber].m_kitIfPercussion) {
             if (auto instrument = percussionSet->tryGetInstrumentFromPitch(pitch)) {
-                addToChannel<seqwires::PercussionOnEvent>(channelNumber, timeSinceLastTrackEvent, *instrument,
+                addToChannel<bw_music::PercussionOnEvent>(channelNumber, timeSinceLastTrackEvent, *instrument,
                                                           velocity);
                 return true;
             }
             return false;
         } else {
-            addToChannel<seqwires::NoteOnEvent>(channelNumber, timeSinceLastTrackEvent, pitch, velocity);
+            addToChannel<bw_music::NoteOnEvent>(channelNumber, timeSinceLastTrackEvent, pitch, velocity);
             return true;
         }
     }
 
-    bool addNoteOff(unsigned int channelNumber, seqwires::ModelDuration timeSinceLastTrackEvent, seqwires::Pitch pitch,
-                    seqwires::Velocity velocity) {
-        if (const seqwires::PercussionSetWithPitchMap* const percussionSet =
+    bool addNoteOff(unsigned int channelNumber, bw_music::ModelDuration timeSinceLastTrackEvent, bw_music::Pitch pitch,
+                    bw_music::Velocity velocity) {
+        if (const bw_music::PercussionSetWithPitchMap* const percussionSet =
                 m_channelSetup[channelNumber].m_kitIfPercussion) {
             if (auto instrument = percussionSet->tryGetInstrumentFromPitch(pitch)) {
-                addToChannel<seqwires::PercussionOffEvent>(channelNumber, timeSinceLastTrackEvent, *instrument,
+                addToChannel<bw_music::PercussionOffEvent>(channelNumber, timeSinceLastTrackEvent, *instrument,
                                                            velocity);
                 return true;
             }
             return false;
         } else {
-            addToChannel<seqwires::NoteOffEvent>(channelNumber, timeSinceLastTrackEvent, pitch, velocity);
+            addToChannel<bw_music::NoteOffEvent>(channelNumber, timeSinceLastTrackEvent, pitch, velocity);
             return true;
         }
     }
 
     /// All channels share the duration of the MIDI track.
-    void setDurationsForAllChannels(seqwires::ModelDuration timeToEndOfTrackEvent) {
-        seqwires::ModelDuration duration = m_timeSinceStart + timeToEndOfTrackEvent;
+    void setDurationsForAllChannels(bw_music::ModelDuration timeToEndOfTrackEvent) {
+        bw_music::ModelDuration duration = m_timeSinceStart + timeToEndOfTrackEvent;
         for (int channelNumber = 0; channelNumber < MAX_CHANNELS; ++channelNumber) {
             if (m_channels[channelNumber] != nullptr) {
                 m_channels[channelNumber]->m_track.setDuration(duration);
@@ -248,8 +248,8 @@ class smf::SmfParser::TrackSplitter {
 
   private:
     struct PerChannelInfo {
-        seqwires::ModelDuration m_timeOfLastEvent;
-        seqwires::Track m_track;
+        bw_music::ModelDuration m_timeOfLastEvent;
+        bw_music::Track m_track;
     };
 
     PerChannelInfo* getChannel(unsigned int channelNumber) {
@@ -264,7 +264,7 @@ class smf::SmfParser::TrackSplitter {
     }
 
     template <typename EVENT_TYPE, typename... ARGS>
-    void addToChannel(unsigned int channelNumber, seqwires::ModelDuration timeSinceLastTrackEvent, ARGS&&... args) {
+    void addToChannel(unsigned int channelNumber, bw_music::ModelDuration timeSinceLastTrackEvent, ARGS&&... args) {
         PerChannelInfo* channel = getChannel(channelNumber);
 
         m_timeSinceStart += timeSinceLastTrackEvent;
@@ -274,7 +274,7 @@ class smf::SmfParser::TrackSplitter {
     }
 
   public:
-    seqwires::ModelDuration m_timeSinceStart;
+    bw_music::ModelDuration m_timeSinceStart;
 
     std::array<std::unique_ptr<PerChannelInfo>, MAX_CHANNELS> m_channels;
 
@@ -531,7 +531,7 @@ void smf::SmfParser::readTrack(int trackIndex, TrackSplitter& tracks, bool hasMa
     const std::uint32_t trackLength = readU32();
     const int currentIndex = m_dataSource.getAbsolutePosition();
 
-    seqwires::ModelDuration timeSinceLastNoteEvent = 0;
+    bw_music::ModelDuration timeSinceLastNoteEvent = 0;
     babelwires::Byte lastStatusByte = 0;
     while ((m_dataSource.getAbsolutePosition() - currentIndex) < trackLength) {
         timeSinceLastNoteEvent += readModelDuration();
@@ -729,8 +729,8 @@ void smf::SmfParser::readTrack(int trackIndex, TrackSplitter& tracks, bool hasMa
             }
             case 0b1000: // Note off.
             {
-                const seqwires::Pitch pitch = getNext();
-                const seqwires::Velocity velocity = getNext();
+                const bw_music::Pitch pitch = getNext();
+                const bw_music::Velocity velocity = getNext();
                 // TODO If a NoteOn was skipped, we would need to skip the corresponding note off.
                 if (tracks.addNoteOff(statusLo, timeSinceLastNoteEvent, pitch, velocity)) {
                     timeSinceLastNoteEvent = 0;
@@ -739,8 +739,8 @@ void smf::SmfParser::readTrack(int trackIndex, TrackSplitter& tracks, bool hasMa
             }
             case 0b1001: // Note on.
             {
-                const seqwires::Pitch pitch = getNext();
-                const seqwires::Velocity velocity = getNext();
+                const bw_music::Pitch pitch = getNext();
+                const bw_music::Velocity velocity = getNext();
                 if (velocity != 0) {
                     if (tracks.addNoteOn(statusLo, timeSinceLastNoteEvent, pitch, velocity)) {
                         timeSinceLastNoteEvent = 0;

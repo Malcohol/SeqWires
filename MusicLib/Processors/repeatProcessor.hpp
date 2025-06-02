@@ -11,7 +11,7 @@
 #include <BabelWiresLib/Processors/parallelProcessor.hpp>
 #include <BabelWiresLib/Processors/processorFactory.hpp>
 
-namespace seqwires {
+namespace bw_music {
     class RepeatProcessorInput : public babelwires::ParallelProcessorInputBase {
       public:
         PRIMITIVE_TYPE("RepeatTrcksIn", "Repeat In", "23dc427d-8171-4de4-a9b6-15c16d9ed373", 1);
@@ -44,4 +44,4 @@ namespace seqwires {
                           const babelwires::ValueTreeNode& inputEntry, babelwires::ValueTreeNode& outputEntry) const override;
     };
 
-} // namespace seqwires
+} // namespace bw_music

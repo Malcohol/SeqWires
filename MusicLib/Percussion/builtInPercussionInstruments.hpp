@@ -223,7 +223,7 @@
     X(Submrn, "Submarine", "f36acda3-c89d-4d1b-9e41-f6b62d83b9d0")                                                     \
     X(Frewrk, "FireWork", "0e2ca006-d30a-466d-abe6-71504102dfe3")
 
-namespace seqwires {
+namespace bw_music {
     /// All percussion instruments built into SeqWires.
     /// This is just a holder of instruments. It cannot be used as a PercussionSet because the values do not have a 1-1
     /// mapping to pitch values.
@@ -235,4 +235,4 @@ namespace seqwires {
 
         ENUM_DEFINE_CPP_ENUM(BUILT_IN_PERCUSSION_INSTRUMENTS);
     };
-} // namespace seqwires
+} // namespace bw_music

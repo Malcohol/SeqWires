@@ -15,70 +15,70 @@
 #include <algorithm>
 #include <set>
 
-ENUM_DEFINE_ENUM_VALUE_SOURCE(seqwires::MonophonicSubtracksPolicyEnum, MONOPHONIC_SUBTRACK_POLICY);
+ENUM_DEFINE_ENUM_VALUE_SOURCE(bw_music::MonophonicSubtracksPolicyEnum, MONOPHONIC_SUBTRACK_POLICY);
 
-seqwires::MonophonicSubtracksPolicyEnum::MonophonicSubtracksPolicyEnum()
+bw_music::MonophonicSubtracksPolicyEnum::MonophonicSubtracksPolicyEnum()
     : babelwires::EnumType(getStaticValueSet(), 0) {}
 
 namespace {
     struct TrackInfo {
-        seqwires::ModelDuration m_timeSinceLastEvent;
-        seqwires::TrackEvent::GroupingInfo::GroupValue m_activeValue = seqwires::TrackEvent::GroupingInfo::c_notAValue;
+        bw_music::ModelDuration m_timeSinceLastEvent;
+        bw_music::TrackEvent::GroupingInfo::GroupValue m_activeValue = bw_music::TrackEvent::GroupingInfo::c_notAValue;
     };
 
     struct NoteEventInfo {
         /// Notes only.
-        seqwires::TrackEventHolder m_event;
+        bw_music::TrackEventHolder m_event;
         /// This is used to ensure sorting is stable when other factors compare equal.
         int m_originalIndex;
     };
 
-    using PitchSet = std::set<seqwires::TrackEvent::GroupingInfo::GroupValue>;
+    using PitchSet = std::set<bw_music::TrackEvent::GroupingInfo::GroupValue>;
 
-    const seqwires::TrackEvent::GroupingInfo::Category c_noteCategory = seqwires::NoteEvent::s_noteEventCategory;
+    const bw_music::TrackEvent::GroupingInfo::Category c_noteCategory = bw_music::NoteEvent::s_noteEventCategory;
 
-    void moveEventToOtherTrack(seqwires::ModelDuration& timeSinceLastEventOther, seqwires::TrackEventHolder& event,
-                               seqwires::MonophonicSubtracksResult& result) {
+    void moveEventToOtherTrack(bw_music::ModelDuration& timeSinceLastEventOther, bw_music::TrackEventHolder& event,
+                               bw_music::MonophonicSubtracksResult& result) {
         event->setTimeSinceLastEvent(timeSinceLastEventOther);
         result.m_other.addEvent(event.release());
         timeSinceLastEventOther = 0;
     }
 
     void moveNoteEventToTrack(std::vector<TrackInfo>& trackInfos, NoteEventInfo& noteEvent, int trackToUse,
-                              seqwires::MonophonicSubtracksResult& result) {
-        const seqwires::TrackEvent::GroupingInfo groupInfo = noteEvent.m_event->getGroupingInfo();
+                              bw_music::MonophonicSubtracksResult& result) {
+        const bw_music::TrackEvent::GroupingInfo groupInfo = noteEvent.m_event->getGroupingInfo();
         auto& t = trackInfos[trackToUse];
         noteEvent.m_event->setTimeSinceLastEvent(t.m_timeSinceLastEvent);
         result.m_noteTracks[trackToUse].addEvent(noteEvent.m_event.release());
-        if (groupInfo.m_grouping == seqwires::TrackEvent::GroupingInfo::Grouping::StartOfGroup) {
+        if (groupInfo.m_grouping == bw_music::TrackEvent::GroupingInfo::Grouping::StartOfGroup) {
             // Too strong?
-            assert(t.m_activeValue == seqwires::TrackEvent::GroupingInfo::c_notAValue);
+            assert(t.m_activeValue == bw_music::TrackEvent::GroupingInfo::c_notAValue);
             t.m_activeValue = groupInfo.m_groupValue;
-        } else if (groupInfo.m_grouping == seqwires::TrackEvent::GroupingInfo::Grouping::EndOfGroup) {
-            t.m_activeValue = seqwires::TrackEvent::GroupingInfo::c_notAValue;
+        } else if (groupInfo.m_grouping == bw_music::TrackEvent::GroupingInfo::Grouping::EndOfGroup) {
+            t.m_activeValue = bw_music::TrackEvent::GroupingInfo::c_notAValue;
         }
         t.m_timeSinceLastEvent = 0;
     }
 
     void evictEvent(std::vector<TrackInfo>& trackInfos, int trackToUse, PitchSet& evictedPitches,
-                    seqwires::MonophonicSubtracksResult& result) {
+                    bw_music::MonophonicSubtracksResult& result) {
         auto& t = trackInfos[trackToUse];
-        const seqwires::Pitch pitchToEvict = trackInfos[trackToUse].m_activeValue;
+        const bw_music::Pitch pitchToEvict = trackInfos[trackToUse].m_activeValue;
         assert((evictedPitches.find(pitchToEvict) == evictedPitches.end()) && "Evicting an already evicted pitch");
         evictedPitches.insert(pitchToEvict);
-        result.m_noteTracks[trackToUse].addEvent(seqwires::NoteOffEvent{t.m_timeSinceLastEvent, pitchToEvict});
-        t.m_activeValue = seqwires::TrackEvent::GroupingInfo::c_notAValue;
+        result.m_noteTracks[trackToUse].addEvent(bw_music::NoteOffEvent{t.m_timeSinceLastEvent, pitchToEvict});
+        t.m_activeValue = bw_music::TrackEvent::GroupingInfo::c_notAValue;
         t.m_timeSinceLastEvent = 0;
     }
 
     /// Returns [trackToUse, shouldEvict]
     std::tuple<int, bool> getTrackToUse(const std::vector<TrackInfo>& trackInfos,
-                                        const seqwires::TrackEventHolder& event,
-                                        seqwires::MonophonicSubtracksPolicyEnum::Value policy) {
-        const bool isEvicting = (policy == seqwires::MonophonicSubtracksPolicyEnum::Value::HighEv) ||
-                                (policy == seqwires::MonophonicSubtracksPolicyEnum::Value::LowEv);
-        const bool preferHigherPitches = (policy == seqwires::MonophonicSubtracksPolicyEnum::Value::High) ||
-                                         (policy == seqwires::MonophonicSubtracksPolicyEnum::Value::HighEv);
+                                        const bw_music::TrackEventHolder& event,
+                                        bw_music::MonophonicSubtracksPolicyEnum::Value policy) {
+        const bool isEvicting = (policy == bw_music::MonophonicSubtracksPolicyEnum::Value::HighEv) ||
+                                (policy == bw_music::MonophonicSubtracksPolicyEnum::Value::LowEv);
+        const bool preferHigherPitches = (policy == bw_music::MonophonicSubtracksPolicyEnum::Value::High) ||
+                                         (policy == bw_music::MonophonicSubtracksPolicyEnum::Value::HighEv);
         int trackToUse = -1;
         bool shouldEvict = false;
         const auto& groupInfo = event->getGroupingInfo();
@@ -88,14 +88,14 @@ namespace {
             if (t.m_activeValue == groupInfo.m_groupValue) {
                 trackToUse = i;
                 break;
-            } else if ((trackToUse == -1) && (t.m_activeValue == seqwires::TrackEvent::GroupingInfo::c_notAValue) &&
-                        (groupInfo.m_grouping == seqwires::TrackEvent::GroupingInfo::Grouping::StartOfGroup)) {
+            } else if ((trackToUse == -1) && (t.m_activeValue == bw_music::TrackEvent::GroupingInfo::c_notAValue) &&
+                        (groupInfo.m_grouping == bw_music::TrackEvent::GroupingInfo::Grouping::StartOfGroup)) {
                 trackToUse = i;
             }
         }
         if (isEvicting && (trackToUse == -1)) {
-            seqwires::Pitch bestEvictablePitch = preferHigherPitches ? std::numeric_limits<seqwires::Pitch>::max()
-                                                                     : std::numeric_limits<seqwires::Pitch>::min();
+            bw_music::Pitch bestEvictablePitch = preferHigherPitches ? std::numeric_limits<bw_music::Pitch>::max()
+                                                                     : std::numeric_limits<bw_music::Pitch>::min();
             for (int i = 0; i < trackInfos.size(); ++i) {
                 auto& t = trackInfos[i];
                 if (((groupInfo.m_groupValue > t.m_activeValue) == preferHigherPitches) &&
@@ -109,21 +109,21 @@ namespace {
         return {trackToUse, shouldEvict};
     }
 
-    void assignNoteEventsToTracks(std::vector<TrackInfo>& trackInfos, seqwires::ModelDuration& timeSinceLastEventOther,
+    void assignNoteEventsToTracks(std::vector<TrackInfo>& trackInfos, bw_music::ModelDuration& timeSinceLastEventOther,
                                   std::vector<NoteEventInfo>& noteEvents, PitchSet& evictedPitches,
-                                  seqwires::MonophonicSubtracksPolicyEnum::Value policy,
-                                  seqwires::MonophonicSubtracksResult& result) {
-        const bool preferHigherPitches = (policy == seqwires::MonophonicSubtracksPolicyEnum::Value::High) ||
-                                         (policy == seqwires::MonophonicSubtracksPolicyEnum::Value::HighEv);
+                                  bw_music::MonophonicSubtracksPolicyEnum::Value policy,
+                                  bw_music::MonophonicSubtracksResult& result) {
+        const bool preferHigherPitches = (policy == bw_music::MonophonicSubtracksPolicyEnum::Value::High) ||
+                                         (policy == bw_music::MonophonicSubtracksPolicyEnum::Value::HighEv);
         const auto lessThan = [preferHigherPitches](NoteEventInfo& a, NoteEventInfo& b) {
             const auto& groupInfoA = a.m_event->getGroupingInfo();
             const auto& groupInfoB = b.m_event->getGroupingInfo();
-            if ((groupInfoA.m_grouping == seqwires::TrackEvent::GroupingInfo::Grouping::EndOfGroup) &&
-                (groupInfoB.m_grouping == seqwires::TrackEvent::GroupingInfo::Grouping::StartOfGroup)) {
+            if ((groupInfoA.m_grouping == bw_music::TrackEvent::GroupingInfo::Grouping::EndOfGroup) &&
+                (groupInfoB.m_grouping == bw_music::TrackEvent::GroupingInfo::Grouping::StartOfGroup)) {
                 return true;
             }
-            if ((groupInfoA.m_grouping == seqwires::TrackEvent::GroupingInfo::Grouping::StartOfGroup) &&
-                (groupInfoB.m_grouping == seqwires::TrackEvent::GroupingInfo::Grouping::EndOfGroup)) {
+            if ((groupInfoA.m_grouping == bw_music::TrackEvent::GroupingInfo::Grouping::StartOfGroup) &&
+                (groupInfoB.m_grouping == bw_music::TrackEvent::GroupingInfo::Grouping::EndOfGroup)) {
                 return false;
             }
             if (groupInfoA.m_groupValue > groupInfoB.m_groupValue) {
@@ -139,10 +139,10 @@ namespace {
         std::sort(noteEvents.begin(), noteEvents.end(), lessThan);
 
         for (auto& noteEvent : noteEvents) {
-            const seqwires::TrackEvent::GroupingInfo groupInfo = noteEvent.m_event->getGroupingInfo();
+            const bw_music::TrackEvent::GroupingInfo groupInfo = noteEvent.m_event->getGroupingInfo();
             const auto it = evictedPitches.find(groupInfo.m_groupValue);
             if (it != evictedPitches.end()) {
-                if (groupInfo.m_grouping == seqwires::TrackEvent::GroupingInfo::Grouping::EndOfGroup) {
+                if (groupInfo.m_grouping == bw_music::TrackEvent::GroupingInfo::Grouping::EndOfGroup) {
                     evictedPitches.erase(it);
                 } // else ignore this event.
             } else {
@@ -160,10 +160,10 @@ namespace {
     }
 } // namespace
 
-seqwires::MonophonicSubtracksResult seqwires::getMonophonicSubtracks(const Track& trackIn, int numTracks,
+bw_music::MonophonicSubtracksResult bw_music::getMonophonicSubtracks(const Track& trackIn, int numTracks,
                                                                      MonophonicSubtracksPolicyEnum::Value policy) {
     assert(numTracks > 0);
-    seqwires::MonophonicSubtracksResult result;
+    bw_music::MonophonicSubtracksResult result;
 
     std::vector<TrackInfo> trackInfos;
     trackInfos.resize(numTracks);

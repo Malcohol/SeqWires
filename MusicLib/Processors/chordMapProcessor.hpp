@@ -14,7 +14,7 @@
 #include <BabelWiresLib/Types/Map/mapType.hpp>
 #include <BabelWiresLib/Processors/processorFactory.hpp>
 
-namespace seqwires {
+namespace bw_music {
 
     class ChordMapProcessorInput : public babelwires::ParallelProcessorInputBase {
       public:
@@ -47,4 +47,4 @@ namespace seqwires {
                           const babelwires::ValueTreeNode& inputEntry, babelwires::ValueTreeNode& outputEntry) const override;
     };
 
-} // namespace seqwires
+} // namespace bw_music

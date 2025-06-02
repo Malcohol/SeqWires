@@ -10,7 +10,7 @@
 #include <BabelWiresLib/TypeSystem/typeSystemException.hpp>
 #include <BabelWiresLib/Types/Rational/rationalValue.hpp>
 
-seqwires::ModelDuration seqwires::TrackTypeConstructor::extractValueArguments(
+bw_music::ModelDuration bw_music::TrackTypeConstructor::extractValueArguments(
     const std::vector<babelwires::EditableValueHolder>& valueArguments) {
     if (valueArguments.size() != 1) {
         throw babelwires::TypeSystemException()
@@ -24,7 +24,7 @@ seqwires::ModelDuration seqwires::TrackTypeConstructor::extractValueArguments(
     }
 }
 
-std::unique_ptr<babelwires::Type> seqwires::TrackTypeConstructor::constructType(const babelwires::TypeSystem& typeSystem, 
+std::unique_ptr<babelwires::Type> bw_music::TrackTypeConstructor::constructType(const babelwires::TypeSystem& typeSystem, 
     babelwires::TypeRef newTypeRef, const std::vector<const babelwires::Type*>& typeArguments,
     const std::vector<babelwires::EditableValueHolder>& valueArguments) const {
     if (typeArguments.size() != 0) {

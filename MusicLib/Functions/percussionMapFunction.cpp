@@ -23,17 +23,17 @@
 #include <BabelWiresLib/Types/Map/standardMapIdentifiers.hpp>
 
 std::unique_ptr<babelwires::Type>
-seqwires::PercussionMapType::constructType(const babelwires::TypeSystem& typeSystem, babelwires::TypeRef newTypeRef,
+bw_music::PercussionMapType::constructType(const babelwires::TypeSystem& typeSystem, babelwires::TypeRef newTypeRef,
                                            const std::vector<const babelwires::Type*>& typeArguments,
                                            const std::vector<babelwires::EditableValueHolder>& valueArguments) const {
 
     std::vector<babelwires::TypeRef> sourceSummands;
-    auto percussionTypes = typeSystem.getTaggedPrimitiveTypes(seqwires::percussionTypeTag());
+    auto percussionTypes = typeSystem.getTaggedPrimitiveTypes(bw_music::percussionTypeTag());
     std::for_each(percussionTypes.begin(), percussionTypes.end(),
                   [&sourceSummands](babelwires::PrimitiveTypeId typeId) { sourceSummands.emplace_back(typeId); });
 
     const auto it =
-        std::find(sourceSummands.begin(), sourceSummands.end(), seqwires::BuiltInPercussionInstruments::getThisType());
+        std::find(sourceSummands.begin(), sourceSummands.end(), bw_music::BuiltInPercussionInstruments::getThisType());
     assert(it != sourceSummands.end());
     unsigned int indexOfDefault = std::distance(sourceSummands.begin(), it);
 
@@ -48,11 +48,11 @@ seqwires::PercussionMapType::constructType(const babelwires::TypeSystem& typeSys
                                                                               std::move(sourceSummands), std::move(targetSummands), indexOfDefault, indexOfDefault);
 }
 
-babelwires::TypeRef seqwires::getPercussionMapType() {
+babelwires::TypeRef bw_music::getPercussionMapType() {
     return babelwires::TypeRef(PercussionMapType::getThisIdentifier(), babelwires::TypeConstructorArguments{});
 }
 
-seqwires::Track seqwires::mapPercussionFunction(const babelwires::TypeSystem& typeSystem, const Track& trackIn,
+bw_music::Track bw_music::mapPercussionFunction(const babelwires::TypeSystem& typeSystem, const Track& trackIn,
                                                 const babelwires::MapValue& percussionMapValue) {
 
     if (!percussionMapValue.isValid(typeSystem)) {

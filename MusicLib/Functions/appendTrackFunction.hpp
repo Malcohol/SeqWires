@@ -9,7 +9,7 @@
 
 #include <MusicLib/Types/Track/track.hpp>
 
-namespace seqwires {
+namespace bw_music {
     /// Add the events of sourceTrack to the end of targetTrack.
     void appendTrack(Track& targetTrack, const Track& sourceTrack);
-} // namespace seqwires
+} // namespace bw_music

@@ -11,7 +11,7 @@
 
 #include <BabelWiresLib/ValueTree/modelExceptions.hpp>
 
-void seqwires::appendTrack(Track& targetTrack, const Track& sourceTrack) {
+void bw_music::appendTrack(Track& targetTrack, const Track& sourceTrack) {
     assert((&targetTrack != &sourceTrack) && "You cannot have source and target track being the same");
 
     const ModelDuration initialDuration = targetTrack.getDuration();

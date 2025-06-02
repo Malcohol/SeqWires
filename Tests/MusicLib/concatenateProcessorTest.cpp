@@ -11,19 +11,19 @@
 #include <Tests/TestUtils/seqTestUtils.hpp>
 
 TEST(ConcatenateProcessorTest, appendFuncSimple) {
-    seqwires::Track trackA;
-    testUtils::addSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65}, trackA);
+    bw_music::Track trackA;
+    testUtils::addSimpleNotes(std::vector<bw_music::Pitch>{60, 62, 64, 65}, trackA);
 
-    seqwires::Track trackB;
-    testUtils::addSimpleNotes(std::vector<seqwires::Pitch>{67, 69, 71, 72}, trackB);
+    bw_music::Track trackB;
+    testUtils::addSimpleNotes(std::vector<bw_music::Pitch>{67, 69, 71, 72}, trackB);
 
     appendTrack(trackA, trackB);
 
-    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65, 67, 69, 71, 72}, trackA);
+    testUtils::testSimpleNotes(std::vector<bw_music::Pitch>{60, 62, 64, 65, 67, 69, 71, 72}, trackA);
 }
 
 TEST(ConcatenateProcessorTest, appendFuncGaps) {
-    seqwires::Track trackA;
+    bw_music::Track trackA;
     const std::vector<testUtils::NoteInfo> noteInfosA{{60, 1, babelwires::Rational(1, 4)},
                                                       {62, 0, babelwires::Rational(1, 4)},
                                                       {64, 0, babelwires::Rational(1, 4)},
@@ -31,7 +31,7 @@ TEST(ConcatenateProcessorTest, appendFuncGaps) {
     testUtils::addNotes(noteInfosA, trackA);
     trackA.setDuration(3);
 
-    seqwires::Track trackB;
+    bw_music::Track trackB;
     const std::vector<testUtils::NoteInfo> noteInfosB{
         {67, 1, babelwires::Rational(1, 4)},
         {69, 0, babelwires::Rational(1, 4)},
@@ -56,39 +56,39 @@ TEST(ConcatenateProcessorTest, appendFuncGaps) {
 
 TEST(ConcatenateProcessorTest, processor) {
     testUtils::TestEnvironment testEnvironment;
-    seqwires::registerLib(testEnvironment.m_projectContext);
+    bw_music::registerLib(testEnvironment.m_projectContext);
 
-    seqwires::ConcatenateProcessor processor(testEnvironment.m_projectContext);
+    bw_music::ConcatenateProcessor processor(testEnvironment.m_projectContext);
 
     processor.getInput().setToDefault();
     processor.getOutput().setToDefault();
 
-    auto input = seqwires::ConcatenateProcessorInput::Instance(processor.getInput());
-    const auto output = seqwires::ConcatenateProcessorOutput::ConstInstance(processor.getOutput());
+    auto input = bw_music::ConcatenateProcessorInput::Instance(processor.getInput());
+    const auto output = bw_music::ConcatenateProcessorOutput::ConstInstance(processor.getOutput());
 
     ASSERT_EQ(input.getInput().getSize(), 2);
     EXPECT_EQ(input.getInput().getEntry(0).get().getDuration(), 0);
     EXPECT_EQ(input.getInput().getEntry(1).get().getDuration(), 0);
 
     {
-        seqwires::Track track;
-        testUtils::addSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65}, track);
+        bw_music::Track track;
+        testUtils::addSimpleNotes(std::vector<bw_music::Pitch>{60, 62, 64, 65}, track);
         input.getInput().getEntry(0).set(std::move(track));
     }
 
     processor.process(testEnvironment.m_log);
 
-    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65}, output.getOutput().get());
+    testUtils::testSimpleNotes(std::vector<bw_music::Pitch>{60, 62, 64, 65}, output.getOutput().get());
 
     processor.getInput().clearChanges();
     {
-        seqwires::Track track;
-        testUtils::addSimpleNotes(std::vector<seqwires::Pitch>{67, 69, 71, 72}, track);
+        bw_music::Track track;
+        testUtils::addSimpleNotes(std::vector<bw_music::Pitch>{67, 69, 71, 72}, track);
         input.getInput().getEntry(1).set(std::move(track));
     }
     processor.process(testEnvironment.m_log);
 
-    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65, 67, 69, 71, 72}, output.getOutput().get());
+    testUtils::testSimpleNotes(std::vector<bw_music::Pitch>{60, 62, 64, 65, 67, 69, 71, 72}, output.getOutput().get());
 
     processor.getInput().clearChanges();
     // Insert a new track at position 1.
@@ -96,13 +96,13 @@ TEST(ConcatenateProcessorTest, processor) {
         input.getInput().setSize(3);
         input.getInput().getEntry(2).set(input.getInput().getEntry(1)->getValue());
         {
-            seqwires::Track track;
-            testUtils::addSimpleNotes(std::vector<seqwires::Pitch>{67, 65}, track);
+            bw_music::Track track;
+            testUtils::addSimpleNotes(std::vector<bw_music::Pitch>{67, 65}, track);
             input.getInput().getEntry(1).set(std::move(track));
         }
     }
     processor.process(testEnvironment.m_log);
 
-    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65, 67, 65, 67, 69, 71, 72},
+    testUtils::testSimpleNotes(std::vector<bw_music::Pitch>{60, 62, 64, 65, 67, 65, 67, 69, 71, 72},
                                output.getOutput().get());
 }

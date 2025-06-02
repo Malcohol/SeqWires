@@ -7,44 +7,44 @@
  **/
 #include <Plugins/Smf/Plugin/Percussion/xgSFX2PercussionSet.hpp>
 
-smf::XgSFX2PercussionSet::XgSFX2PercussionSet(const seqwires::BuiltInPercussionInstruments& builtInInstruments)
+smf::XgSFX2PercussionSet::XgSFX2PercussionSet(const bw_music::BuiltInPercussionInstruments& builtInInstruments)
     : PercussionSetWithPitchMap(
           std::vector<InstrumentBlock>{
-              {{seqwires::BuiltInPercussionInstruments::Value::DialTn,
-                seqwires::BuiltInPercussionInstruments::Value::DoorCr,
-                seqwires::BuiltInPercussionInstruments::Value::Door,   // Door Slam
-                seqwires::BuiltInPercussionInstruments::Value::ScrPsh, // Scratch
-                seqwires::BuiltInPercussionInstruments::Value::ScrPll, // Scratch 2
-                seqwires::BuiltInPercussionInstruments::Value::WChime,
-                seqwires::BuiltInPercussionInstruments::Value::TeleRn},
+              {{bw_music::BuiltInPercussionInstruments::Value::DialTn,
+                bw_music::BuiltInPercussionInstruments::Value::DoorCr,
+                bw_music::BuiltInPercussionInstruments::Value::Door,   // Door Slam
+                bw_music::BuiltInPercussionInstruments::Value::ScrPsh, // Scratch
+                bw_music::BuiltInPercussionInstruments::Value::ScrPll, // Scratch 2
+                bw_music::BuiltInPercussionInstruments::Value::WChime,
+                bw_music::BuiltInPercussionInstruments::Value::TeleRn},
                36,
                &builtInInstruments},
-              {{seqwires::BuiltInPercussionInstruments::Value::CarEng, // Engine Start
-                seqwires::BuiltInPercussionInstruments::Value::TireSc,
-                seqwires::BuiltInPercussionInstruments::Value::CarPss,
-                seqwires::BuiltInPercussionInstruments::Value::CarCrs,
-                seqwires::BuiltInPercussionInstruments::Value::Siren,
-                seqwires::BuiltInPercussionInstruments::Value::Train,
-                seqwires::BuiltInPercussionInstruments::Value::Jetpln,
-                seqwires::BuiltInPercussionInstruments::Value::Strshp,
-                seqwires::BuiltInPercussionInstruments::Value::Siren,
+              {{bw_music::BuiltInPercussionInstruments::Value::CarEng, // Engine Start
+                bw_music::BuiltInPercussionInstruments::Value::TireSc,
+                bw_music::BuiltInPercussionInstruments::Value::CarPss,
+                bw_music::BuiltInPercussionInstruments::Value::CarCrs,
+                bw_music::BuiltInPercussionInstruments::Value::Siren,
+                bw_music::BuiltInPercussionInstruments::Value::Train,
+                bw_music::BuiltInPercussionInstruments::Value::Jetpln,
+                bw_music::BuiltInPercussionInstruments::Value::Strshp,
+                bw_music::BuiltInPercussionInstruments::Value::Siren,
                 BW_SHORT_ID("XgBNse", "XG Burst Noise", "b57aa245-2f69-458d-94df-b77dccc456d8"),
                 BW_SHORT_ID("XgCstr", "XG Coaster", "ccee260e-6319-49eb-b04f-c9f1ded56b26"),
-                seqwires::BuiltInPercussionInstruments::Value::Submrn},
+                bw_music::BuiltInPercussionInstruments::Value::Submrn},
                52,
                &builtInInstruments},
-              {{seqwires::BuiltInPercussionInstruments::Value::Laugh,
-                seqwires::BuiltInPercussionInstruments::Value::Scream,
-                seqwires::BuiltInPercussionInstruments::Value::Punch,
-                seqwires::BuiltInPercussionInstruments::Value::HeartB,
-                seqwires::BuiltInPercussionInstruments::Value::Foot1,
-                seqwires::BuiltInPercussionInstruments::Value::Aplaus},
+              {{bw_music::BuiltInPercussionInstruments::Value::Laugh,
+                bw_music::BuiltInPercussionInstruments::Value::Scream,
+                bw_music::BuiltInPercussionInstruments::Value::Punch,
+                bw_music::BuiltInPercussionInstruments::Value::HeartB,
+                bw_music::BuiltInPercussionInstruments::Value::Foot1,
+                bw_music::BuiltInPercussionInstruments::Value::Aplaus},
                68,
                &builtInInstruments},
-              {{seqwires::BuiltInPercussionInstruments::Value::MGun,
-                seqwires::BuiltInPercussionInstruments::Value::Lsrgun,
-                seqwires::BuiltInPercussionInstruments::Value::Explsn,
-                seqwires::BuiltInPercussionInstruments::Value::Frewrk},
+              {{bw_music::BuiltInPercussionInstruments::Value::MGun,
+                bw_music::BuiltInPercussionInstruments::Value::Lsrgun,
+                bw_music::BuiltInPercussionInstruments::Value::Explsn,
+                bw_music::BuiltInPercussionInstruments::Value::Frewrk},
                84,
                &builtInInstruments},
           },

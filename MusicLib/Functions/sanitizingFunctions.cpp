@@ -11,7 +11,7 @@
 
 #include <set>
 
-seqwires::Track seqwires::removeZeroDurationGroups(const Track& trackIn) {
+bw_music::Track bw_music::removeZeroDurationGroups(const Track& trackIn) {
 
     using Group = std::tuple<TrackEvent::GroupingInfo::Category, TrackEvent::GroupingInfo::GroupValue>;
 

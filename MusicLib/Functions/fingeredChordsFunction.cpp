@@ -13,9 +13,9 @@
 #include <algorithm>
 #include <array>
 
-ENUM_DEFINE_ENUM_VALUE_SOURCE(seqwires::FingeredChordsSustainPolicyEnum, FINGERED_CHORDS_SUSTAIN_POLICY);
+ENUM_DEFINE_ENUM_VALUE_SOURCE(bw_music::FingeredChordsSustainPolicyEnum, FINGERED_CHORDS_SUSTAIN_POLICY);
 
-seqwires::FingeredChordsSustainPolicyEnum::FingeredChordsSustainPolicyEnum()
+bw_music::FingeredChordsSustainPolicyEnum::FingeredChordsSustainPolicyEnum()
     : babelwires::EnumType(getStaticValueSet(), 0) {}
 
 namespace {
@@ -25,7 +25,7 @@ namespace {
         IntervalSet m_intervals;
         int m_chordType;
         
-        IntervalSetToChordType(IntervalSet intervals, seqwires::ChordType::Value chordType) 
+        IntervalSetToChordType(IntervalSet intervals, bw_music::ChordType::Value chordType) 
             : m_intervals(intervals)
             , m_chordType(static_cast<int>(chordType))
         {
@@ -52,68 +52,68 @@ namespace {
         // clang-format off
         // This must be sorted (the alphabetic sort of a typical editor will work to keep this sorted).
         {0b0000000000000111, s_cancelChord},
-        {0b0000000000001101, seqwires::ChordType::Value::m9},
-        {0b0000000000010101, seqwires::ChordType::Value::M9},
-        {0b0000000001001001, seqwires::ChordType::Value::dim},
-        {0b0000000001010001, seqwires::ChordType::Value::b5},
-        {0b0000000010000001, seqwires::ChordType::Value::_1p5},
-        {0b0000000010000101, seqwires::ChordType::Value::_1p2p5},
-        {0b0000000010001001, seqwires::ChordType::Value::m},
-        {0b0000000010001101, seqwires::ChordType::Value::m9},
-        {0b0000000010010001, seqwires::ChordType::Value::M},
-        {0b0000000010010101, seqwires::ChordType::Value::M9},
-        {0b0000000010100001, seqwires::ChordType::Value::sus4},
-        {0b0000000010101001, seqwires::ChordType::Value::m7_11},
-        {0b0000000010101101, seqwires::ChordType::Value::m7_11},
-        {0b0000000100010001, seqwires::ChordType::Value::aug},
-        {0b0000001000010101, seqwires::ChordType::Value::M6_9},
-        {0b0000001001001001, seqwires::ChordType::Value::dim7},
-        {0b0000001010000001, seqwires::ChordType::Value::M6},
-        {0b0000001010001001, seqwires::ChordType::Value::m6},
-        {0b0000001010010001, seqwires::ChordType::Value::M6},
-        {0b0000001010010101, seqwires::ChordType::Value::M6_9},
-        {0b0000010000001001, seqwires::ChordType::Value::m7},
-        {0b0000010000001101, seqwires::ChordType::Value::m7_9},
-        {0b0000010000010001, seqwires::ChordType::Value::_7},
-        {0b0000010000010011, seqwires::ChordType::Value::_7b9},
-        {0b0000010000010101, seqwires::ChordType::Value::_79},
-        {0b0000010000011001, seqwires::ChordType::Value::_7s9},
-        {0b0000010000100001, seqwires::ChordType::Value::_7sus4},
-        {0b0000010001001001, seqwires::ChordType::Value::m7b5},
-        {0b0000010001010001, seqwires::ChordType::Value::_7b5},
-        {0b0000010001010101, seqwires::ChordType::Value::_7s11},
-        {0b0000010010001001, seqwires::ChordType::Value::m7},
-        {0b0000010010001101, seqwires::ChordType::Value::m7_9},
-        {0b0000010010010001, seqwires::ChordType::Value::_7},
-        {0b0000010010010011, seqwires::ChordType::Value::_7b9},
-        {0b0000010010010101, seqwires::ChordType::Value::_79},
-        {0b0000010010011001, seqwires::ChordType::Value::_7s9},
-        {0b0000010010100001, seqwires::ChordType::Value::_7sus4},
-        {0b0000010010101001, seqwires::ChordType::Value::m7_11},
-        {0b0000010010101101, seqwires::ChordType::Value::m7_11},
-        {0b0000010011010001, seqwires::ChordType::Value::_7s11},
-        {0b0000010011010101, seqwires::ChordType::Value::_7s11},
-        {0b0000010100010001, seqwires::ChordType::Value::_7aug},
-        {0b0000010110010001, seqwires::ChordType::Value::_7b13},
-        {0b0000011000010001, seqwires::ChordType::Value::_7_13},
-        {0b0000011010010001, seqwires::ChordType::Value::_7_13},
-        {0b0000100000001001, seqwires::ChordType::Value::mM7},
-        {0b0000100000001101, seqwires::ChordType::Value::mM7_9},
-        {0b0000100000010001, seqwires::ChordType::Value::M7},
-        {0b0000100000010101, seqwires::ChordType::Value::M7_9},
-        {0b0000100001001001, seqwires::ChordType::Value::mM7b5},
-        {0b0000100001010001, seqwires::ChordType::Value::M7b5},
-        {0b0000100001010101, seqwires::ChordType::Value::M7s11},
-        {0b0000100010001001, seqwires::ChordType::Value::mM7},
-        {0b0000100010001101, seqwires::ChordType::Value::mM7_9},
-        {0b0000100010010001, seqwires::ChordType::Value::M7},
-        {0b0000100010010101, seqwires::ChordType::Value::M7_9},
-        {0b0000100011010001, seqwires::ChordType::Value::M7s11},
-        {0b0000100011010001, seqwires::ChordType::Value::M7s11},
-        {0b0000100011010101, seqwires::ChordType::Value::M7s11},
-        {0b0000100100000001, seqwires::ChordType::Value::Mj7aug},
-        {0b0000100100010001, seqwires::ChordType::Value::Mj7aug},
-        {0b0001000000000001, seqwires::ChordType::Value::_1p8},
+        {0b0000000000001101, bw_music::ChordType::Value::m9},
+        {0b0000000000010101, bw_music::ChordType::Value::M9},
+        {0b0000000001001001, bw_music::ChordType::Value::dim},
+        {0b0000000001010001, bw_music::ChordType::Value::b5},
+        {0b0000000010000001, bw_music::ChordType::Value::_1p5},
+        {0b0000000010000101, bw_music::ChordType::Value::_1p2p5},
+        {0b0000000010001001, bw_music::ChordType::Value::m},
+        {0b0000000010001101, bw_music::ChordType::Value::m9},
+        {0b0000000010010001, bw_music::ChordType::Value::M},
+        {0b0000000010010101, bw_music::ChordType::Value::M9},
+        {0b0000000010100001, bw_music::ChordType::Value::sus4},
+        {0b0000000010101001, bw_music::ChordType::Value::m7_11},
+        {0b0000000010101101, bw_music::ChordType::Value::m7_11},
+        {0b0000000100010001, bw_music::ChordType::Value::aug},
+        {0b0000001000010101, bw_music::ChordType::Value::M6_9},
+        {0b0000001001001001, bw_music::ChordType::Value::dim7},
+        {0b0000001010000001, bw_music::ChordType::Value::M6},
+        {0b0000001010001001, bw_music::ChordType::Value::m6},
+        {0b0000001010010001, bw_music::ChordType::Value::M6},
+        {0b0000001010010101, bw_music::ChordType::Value::M6_9},
+        {0b0000010000001001, bw_music::ChordType::Value::m7},
+        {0b0000010000001101, bw_music::ChordType::Value::m7_9},
+        {0b0000010000010001, bw_music::ChordType::Value::_7},
+        {0b0000010000010011, bw_music::ChordType::Value::_7b9},
+        {0b0000010000010101, bw_music::ChordType::Value::_79},
+        {0b0000010000011001, bw_music::ChordType::Value::_7s9},
+        {0b0000010000100001, bw_music::ChordType::Value::_7sus4},
+        {0b0000010001001001, bw_music::ChordType::Value::m7b5},
+        {0b0000010001010001, bw_music::ChordType::Value::_7b5},
+        {0b0000010001010101, bw_music::ChordType::Value::_7s11},
+        {0b0000010010001001, bw_music::ChordType::Value::m7},
+        {0b0000010010001101, bw_music::ChordType::Value::m7_9},
+        {0b0000010010010001, bw_music::ChordType::Value::_7},
+        {0b0000010010010011, bw_music::ChordType::Value::_7b9},
+        {0b0000010010010101, bw_music::ChordType::Value::_79},
+        {0b0000010010011001, bw_music::ChordType::Value::_7s9},
+        {0b0000010010100001, bw_music::ChordType::Value::_7sus4},
+        {0b0000010010101001, bw_music::ChordType::Value::m7_11},
+        {0b0000010010101101, bw_music::ChordType::Value::m7_11},
+        {0b0000010011010001, bw_music::ChordType::Value::_7s11},
+        {0b0000010011010101, bw_music::ChordType::Value::_7s11},
+        {0b0000010100010001, bw_music::ChordType::Value::_7aug},
+        {0b0000010110010001, bw_music::ChordType::Value::_7b13},
+        {0b0000011000010001, bw_music::ChordType::Value::_7_13},
+        {0b0000011010010001, bw_music::ChordType::Value::_7_13},
+        {0b0000100000001001, bw_music::ChordType::Value::mM7},
+        {0b0000100000001101, bw_music::ChordType::Value::mM7_9},
+        {0b0000100000010001, bw_music::ChordType::Value::M7},
+        {0b0000100000010101, bw_music::ChordType::Value::M7_9},
+        {0b0000100001001001, bw_music::ChordType::Value::mM7b5},
+        {0b0000100001010001, bw_music::ChordType::Value::M7b5},
+        {0b0000100001010101, bw_music::ChordType::Value::M7s11},
+        {0b0000100010001001, bw_music::ChordType::Value::mM7},
+        {0b0000100010001101, bw_music::ChordType::Value::mM7_9},
+        {0b0000100010010001, bw_music::ChordType::Value::M7},
+        {0b0000100010010101, bw_music::ChordType::Value::M7_9},
+        {0b0000100011010001, bw_music::ChordType::Value::M7s11},
+        {0b0000100011010001, bw_music::ChordType::Value::M7s11},
+        {0b0000100011010101, bw_music::ChordType::Value::M7s11},
+        {0b0000100100000001, bw_music::ChordType::Value::Mj7aug},
+        {0b0000100100010001, bw_music::ChordType::Value::Mj7aug},
+        {0b0001000000000001, bw_music::ChordType::Value::_1p8},
         // clang-format on
     }};
 
@@ -127,19 +127,19 @@ namespace {
         if ((it != recognizedIntervals.end()) && (it->m_intervals == intervals)) {
             return it->m_chordType;
         }
-        return static_cast<int>(seqwires::ChordType::Value::NotAValue);
+        return static_cast<int>(bw_music::ChordType::Value::NotAValue);
     }
 
     /// The pitches of the set of currently playing notes.
     struct ActivePitches {
-        void addPitch(seqwires::Pitch pitch) {
+        void addPitch(bw_music::Pitch pitch) {
             const auto it = std::upper_bound(m_pitches.begin(), m_pitches.end(), pitch);
             assert(((it == m_pitches.end()) || (*it > pitch)) &&
                    "NoteOnEvent for same pitch as currently playing note");
             m_pitches.insert(it, pitch);
         }
 
-        void removePitch(seqwires::Pitch pitch) {
+        void removePitch(bw_music::Pitch pitch) {
             const auto it = std::find(m_pitches.begin(), m_pitches.end(), pitch);
             assert((it != m_pitches.end()) && "NoteOffEvent without matching NoteOnEvent");
             m_pitches.erase(it);
@@ -148,7 +148,7 @@ namespace {
         enum class ChordMatch { noChord, matchedChord, cancelChord };
 
         /// Check whether the currently active pitches match an known IntervalSet or inversion of that IntervalSet.
-        ChordMatch getBestMatchChord(seqwires::Chord& bestChordOut) const {
+        ChordMatch getBestMatchChord(bw_music::Chord& bestChordOut) const {
             const unsigned int numPitches = m_pitches.size();
             // TODO Assert min and max match the recognized chords.
             constexpr unsigned int minNumPitches = 2;
@@ -176,9 +176,9 @@ namespace {
                 if (chordTypeOrCancel == s_cancelChord) {
                     return ChordMatch::cancelChord;
                 }
-                const seqwires::ChordType::Value chordType = static_cast<seqwires::ChordType::Value>(chordTypeOrCancel);
-                if (chordType != seqwires::ChordType::Value::NotAValue) {
-                    bestChordOut = seqwires::Chord{seqwires::pitchToPitchClass(m_pitches[i]), chordType};
+                const bw_music::ChordType::Value chordType = static_cast<bw_music::ChordType::Value>(chordTypeOrCancel);
+                if (chordType != bw_music::ChordType::Value::NotAValue) {
+                    bestChordOut = bw_music::Chord{bw_music::pitchToPitchClass(m_pitches[i]), chordType};
                     return ChordMatch::matchedChord;
                 }
                 if (i < numPitches - 1) {
@@ -190,18 +190,18 @@ namespace {
         }
 
         /// The pitches of the current active set, in lowest-to-highest order.
-        std::vector<seqwires::Pitch> m_pitches;
+        std::vector<bw_music::Pitch> m_pitches;
     };
 } // namespace
 
-seqwires::Track seqwires::fingeredChordsFunction(const Track& sourceTrack, FingeredChordsSustainPolicyEnum::Value sustainPolicy) {
+bw_music::Track bw_music::fingeredChordsFunction(const Track& sourceTrack, FingeredChordsSustainPolicyEnum::Value sustainPolicy) {
     // Required for getMatchingChordType::ValueFromIntervals
     assert(std::is_sorted(recognizedIntervals.begin(), recognizedIntervals.end()));
 
-    seqwires::Track trackOut;
+    bw_music::Track trackOut;
 
     ActivePitches activePitches;
-    seqwires::ModelDuration timeSinceLastChordEvent = 0;
+    bw_music::ModelDuration timeSinceLastChordEvent = 0;
     Chord currentChord;
 
     for (const auto& event : iterateOver<NoteEvent>(sourceTrack)) {

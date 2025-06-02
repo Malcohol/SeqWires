@@ -13,9 +13,9 @@
 #include <typeinfo>
 #include <algorithm>
 
-seqwires::TrackEvent::GroupingInfo::Category seqwires::PercussionEvent::s_percussionEventCategory = "Percussion";
+bw_music::TrackEvent::GroupingInfo::Category bw_music::PercussionEvent::s_percussionEventCategory = "Percussion";
 
-bool seqwires::PercussionOnEvent::operator==(const TrackEvent& other) const {
+bool bw_music::PercussionOnEvent::operator==(const TrackEvent& other) const {
     if (typeid(other) != typeid(*this)) {
         return false;
     }
@@ -24,15 +24,15 @@ bool seqwires::PercussionOnEvent::operator==(const TrackEvent& other) const {
            (m_velocity == otherOn.m_velocity);
 }
 
-std::size_t seqwires::PercussionOnEvent::getHash() const {
+std::size_t bw_music::PercussionOnEvent::getHash() const {
     return babelwires::hash::mixtureOf(static_cast<const char*>("PercOn"), m_timeSinceLastEvent, m_instrument, m_velocity);
 }
 
-seqwires::TrackEvent::GroupingInfo seqwires::PercussionOnEvent::getGroupingInfo() const {
+bw_music::TrackEvent::GroupingInfo bw_music::PercussionOnEvent::getGroupingInfo() const {
     return {s_percussionEventCategory, m_instrument.toCode(), GroupingInfo::Grouping::StartOfGroup};
 }
 
-bool seqwires::PercussionOffEvent::operator==(const TrackEvent& other) const {
+bool bw_music::PercussionOffEvent::operator==(const TrackEvent& other) const {
     if (typeid(other) != typeid(*this)) {
         return false;
     }
@@ -41,10 +41,10 @@ bool seqwires::PercussionOffEvent::operator==(const TrackEvent& other) const {
            (m_velocity == otherOff.m_velocity);
 }
 
-std::size_t seqwires::PercussionOffEvent::getHash() const {
+std::size_t bw_music::PercussionOffEvent::getHash() const {
     return babelwires::hash::mixtureOf(static_cast<const char*>("PercOff"), m_timeSinceLastEvent, m_instrument, m_velocity);
 }
 
-seqwires::TrackEvent::GroupingInfo seqwires::PercussionOffEvent::getGroupingInfo() const {
+bw_music::TrackEvent::GroupingInfo bw_music::PercussionOffEvent::getGroupingInfo() const {
     return {s_percussionEventCategory, m_instrument.toCode(), GroupingInfo::Grouping::EndOfGroup};
 }

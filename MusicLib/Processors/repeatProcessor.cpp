@@ -15,26 +15,26 @@
 
 #include <Common/Identifiers/registeredIdentifier.hpp>
 
-seqwires::RepeatProcessorInput::RepeatProcessorInput()
+bw_music::RepeatProcessorInput::RepeatProcessorInput()
     : babelwires::ParallelProcessorInputBase(
           {{BW_SHORT_ID("Count", "Count", "f5d2ab08-4430-47fa-b26c-0ff2154826e3"),
             babelwires::IntTypeConstructor::makeTypeRef(0, std::numeric_limits<babelwires::IntValue::NativeType>::max(),
                                                         2)}},
-          RepeatProcessor::getCommonArrayId(), seqwires::DefaultTrackType::getThisType()) {}
+          RepeatProcessor::getCommonArrayId(), bw_music::DefaultTrackType::getThisType()) {}
 
-seqwires::RepeatProcessorOutput::RepeatProcessorOutput()
+bw_music::RepeatProcessorOutput::RepeatProcessorOutput()
     : babelwires::ParallelProcessorOutputBase(RepeatProcessor::getCommonArrayId(),
-                                              seqwires::DefaultTrackType::getThisType()) {}
+                                              bw_music::DefaultTrackType::getThisType()) {}
 
-seqwires::RepeatProcessor::RepeatProcessor(const babelwires::ProjectContext& projectContext)
+bw_music::RepeatProcessor::RepeatProcessor(const babelwires::ProjectContext& projectContext)
     : babelwires::ParallelProcessor(projectContext, RepeatProcessorInput::getThisType(),
                                     RepeatProcessorOutput::getThisType()) {}
 
-babelwires::ShortId seqwires::RepeatProcessor::getCommonArrayId() {
+babelwires::ShortId bw_music::RepeatProcessor::getCommonArrayId() {
     return BW_SHORT_ID("Tracks", "Tracks", "f727937f-0215-4527-bab4-0eca269d6c5c");
 }
 
-void seqwires::RepeatProcessor::processEntry(babelwires::UserLogger& userLogger, const babelwires::ValueTreeNode& input,
+void bw_music::RepeatProcessor::processEntry(babelwires::UserLogger& userLogger, const babelwires::ValueTreeNode& input,
                                              const babelwires::ValueTreeNode& inputEntry,
                                              babelwires::ValueTreeNode& outputEntry) const {
     RepeatProcessorInput::ConstInstance in{input};

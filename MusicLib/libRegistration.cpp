@@ -34,7 +34,7 @@
 #include <BabelWiresLib/Project/projectContext.hpp>
 #include <BabelWiresLib/TypeSystem/typeSystem.hpp>
 
-void seqwires::registerLib(babelwires::ProjectContext& context) {
+void bw_music::registerLib(babelwires::ProjectContext& context) {
     context.m_typeSystem.addEntry<DefaultTrackType>();
     context.m_typeSystem.addEntry<ChordType>();
     context.m_typeSystem.addEntry<NoChord>();

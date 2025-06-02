@@ -13,13 +13,13 @@
 
 #include <Common/Identifiers/registeredIdentifier.hpp>
 
-seqwires::SplitAtPitchProcessorInput::SplitAtPitchProcessorInput()
+bw_music::SplitAtPitchProcessorInput::SplitAtPitchProcessorInput()
     : babelwires::RecordType({{BW_SHORT_ID("Pitch", "Pitch", "6b721baa-084f-450b-bf35-2e08a9592958"),
-                               seqwires::PitchEnum::getThisType()},
+                               bw_music::PitchEnum::getThisType()},
                               {BW_SHORT_ID("Input", "Input Track", "9314a43f-256a-4915-b218-f2ba37133863"),
                                DefaultTrackType::getThisType()}}) {}
 
-seqwires::SplitAtPitchProcessorOutput::SplitAtPitchProcessorOutput()
+bw_music::SplitAtPitchProcessorOutput::SplitAtPitchProcessorOutput()
     : babelwires::RecordType({
           {BW_SHORT_ID("Above", "Notes at/above", "4c65b7f1-e546-4df2-9891-23623b74bc23"),
            DefaultTrackType::getThisType()},
@@ -29,11 +29,11 @@ seqwires::SplitAtPitchProcessorOutput::SplitAtPitchProcessorOutput()
            DefaultTrackType::getThisType()},
       }) {}
 
-seqwires::SplitAtPitchProcessor::SplitAtPitchProcessor(const babelwires::ProjectContext& projectContext)
+bw_music::SplitAtPitchProcessor::SplitAtPitchProcessor(const babelwires::ProjectContext& projectContext)
     : Processor(projectContext, SplitAtPitchProcessorInput::getThisType(),
                      SplitAtPitchProcessorOutput::getThisType()) {}
 
-void seqwires::SplitAtPitchProcessor::processValue(babelwires::UserLogger& userLogger, const babelwires::ValueTreeNode& input, babelwires::ValueTreeNode& output) const {
+void bw_music::SplitAtPitchProcessor::processValue(babelwires::UserLogger& userLogger, const babelwires::ValueTreeNode& input, babelwires::ValueTreeNode& output) const {
     SplitAtPitchProcessorInput::ConstInstance in{input};
     auto pitch = in.getPitch();
     auto trackIn = in.getInput();

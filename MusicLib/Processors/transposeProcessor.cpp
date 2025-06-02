@@ -17,25 +17,25 @@
 
 #include <set>
 
-seqwires::TransposeProcessorInput::TransposeProcessorInput()
+bw_music::TransposeProcessorInput::TransposeProcessorInput()
     : babelwires::ParallelProcessorInputBase(
           {{BW_SHORT_ID("Offset", "Pitch Offset", "5cfa1541-f25e-4671-ac11-2ff71c883418"),
             babelwires::IntTypeConstructor::makeTypeRef(-127, 127, 0)}},
-          TransposeProcessor::getCommonArrayId(), seqwires::DefaultTrackType::getThisType()) {}
+          TransposeProcessor::getCommonArrayId(), bw_music::DefaultTrackType::getThisType()) {}
 
-seqwires::TransposeProcessor::TransposeProcessor(const babelwires::ProjectContext& projectContext)
+bw_music::TransposeProcessor::TransposeProcessor(const babelwires::ProjectContext& projectContext)
     : babelwires::ParallelProcessor(projectContext, TransposeProcessorInput::getThisType(),
                                     TransposeProcessorOutput::getThisType()) {}
 
-seqwires::TransposeProcessorOutput::TransposeProcessorOutput()
+bw_music::TransposeProcessorOutput::TransposeProcessorOutput()
     : babelwires::ParallelProcessorOutputBase(TransposeProcessor::getCommonArrayId(),
-                                              seqwires::DefaultTrackType::getThisType()) {}
+                                              bw_music::DefaultTrackType::getThisType()) {}
 
-babelwires::ShortId seqwires::TransposeProcessor::getCommonArrayId() {
+babelwires::ShortId bw_music::TransposeProcessor::getCommonArrayId() {
     return BW_SHORT_ID("Tracks", "Tracks", "83f05b66-7890-4542-8344-1409e50539b5");
 }
 
-void seqwires::TransposeProcessor::processEntry(babelwires::UserLogger& userLogger,
+void bw_music::TransposeProcessor::processEntry(babelwires::UserLogger& userLogger,
                                                 const babelwires::ValueTreeNode& input,
                                                 const babelwires::ValueTreeNode& inputEntry,
                                                 babelwires::ValueTreeNode& outputEntry) const {

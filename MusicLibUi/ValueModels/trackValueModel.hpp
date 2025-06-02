@@ -9,7 +9,7 @@
 
 #include <BabelWiresQtUi/ValueModels/valueModelWithRichText.hpp>
 
-namespace seqwiresUi {
+namespace bw_musicUi {
 
     class TrackValueModel : public babelwires::ValueModelWithRichText {
       public:
@@ -17,4 +17,4 @@ namespace seqwiresUi {
         QString getTooltip() const override;
     };
 
-} // namespace seqwiresUi
+} // namespace bw_musicUi

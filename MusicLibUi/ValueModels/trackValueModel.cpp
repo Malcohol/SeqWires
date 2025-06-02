@@ -13,14 +13,14 @@
 
 #include <cassert>
 
-QString seqwiresUi::TrackValueModel::getRichText() const {
-    const seqwires::Track& value = getValue()->is<seqwires::Track>();
+QString bw_musicUi::TrackValueModel::getRichText() const {
+    const bw_music::Track& value = getValue()->is<bw_music::Track>();
     const babelwires::Rational duration = value.getDuration();
     return duration.toHtmlString().c_str();
 }
 
-QString seqwiresUi::TrackValueModel::getTooltip() const {
-    const seqwires::Track& track = getValue()->is<seqwires::Track>();
+QString bw_musicUi::TrackValueModel::getTooltip() const {
+    const bw_music::Track& track = getValue()->is<bw_music::Track>();
     const auto& numEventGroupsByCategory = track.getNumEventGroupsByCategory();
     if (!numEventGroupsByCategory.empty()) {
         QString summary;

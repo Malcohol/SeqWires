@@ -13,10 +13,10 @@
 
 namespace smf {
     /// A PercussionSet corresponding to the instruments of GM2 standard percussion set.
-    class GM2StandardPercussionSet : public seqwires::PercussionSetWithPitchMap {
+    class GM2StandardPercussionSet : public bw_music::PercussionSetWithPitchMap {
       public:
         PRIMITIVE_TYPE("GM2StandPerc", "General MIDI 2 Standard Percussion", "9fc0c107-f76c-432a-af58-c794f01df455", 1);
 
-        GM2StandardPercussionSet(const seqwires::BuiltInPercussionInstruments& builtInInstruments);
+        GM2StandardPercussionSet(const bw_music::BuiltInPercussionInstruments& builtInInstruments);
     };
 } // namespace smf

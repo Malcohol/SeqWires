@@ -11,101 +11,101 @@
 #include <Tests/TestUtils/seqTestUtils.hpp>
 
 TEST(FingeredChordsTest, functionBasicNotesPolicy) {
-    seqwires::Track track;
-    track.addEvent(seqwires::NoteOnEvent(0, 60));
-    track.addEvent(seqwires::NoteOnEvent(0, 64));
-    track.addEvent(seqwires::NoteOnEvent(0, 67));
+    bw_music::Track track;
+    track.addEvent(bw_music::NoteOnEvent(0, 60));
+    track.addEvent(bw_music::NoteOnEvent(0, 64));
+    track.addEvent(bw_music::NoteOnEvent(0, 67));
 
-    track.addEvent(seqwires::NoteOffEvent(1, 60));
-    track.addEvent(seqwires::NoteOffEvent(0, 64));
-    track.addEvent(seqwires::NoteOffEvent(0, 67));
+    track.addEvent(bw_music::NoteOffEvent(1, 60));
+    track.addEvent(bw_music::NoteOffEvent(0, 64));
+    track.addEvent(bw_music::NoteOffEvent(0, 67));
 
-    track.addEvent(seqwires::NoteOnEvent(1, 62));
-    track.addEvent(seqwires::NoteOnEvent(0, 65));
-    track.addEvent(seqwires::NoteOnEvent(0, 69));
+    track.addEvent(bw_music::NoteOnEvent(1, 62));
+    track.addEvent(bw_music::NoteOnEvent(0, 65));
+    track.addEvent(bw_music::NoteOnEvent(0, 69));
 
-    track.addEvent(seqwires::NoteOffEvent(1, 62));
-    track.addEvent(seqwires::NoteOffEvent(0, 65));
-    track.addEvent(seqwires::NoteOffEvent(0, 69));
+    track.addEvent(bw_music::NoteOffEvent(1, 62));
+    track.addEvent(bw_music::NoteOffEvent(0, 65));
+    track.addEvent(bw_music::NoteOffEvent(0, 69));
 
     // Cancel chord - which is ignored in the "Notes" policy
-    track.addEvent(seqwires::NoteOnEvent(1, 61));
-    track.addEvent(seqwires::NoteOnEvent(0, 62));
-    track.addEvent(seqwires::NoteOnEvent(0, 63));
+    track.addEvent(bw_music::NoteOnEvent(1, 61));
+    track.addEvent(bw_music::NoteOnEvent(0, 62));
+    track.addEvent(bw_music::NoteOnEvent(0, 63));
 
-    track.addEvent(seqwires::NoteOffEvent(1, 61));
-    track.addEvent(seqwires::NoteOffEvent(0, 62));
-    track.addEvent(seqwires::NoteOffEvent(0, 63));
+    track.addEvent(bw_music::NoteOffEvent(1, 61));
+    track.addEvent(bw_music::NoteOffEvent(0, 62));
+    track.addEvent(bw_music::NoteOffEvent(0, 63));
 
-    seqwires::Track chordTrack =
-        seqwires::fingeredChordsFunction(track, seqwires::FingeredChordsSustainPolicyEnum::Value::Notes);
+    bw_music::Track chordTrack =
+        bw_music::fingeredChordsFunction(track, bw_music::FingeredChordsSustainPolicyEnum::Value::Notes);
     EXPECT_EQ(chordTrack.getDuration(), 5);
 
     std::vector<testUtils::ChordInfo> expectedChords = {
-        {seqwires::PitchClass::Value::C, seqwires::ChordType::Value::M, 1},
-        {seqwires::PitchClass::Value::D, seqwires::ChordType::Value::m, 1, 1}};
+        {bw_music::PitchClass::Value::C, bw_music::ChordType::Value::M, 1},
+        {bw_music::PitchClass::Value::D, bw_music::ChordType::Value::m, 1, 1}};
 
     testUtils::testChords(expectedChords, chordTrack);
 }
 
 TEST(FingeredChordsTest, functionBasicHoldPolicy) {
-    seqwires::Track track;
-    track.addEvent(seqwires::NoteOnEvent(0, 60));
-    track.addEvent(seqwires::NoteOnEvent(0, 64));
-    track.addEvent(seqwires::NoteOnEvent(0, 67));
+    bw_music::Track track;
+    track.addEvent(bw_music::NoteOnEvent(0, 60));
+    track.addEvent(bw_music::NoteOnEvent(0, 64));
+    track.addEvent(bw_music::NoteOnEvent(0, 67));
 
-    track.addEvent(seqwires::NoteOffEvent(1, 60));
-    track.addEvent(seqwires::NoteOffEvent(0, 64));
-    track.addEvent(seqwires::NoteOffEvent(0, 67));
+    track.addEvent(bw_music::NoteOffEvent(1, 60));
+    track.addEvent(bw_music::NoteOffEvent(0, 64));
+    track.addEvent(bw_music::NoteOffEvent(0, 67));
 
-    track.addEvent(seqwires::NoteOnEvent(1, 62));
-    track.addEvent(seqwires::NoteOnEvent(0, 65));
-    track.addEvent(seqwires::NoteOnEvent(0, 69));
+    track.addEvent(bw_music::NoteOnEvent(1, 62));
+    track.addEvent(bw_music::NoteOnEvent(0, 65));
+    track.addEvent(bw_music::NoteOnEvent(0, 69));
 
-    track.addEvent(seqwires::NoteOffEvent(1, 62));
-    track.addEvent(seqwires::NoteOffEvent(0, 65));
-    track.addEvent(seqwires::NoteOffEvent(0, 69));
+    track.addEvent(bw_music::NoteOffEvent(1, 62));
+    track.addEvent(bw_music::NoteOffEvent(0, 65));
+    track.addEvent(bw_music::NoteOffEvent(0, 69));
 
     // Cancel chord - which is used in the "Hold" policy
-    track.addEvent(seqwires::NoteOnEvent(1, 61));
-    track.addEvent(seqwires::NoteOnEvent(0, 62));
-    track.addEvent(seqwires::NoteOnEvent(0, 63));
+    track.addEvent(bw_music::NoteOnEvent(1, 61));
+    track.addEvent(bw_music::NoteOnEvent(0, 62));
+    track.addEvent(bw_music::NoteOnEvent(0, 63));
 
-    track.addEvent(seqwires::NoteOffEvent(1, 61));
-    track.addEvent(seqwires::NoteOffEvent(0, 62));
-    track.addEvent(seqwires::NoteOffEvent(0, 63));
+    track.addEvent(bw_music::NoteOffEvent(1, 61));
+    track.addEvent(bw_music::NoteOffEvent(0, 62));
+    track.addEvent(bw_music::NoteOffEvent(0, 63));
 
-    seqwires::Track chordTrack =
-        seqwires::fingeredChordsFunction(track, seqwires::FingeredChordsSustainPolicyEnum::Value::Hold);
+    bw_music::Track chordTrack =
+        bw_music::fingeredChordsFunction(track, bw_music::FingeredChordsSustainPolicyEnum::Value::Hold);
     EXPECT_EQ(chordTrack.getDuration(), 5);
 
     std::vector<testUtils::ChordInfo> expectedChords = {
-        {seqwires::PitchClass::Value::C, seqwires::ChordType::Value::M, 2},
-        {seqwires::PitchClass::Value::D, seqwires::ChordType::Value::m, 2}};
+        {bw_music::PitchClass::Value::C, bw_music::ChordType::Value::M, 2},
+        {bw_music::PitchClass::Value::D, bw_music::ChordType::Value::m, 2}};
 
     testUtils::testChords(expectedChords, chordTrack);
 }
 
 TEST(FingeredChordsTest, rootPitchClass) {
-    seqwires::Track track;
+    bw_music::Track track;
 
     for (int i = 0; i < 12 * 10; ++i) {
-        track.addEvent(seqwires::NoteOnEvent(1, i));
-        track.addEvent(seqwires::NoteOnEvent(0, i + 4));
-        track.addEvent(seqwires::NoteOnEvent(0, i + 7));
-        track.addEvent(seqwires::NoteOffEvent(1, i));
-        track.addEvent(seqwires::NoteOffEvent(0, i + 4));
-        track.addEvent(seqwires::NoteOffEvent(0, i + 7));
+        track.addEvent(bw_music::NoteOnEvent(1, i));
+        track.addEvent(bw_music::NoteOnEvent(0, i + 4));
+        track.addEvent(bw_music::NoteOnEvent(0, i + 7));
+        track.addEvent(bw_music::NoteOffEvent(1, i));
+        track.addEvent(bw_music::NoteOffEvent(0, i + 4));
+        track.addEvent(bw_music::NoteOffEvent(0, i + 7));
     }
 
-    seqwires::Track chordTrack =
-        seqwires::fingeredChordsFunction(track, seqwires::FingeredChordsSustainPolicyEnum::Value::Notes);
+    bw_music::Track chordTrack =
+        bw_music::fingeredChordsFunction(track, bw_music::FingeredChordsSustainPolicyEnum::Value::Notes);
 
     std::vector<testUtils::ChordInfo> expectedChords;
     for (int o = 0; o < 10; ++o) {
         for (int pc = 0; pc < 12; ++pc) {
-            expectedChords.emplace_back(testUtils::ChordInfo{static_cast<seqwires::PitchClass::Value>(pc),
-                                                             seqwires::ChordType::Value::M, 1, 1});
+            expectedChords.emplace_back(testUtils::ChordInfo{static_cast<bw_music::PitchClass::Value>(pc),
+                                                             bw_music::ChordType::Value::M, 1, 1});
         }
     }
 
@@ -113,113 +113,113 @@ TEST(FingeredChordsTest, rootPitchClass) {
 }
 
 TEST(FingeredChordsTest, functionChordToChord) {
-    seqwires::Track track;
-    track.addEvent(seqwires::NoteOnEvent(0, 60));
-    track.addEvent(seqwires::NoteOnEvent(0, 64));
-    track.addEvent(seqwires::NoteOnEvent(0, 67));
+    bw_music::Track track;
+    track.addEvent(bw_music::NoteOnEvent(0, 60));
+    track.addEvent(bw_music::NoteOnEvent(0, 64));
+    track.addEvent(bw_music::NoteOnEvent(0, 67));
 
-    track.addEvent(seqwires::NoteOffEvent(1, 64));
+    track.addEvent(bw_music::NoteOffEvent(1, 64));
 
-    track.addEvent(seqwires::NoteOnEvent(0, 63));
+    track.addEvent(bw_music::NoteOnEvent(0, 63));
 
-    track.addEvent(seqwires::NoteOffEvent(1, 60));
-    track.addEvent(seqwires::NoteOffEvent(0, 63));
-    track.addEvent(seqwires::NoteOffEvent(0, 67));
+    track.addEvent(bw_music::NoteOffEvent(1, 60));
+    track.addEvent(bw_music::NoteOffEvent(0, 63));
+    track.addEvent(bw_music::NoteOffEvent(0, 67));
 
-    seqwires::Track chordTrack =
-        seqwires::fingeredChordsFunction(track, seqwires::FingeredChordsSustainPolicyEnum::Value::Notes);
+    bw_music::Track chordTrack =
+        bw_music::fingeredChordsFunction(track, bw_music::FingeredChordsSustainPolicyEnum::Value::Notes);
     EXPECT_EQ(chordTrack.getDuration(), 2);
 
     std::vector<testUtils::ChordInfo> expectedChords = {
-        {seqwires::PitchClass::Value::C, seqwires::ChordType::Value::M, 1},
-        {seqwires::PitchClass::Value::C, seqwires::ChordType::Value::m, 1}};
+        {bw_music::PitchClass::Value::C, bw_music::ChordType::Value::M, 1},
+        {bw_music::PitchClass::Value::C, bw_music::ChordType::Value::m, 1}};
 
     testUtils::testChords(expectedChords, chordTrack);
 }
 
 // Only major and minor inversions are guaranteed to be recognized.
 TEST(FingeredChordsTest, majorInversions) {
-    seqwires::Track track;
-    track.addEvent(seqwires::NoteOnEvent(0, 60));
-    track.addEvent(seqwires::NoteOnEvent(0, 64));
-    track.addEvent(seqwires::NoteOnEvent(0, 67));
+    bw_music::Track track;
+    track.addEvent(bw_music::NoteOnEvent(0, 60));
+    track.addEvent(bw_music::NoteOnEvent(0, 64));
+    track.addEvent(bw_music::NoteOnEvent(0, 67));
 
-    track.addEvent(seqwires::NoteOffEvent(1, 60));
-    track.addEvent(seqwires::NoteOffEvent(0, 64));
-    track.addEvent(seqwires::NoteOffEvent(0, 67));
+    track.addEvent(bw_music::NoteOffEvent(1, 60));
+    track.addEvent(bw_music::NoteOffEvent(0, 64));
+    track.addEvent(bw_music::NoteOffEvent(0, 67));
 
-    track.addEvent(seqwires::NoteOnEvent(1, 64));
-    track.addEvent(seqwires::NoteOnEvent(0, 67));
-    track.addEvent(seqwires::NoteOnEvent(0, 72));
+    track.addEvent(bw_music::NoteOnEvent(1, 64));
+    track.addEvent(bw_music::NoteOnEvent(0, 67));
+    track.addEvent(bw_music::NoteOnEvent(0, 72));
 
-    track.addEvent(seqwires::NoteOffEvent(1, 64));
-    track.addEvent(seqwires::NoteOffEvent(0, 67));
-    track.addEvent(seqwires::NoteOffEvent(0, 72));
+    track.addEvent(bw_music::NoteOffEvent(1, 64));
+    track.addEvent(bw_music::NoteOffEvent(0, 67));
+    track.addEvent(bw_music::NoteOffEvent(0, 72));
 
-    track.addEvent(seqwires::NoteOnEvent(1, 67));
-    track.addEvent(seqwires::NoteOnEvent(0, 72));
-    track.addEvent(seqwires::NoteOnEvent(0, 76));
+    track.addEvent(bw_music::NoteOnEvent(1, 67));
+    track.addEvent(bw_music::NoteOnEvent(0, 72));
+    track.addEvent(bw_music::NoteOnEvent(0, 76));
 
-    track.addEvent(seqwires::NoteOffEvent(1, 67));
-    track.addEvent(seqwires::NoteOffEvent(0, 72));
-    track.addEvent(seqwires::NoteOffEvent(0, 76));
+    track.addEvent(bw_music::NoteOffEvent(1, 67));
+    track.addEvent(bw_music::NoteOffEvent(0, 72));
+    track.addEvent(bw_music::NoteOffEvent(0, 76));
 
-    seqwires::Track chordTrack =
-        seqwires::fingeredChordsFunction(track, seqwires::FingeredChordsSustainPolicyEnum::Value::Notes);
+    bw_music::Track chordTrack =
+        bw_music::fingeredChordsFunction(track, bw_music::FingeredChordsSustainPolicyEnum::Value::Notes);
     EXPECT_EQ(chordTrack.getDuration(), 5);
 
     std::vector<testUtils::ChordInfo> expectedChords = {
-        {seqwires::PitchClass::Value::C, seqwires::ChordType::Value::M, 1, 0},
-        {seqwires::PitchClass::Value::C, seqwires::ChordType::Value::M, 1, 1},
-        {seqwires::PitchClass::Value::C, seqwires::ChordType::Value::M, 1, 1}};
+        {bw_music::PitchClass::Value::C, bw_music::ChordType::Value::M, 1, 0},
+        {bw_music::PitchClass::Value::C, bw_music::ChordType::Value::M, 1, 1},
+        {bw_music::PitchClass::Value::C, bw_music::ChordType::Value::M, 1, 1}};
 
     testUtils::testChords(expectedChords, chordTrack);
 }
 
 // Only major and minor inversions are guaranteed to be recognized.
 TEST(FingeredChordsTest, minorInversions) {
-    seqwires::Track track;
-    track.addEvent(seqwires::NoteOnEvent(0, 60));
-    track.addEvent(seqwires::NoteOnEvent(0, 63));
-    track.addEvent(seqwires::NoteOnEvent(0, 67));
+    bw_music::Track track;
+    track.addEvent(bw_music::NoteOnEvent(0, 60));
+    track.addEvent(bw_music::NoteOnEvent(0, 63));
+    track.addEvent(bw_music::NoteOnEvent(0, 67));
 
-    track.addEvent(seqwires::NoteOffEvent(1, 60));
-    track.addEvent(seqwires::NoteOffEvent(0, 63));
-    track.addEvent(seqwires::NoteOffEvent(0, 67));
+    track.addEvent(bw_music::NoteOffEvent(1, 60));
+    track.addEvent(bw_music::NoteOffEvent(0, 63));
+    track.addEvent(bw_music::NoteOffEvent(0, 67));
 
-    track.addEvent(seqwires::NoteOnEvent(1, 63));
-    track.addEvent(seqwires::NoteOnEvent(0, 67));
-    track.addEvent(seqwires::NoteOnEvent(0, 72));
+    track.addEvent(bw_music::NoteOnEvent(1, 63));
+    track.addEvent(bw_music::NoteOnEvent(0, 67));
+    track.addEvent(bw_music::NoteOnEvent(0, 72));
 
-    track.addEvent(seqwires::NoteOffEvent(1, 63));
-    track.addEvent(seqwires::NoteOffEvent(0, 67));
-    track.addEvent(seqwires::NoteOffEvent(0, 72));
+    track.addEvent(bw_music::NoteOffEvent(1, 63));
+    track.addEvent(bw_music::NoteOffEvent(0, 67));
+    track.addEvent(bw_music::NoteOffEvent(0, 72));
 
-    track.addEvent(seqwires::NoteOnEvent(1, 67));
-    track.addEvent(seqwires::NoteOnEvent(0, 72));
-    track.addEvent(seqwires::NoteOnEvent(0, 75));
+    track.addEvent(bw_music::NoteOnEvent(1, 67));
+    track.addEvent(bw_music::NoteOnEvent(0, 72));
+    track.addEvent(bw_music::NoteOnEvent(0, 75));
 
-    track.addEvent(seqwires::NoteOffEvent(1, 67));
-    track.addEvent(seqwires::NoteOffEvent(0, 72));
-    track.addEvent(seqwires::NoteOffEvent(0, 75));
+    track.addEvent(bw_music::NoteOffEvent(1, 67));
+    track.addEvent(bw_music::NoteOffEvent(0, 72));
+    track.addEvent(bw_music::NoteOffEvent(0, 75));
 
-    seqwires::Track chordTrack =
-        seqwires::fingeredChordsFunction(track, seqwires::FingeredChordsSustainPolicyEnum::Value::Notes);
+    bw_music::Track chordTrack =
+        bw_music::fingeredChordsFunction(track, bw_music::FingeredChordsSustainPolicyEnum::Value::Notes);
     EXPECT_EQ(chordTrack.getDuration(), 5);
 
     std::vector<testUtils::ChordInfo> expectedChords = {
-        {seqwires::PitchClass::Value::C, seqwires::ChordType::Value::m, 1, 0},
-        {seqwires::PitchClass::Value::C, seqwires::ChordType::Value::m, 1, 1},
-        {seqwires::PitchClass::Value::C, seqwires::ChordType::Value::m, 1, 1}};
+        {bw_music::PitchClass::Value::C, bw_music::ChordType::Value::m, 1, 0},
+        {bw_music::PitchClass::Value::C, bw_music::ChordType::Value::m, 1, 1},
+        {bw_music::PitchClass::Value::C, bw_music::ChordType::Value::m, 1, 1}};
 
     testUtils::testChords(expectedChords, chordTrack);
 }
 
 // Yamaha-style fingered chords.
 TEST(FingeredChordsTest, schemeY) {
-    using namespace seqwires;
+    using namespace bw_music;
 
-    std::vector<std::vector<seqwires::Pitch>> pitches = {// C1+8
+    std::vector<std::vector<bw_music::Pitch>> pitches = {// C1+8
                                                          {60, 72},
                                                          // C1+5
                                                          {60, 67},
@@ -334,7 +334,7 @@ TEST(FingeredChordsTest, schemeY) {
                                                          // C1+2+5
                                                          {60, 62, 67}};
 
-    seqwires::Track track;
+    bw_music::Track track;
     for (const auto& v : pitches) {
         babelwires::Rational time = 1;
         for (auto p : v) {
@@ -348,8 +348,8 @@ TEST(FingeredChordsTest, schemeY) {
         }
     }
 
-    seqwires::Track chordTrack =
-        seqwires::fingeredChordsFunction(track, seqwires::FingeredChordsSustainPolicyEnum::Value::Notes);
+    bw_music::Track chordTrack =
+        bw_music::fingeredChordsFunction(track, bw_music::FingeredChordsSustainPolicyEnum::Value::Notes);
 
     std::vector<ChordType::Value> expectedChordType = {
         ChordType::Value::_1p8,  ChordType::Value::_1p5,  ChordType::Value::M,      ChordType::Value::M9,
@@ -380,9 +380,9 @@ TEST(FingeredChordsTest, schemeY) {
 
 // Roland-style fingered chords.
 TEST(FingeredChordsTest, schemeR) {
-    using namespace seqwires;
+    using namespace bw_music;
 
-    std::vector<std::vector<seqwires::Pitch>> pitches = {// C
+    std::vector<std::vector<bw_music::Pitch>> pitches = {// C
                                                          {60, 64, 67},
                                                          // C6
                                                          {60, 67, 69},
@@ -497,7 +497,7 @@ TEST(FingeredChordsTest, schemeR) {
                                                          // C1+2+5
                                                          {60, 62, 67}};
 
-    seqwires::Track track;
+    bw_music::Track track;
     for (const auto& v : pitches) {
         babelwires::Rational time = 1;
         for (auto p : v) {
@@ -511,8 +511,8 @@ TEST(FingeredChordsTest, schemeR) {
         }
     }
 
-    seqwires::Track chordTrack =
-        seqwires::fingeredChordsFunction(track, seqwires::FingeredChordsSustainPolicyEnum::Value::Notes);
+    bw_music::Track chordTrack =
+        bw_music::fingeredChordsFunction(track, bw_music::FingeredChordsSustainPolicyEnum::Value::Notes);
 
     std::vector<ChordType::Value> expectedChordType = {
         ChordType::Value::M,
@@ -586,9 +586,9 @@ TEST(FingeredChordsTest, schemeR) {
 
 // Casio-style fingered chords.
 TEST(FingeredChordsTest, schemeC) {
-    using namespace seqwires;
+    using namespace bw_music;
 
-    std::vector<std::vector<seqwires::Pitch>> pitches = {// C
+    std::vector<std::vector<bw_music::Pitch>> pitches = {// C
                                                          {60, 64, 67},
                                                          // Cm
                                                          {60, 63, 67},
@@ -631,7 +631,7 @@ TEST(FingeredChordsTest, schemeC) {
                                                          // Cdim7
                                                          {60, 63, 66, 69}};
 
-    seqwires::Track track;
+    bw_music::Track track;
     for (const auto& v : pitches) {
         babelwires::Rational time = 1;
         for (auto p : v) {
@@ -645,8 +645,8 @@ TEST(FingeredChordsTest, schemeC) {
         }
     }
 
-    seqwires::Track chordTrack =
-        seqwires::fingeredChordsFunction(track, seqwires::FingeredChordsSustainPolicyEnum::Value::Notes);
+    bw_music::Track chordTrack =
+        bw_music::fingeredChordsFunction(track, bw_music::FingeredChordsSustainPolicyEnum::Value::Notes);
 
     std::vector<ChordType::Value> expectedChordType = {
         ChordType::Value::M,    ChordType::Value::m,      ChordType::Value::dim, ChordType::Value::aug,
@@ -668,32 +668,32 @@ TEST(FingeredChordsTest, schemeC) {
 
 TEST(FingeredChordsTest, processor) {
     testUtils::TestEnvironment testEnvironment;
-    seqwires::registerLib(testEnvironment.m_projectContext);
+    bw_music::registerLib(testEnvironment.m_projectContext);
 
-    seqwires::FingeredChordsProcessor processor(testEnvironment.m_projectContext);
+    bw_music::FingeredChordsProcessor processor(testEnvironment.m_projectContext);
 
     processor.getInput().setToDefault();
     processor.getOutput().setToDefault();
 
-    auto input = seqwires::FingeredChordsProcessorInput::Instance(processor.getInput());
-    const auto output = seqwires::FingeredChordsProcessorOutput::ConstInstance(processor.getOutput());
+    auto input = bw_music::FingeredChordsProcessorInput::Instance(processor.getInput());
+    const auto output = bw_music::FingeredChordsProcessorOutput::ConstInstance(processor.getOutput());
 
-    input.getPolicy().set(seqwires::FingeredChordsSustainPolicyEnum::Value::Notes);
+    input.getPolicy().set(bw_music::FingeredChordsSustainPolicyEnum::Value::Notes);
 
     {
-        seqwires::Track track;
-        track.addEvent(seqwires::NoteOnEvent(0, 60));
-        track.addEvent(seqwires::NoteOnEvent(0, 64));
-        track.addEvent(seqwires::NoteOnEvent(0, 67));
-        track.addEvent(seqwires::NoteOffEvent(1, 60));
-        track.addEvent(seqwires::NoteOffEvent(0, 64));
-        track.addEvent(seqwires::NoteOffEvent(0, 67));
-        track.addEvent(seqwires::NoteOnEvent(1, 62));
-        track.addEvent(seqwires::NoteOnEvent(0, 65));
-        track.addEvent(seqwires::NoteOnEvent(0, 69));
-        track.addEvent(seqwires::NoteOffEvent(1, 62));
-        track.addEvent(seqwires::NoteOffEvent(0, 65));
-        track.addEvent(seqwires::NoteOffEvent(0, 69));
+        bw_music::Track track;
+        track.addEvent(bw_music::NoteOnEvent(0, 60));
+        track.addEvent(bw_music::NoteOnEvent(0, 64));
+        track.addEvent(bw_music::NoteOnEvent(0, 67));
+        track.addEvent(bw_music::NoteOffEvent(1, 60));
+        track.addEvent(bw_music::NoteOffEvent(0, 64));
+        track.addEvent(bw_music::NoteOffEvent(0, 67));
+        track.addEvent(bw_music::NoteOnEvent(1, 62));
+        track.addEvent(bw_music::NoteOnEvent(0, 65));
+        track.addEvent(bw_music::NoteOnEvent(0, 69));
+        track.addEvent(bw_music::NoteOffEvent(1, 62));
+        track.addEvent(bw_music::NoteOffEvent(0, 65));
+        track.addEvent(bw_music::NoteOffEvent(0, 69));
         input.getNotes().set(std::move(track));
     }
 
@@ -701,45 +701,45 @@ TEST(FingeredChordsTest, processor) {
 
     testUtils::testChords(
         {
-            {seqwires::PitchClass::Value::C, seqwires::ChordType::Value::M, 1},
-            {seqwires::PitchClass::Value::D, seqwires::ChordType::Value::m, 1, 1},
+            {bw_music::PitchClass::Value::C, bw_music::ChordType::Value::M, 1},
+            {bw_music::PitchClass::Value::D, bw_music::ChordType::Value::m, 1, 1},
         },
         output.getChords().get());
 
     processor.getInput().clearChanges();
-    input.getPolicy().set(seqwires::FingeredChordsSustainPolicyEnum::Value::Hold);
+    input.getPolicy().set(bw_music::FingeredChordsSustainPolicyEnum::Value::Hold);
     processor.process(testEnvironment.m_log);
 
     testUtils::testChords(
         {
-            {seqwires::PitchClass::Value::C, seqwires::ChordType::Value::M, 2},
-            {seqwires::PitchClass::Value::D, seqwires::ChordType::Value::m, 1},
+            {bw_music::PitchClass::Value::C, bw_music::ChordType::Value::M, 2},
+            {bw_music::PitchClass::Value::D, bw_music::ChordType::Value::m, 1},
         },
         output.getChords().get());
 
     processor.getInput().clearChanges();
     {
-        seqwires::Track track;
-        track.addEvent(seqwires::NoteOnEvent(0, 60));
-        track.addEvent(seqwires::NoteOnEvent(0, 64));
-        track.addEvent(seqwires::NoteOnEvent(0, 67));
-        track.addEvent(seqwires::NoteOffEvent(1, 60));
-        track.addEvent(seqwires::NoteOffEvent(0, 64));
-        track.addEvent(seqwires::NoteOffEvent(0, 67));
-        track.addEvent(seqwires::NoteOnEvent(1, 64));
-        track.addEvent(seqwires::NoteOnEvent(0, 67));
-        track.addEvent(seqwires::NoteOnEvent(0, 71));
-        track.addEvent(seqwires::NoteOffEvent(1, 64));
-        track.addEvent(seqwires::NoteOffEvent(0, 67));
-        track.addEvent(seqwires::NoteOffEvent(0, 71));
+        bw_music::Track track;
+        track.addEvent(bw_music::NoteOnEvent(0, 60));
+        track.addEvent(bw_music::NoteOnEvent(0, 64));
+        track.addEvent(bw_music::NoteOnEvent(0, 67));
+        track.addEvent(bw_music::NoteOffEvent(1, 60));
+        track.addEvent(bw_music::NoteOffEvent(0, 64));
+        track.addEvent(bw_music::NoteOffEvent(0, 67));
+        track.addEvent(bw_music::NoteOnEvent(1, 64));
+        track.addEvent(bw_music::NoteOnEvent(0, 67));
+        track.addEvent(bw_music::NoteOnEvent(0, 71));
+        track.addEvent(bw_music::NoteOffEvent(1, 64));
+        track.addEvent(bw_music::NoteOffEvent(0, 67));
+        track.addEvent(bw_music::NoteOffEvent(0, 71));
         input.getNotes().set(std::move(track));
     }
     processor.process(testEnvironment.m_log);
 
     testUtils::testChords(
         {
-            {seqwires::PitchClass::Value::C, seqwires::ChordType::Value::M, 2},
-            {seqwires::PitchClass::Value::E, seqwires::ChordType::Value::m, 1},
+            {bw_music::PitchClass::Value::C, bw_music::ChordType::Value::M, 2},
+            {bw_music::PitchClass::Value::E, bw_music::ChordType::Value::m, 1},
         },
         output.getChords().get());
 }

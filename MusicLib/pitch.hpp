@@ -33,7 +33,7 @@
     X(Ash, "A#", "0af2d2b4-c553-4f99-8635-906753824c98")                                                            \
     X(B, "B", "ddca8184-107f-463e-adc4-73ced59bb76c")
 
-namespace seqwires {
+namespace bw_music {
     /// The native way of representing a pitch.
     typedef babelwires::Byte Pitch;
 
@@ -66,4 +66,4 @@ namespace seqwires {
         PitchEnum();
     };
 
-} // namespace seqwires
+} // namespace bw_music

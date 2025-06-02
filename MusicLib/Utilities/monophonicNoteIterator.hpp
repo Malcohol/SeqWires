@@ -10,7 +10,7 @@
 #include <MusicLib/Types/Track/TrackEvents/noteEvents.hpp>
 #include <MusicLib/Utilities/filteredTrackIterator.hpp>
 
-namespace seqwires {
+namespace bw_music {
     /// This returns note events which never overlap.
     /// This just uses a first-come-first-serve policy, so the resulting track will probably not be as useful
     /// as the tracks which come out of the MonophonicSubtrackFunction / MonophonicSubtrackProcessor. 
@@ -31,4 +31,4 @@ namespace seqwires {
     /// Return a span of iterators which only return non-overlapping notes.
     babelwires::Span<MonophonicNoteIterator>
     iterateOverMonotonicNotes(const Track& track, MonophonicNoteIterator::InteriorEventFilter interiorEventFilter);
-} // namespace seqwires
+} // namespace bw_music

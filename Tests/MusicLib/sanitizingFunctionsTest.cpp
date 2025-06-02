@@ -7,7 +7,7 @@
 #include <Tests/TestUtils/seqTestUtils.hpp>
 
 TEST(SanitizingFunctionsTest, removeZeroDurationGroups_Simple) {
-    seqwires::Track trackIn;
+    bw_music::Track trackIn;
 
     testUtils::addNotes(
         {
@@ -19,14 +19,14 @@ TEST(SanitizingFunctionsTest, removeZeroDurationGroups_Simple) {
         },
         trackIn);
 
-    auto trackOut = seqwires::removeZeroDurationGroups(trackIn);
+    auto trackOut = bw_music::removeZeroDurationGroups(trackIn);
     testUtils::testNotes(
         {{62, 0, babelwires::Rational(1, 4)}, {65, babelwires::Rational(1, 2), babelwires::Rational(1, 4)}}, trackOut);
     EXPECT_EQ(trackOut.getDuration(), trackIn.getDuration());
 }
 
 TEST(SanitizingFunctionsTest, removeZeroDurationGroup_MultipleGroups) {
-    seqwires::Track trackIn;
+    bw_music::Track trackIn;
 
     testUtils::addNotes(
         {
@@ -38,14 +38,14 @@ TEST(SanitizingFunctionsTest, removeZeroDurationGroup_MultipleGroups) {
         },
         trackIn);
 
-    auto trackOut = seqwires::removeZeroDurationGroups(trackIn);
+    auto trackOut = bw_music::removeZeroDurationGroups(trackIn);
     testUtils::testNotes(
         {{60, 0, babelwires::Rational(1, 4)}, {67, babelwires::Rational(1, 4), babelwires::Rational(1, 4)}}, trackOut);
     EXPECT_EQ(trackOut.getDuration(), trackIn.getDuration());
 }
 
 TEST(SanitizingFunctionsTest, removeZeroDurationGroup_SameNote) {
-    seqwires::Track trackIn;
+    bw_music::Track trackIn;
 
     testUtils::addNotes(
         {
@@ -58,7 +58,7 @@ TEST(SanitizingFunctionsTest, removeZeroDurationGroup_SameNote) {
         },
         trackIn);
 
-    auto trackOut = seqwires::removeZeroDurationGroups(trackIn);
+    auto trackOut = bw_music::removeZeroDurationGroups(trackIn);
     testUtils::testNotes(
         {
             {60, babelwires::Rational(0, 4), babelwires::Rational(1, 4)},

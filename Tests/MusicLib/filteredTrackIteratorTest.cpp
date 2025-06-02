@@ -5,9 +5,9 @@
 #include <MusicLib/Types/Track/TrackEvents/trackEvent.hpp>
 
 namespace {
-    struct TestEvent : seqwires::TrackEvent {
+    struct TestEvent : bw_music::TrackEvent {
         STREAM_EVENT(TestEvent);
-        TestEvent(seqwires::ModelDuration d, int value)
+        TestEvent(bw_music::ModelDuration d, int value)
             : m_value(value) {
             setTimeSinceLastEvent(d);
         }
@@ -15,9 +15,9 @@ namespace {
         int m_value;
     };
 
-    struct TestEvent2 : seqwires::TrackEvent {
+    struct TestEvent2 : bw_music::TrackEvent {
         STREAM_EVENT(TestEvent2);
-        TestEvent2(seqwires::ModelDuration d, float value)
+        TestEvent2(bw_music::ModelDuration d, float value)
             : m_value(value) {
             setTimeSinceLastEvent(d);
         }
@@ -27,7 +27,7 @@ namespace {
 } // namespace
 
 TEST(FilteredTrackIterator, Basic) {
-    seqwires::Track track;
+    bw_music::Track track;
 
     for (int i = 0; i < 100; ++i) {
         track.addEvent(TestEvent(1, 2 * i));
@@ -37,10 +37,10 @@ TEST(FilteredTrackIterator, Basic) {
     }
 
     {
-        auto [testEventsBegin, testEventsEnd] = seqwires::iterateOver<TestEvent>(track);
+        auto [testEventsBegin, testEventsEnd] = bw_music::iterateOver<TestEvent>(track);
 
         int count = 0;
-        seqwires::ModelDuration d = 0;
+        bw_music::ModelDuration d = 0;
         for (auto t = testEventsBegin; t != testEventsEnd; ++t) {
             EXPECT_EQ(t->m_value, count);
             ++count;
@@ -51,10 +51,10 @@ TEST(FilteredTrackIterator, Basic) {
     }
 
     {
-        auto [testEventsBegin, testEventsEnd] = seqwires::iterateOver<TestEvent2>(track);
+        auto [testEventsBegin, testEventsEnd] = bw_music::iterateOver<TestEvent2>(track);
 
         int count = 0;
-        seqwires::ModelDuration d = 0;
+        bw_music::ModelDuration d = 0;
         for (auto t = testEventsBegin; t != testEventsEnd; ++t) {
             EXPECT_EQ(t->m_value, count);
             ++count;

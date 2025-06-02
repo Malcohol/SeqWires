@@ -4,16 +4,16 @@
 
 namespace {
     /// A non-note event.
-    struct TestEvent : seqwires::TrackEvent {
+    struct TestEvent : bw_music::TrackEvent {
         STREAM_EVENT(TestEvent);
-        TestEvent(seqwires::ModelDuration d) { setTimeSinceLastEvent(d); }
+        TestEvent(bw_music::ModelDuration d) { setTimeSinceLastEvent(d); }
     };
 
-    seqwires::Track createTestTrack() {
-        seqwires::Track track;
+    bw_music::Track createTestTrack() {
+        bw_music::Track track;
 
-        seqwires::NoteOnEvent noteOn;
-        seqwires::NoteOffEvent noteOff;
+        bw_music::NoteOnEvent noteOn;
+        bw_music::NoteOffEvent noteOff;
 
         // Expect this note.
         noteOn.setTimeSinceLastEvent(0);
@@ -81,44 +81,44 @@ namespace {
 } // namespace
 
 TEST(MonophonicNoteIterator, OnOffOnly) {
-    seqwires::Track track = createTestTrack();
+    bw_music::Track track = createTestTrack();
 
-    auto [it, end] = seqwires::iterateOverMonotonicNotes(track, seqwires::MonophonicNoteIterator::OnOffOnly);
+    auto [it, end] = bw_music::iterateOverMonotonicNotes(track, bw_music::MonophonicNoteIterator::OnOffOnly);
 
     ASSERT_NE(it, end);
-    ASSERT_NE(it->as<seqwires::NoteOnEvent>(), nullptr);
-    EXPECT_EQ(it->as<seqwires::NoteOnEvent>()->m_pitch, 40);
-    EXPECT_EQ(it->as<seqwires::NoteOnEvent>()->getTimeSinceLastEvent(), 0);
+    ASSERT_NE(it->as<bw_music::NoteOnEvent>(), nullptr);
+    EXPECT_EQ(it->as<bw_music::NoteOnEvent>()->m_pitch, 40);
+    EXPECT_EQ(it->as<bw_music::NoteOnEvent>()->getTimeSinceLastEvent(), 0);
 
     ++it;
     ASSERT_NE(it, end);
-    ASSERT_NE(it->as<seqwires::NoteOffEvent>(), nullptr);
-    EXPECT_EQ(it->as<seqwires::NoteOffEvent>()->m_pitch, 40);
-    EXPECT_EQ(it->as<seqwires::NoteOffEvent>()->getTimeSinceLastEvent(), 1);
+    ASSERT_NE(it->as<bw_music::NoteOffEvent>(), nullptr);
+    EXPECT_EQ(it->as<bw_music::NoteOffEvent>()->m_pitch, 40);
+    EXPECT_EQ(it->as<bw_music::NoteOffEvent>()->getTimeSinceLastEvent(), 1);
 
     ++it;
     ASSERT_NE(it, end);
-    ASSERT_NE(it->as<seqwires::NoteOnEvent>(), nullptr);
-    EXPECT_EQ(it->as<seqwires::NoteOnEvent>()->m_pitch, 40);
-    EXPECT_EQ(it->as<seqwires::NoteOnEvent>()->getTimeSinceLastEvent(), 0);
+    ASSERT_NE(it->as<bw_music::NoteOnEvent>(), nullptr);
+    EXPECT_EQ(it->as<bw_music::NoteOnEvent>()->m_pitch, 40);
+    EXPECT_EQ(it->as<bw_music::NoteOnEvent>()->getTimeSinceLastEvent(), 0);
 
     ++it;
     ASSERT_NE(it, end);
-    ASSERT_NE(it->as<seqwires::NoteOffEvent>(), nullptr);
-    EXPECT_EQ(it->as<seqwires::NoteOffEvent>()->m_pitch, 40);
-    EXPECT_EQ(it->as<seqwires::NoteOffEvent>()->getTimeSinceLastEvent(), 2);
+    ASSERT_NE(it->as<bw_music::NoteOffEvent>(), nullptr);
+    EXPECT_EQ(it->as<bw_music::NoteOffEvent>()->m_pitch, 40);
+    EXPECT_EQ(it->as<bw_music::NoteOffEvent>()->getTimeSinceLastEvent(), 2);
 
     ++it;
     ASSERT_NE(it, end);
-    ASSERT_NE(it->as<seqwires::NoteOnEvent>(), nullptr);
-    EXPECT_EQ(it->as<seqwires::NoteOnEvent>()->m_pitch, 50);
-    EXPECT_EQ(it->as<seqwires::NoteOnEvent>()->getTimeSinceLastEvent(), 5);
+    ASSERT_NE(it->as<bw_music::NoteOnEvent>(), nullptr);
+    EXPECT_EQ(it->as<bw_music::NoteOnEvent>()->m_pitch, 50);
+    EXPECT_EQ(it->as<bw_music::NoteOnEvent>()->getTimeSinceLastEvent(), 5);
 
     ++it;
     ASSERT_NE(it, end);
-    ASSERT_NE(it->as<seqwires::NoteOffEvent>(), nullptr);
-    EXPECT_EQ(it->as<seqwires::NoteOffEvent>()->m_pitch, 50);
-    EXPECT_EQ(it->as<seqwires::NoteOffEvent>()->getTimeSinceLastEvent(), 7);
+    ASSERT_NE(it->as<bw_music::NoteOffEvent>(), nullptr);
+    EXPECT_EQ(it->as<bw_music::NoteOffEvent>()->m_pitch, 50);
+    EXPECT_EQ(it->as<bw_music::NoteOffEvent>()->getTimeSinceLastEvent(), 7);
 
     ++it;
     ASSERT_EQ(it, end);

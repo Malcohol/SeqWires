@@ -4,44 +4,44 @@
 #include <MusicLib/Utilities/filteredTrackIterator.hpp>
 
 namespace {
-    struct NotesAbove : seqwires::FilteredTrackIterator<> {
-        NotesAbove(const seqwires::Track& track, seqwires::Pitch pitch) : seqwires::FilteredTrackIterator<>(track), m_pitch(pitch) {}
+    struct NotesAbove : bw_music::FilteredTrackIterator<> {
+        NotesAbove(const bw_music::Track& track, bw_music::Pitch pitch) : bw_music::FilteredTrackIterator<>(track), m_pitch(pitch) {}
 
-        virtual bool isEventOfInterest(const seqwires::TrackEvent& event) override {
-            if (const seqwires::NoteEvent* noteEvent = event.as<seqwires::NoteEvent>()) {
+        virtual bool isEventOfInterest(const bw_music::TrackEvent& event) override {
+            if (const bw_music::NoteEvent* noteEvent = event.as<bw_music::NoteEvent>()) {
                 return noteEvent->m_pitch >= m_pitch;
             }
             return false;
         }
 
-        seqwires::Pitch m_pitch;
+        bw_music::Pitch m_pitch;
     };
 
-    struct NotesBelow : seqwires::FilteredTrackIterator<> {
-        NotesBelow(const seqwires::Track& track, seqwires::Pitch pitch) : seqwires::FilteredTrackIterator<>(track), m_pitch(pitch) {}
+    struct NotesBelow : bw_music::FilteredTrackIterator<> {
+        NotesBelow(const bw_music::Track& track, bw_music::Pitch pitch) : bw_music::FilteredTrackIterator<>(track), m_pitch(pitch) {}
 
-        virtual bool isEventOfInterest(const seqwires::TrackEvent& event) override {
-            if (const seqwires::NoteEvent* noteEvent = event.as<seqwires::NoteEvent>()) {
+        virtual bool isEventOfInterest(const bw_music::TrackEvent& event) override {
+            if (const bw_music::NoteEvent* noteEvent = event.as<bw_music::NoteEvent>()) {
                 return noteEvent->m_pitch < m_pitch;
             }
             return false;
         }
 
-        seqwires::Pitch m_pitch;
+        bw_music::Pitch m_pitch;
     };
 
-    struct NotNotes : seqwires::FilteredTrackIterator<> {
-        NotNotes(const seqwires::Track& track) : seqwires::FilteredTrackIterator<>(track) {}
+    struct NotNotes : bw_music::FilteredTrackIterator<> {
+        NotNotes(const bw_music::Track& track) : bw_music::FilteredTrackIterator<>(track) {}
 
-        virtual bool isEventOfInterest(const seqwires::TrackEvent& event) override {
-            return event.as<seqwires::NoteEvent>() == nullptr;
+        virtual bool isEventOfInterest(const bw_music::TrackEvent& event) override {
+            return event.as<bw_music::NoteEvent>() == nullptr;
         }
 
-        seqwires::Pitch m_pitch;
+        bw_music::Pitch m_pitch;
     };
 }
 
-seqwires::SplitAtPitchResult seqwires::splitAtPitch(Pitch pitch, const Track& sourceTrack) {
+bw_music::SplitAtPitchResult bw_music::splitAtPitch(Pitch pitch, const Track& sourceTrack) {
     SplitAtPitchResult result;
     // TODO Do this in one traversal.
     {

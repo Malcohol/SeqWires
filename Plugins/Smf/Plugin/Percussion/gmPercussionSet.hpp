@@ -15,10 +15,10 @@ namespace smf {
     // TODO GS, XG percussion, with appropriate subtyping.
 
     /// A PercussionSet corresponding to the original General MIDI percussion set.
-    class GMPercussionSet : public seqwires::PercussionSetWithPitchMap {
+    class GMPercussionSet : public bw_music::PercussionSetWithPitchMap {
       public:
         PRIMITIVE_TYPE("GMPerc", "General MIDI Percussion", "7571c9ca-1c7f-4547-9218-391a339bae7d", 1);
 
-        GMPercussionSet(const seqwires::BuiltInPercussionInstruments& builtInInstruments);
+        GMPercussionSet(const bw_music::BuiltInPercussionInstruments& builtInInstruments);
     };
 } // namespace smf

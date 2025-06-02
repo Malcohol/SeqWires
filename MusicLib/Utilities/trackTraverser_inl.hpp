@@ -7,7 +7,7 @@
  **/
 template <typename TRACK_ITERATOR>
 template <typename SPAN>
-seqwires::TrackTraverser<TRACK_ITERATOR>::TrackTraverser(const Track& track, const SPAN& span)
+bw_music::TrackTraverser<TRACK_ITERATOR>::TrackTraverser(const Track& track, const SPAN& span)
     : m_track(track)
     , m_iterator(span.begin())
     , m_endIterator(span.end())
@@ -19,7 +19,7 @@ seqwires::TrackTraverser<TRACK_ITERATOR>::TrackTraverser(const Track& track, con
 }
 
 template <typename TRACK_ITERATOR>
-void seqwires::TrackTraverser<TRACK_ITERATOR>::leastUpperBoundDuration(ModelDuration& duration) const {
+void bw_music::TrackTraverser<TRACK_ITERATOR>::leastUpperBoundDuration(ModelDuration& duration) const {
     const ModelDuration d = m_track.getDuration();
     if (d > duration) {
         duration = d;
@@ -27,7 +27,7 @@ void seqwires::TrackTraverser<TRACK_ITERATOR>::leastUpperBoundDuration(ModelDura
 }
 
 template <typename TRACK_ITERATOR>
-void seqwires::TrackTraverser<TRACK_ITERATOR>::greatestLowerBoundNextEvent(ModelDuration& duration) const {
+void bw_music::TrackTraverser<TRACK_ITERATOR>::greatestLowerBoundNextEvent(ModelDuration& duration) const {
     if (m_iterator != m_endIterator) {
         if (duration > m_timeToNextEvent) {
             duration = m_timeToNextEvent;
@@ -36,7 +36,7 @@ void seqwires::TrackTraverser<TRACK_ITERATOR>::greatestLowerBoundNextEvent(Model
 }
 
 template <typename TRACK_ITERATOR>
-void seqwires::TrackTraverser<TRACK_ITERATOR>::advance(
+void bw_music::TrackTraverser<TRACK_ITERATOR>::advance(
     ModelDuration time, const std::function<void(const typename TRACK_ITERATOR::value_type&)>& eventVisitor) {
     if (m_iterator != m_endIterator) {
         assert((time <= m_timeToNextEvent) && "You cannot advance beyond the next event");
@@ -54,7 +54,7 @@ void seqwires::TrackTraverser<TRACK_ITERATOR>::advance(
 }
 
 template <typename TRACK_ITERATOR>
-void seqwires::TrackTraverser<TRACK_ITERATOR>::advance(ModelDuration time, EventsAtTime& eventsAtTimeOut,
+void bw_music::TrackTraverser<TRACK_ITERATOR>::advance(ModelDuration time, EventsAtTime& eventsAtTimeOut,
                                                        bool clearEventsAtTimeOutFirst) {
     if (clearEventsAtTimeOutFirst) {
         eventsAtTimeOut.clear();
@@ -65,7 +65,7 @@ void seqwires::TrackTraverser<TRACK_ITERATOR>::advance(ModelDuration time, Event
 }
 
 template <typename TRACK_ITERATOR>
-bool seqwires::TrackTraverser<TRACK_ITERATOR>::isNextEventAt(ModelDuration time) const {
+bool bw_music::TrackTraverser<TRACK_ITERATOR>::isNextEventAt(ModelDuration time) const {
     if (m_iterator == m_endIterator) {
         return false;
     }
@@ -73,6 +73,6 @@ bool seqwires::TrackTraverser<TRACK_ITERATOR>::isNextEventAt(ModelDuration time)
     return (m_timeToNextEvent == time);
 }
 
-template <typename TRACK_ITERATOR> bool seqwires::TrackTraverser<TRACK_ITERATOR>::hasMoreEvents() const {
+template <typename TRACK_ITERATOR> bool bw_music::TrackTraverser<TRACK_ITERATOR>::hasMoreEvents() const {
     return (m_iterator != m_endIterator);
 }

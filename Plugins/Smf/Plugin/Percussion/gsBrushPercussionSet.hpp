@@ -14,10 +14,10 @@
 namespace smf {
     /// A PercussionSet corresponding to the instruments of GS standard percussion set.
     /// There are two such sets, but we do not distinguish them
-    class GsBrushPercussionSet : public seqwires::PercussionSetWithPitchMap {
+    class GsBrushPercussionSet : public bw_music::PercussionSetWithPitchMap {
       public:
         PRIMITIVE_TYPE("GSBrushPerc", "Roland GS Brush Percussion", "8a2d5bde-833f-43ea-9c6c-86c22174688b", 1);
 
-        GsBrushPercussionSet(const seqwires::BuiltInPercussionInstruments& builtInInstruments);
+        GsBrushPercussionSet(const bw_music::BuiltInPercussionInstruments& builtInInstruments);
     };
 } // namespace smf

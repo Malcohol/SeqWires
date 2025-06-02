@@ -6,13 +6,13 @@
 #include <Tests/TestUtils/seqTestUtils.hpp>
 
 TEST(Track, Simple) {
-    seqwires::Track track;
+    bw_music::Track track;
     const size_t hashWhenEmpty = track.getHash();
 
     EXPECT_EQ(track.getNumEvents(), 0);
     EXPECT_EQ(track.getDuration(), 0);
 
-    seqwires::TrackEvent event0;
+    bw_music::TrackEvent event0;
     track.addEvent(event0);
 
     EXPECT_EQ(track.getNumEvents(), 1);
@@ -20,7 +20,7 @@ TEST(Track, Simple) {
     const size_t hashWithOneEvent = track.getHash();
     EXPECT_NE(hashWhenEmpty, hashWithOneEvent);
 
-    seqwires::TrackEvent event1;
+    bw_music::TrackEvent event1;
     event1.setTimeSinceLastEvent(1);
     track.addEvent(event1);
 
@@ -31,29 +31,29 @@ TEST(Track, Simple) {
     EXPECT_NE(hashWithOneEvent, hashWithTwoEvents);
 
     int count = 0;
-    for (const auto& event : static_cast<const seqwires::Track&>(track)) {
+    for (const auto& event : static_cast<const bw_music::Track&>(track)) {
         ++count;
     }
     EXPECT_EQ(count, 2);
 }
 
 namespace {
-    struct alignas(16) TestEvent : seqwires::TrackEvent {
+    struct alignas(16) TestEvent : bw_music::TrackEvent {
         STREAM_EVENT(TestEvent);
-        TestEvent(seqwires::ModelDuration d) { setTimeSinceLastEvent(d); }
+        TestEvent(bw_music::ModelDuration d) { setTimeSinceLastEvent(d); }
 
         std::uint64_t m_big[5] = {};
     };
 } // namespace
 
 TEST(Track, BlocksAndAlignment) {
-    EXPECT_NE(seqwires::TrackEvent().getSize(), TestEvent(1).getSize());
-    EXPECT_NE(seqwires::TrackEvent().getAlignment(), TestEvent(1).getAlignment());
+    EXPECT_NE(bw_music::TrackEvent().getSize(), TestEvent(1).getSize());
+    EXPECT_NE(bw_music::TrackEvent().getAlignment(), TestEvent(1).getAlignment());
 
-    seqwires::Track track;
+    bw_music::Track track;
 
     for (int i = 0; i < 100; ++i) {
-        seqwires::TrackEvent newEvent;
+        bw_music::TrackEvent newEvent;
         newEvent.setTimeSinceLastEvent(1);
         track.addEvent(std::move(newEvent));
         TestEvent newEvent2(1);
@@ -86,10 +86,10 @@ namespace {
         int& m_payloadDestructionCounter;
     };
 
-    struct EventWithPayload : seqwires::TrackEvent {
+    struct EventWithPayload : bw_music::TrackEvent {
         STREAM_EVENT(EventWithPayload);
 
-        EventWithPayload(seqwires::ModelDuration d, int& payloadDestructionCounter)
+        EventWithPayload(bw_music::ModelDuration d, int& payloadDestructionCounter)
             : m_payload(std::make_unique<Payload>(payloadDestructionCounter)) {
             setTimeSinceLastEvent(d);
         }
@@ -100,7 +100,7 @@ namespace {
         }
 
         EventWithPayload(const EventWithPayload& other)
-            : seqwires::TrackEvent(other)
+            : bw_music::TrackEvent(other)
             , m_payload(std::make_unique<Payload>(*other.m_payload)) {}
 
         ~EventWithPayload() {
@@ -115,7 +115,7 @@ TEST(Track, PayloadTest) {
     int counter = 0;
 
     {
-        seqwires::Track track;
+        bw_music::Track track;
 
         for (int i = 0; i < 100; ++i) {
             track.addEvent(EventWithPayload(1, counter));
@@ -128,21 +128,21 @@ TEST(Track, PayloadTest) {
 }
 
 TEST(Track, equality) {
-    seqwires::Track emptyTrack0;
-    seqwires::Track emptyTrack1;
-    seqwires::Track emptyTrackWithPositiveDuration;
-    seqwires::Track trackWithNotes;
-    seqwires::Track trackWithSameNotes;
-    seqwires::Track trackWithMoreNotes;
-    seqwires::Track trackWithDifferentNotes;
-    seqwires::Track trackWithSameNotesLongerDuration;
+    bw_music::Track emptyTrack0;
+    bw_music::Track emptyTrack1;
+    bw_music::Track emptyTrackWithPositiveDuration;
+    bw_music::Track trackWithNotes;
+    bw_music::Track trackWithSameNotes;
+    bw_music::Track trackWithMoreNotes;
+    bw_music::Track trackWithDifferentNotes;
+    bw_music::Track trackWithSameNotesLongerDuration;
     
     emptyTrackWithPositiveDuration.setDuration(1);
-    testUtils::addSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65}, trackWithNotes);
-    testUtils::addSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65}, trackWithSameNotes);
-    testUtils::addSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65, 67}, trackWithMoreNotes);
-    testUtils::addSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 63, 65}, trackWithDifferentNotes);
-    testUtils::addSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65}, trackWithSameNotesLongerDuration);
+    testUtils::addSimpleNotes(std::vector<bw_music::Pitch>{60, 62, 64, 65}, trackWithNotes);
+    testUtils::addSimpleNotes(std::vector<bw_music::Pitch>{60, 62, 64, 65}, trackWithSameNotes);
+    testUtils::addSimpleNotes(std::vector<bw_music::Pitch>{60, 62, 64, 65, 67}, trackWithMoreNotes);
+    testUtils::addSimpleNotes(std::vector<bw_music::Pitch>{60, 62, 63, 65}, trackWithDifferentNotes);
+    testUtils::addSimpleNotes(std::vector<bw_music::Pitch>{60, 62, 64, 65}, trackWithSameNotesLongerDuration);
     trackWithSameNotesLongerDuration.setDuration(16);
 
     EXPECT_EQ(emptyTrack0, emptyTrack0);

@@ -9,20 +9,20 @@
 
 #include <Common/Hash/hash.hpp>
 
-seqwires::Track::Track() = default;
+bw_music::Track::Track() = default;
 
-seqwires::Track::Track(ModelDuration duration) {
+bw_music::Track::Track(ModelDuration duration) {
     setDuration(duration);
 }
 
-int seqwires::Track::getNumEvents() const {
+int bw_music::Track::getNumEvents() const {
     return m_blockStream.getNumEvents();
 }
 
-seqwires::Track::CachedValues::CachedValues(ModelDuration trackDuration)
+bw_music::Track::CachedValues::CachedValues(ModelDuration trackDuration)
     : m_hash(trackDuration.getHash()) {}
 
-void seqwires::Track::CachedValues::addEvent(const TrackEvent& event) {
+void bw_music::Track::CachedValues::addEvent(const TrackEvent& event) {
     m_totalEventDuration += event.getTimeSinceLastEvent();
     babelwires::hash::mixInto(m_hash, event.getHash());
     TrackEvent::GroupingInfo groupingInfo = event.getGroupingInfo();
@@ -32,7 +32,7 @@ void seqwires::Track::CachedValues::addEvent(const TrackEvent& event) {
     }
 }
 
-void seqwires::Track::ensureCache() const {
+void bw_music::Track::ensureCache() const {
     if (!m_cacheIsValid) {
         CachedValues newCache(getDuration());
         for (const TrackEvent& event : *this) {
@@ -43,27 +43,27 @@ void seqwires::Track::ensureCache() const {
     }
 }
 
-seqwires::ModelDuration seqwires::Track::getDuration() const {
+bw_music::ModelDuration bw_music::Track::getDuration() const {
     return m_duration;
 }
 
-seqwires::ModelDuration seqwires::Track::getTotalEventDuration() const {
+bw_music::ModelDuration bw_music::Track::getTotalEventDuration() const {
     ensureCache();
     return m_cachedValues.m_totalEventDuration;
 }
 
-void seqwires::Track::setDuration(ModelDuration d) {
+void bw_music::Track::setDuration(ModelDuration d) {
     if (d > getTotalEventDuration()) {
         m_duration = d;
     }
 }
 
-std::size_t seqwires::Track::getHash() const {
+std::size_t bw_music::Track::getHash() const {
     ensureCache();
     return m_cachedValues.m_hash;
 }
 
-bool seqwires::Track::operator==(const Value& other) const {
+bool bw_music::Track::operator==(const Value& other) const {
     const Track* const otherTrack = other.as<Track>();
     if (!otherTrack) {
         return false;
@@ -91,7 +91,7 @@ bool seqwires::Track::operator==(const Value& other) const {
     return true;
 }
 
-void seqwires::Track::onNewEvent(const TrackEvent& event) {
+void bw_music::Track::onNewEvent(const TrackEvent& event) {
     ensureCache();
     m_cachedValues.addEvent(event);
     if (getTotalEventDuration() > m_duration) {
@@ -99,15 +99,15 @@ void seqwires::Track::onNewEvent(const TrackEvent& event) {
     }
 }
 
-seqwires::Track::const_iterator seqwires::Track::end() const {
+bw_music::Track::const_iterator bw_music::Track::end() const {
     return m_blockStream.end_impl<TrackEvent>();
 }
 
-seqwires::Track::const_iterator seqwires::Track::begin() const {
+bw_music::Track::const_iterator bw_music::Track::begin() const {
     return m_blockStream.begin_impl<TrackEvent>();
 }
 
-const std::unordered_map<const char*, int>& seqwires::Track::getNumEventGroupsByCategory() const {
+const std::unordered_map<const char*, int>& bw_music::Track::getNumEventGroupsByCategory() const {
     ensureCache();
     return m_cachedValues.m_numEventGroupsByCategory;
 }

@@ -11,7 +11,7 @@
 #include <MusicLib/Functions/sanitizingFunctions.hpp>
 
 namespace {
-    seqwires::ModelDuration getIdealTime(seqwires::ModelDuration time, seqwires::ModelDuration beat) {
+    bw_music::ModelDuration getIdealTime(bw_music::ModelDuration time, bw_music::ModelDuration beat) {
         auto [div, mod] = time.divmod(beat);
         if (mod >= beat / 2) {
             ++div;
@@ -20,7 +20,7 @@ namespace {
     }
 } // namespace
 
-seqwires::Track seqwires::quantize(const Track& trackIn, ModelDuration beat) {
+bw_music::Track bw_music::quantize(const Track& trackIn, ModelDuration beat) {
 
     using Group = std::tuple<TrackEvent::GroupingInfo::Category, TrackEvent::GroupingInfo::GroupValue>;
 

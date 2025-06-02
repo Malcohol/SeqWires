@@ -11,7 +11,7 @@
 
 #include <memory>
 
-namespace seqwires {
+namespace bw_music {
     /// Remove any groups which have zero duration.
     Track removeZeroDurationGroups(const Track& trackIn);
-} // namespace seqwires
+} // namespace bw_music

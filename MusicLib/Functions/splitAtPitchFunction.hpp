@@ -11,7 +11,7 @@
 
 #include <tuple>
 
-namespace seqwires {
+namespace bw_music {
     struct SplitAtPitchResult {
         /// NoteEvents at or above the given pitch
         Track m_equalOrAbove;
@@ -23,4 +23,4 @@ namespace seqwires {
 
     /// Split the events in the track by pitch.
     SplitAtPitchResult splitAtPitch(Pitch pitch, const Track& sourceTrack);
-} // namespace seqwires
+} // namespace bw_music

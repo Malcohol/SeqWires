@@ -11,5 +11,5 @@
 
 
 namespace smf {
-    using TypeOfTracks = seqwires::DefaultTrackType;
+    using TypeOfTracks = bw_music::DefaultTrackType;
 }

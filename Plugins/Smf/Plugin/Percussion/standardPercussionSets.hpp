@@ -24,7 +24,7 @@ namespace smf {
         StandardPercussionSets(const babelwires::ProjectContext& projectContext);
 
         /// Get the default set for each channel in the given spec.
-        const seqwires::PercussionSetWithPitchMap* getDefaultPercussionSet(GMSpecType::Value gmSpec, int channelNumber);
+        const bw_music::PercussionSetWithPitchMap* getDefaultPercussionSet(GMSpecType::Value gmSpec, int channelNumber);
 
         // TODO This isn't percussion specific.
         struct ChannelSetupInfo {
@@ -36,17 +36,17 @@ namespace smf {
         };
 
         /// Get the percussion set specified by the given parameters, or nullptr if a percussion set is not specified.
-        const seqwires::PercussionSetWithPitchMap* getPercussionSetFromChannelSetupInfo(GMSpecType::Value gmSpec, ChannelSetupInfo channelSetupInfo);
+        const bw_music::PercussionSetWithPitchMap* getPercussionSetFromChannelSetupInfo(GMSpecType::Value gmSpec, ChannelSetupInfo channelSetupInfo);
 
         /// Find the percussion set which contains the most instruments from the given set, and is suitable for use in
         /// the given channel.
-        const seqwires::PercussionSetWithPitchMap* getBestPercussionSet(GMSpecType::Value gmSpec, int channelNumber,
+        const bw_music::PercussionSetWithPitchMap* getBestPercussionSet(GMSpecType::Value gmSpec, int channelNumber,
                                                   const std::unordered_set<babelwires::ShortId>& instrumentsInUse,
                                                   std::unordered_set<babelwires::ShortId>& excludedInstrumentsOut);
 
         /// Get setup information for the given percussionSet if any is required. 
         /// A null argument is allowed, in which case an empty optional is returned.
-        std::optional<ChannelSetupInfo> getChannelSetupInfoFromPercussionSet(const seqwires::PercussionSetWithPitchMap* percussionSet, int channelNumber);
+        std::optional<ChannelSetupInfo> getChannelSetupInfoFromPercussionSet(const bw_music::PercussionSetWithPitchMap* percussionSet, int channelNumber);
 
       private:
         enum KnownPercussionSets {
@@ -106,17 +106,17 @@ namespace smf {
                                                   std::unordered_set<babelwires::ShortId>& excludedInstrumentsOut);
 
         /// From the range of known percussion, select the best percussion set.
-        const seqwires::PercussionSetWithPitchMap* getBestPercussionSetInRange(int startIndex, int endIndex,
+        const bw_music::PercussionSetWithPitchMap* getBestPercussionSetInRange(int startIndex, int endIndex,
                                                   const std::unordered_set<babelwires::ShortId>& instrumentsInUse,
                                                   std::unordered_set<babelwires::ShortId>& excludedInstrumentsOut);
 
         /// Find the percussion set in the array of known percussion sets. Asserts if not found.
-        KnownPercussionSets getKnownPercussionSetFromPercussionSet(const seqwires::PercussionSetWithPitchMap* percussionSet);
+        KnownPercussionSets getKnownPercussionSetFromPercussionSet(const bw_music::PercussionSetWithPitchMap* percussionSet);
 
         std::optional<ChannelSetupInfo> getChannelSetupInfoFromKnownPercussionSet(KnownPercussionSets percussionSet, int channelNumber);
 
       private:
-        std::array<const seqwires::PercussionSetWithPitchMap*, NUM_KNOWN_PERCUSSION_SETS> m_knownSets;
+        std::array<const bw_music::PercussionSetWithPitchMap*, NUM_KNOWN_PERCUSSION_SETS> m_knownSets;
 
         /// This is populated on demand.
         std::array<std::unordered_set<babelwires::ShortId>, NUM_KNOWN_PERCUSSION_SETS> m_instrumentSets;

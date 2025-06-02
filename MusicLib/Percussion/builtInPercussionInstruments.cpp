@@ -9,9 +9,9 @@
 
 #include <MusicLib/Percussion/percussionTypeTag.hpp>
 
-ENUM_DEFINE_ENUM_VALUE_SOURCE(seqwires::BuiltInPercussionInstruments, BUILT_IN_PERCUSSION_INSTRUMENTS);
+ENUM_DEFINE_ENUM_VALUE_SOURCE(bw_music::BuiltInPercussionInstruments, BUILT_IN_PERCUSSION_INSTRUMENTS);
 
-seqwires::BuiltInPercussionInstruments::BuiltInPercussionInstruments()
+bw_music::BuiltInPercussionInstruments::BuiltInPercussionInstruments()
     : EnumType(getStaticValueSet(), 0) {
         addTag(percussionTypeTag());
     }

@@ -9,14 +9,14 @@
 
 #include <Common/Identifiers/identifierRegistry.hpp>
 
-ENUM_DEFINE_ENUM_VALUE_SOURCE(seqwires::ChordType, CHORD_TYPE_VALUES);
+ENUM_DEFINE_ENUM_VALUE_SOURCE(bw_music::ChordType, CHORD_TYPE_VALUES);
 
-seqwires::ChordType::ChordType()
+bw_music::ChordType::ChordType()
     : EnumType(getStaticValueSet(), 0) {}
 
-seqwires::NoChord::NoChord()
+bw_music::NoChord::NoChord()
     : EnumType({getNoChordValue()}, 0) {}
 
-babelwires::ShortId seqwires::NoChord::getNoChordValue() {
+babelwires::ShortId bw_music::NoChord::getNoChordValue() {
     return BW_SHORT_ID("NoChrd","No Chord", "026e8e78-bb05-4386-8a67-2034890acd6e");
 }

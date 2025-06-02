@@ -9,15 +9,15 @@
 
 #include <Common/Hash/hash.hpp>
 
-const char* seqwires::TrackEvent::GroupingInfo::s_genericCategory = "Generic";
+const char* bw_music::TrackEvent::GroupingInfo::s_genericCategory = "Generic";
 
-bool seqwires::TrackEvent::operator!=(const TrackEvent& other) const {
+bool bw_music::TrackEvent::operator!=(const TrackEvent& other) const {
     return !(*this == other);
 }
 
-seqwires::TrackEvent::GroupingInfo seqwires::TrackEvent::getGroupingInfo() const {
+bw_music::TrackEvent::GroupingInfo bw_music::TrackEvent::getGroupingInfo() const {
     return GroupingInfo();
 }
 
-void seqwires::TrackEvent::transpose(int pitchOffset) {
+void bw_music::TrackEvent::transpose(int pitchOffset) {
 }

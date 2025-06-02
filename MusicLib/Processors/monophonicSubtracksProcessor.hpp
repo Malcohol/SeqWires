@@ -17,7 +17,7 @@
 #include <BabelWiresLib/TypeSystem/primitiveType.hpp>
 #include <BabelWiresLib/Types/Record/recordType.hpp>
 
-namespace seqwires {
+namespace bw_music {
     class MonophonicSubtracksProcessorInput : public babelwires::RecordType {
       public:
         PRIMITIVE_TYPE("MonoTracksIn", "Monophonic Tracks Input", "e8041fe6-29de-470e-9235-e1f05c5f791e", 1);
@@ -27,7 +27,7 @@ namespace seqwires {
         DECLARE_INSTANCE_BEGIN(MonophonicSubtracksProcessorInput)
         DECLARE_INSTANCE_FIELD(NumTrk, babelwires::IntType)
         DECLARE_INSTANCE_FIELD(Policy, MonophonicSubtracksPolicyEnum)
-        DECLARE_INSTANCE_FIELD(Input, seqwires::TrackType)
+        DECLARE_INSTANCE_FIELD(Input, bw_music::TrackType)
         DECLARE_INSTANCE_END()
     };
 
@@ -38,8 +38,8 @@ namespace seqwires {
         MonophonicSubtracksProcessorOutput();
 
         DECLARE_INSTANCE_BEGIN(MonophonicSubtracksProcessorOutput)
-        DECLARE_INSTANCE_ARRAY_FIELD(Sbtrks, seqwires::TrackType)
-        DECLARE_INSTANCE_FIELD(Other, seqwires::TrackType)
+        DECLARE_INSTANCE_ARRAY_FIELD(Sbtrks, bw_music::TrackType)
+        DECLARE_INSTANCE_FIELD(Other, bw_music::TrackType)
         DECLARE_INSTANCE_END()
     };
 
@@ -54,4 +54,4 @@ namespace seqwires {
                           babelwires::ValueTreeNode& output) const override;
     };
 
-} // namespace seqwires
+} // namespace bw_music

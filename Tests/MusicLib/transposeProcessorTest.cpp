@@ -12,135 +12,135 @@
 #include <Tests/TestUtils/seqTestUtils.hpp>
 
 TEST(TransposeProcessorTest, funcSimpleZero) {
-    seqwires::Track trackIn;
+    bw_music::Track trackIn;
 
-    testUtils::addSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65}, trackIn);
+    testUtils::addSimpleNotes(std::vector<bw_music::Pitch>{60, 62, 64, 65}, trackIn);
 
-    auto trackOut = seqwires::transposeTrack(trackIn, 0);
+    auto trackOut = bw_music::transposeTrack(trackIn, 0);
 
-    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65}, trackOut);
+    testUtils::testSimpleNotes(std::vector<bw_music::Pitch>{60, 62, 64, 65}, trackOut);
 }
 
 TEST(TransposeProcessorTest, funcSimplePositive) {
-    seqwires::Track trackIn;
+    bw_music::Track trackIn;
 
-    testUtils::addSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65}, trackIn);
+    testUtils::addSimpleNotes(std::vector<bw_music::Pitch>{60, 62, 64, 65}, trackIn);
 
-    auto trackOut = seqwires::transposeTrack(trackIn, 1);
+    auto trackOut = bw_music::transposeTrack(trackIn, 1);
 
-    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{61, 63, 65, 66}, trackOut);
+    testUtils::testSimpleNotes(std::vector<bw_music::Pitch>{61, 63, 65, 66}, trackOut);
 }
 
 TEST(TransposeProcessorTest, funcSimpleNegative) {
-    seqwires::Track trackIn;
+    bw_music::Track trackIn;
 
-    testUtils::addSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65}, trackIn);
+    testUtils::addSimpleNotes(std::vector<bw_music::Pitch>{60, 62, 64, 65}, trackIn);
 
-    auto trackOut = seqwires::transposeTrack(trackIn, -1);
+    auto trackOut = bw_music::transposeTrack(trackIn, -1);
 
-    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{59, 61, 63, 64}, trackOut);
+    testUtils::testSimpleNotes(std::vector<bw_music::Pitch>{59, 61, 63, 64}, trackOut);
 }
 
 TEST(TransposeProcessorTest, funcSimplePositiveLimit) {
-    seqwires::Track trackIn;
+    bw_music::Track trackIn;
 
-    testUtils::addSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65}, trackIn);
+    testUtils::addSimpleNotes(std::vector<bw_music::Pitch>{60, 62, 64, 65}, trackIn);
 
-    auto trackOut = seqwires::transposeTrack(trackIn, 127);
+    auto trackOut = bw_music::transposeTrack(trackIn, 127);
 
-    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{127, 127, 127, 127}, trackOut);
+    testUtils::testSimpleNotes(std::vector<bw_music::Pitch>{127, 127, 127, 127}, trackOut);
 }
 
 TEST(TransposeProcessorTest, funcSimpleNegativeLimit) {
-    seqwires::Track trackIn;
+    bw_music::Track trackIn;
 
-    testUtils::addSimpleNotes(std::vector<seqwires::Pitch>{60, 62, 64, 65}, trackIn);
+    testUtils::addSimpleNotes(std::vector<bw_music::Pitch>{60, 62, 64, 65}, trackIn);
 
-    auto trackOut = seqwires::transposeTrack(trackIn, -127);
+    auto trackOut = bw_music::transposeTrack(trackIn, -127);
 
-    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{0, 0, 0, 0}, trackOut);
+    testUtils::testSimpleNotes(std::vector<bw_music::Pitch>{0, 0, 0, 0}, trackOut);
 }
 
 TEST(TransposeProcessorTest, funcSimpleChordsZero) {
-    seqwires::Track trackIn;
+    bw_music::Track trackIn;
 
     // Some random chords.
     testUtils::addChords(
         {
-            {seqwires::PitchClass::PitchClass::Value::C, seqwires::ChordType::ChordType::Value::M},
-            {seqwires::PitchClass::PitchClass::Value::E, seqwires::ChordType::ChordType::Value::m},
-            {seqwires::PitchClass::PitchClass::Value::Gsh, seqwires::ChordType::ChordType::Value::dim},
-            {seqwires::PitchClass::PitchClass::Value::A, seqwires::ChordType::ChordType::Value::aug},
+            {bw_music::PitchClass::PitchClass::Value::C, bw_music::ChordType::ChordType::Value::M},
+            {bw_music::PitchClass::PitchClass::Value::E, bw_music::ChordType::ChordType::Value::m},
+            {bw_music::PitchClass::PitchClass::Value::Gsh, bw_music::ChordType::ChordType::Value::dim},
+            {bw_music::PitchClass::PitchClass::Value::A, bw_music::ChordType::ChordType::Value::aug},
         },
         trackIn);
 
-    auto trackOut = seqwires::transposeTrack(trackIn, 0);
+    auto trackOut = bw_music::transposeTrack(trackIn, 0);
 
     testUtils::testChords(
         {
-            {seqwires::PitchClass::PitchClass::Value::C, seqwires::ChordType::ChordType::Value::M},
-            {seqwires::PitchClass::PitchClass::Value::E, seqwires::ChordType::ChordType::Value::m},
-            {seqwires::PitchClass::PitchClass::Value::Gsh, seqwires::ChordType::ChordType::Value::dim},
-            {seqwires::PitchClass::PitchClass::Value::A, seqwires::ChordType::ChordType::Value::aug},
+            {bw_music::PitchClass::PitchClass::Value::C, bw_music::ChordType::ChordType::Value::M},
+            {bw_music::PitchClass::PitchClass::Value::E, bw_music::ChordType::ChordType::Value::m},
+            {bw_music::PitchClass::PitchClass::Value::Gsh, bw_music::ChordType::ChordType::Value::dim},
+            {bw_music::PitchClass::PitchClass::Value::A, bw_music::ChordType::ChordType::Value::aug},
         },
         trackIn);
 }
 
 TEST(TransposeProcessorTest, funcSimpleChordsPositive) {
-    seqwires::Track trackIn;
+    bw_music::Track trackIn;
 
     // Some random chords.
     testUtils::addChords(
         {
-            {seqwires::PitchClass::PitchClass::Value::C, seqwires::ChordType::ChordType::Value::M},
-            {seqwires::PitchClass::PitchClass::Value::E, seqwires::ChordType::ChordType::Value::m},
-            {seqwires::PitchClass::PitchClass::Value::Gsh, seqwires::ChordType::ChordType::Value::dim},
-            {seqwires::PitchClass::PitchClass::Value::B, seqwires::ChordType::ChordType::Value::aug},
+            {bw_music::PitchClass::PitchClass::Value::C, bw_music::ChordType::ChordType::Value::M},
+            {bw_music::PitchClass::PitchClass::Value::E, bw_music::ChordType::ChordType::Value::m},
+            {bw_music::PitchClass::PitchClass::Value::Gsh, bw_music::ChordType::ChordType::Value::dim},
+            {bw_music::PitchClass::PitchClass::Value::B, bw_music::ChordType::ChordType::Value::aug},
         },
         trackIn);
 
-    auto trackOut = seqwires::transposeTrack(trackIn, 1);
+    auto trackOut = bw_music::transposeTrack(trackIn, 1);
 
     testUtils::testChords(
         {
-            {seqwires::PitchClass::PitchClass::Value::Csh, seqwires::ChordType::ChordType::Value::M},
-            {seqwires::PitchClass::PitchClass::Value::F, seqwires::ChordType::ChordType::Value::m},
-            {seqwires::PitchClass::PitchClass::Value::A, seqwires::ChordType::ChordType::Value::dim},
-            {seqwires::PitchClass::PitchClass::Value::C, seqwires::ChordType::ChordType::Value::aug},
+            {bw_music::PitchClass::PitchClass::Value::Csh, bw_music::ChordType::ChordType::Value::M},
+            {bw_music::PitchClass::PitchClass::Value::F, bw_music::ChordType::ChordType::Value::m},
+            {bw_music::PitchClass::PitchClass::Value::A, bw_music::ChordType::ChordType::Value::dim},
+            {bw_music::PitchClass::PitchClass::Value::C, bw_music::ChordType::ChordType::Value::aug},
         },
         trackOut);
 }
 
 TEST(TransposeProcessorTest, funcSimpleChordsNegative) {
-    seqwires::Track trackIn;
+    bw_music::Track trackIn;
 
     // Some random chords.
     testUtils::addChords(
         {
-            {seqwires::PitchClass::PitchClass::Value::C, seqwires::ChordType::ChordType::Value::M},
-            {seqwires::PitchClass::PitchClass::Value::E, seqwires::ChordType::ChordType::Value::m},
-            {seqwires::PitchClass::PitchClass::Value::Gsh, seqwires::ChordType::ChordType::Value::dim},
-            {seqwires::PitchClass::PitchClass::Value::B, seqwires::ChordType::ChordType::Value::aug},
+            {bw_music::PitchClass::PitchClass::Value::C, bw_music::ChordType::ChordType::Value::M},
+            {bw_music::PitchClass::PitchClass::Value::E, bw_music::ChordType::ChordType::Value::m},
+            {bw_music::PitchClass::PitchClass::Value::Gsh, bw_music::ChordType::ChordType::Value::dim},
+            {bw_music::PitchClass::PitchClass::Value::B, bw_music::ChordType::ChordType::Value::aug},
         },
         trackIn);
 
-    auto trackOut = seqwires::transposeTrack(trackIn, -1);
+    auto trackOut = bw_music::transposeTrack(trackIn, -1);
 
     testUtils::testChords(
         {
-            {seqwires::PitchClass::PitchClass::Value::B, seqwires::ChordType::ChordType::Value::M},
-            {seqwires::PitchClass::PitchClass::Value::Dsh, seqwires::ChordType::ChordType::Value::m},
-            {seqwires::PitchClass::PitchClass::Value::G, seqwires::ChordType::ChordType::Value::dim},
-            {seqwires::PitchClass::PitchClass::Value::Ash, seqwires::ChordType::ChordType::Value::aug},
+            {bw_music::PitchClass::PitchClass::Value::B, bw_music::ChordType::ChordType::Value::M},
+            {bw_music::PitchClass::PitchClass::Value::Dsh, bw_music::ChordType::ChordType::Value::m},
+            {bw_music::PitchClass::PitchClass::Value::G, bw_music::ChordType::ChordType::Value::dim},
+            {bw_music::PitchClass::PitchClass::Value::Ash, bw_music::ChordType::ChordType::Value::aug},
         },
         trackOut);
 }
 
 TEST(TransposeProcessorTest, processor) {
     testUtils::TestEnvironment testEnvironment;
-    seqwires::registerLib(testEnvironment.m_projectContext);
+    bw_music::registerLib(testEnvironment.m_projectContext);
 
-    seqwires::TransposeProcessor processor(testEnvironment.m_projectContext);
+    bw_music::TransposeProcessor processor(testEnvironment.m_projectContext);
 
     processor.getInput().setToDefault();
     processor.getOutput().setToDefault();
@@ -149,17 +149,17 @@ TEST(TransposeProcessorTest, processor) {
     const babelwires::ValueTreeNode& output = processor.getOutput();
 
     babelwires::ValueTreeNode& inputArray =
-        input.getChildFromStep(seqwires::TransposeProcessor::getCommonArrayId())
+        input.getChildFromStep(bw_music::TransposeProcessor::getCommonArrayId())
             .is<babelwires::ValueTreeNode>();
     const babelwires::ValueTreeNode& outputArray =
-        output.getChildFromStep(seqwires::TransposeProcessor::getCommonArrayId())
+        output.getChildFromStep(bw_music::TransposeProcessor::getCommonArrayId())
             .is<babelwires::ValueTreeNode>();
 
-    babelwires::ArrayInstanceImpl<babelwires::ValueTreeNode, seqwires::TrackType> inArray(inputArray);
-    const babelwires::ArrayInstanceImpl<const babelwires::ValueTreeNode, seqwires::TrackType> outArray(
+    babelwires::ArrayInstanceImpl<babelwires::ValueTreeNode, bw_music::TrackType> inArray(inputArray);
+    const babelwires::ArrayInstanceImpl<const babelwires::ValueTreeNode, bw_music::TrackType> outArray(
         outputArray);
 
-    seqwires::TransposeProcessorInput::Instance in(input);
+    bw_music::TransposeProcessorInput::Instance in(input);
 
     EXPECT_EQ(in.getOffset().get(), 0);
 
@@ -170,7 +170,7 @@ TEST(TransposeProcessorTest, processor) {
     EXPECT_EQ(outArray.getEntry(0).get().getDuration(), 0);
 
     {
-        seqwires::Track track;
+        bw_music::Track track;
         testUtils::addSimpleNotes({60, 62, 64, 65}, track);
         inArray.getEntry(0).set(std::move(track));
     }
@@ -186,8 +186,8 @@ TEST(TransposeProcessorTest, processor) {
     {
         inArray.setSize(2);
         {
-            seqwires::Track track;
-            testUtils::addSimpleNotes(std::vector<seqwires::Pitch>{48, 50, 52, 53}, track);
+            bw_music::Track track;
+            testUtils::addSimpleNotes(std::vector<bw_music::Pitch>{48, 50, 52, 53}, track);
             inArray.getEntry(1).set(std::move(track));
         }
     }
@@ -196,6 +196,6 @@ TEST(TransposeProcessorTest, processor) {
     ASSERT_EQ(outArray.getSize(), 2);
     EXPECT_EQ(outArray.getEntry(0).get().getDuration(), 1);
     EXPECT_EQ(outArray.getEntry(1).get().getDuration(), 1);
-    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{61, 63, 65, 66}, outArray.getEntry(0).get());
-    testUtils::testSimpleNotes(std::vector<seqwires::Pitch>{49, 51, 53, 54}, outArray.getEntry(1).get());
+    testUtils::testSimpleNotes(std::vector<bw_music::Pitch>{61, 63, 65, 66}, outArray.getEntry(0).get());
+    testUtils::testSimpleNotes(std::vector<bw_music::Pitch>{49, 51, 53, 54}, outArray.getEntry(1).get());
 }

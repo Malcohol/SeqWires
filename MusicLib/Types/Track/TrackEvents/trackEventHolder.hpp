@@ -10,7 +10,7 @@
 #include <Common/BlockStream/streamEventHolder.hpp>
 #include <MusicLib/Types/Track/TrackEvents/trackEvent.hpp>
 
-namespace seqwires {
+namespace bw_music {
     /// A TrackEventHolder is a container for a single mutable TrackEvent.
     using TrackEventHolder = babelwires::StreamEventHolder<TrackEvent>;
-} // namespace seqwires
+} // namespace bw_music

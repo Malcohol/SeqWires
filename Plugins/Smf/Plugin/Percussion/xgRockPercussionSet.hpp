@@ -13,10 +13,10 @@
 
 namespace smf {
     /// A PercussionSet corresponding to the instruments of XG Rock percussion set.
-    class XgRockPercussionSet : public seqwires::PercussionSetWithPitchMap {
+    class XgRockPercussionSet : public bw_music::PercussionSetWithPitchMap {
       public:
         PRIMITIVE_TYPE("XGRockPerc", "Yamaha XG Rock Percussion", "f398844b-8624-4896-bbb9-23ad250fb83b", 1);
 
-        XgRockPercussionSet(const seqwires::BuiltInPercussionInstruments& builtInInstruments);
+        XgRockPercussionSet(const bw_music::BuiltInPercussionInstruments& builtInInstruments);
     };
 } // namespace smf

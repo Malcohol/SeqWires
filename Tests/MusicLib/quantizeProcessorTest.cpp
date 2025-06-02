@@ -11,7 +11,7 @@
 #include <Tests/TestUtils/seqTestUtils.hpp>
 
 TEST(QuantizeProcessorTest, funcSimple) {
-    seqwires::Track trackIn;
+    bw_music::Track trackIn;
 
     testUtils::addNotes(
         {
@@ -23,7 +23,7 @@ TEST(QuantizeProcessorTest, funcSimple) {
         trackIn);
 
     {
-        auto trackOut = seqwires::quantize(trackIn, babelwires::Rational(1, 2));
+        auto trackOut = bw_music::quantize(trackIn, babelwires::Rational(1, 2));
         testUtils::testNotes({{60, 0, babelwires::Rational(1, 1)},
                               {62, 0, babelwires::Rational(1, 2)},
                               {64, 0, babelwires::Rational(1, 1)},
@@ -32,7 +32,7 @@ TEST(QuantizeProcessorTest, funcSimple) {
         EXPECT_EQ(trackOut.getDuration(), 4);
     }
     {
-        auto trackOut = seqwires::quantize(trackIn, babelwires::Rational(1, 4));
+        auto trackOut = bw_music::quantize(trackIn, babelwires::Rational(1, 4));
         testUtils::testNotes({{60, 0, babelwires::Rational(1, 1)},
                               {62, 0, babelwires::Rational(1, 2)},
                               {64, babelwires::Rational(1, 4), babelwires::Rational(1, 1)},
@@ -41,7 +41,7 @@ TEST(QuantizeProcessorTest, funcSimple) {
         EXPECT_EQ(trackOut.getDuration(), 4);
     }
     {
-        auto trackOut = seqwires::quantize(trackIn, babelwires::Rational(1, 8));
+        auto trackOut = bw_music::quantize(trackIn, babelwires::Rational(1, 8));
         testUtils::testNotes({{60, 0, babelwires::Rational(1, 1)},
                               {62, 0, babelwires::Rational(5, 8)},
                               {64, 0, babelwires::Rational(9, 8)},
@@ -52,7 +52,7 @@ TEST(QuantizeProcessorTest, funcSimple) {
 }
 
 TEST(QuantizeProcessorTest, funcCollapsedGroup) {
-    seqwires::Track trackIn;
+    bw_music::Track trackIn;
 
     testUtils::addNotes(
         {
@@ -64,15 +64,15 @@ TEST(QuantizeProcessorTest, funcCollapsedGroup) {
         },
         trackIn);
 
-    auto trackOut = seqwires::quantize(trackIn, babelwires::Rational(1, 8));
+    auto trackOut = bw_music::quantize(trackIn, babelwires::Rational(1, 8));
     testUtils::testNotes({{60, 0, 1}, {64, 0, 1}, {65, 0, 1}}, trackOut);
 }
 
 TEST(QuantizeProcessorTest, processor) {
     testUtils::TestEnvironment testEnvironment;
-    seqwires::registerLib(testEnvironment.m_projectContext);
+    bw_music::registerLib(testEnvironment.m_projectContext);
 
-    seqwires::QuantizeProcessor processor(testEnvironment.m_projectContext);
+    bw_music::QuantizeProcessor processor(testEnvironment.m_projectContext);
 
     processor.getInput().setToDefault();
     processor.getOutput().setToDefault();
@@ -81,17 +81,17 @@ TEST(QuantizeProcessorTest, processor) {
     const babelwires::ValueTreeNode& output = processor.getOutput();
 
     babelwires::ValueTreeNode& inputArray =
-        input.getChildFromStep(seqwires::QuantizeProcessor::getCommonArrayId())
+        input.getChildFromStep(bw_music::QuantizeProcessor::getCommonArrayId())
             .is<babelwires::ValueTreeNode>();
     const babelwires::ValueTreeNode& outputArray =
-        output.getChildFromStep(seqwires::QuantizeProcessor::getCommonArrayId())
+        output.getChildFromStep(bw_music::QuantizeProcessor::getCommonArrayId())
             .is<babelwires::ValueTreeNode>();
 
-    babelwires::ArrayInstanceImpl<babelwires::ValueTreeNode, seqwires::TrackType> inArray(inputArray);
-    const babelwires::ArrayInstanceImpl<const babelwires::ValueTreeNode, seqwires::TrackType> outArray(
+    babelwires::ArrayInstanceImpl<babelwires::ValueTreeNode, bw_music::TrackType> inArray(inputArray);
+    const babelwires::ArrayInstanceImpl<const babelwires::ValueTreeNode, bw_music::TrackType> outArray(
         outputArray);
 
-    seqwires::QuantizeProcessorInput::Instance in(input);
+    bw_music::QuantizeProcessorInput::Instance in(input);
 
     EXPECT_EQ(inArray.getSize(), 1);
     EXPECT_EQ(outArray.getSize(), 1);
@@ -101,7 +101,7 @@ TEST(QuantizeProcessorTest, processor) {
 
     {
         in.getBeat().set(babelwires::Rational(1, 8));
-        seqwires::Track track;
+        bw_music::Track track;
         testUtils::addNotes(
             {
                 {60, babelwires::Rational(1, 17), babelwires::Rational(16, 17)},
@@ -132,7 +132,7 @@ TEST(QuantizeProcessorTest, processor) {
 
     processor.getInput().clearChanges();
     {
-        seqwires::Track track;
+        bw_music::Track track;
         testUtils::addNotes(
             {
                 {60, babelwires::Rational(1, 17), babelwires::Rational(16, 17)},

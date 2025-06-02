@@ -14,6 +14,6 @@
 
 #include <MusicLibUi/ValueModels/trackValueModel.hpp>
 
-void seqwiresUi::registerLib(babelwires::UiProjectContext& context) {
-    context.m_valueModelReg.registryHandler<seqwires::TrackType, TrackValueModel>();
+void bw_musicUi::registerLib(babelwires::UiProjectContext& context) {
+    context.m_valueModelReg.registryHandler<bw_music::TrackType, TrackValueModel>();
 }

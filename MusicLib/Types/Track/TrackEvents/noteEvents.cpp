@@ -13,13 +13,13 @@
 #include <typeinfo>
 #include <algorithm>
 
-seqwires::TrackEvent::GroupingInfo::Category seqwires::NoteEvent::s_noteEventCategory = "Notes";
+bw_music::TrackEvent::GroupingInfo::Category bw_music::NoteEvent::s_noteEventCategory = "Notes";
 
-void seqwires::NoteEvent::transpose(int pitchOffset) {
+void bw_music::NoteEvent::transpose(int pitchOffset) {
     m_pitch = std::clamp(m_pitch + pitchOffset, 0, 127);
 }
 
-bool seqwires::NoteOnEvent::operator==(const TrackEvent& other) const {
+bool bw_music::NoteOnEvent::operator==(const TrackEvent& other) const {
     if (typeid(other) != typeid(*this)) {
         return false;
     }
@@ -28,15 +28,15 @@ bool seqwires::NoteOnEvent::operator==(const TrackEvent& other) const {
            (m_velocity == otherOn.m_velocity);
 }
 
-std::size_t seqwires::NoteOnEvent::getHash() const {
+std::size_t bw_music::NoteOnEvent::getHash() const {
     return babelwires::hash::mixtureOf(static_cast<const char*>("NoteOn"), m_timeSinceLastEvent, m_pitch, m_velocity);
 }
 
-seqwires::TrackEvent::GroupingInfo seqwires::NoteOnEvent::getGroupingInfo() const {
+bw_music::TrackEvent::GroupingInfo bw_music::NoteOnEvent::getGroupingInfo() const {
     return {s_noteEventCategory, m_pitch, GroupingInfo::Grouping::StartOfGroup};
 }
 
-bool seqwires::NoteOffEvent::operator==(const TrackEvent& other) const {
+bool bw_music::NoteOffEvent::operator==(const TrackEvent& other) const {
     if (typeid(other) != typeid(*this)) {
         return false;
     }
@@ -45,10 +45,10 @@ bool seqwires::NoteOffEvent::operator==(const TrackEvent& other) const {
            (m_velocity == otherOff.m_velocity);
 }
 
-std::size_t seqwires::NoteOffEvent::getHash() const {
+std::size_t bw_music::NoteOffEvent::getHash() const {
     return babelwires::hash::mixtureOf(static_cast<const char*>("NoteOff"), m_timeSinceLastEvent, m_pitch, m_velocity);
 }
 
-seqwires::TrackEvent::GroupingInfo seqwires::NoteOffEvent::getGroupingInfo() const {
+bw_music::TrackEvent::GroupingInfo bw_music::NoteOffEvent::getGroupingInfo() const {
     return {s_noteEventCategory, m_pitch, GroupingInfo::Grouping::EndOfGroup};
 }

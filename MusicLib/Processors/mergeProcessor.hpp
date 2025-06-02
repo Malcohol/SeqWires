@@ -16,7 +16,7 @@
 #include <BabelWiresLib/TypeSystem/primitiveType.hpp>
 #include <BabelWiresLib/Types/Record/recordType.hpp>
 
-namespace seqwires {
+namespace bw_music {
     class MergeProcessorInput : public babelwires::RecordType {
       public:
         PRIMITIVE_TYPE("MergeTracksIn", "Merge Tracks Input", "15dd4564-e67f-4087-8609-ef5985b23dd7", 1);
@@ -50,4 +50,4 @@ namespace seqwires {
                           babelwires::ValueTreeNode& output) const override;
     };
 
-} // namespace seqwires
+} // namespace bw_music

@@ -9,7 +9,7 @@
 
 #include <MusicLib/Types/Track/TrackEvents/trackEvent.hpp>
 
-namespace seqwires {
+namespace bw_music {
 
     /// Base type for note events.
     struct NoteEvent : public TrackEvent {
@@ -58,4 +58,4 @@ namespace seqwires {
         virtual GroupingInfo getGroupingInfo() const override;
     };
 
-} // namespace seqwires
+} // namespace bw_music

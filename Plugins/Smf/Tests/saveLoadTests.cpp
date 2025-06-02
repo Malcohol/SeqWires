@@ -23,12 +23,12 @@
 
 TEST(SmfSaveLoadTest, cMajorScale) {
     testUtils::TestEnvironment testEnvironment;
-    seqwires::registerLib(testEnvironment.m_projectContext);
+    bw_music::registerLib(testEnvironment.m_projectContext);
     smf::registerLib(testEnvironment.m_projectContext);
 
     testUtils::TempFilePath tempFile("cMajor.mid");
 
-    const std::vector<seqwires::Pitch> pitches{60, 62, 64, 65, 67, 69, 71, 72};
+    const std::vector<bw_music::Pitch> pitches{60, 62, 64, 65, 67, 69, 71, 72};
     {
         babelwires::ValueTreeRoot smfFeature(testEnvironment.m_projectContext.m_typeSystem, babelwires::FileTypeT<smf::SmfSequence>::getThisType());
         smfFeature.setToDefault();
@@ -38,7 +38,7 @@ TEST(SmfSaveLoadTest, cMajorScale) {
         auto tracks = smfType.getTrcks0();
         auto track2 = tracks.activateAndGetTrack(2);
 
-        seqwires::Track track;
+        bw_music::Track track;
         testUtils::addSimpleNotes(pitches, track);
         track2.set(std::move(track));
 
@@ -102,10 +102,10 @@ namespace {
 
 TEST(SmfSaveLoadTest, cMajorScaleWithMetadata) {
     testUtils::TestEnvironment testEnvironment;
-    seqwires::registerLib(testEnvironment.m_projectContext);
+    bw_music::registerLib(testEnvironment.m_projectContext);
     smf::registerLib(testEnvironment.m_projectContext);
 
-    const std::vector<seqwires::Pitch> pitches{60, 62, 64, 65, 67, 69, 71, 72};
+    const std::vector<bw_music::Pitch> pitches{60, 62, 64, 65, 67, 69, 71, 72};
 
     for (std::uint8_t metadata = 0; metadata < 8; ++metadata) {
         testUtils::TempFilePath tempFile("cMajorWithMetadata.mid", metadata);
@@ -121,7 +121,7 @@ TEST(SmfSaveLoadTest, cMajorScaleWithMetadata) {
             auto tracks = smfType.getTrcks0();
             auto track2 = tracks.activateAndGetTrack(2);
 
-            seqwires::Track track;
+            bw_music::Track track;
             testUtils::addSimpleNotes(pitches, track);
             track2.set(std::move(track));
 
@@ -150,13 +150,13 @@ TEST(SmfSaveLoadTest, cMajorScaleWithMetadata) {
 }
 
 namespace {
-    const std::vector<seqwires::Pitch> chordPitches[3] = {
+    const std::vector<bw_music::Pitch> chordPitches[3] = {
         {60, 62, 64, 65, 67, 69, 71, 72}, {64, 65, 67, 69, 71, 72, 74, 76}, {67, 69, 71, 72, 74, 76, 77, 79}};
 }
 
 TEST(SmfSaveLoadTest, format0Chords) {
     testUtils::TestEnvironment testEnvironment;
-    seqwires::registerLib(testEnvironment.m_projectContext);
+    bw_music::registerLib(testEnvironment.m_projectContext);
     smf::registerLib(testEnvironment.m_projectContext);
     testUtils::TempFilePath tempFile("format0Chords.mid");
 
@@ -171,7 +171,7 @@ TEST(SmfSaveLoadTest, format0Chords) {
 
         for (int i = 0; i < 3; ++i) {
             auto trackI = tracks.activateAndGetTrack(i);
-            seqwires::Track track;
+            bw_music::Track track;
             testUtils::addSimpleNotes(chordPitches[i], track);
             trackI.set(std::move(track));
         }
@@ -202,7 +202,7 @@ TEST(SmfSaveLoadTest, format0Chords) {
 
 TEST(SmfSaveLoadTest, format1Chords) {
     testUtils::TestEnvironment testEnvironment;
-    seqwires::registerLib(testEnvironment.m_projectContext);
+    bw_music::registerLib(testEnvironment.m_projectContext);
     smf::registerLib(testEnvironment.m_projectContext);
     testUtils::TempFilePath tempFile("format1Chords.mid");
 
@@ -221,7 +221,7 @@ TEST(SmfSaveLoadTest, format1Chords) {
         for (int i = 0; i < 3; ++i) {
             auto trackAndChan = tracks.getEntry(i);
             trackAndChan.getChan().set(i);
-            seqwires::Track track;
+            bw_music::Track track;
             testUtils::addSimpleNotes(chordPitches[i], track);
             trackAndChan.getTrack().set(std::move(track));
         }

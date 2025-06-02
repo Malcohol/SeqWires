@@ -12,7 +12,7 @@
 
 #include <BabelWiresLib/ValueTree/modelExceptions.hpp>
 
-seqwires::Track seqwires::repeatTrack(const Track& trackIn, int count) {
+bw_music::Track bw_music::repeatTrack(const Track& trackIn, int count) {
     if (count < 0) {
         throw babelwires::ModelException() << "You cannot have repeat a negative number of times";
     }

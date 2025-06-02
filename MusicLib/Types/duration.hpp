@@ -9,7 +9,7 @@
 
 #include <BabelWiresLib/Types/Rational/rationalType.hpp>
 
-namespace seqwires {
+namespace bw_music {
 
     /// Duration is a RationalType for holding a duration.
     class Duration : public babelwires::RationalType {
@@ -18,4 +18,4 @@ namespace seqwires {
         Duration() : babelwires::RationalType({0, std::numeric_limits<babelwires::Rational::ComponentType>::max()}, 0) {}
     };
 
-} // namespace seqwires
+} // namespace bw_music

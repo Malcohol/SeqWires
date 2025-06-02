@@ -18,7 +18,7 @@
 #include <unordered_map>
 #include <vector>
 
-namespace seqwires {
+namespace bw_music {
     /// A track carries a stream of TrackEvents.
     /// Tracks are not editable: they can be manipulated only using Processors and can be serialized/deserialized only
     /// using SourceFileFormats and TargetFileFormats formats.
@@ -67,7 +67,7 @@ namespace seqwires {
         // IMPORTANT: Don't offer non-const begin and end. They would have to invalidate the cache, and might
         // be chosen instead of the const versions when iterating. Instead, offer an accessor that returns
         // a span.
-        // using iterator = seqwires::BlockStream::Iterator<seqwires::BlockStream, TrackEvent>;
+        // using iterator = bw_music::BlockStream::Iterator<bw_music::BlockStream, TrackEvent>;
       protected:
         /// Update the cached values.
         void onNewEvent(const TrackEvent& event);
@@ -101,4 +101,4 @@ namespace seqwires {
         /// Are the values in the cache up-to-date, or do they need to be recalculated.
         mutable bool m_cacheIsValid = true;
     };
-} // namespace seqwires
+} // namespace bw_music

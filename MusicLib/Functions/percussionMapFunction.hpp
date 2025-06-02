@@ -15,7 +15,7 @@ namespace babelwires {
     class TypeSystem;
 } // namespace babelwires
 
-namespace seqwires {
+namespace bw_music {
 
     /// A 0-ary type constructor which constructs a sum type of all registered percussion types.
     /// A type constructor is used, since when the SumType itself is built, we know all the percussion types should
@@ -35,4 +35,4 @@ namespace seqwires {
     ///
     Track mapPercussionFunction(const babelwires::TypeSystem& typeSystem, const Track& sourceTrack,
                                 const babelwires::MapValue& percussionMapValue);
-} // namespace seqwires
+} // namespace bw_music

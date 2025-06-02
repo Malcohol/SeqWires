@@ -12,7 +12,7 @@
 #include <Common/Utilities/enumFlags.hpp>
 #include <MusicLib/musicTypes.hpp>
 
-namespace seqwires {
+namespace bw_music {
 
     class Track;
 
@@ -96,4 +96,4 @@ namespace seqwires {
         ModelDuration m_timeSinceLastEvent;
     };
 
-} // namespace seqwires
+} // namespace bw_music

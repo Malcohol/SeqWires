@@ -9,7 +9,7 @@
 
 #include <MusicLib/Types/Track/track.hpp>
 
-namespace seqwires {
+namespace bw_music {
     /// Merge the events of the sourceTracks into targetTrack.
     Track mergeTracks(const std::vector<const Track*>& sourceTracks);
-} // namespace seqwires
+} // namespace bw_music

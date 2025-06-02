@@ -78,7 +78,7 @@ void smf::SmfWriter::writeVariableLengthQuantity(std::uint32_t i) {
     m_os->put(b3);
 }
 
-void smf::SmfWriter::writeModelDuration(const seqwires::ModelDuration& d) {
+void smf::SmfWriter::writeModelDuration(const bw_music::ModelDuration& d) {
     // TODO: Quantize if this isn't exact.
     const int numDivisions = (d.getNumerator() * m_division * 4) / (d.getDenominator());
     writeVariableLengthQuantity(numDivisions);
@@ -125,8 +125,8 @@ void smf::SmfWriter::writeHeaderChunk(unsigned int numTracks) {
 
     {
         int division = 1;
-        applyToAllTracks([&division](unsigned int channelNumber, const seqwires::Track& track) {
-            division = babelwires::lcm(division, seqwires::getMinimumDenominator(track));
+        applyToAllTracks([&division](unsigned int channelNumber, const bw_music::Track& track) {
+            division = babelwires::lcm(division, bw_music::getMinimumDenominator(track));
         });
         m_division = division;
     }
@@ -136,14 +136,14 @@ void smf::SmfWriter::writeHeaderChunk(unsigned int numTracks) {
 }
 
 smf::SmfWriter::WriteTrackEventResult smf::SmfWriter::writeTrackEvent(int channelNumber,
-                                                                      seqwires::ModelDuration timeSinceLastEvent,
-                                                                      const seqwires::TrackEvent& e) {
+                                                                      bw_music::ModelDuration timeSinceLastEvent,
+                                                                      const bw_music::TrackEvent& e) {
     assert(channelNumber >= 0);
     assert(channelNumber <= 15);
 
-    if (const seqwires::PercussionSetWithPitchMap* const kitIfPercussion =
+    if (const bw_music::PercussionSetWithPitchMap* const kitIfPercussion =
             m_channelSetup[channelNumber].m_kitIfPercussion) {
-        if (const seqwires::PercussionOnEvent* percussionOn = e.as<seqwires::PercussionOnEvent>()) {
+        if (const bw_music::PercussionOnEvent* percussionOn = e.as<bw_music::PercussionOnEvent>()) {
             if (auto maybePitch = kitIfPercussion->tryGetPitchFromInstrument(percussionOn->getInstrument())) {
                 writeModelDuration(timeSinceLastEvent);
                 m_os->put(0b10010000 | channelNumber);
@@ -153,7 +153,7 @@ smf::SmfWriter::WriteTrackEventResult smf::SmfWriter::writeTrackEvent(int channe
             } else {
                 return WriteTrackEventResult::NotInPercussionSet;
             }
-        } else if (const seqwires::PercussionOffEvent* percussionOff = e.as<seqwires::PercussionOffEvent>()) {
+        } else if (const bw_music::PercussionOffEvent* percussionOff = e.as<bw_music::PercussionOffEvent>()) {
             if (auto maybePitch = kitIfPercussion->tryGetPitchFromInstrument(percussionOff->getInstrument())) {
                 writeModelDuration(timeSinceLastEvent);
                 m_os->put(0b10000000 | channelNumber);
@@ -165,13 +165,13 @@ smf::SmfWriter::WriteTrackEventResult smf::SmfWriter::writeTrackEvent(int channe
             }
         }
     } else {
-        if (const seqwires::NoteOnEvent* noteOn = e.as<seqwires::NoteOnEvent>()) {
+        if (const bw_music::NoteOnEvent* noteOn = e.as<bw_music::NoteOnEvent>()) {
             writeModelDuration(timeSinceLastEvent);
             m_os->put(0b10010000 | channelNumber);
             m_os->put(noteOn->m_pitch);
             m_os->put(noteOn->m_velocity);
             return WriteTrackEventResult::Written;
-        } else if (const seqwires::NoteOffEvent* noteOff = e.as<seqwires::NoteOffEvent>()) {
+        } else if (const bw_music::NoteOffEvent* noteOff = e.as<bw_music::NoteOffEvent>()) {
             writeModelDuration(timeSinceLastEvent);
             m_os->put(0b10000000 | channelNumber);
             m_os->put(noteOff->m_pitch);
@@ -183,13 +183,13 @@ smf::SmfWriter::WriteTrackEventResult smf::SmfWriter::writeTrackEvent(int channe
 }
 
 namespace {
-    struct NoteTrackIterator : seqwires::FilteredTrackIterator<> {
-        bool isEventOfInterest(const seqwires::TrackEvent& event) const { return event.as<seqwires::NoteEvent>(); }
+    struct NoteTrackIterator : bw_music::FilteredTrackIterator<> {
+        bool isEventOfInterest(const bw_music::TrackEvent& event) const { return event.as<bw_music::NoteEvent>(); }
     };
 
-    struct PercussionTrackIterator : seqwires::FilteredTrackIterator<> {
-        bool isEventOfInterest(const seqwires::TrackEvent& event) const {
-            return event.as<seqwires::PercussionEvent>();
+    struct PercussionTrackIterator : bw_music::FilteredTrackIterator<> {
+        bool isEventOfInterest(const bw_music::TrackEvent& event) const {
+            return event.as<bw_music::PercussionEvent>();
         }
     };
 
@@ -198,22 +198,22 @@ namespace {
 void smf::SmfWriter::writeNotes(const std::vector<ChannelAndTrack>& tracks) {
     const int numTracks = tracks.size();
 
-    seqwires::ModelDuration trackDuration = 0;
+    bw_music::ModelDuration trackDuration = 0;
 
     // TODO Use the mergeFunction to multiplex the channels.
 
-    std::vector<seqwires::TrackTraverser<seqwires::FilteredTrackIterator<seqwires::TrackEvent>>> traversers;
+    std::vector<bw_music::TrackTraverser<bw_music::FilteredTrackIterator<bw_music::TrackEvent>>> traversers;
 
     for (int i = 0; i < numTracks; ++i) {
-        const seqwires::Track& track = *std::get<1>(tracks[i]);
-        traversers.emplace_back(track, seqwires::iterateOver<seqwires::TrackEvent>(track));
+        const bw_music::Track& track = *std::get<1>(tracks[i]);
+        traversers.emplace_back(track, bw_music::iterateOver<bw_music::TrackEvent>(track));
         traversers.back().leastUpperBoundDuration(trackDuration);
     }
 
-    seqwires::ModelDuration timeSinceStart = 0;
-    seqwires::ModelDuration timeOfLastEvent = 0;
+    bw_music::ModelDuration timeSinceStart = 0;
+    bw_music::ModelDuration timeOfLastEvent = 0;
     while (timeSinceStart < trackDuration) {
-        seqwires::ModelDuration timeToNextEvent = trackDuration - timeSinceStart;
+        bw_music::ModelDuration timeToNextEvent = trackDuration - timeSinceStart;
         for (int i = 0; i < numTracks; ++i) {
             traversers[i].greatestLowerBoundNextEvent(timeToNextEvent);
         }
@@ -222,8 +222,8 @@ void smf::SmfWriter::writeNotes(const std::vector<ChannelAndTrack>& tracks) {
         for (int i = 0; i < numTracks; ++i) {
             const unsigned int channelNumber = std::get<0>(tracks[i]);
             traversers[i].advance(timeToNextEvent, [this, &isFirstEventAtThisTime, &timeToNextEvent, &timeOfLastEvent,
-                                                    &timeSinceStart, channelNumber](const seqwires::TrackEvent& event) {
-                const seqwires::ModelDuration timeToThisEvent = isFirstEventAtThisTime ? timeToNextEvent : 0;
+                                                    &timeSinceStart, channelNumber](const bw_music::TrackEvent& event) {
+                const bw_music::ModelDuration timeToThisEvent = isFirstEventAtThisTime ? timeToNextEvent : 0;
                 const WriteTrackEventResult result = writeTrackEvent(channelNumber, timeToThisEvent, event);
                 if (result == WriteTrackEventResult::Written) {
                     timeOfLastEvent = timeSinceStart + timeToNextEvent;
@@ -363,9 +363,9 @@ void smf::SmfWriter::setUpPercussionKit(const std::unordered_set<babelwires::Sho
 }
 
 namespace {
-    void getPercussionInstrumentsInUse(const seqwires::Track& track,
+    void getPercussionInstrumentsInUse(const bw_music::Track& track,
                                        std::unordered_set<babelwires::ShortId>& instrumentsInUse) {
-        for (auto it : seqwires::iterateOver<seqwires::PercussionEvent>(track)) {
+        for (auto it : bw_music::iterateOver<bw_music::PercussionEvent>(track)) {
             instrumentsInUse.insert(it.getInstrument());
         }
     }
@@ -374,7 +374,7 @@ namespace {
 
 void smf::SmfWriter::setUpPercussionSets() {
     std::array<std::unordered_set<babelwires::ShortId>, 16> instrumentsInUse;
-    applyToAllTracks([this, &instrumentsInUse](unsigned int channelNumber, const seqwires::Track& track) {
+    applyToAllTracks([this, &instrumentsInUse](unsigned int channelNumber, const bw_music::Track& track) {
         getPercussionInstrumentsInUse(track, instrumentsInUse[channelNumber]);
     });
     for (int i = 0; i < 16; ++i) {
@@ -382,7 +382,7 @@ void smf::SmfWriter::setUpPercussionSets() {
     }
 }
 
-void smf::SmfWriter::applyToAllTracks(std::function<void(unsigned int, const seqwires::Track&)> func) {
+void smf::SmfWriter::applyToAllTracks(std::function<void(unsigned int, const bw_music::Track&)> func) {
     const auto& smfType = getSmfSequenceConst();
     if (smfType.getInstanceType().getIndexOfTag(smfType.getSelectedTag()) == 0) {
         const auto& tracks = smfType.getTrcks0();

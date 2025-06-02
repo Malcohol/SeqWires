@@ -10,7 +10,7 @@
 #include <MusicLib/Types/Track/TrackEvents/trackEvent.hpp>
 #include <MusicLib/chord.hpp>
 
-namespace seqwires {
+namespace bw_music {
 
     /// A ChordEvent describes a musical chord.
     struct ChordEvent : public TrackEvent {
@@ -49,4 +49,4 @@ namespace seqwires {
         virtual GroupingInfo getGroupingInfo() const override;
     };
 
-} // namespace seqwires
+} // namespace bw_music

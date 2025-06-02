@@ -12,20 +12,20 @@
 #include <BabelWiresLib/Types/Array/arrayTypeConstructor.hpp>
 #include <BabelWiresLib/Types/Int/intTypeConstructor.hpp>
 
-seqwires::ConcatenateProcessorInput::ConcatenateProcessorInput()
+bw_music::ConcatenateProcessorInput::ConcatenateProcessorInput()
     : babelwires::RecordType(
           {{BW_SHORT_ID("Input", "Input tracks", "3b8d8cd7-21d9-44a1-877e-134915fe5aca"),
             babelwires::ArrayTypeConstructor::makeTypeRef(DefaultTrackType::getThisType(), 2, 16)}}) {}
 
-seqwires::ConcatenateProcessorOutput::ConcatenateProcessorOutput()
+bw_music::ConcatenateProcessorOutput::ConcatenateProcessorOutput()
     : babelwires::RecordType({{BW_SHORT_ID("Output", "Output track", "873d5d66-c5ec-46a4-9aba-f5f4223bdfd4"),
                                DefaultTrackType::getThisType()}}) {}
 
-seqwires::ConcatenateProcessor::ConcatenateProcessor(const babelwires::ProjectContext& projectContext)
+bw_music::ConcatenateProcessor::ConcatenateProcessor(const babelwires::ProjectContext& projectContext)
     : babelwires::Processor(projectContext, ConcatenateProcessorInput::getThisType(),
                             ConcatenateProcessorOutput::getThisType()) {}
 
-void seqwires::ConcatenateProcessor::processValue(babelwires::UserLogger& userLogger,
+void bw_music::ConcatenateProcessor::processValue(babelwires::UserLogger& userLogger,
                                                   const babelwires::ValueTreeNode& input,
                                                   babelwires::ValueTreeNode& output) const {
     ConcatenateProcessorInput::ConstInstance in{input};

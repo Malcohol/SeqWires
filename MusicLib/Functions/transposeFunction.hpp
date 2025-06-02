@@ -11,7 +11,7 @@
 
 #include <memory>
 
-namespace seqwires {
+namespace bw_music {
     /// Return a track with the same events as trackIn, except the pitches have been adjusted.
     Track transposeTrack(const Track& trackIn, int pitchOffset);
-} // namespace seqwires
+} // namespace bw_music

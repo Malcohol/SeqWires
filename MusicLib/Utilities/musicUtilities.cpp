@@ -9,7 +9,7 @@
 
 #include <MusicLib/Types/Track/track.hpp>
 
-int seqwires::getMinimumDenominator(const Track& track) {
+int bw_music::getMinimumDenominator(const Track& track) {
     int denominator = 1;
 
     for (const auto& e : track) {

@@ -16,26 +16,26 @@
 #include <sstream>
 #include <iomanip>
 
-ENUM_DEFINE_ENUM_VALUE_SOURCE(seqwires::PitchClass, PITCH_CLASS_VALUES);
+ENUM_DEFINE_ENUM_VALUE_SOURCE(bw_music::PitchClass, PITCH_CLASS_VALUES);
 
-seqwires::PitchClass::PitchClass()
+bw_music::PitchClass::PitchClass()
     : EnumType(getStaticValueSet(), 0) {}
 
 #define JUST_IDENTIFIERS(A, B, C) #A,
 #define JUST_NAMES(A, B, C) B,
 
 namespace {
-    const char* s_pitchClassIdentifiers[static_cast<unsigned int>(seqwires::PitchClass::Value::NUM_VALUES)] = {
+    const char* s_pitchClassIdentifiers[static_cast<unsigned int>(bw_music::PitchClass::Value::NUM_VALUES)] = {
         PITCH_CLASS_VALUES(JUST_IDENTIFIERS)};
-    const char* s_pitchClassNames[static_cast<unsigned int>(seqwires::PitchClass::Value::NUM_VALUES)] = {
+    const char* s_pitchClassNames[static_cast<unsigned int>(bw_music::PitchClass::Value::NUM_VALUES)] = {
         PITCH_CLASS_VALUES(JUST_NAMES)};
 } // namespace
 
-std::string seqwires::PitchClass::valueToString(PitchClass::Value p) {
+std::string bw_music::PitchClass::valueToString(PitchClass::Value p) {
     return s_pitchClassNames[static_cast<unsigned int>(p)];
 }
 
-std::string seqwires::pitchToString(Pitch p) {
+std::string bw_music::pitchToString(Pitch p) {
     const int pitchClass = p % 12;
     const int octave = p / 12;
 
@@ -45,7 +45,7 @@ std::string seqwires::pitchToString(Pitch p) {
     return stringOut.str();
 }
 
-seqwires::Pitch seqwires::stringToPitch(std::string_view s) {
+bw_music::Pitch bw_music::stringToPitch(std::string_view s) {
     const char* it = s.data();
     const char* const end = s.data() + s.length();
     while ((it != end) && std::isspace(*it)) {
@@ -122,12 +122,12 @@ seqwires::Pitch seqwires::stringToPitch(std::string_view s) {
     return static_cast<Pitch>(p);
 }
 
-seqwires::PitchClass::Value seqwires::pitchToPitchClass(seqwires::Pitch p) {
-    return static_cast<seqwires::PitchClass::Value>(p % 12);
+bw_music::PitchClass::Value bw_music::pitchToPitchClass(bw_music::Pitch p) {
+    return static_cast<bw_music::PitchClass::Value>(p % 12);
 }
 
 namespace {
-    std::string getSpecialNames(seqwires::Pitch p) {
+    std::string getSpecialNames(bw_music::Pitch p) {
         switch (p) {
             case 60:
                 return " (middle C)";
@@ -143,7 +143,7 @@ namespace {
         sourceData.reserve(127);
         // The last two characters will be the pitch.
         const std::string uuidPrefix = "e99dc874-1b68-4de9-97fa-056006373d";
-        for (seqwires::Pitch p = 0; p < 127; ++p) {
+        for (bw_music::Pitch p = 0; p < 127; ++p) {
             const int pitchClass = p % 12;
             const int octave = p / 12;
             babelwires::ShortId identifierSource((std::ostringstream() << s_pitchClassIdentifiers[pitchClass] << octave).str());
@@ -155,5 +155,5 @@ namespace {
     }
 } // namespace
 
-seqwires::PitchEnum::PitchEnum()
+bw_music::PitchEnum::PitchEnum()
     : EnumType(getPitchEnumValues(), 60) {}

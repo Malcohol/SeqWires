@@ -15,9 +15,9 @@
 #include <cstdint>
 #include <string>
 
-namespace seqwires {
+namespace bw_music {
 
     typedef babelwires::Rational ModelDuration;
     typedef babelwires::Byte Velocity;
 
-} // namespace seqwires
+} // namespace bw_music

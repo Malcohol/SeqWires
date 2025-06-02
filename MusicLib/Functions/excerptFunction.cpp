@@ -11,7 +11,7 @@
 
 #include <set>
 
-seqwires::Track seqwires::getTrackExcerpt(const Track& trackIn, ModelDuration start,
+bw_music::Track bw_music::getTrackExcerpt(const Track& trackIn, ModelDuration start,
                                                            ModelDuration duration) {
     Track trackOut;
 

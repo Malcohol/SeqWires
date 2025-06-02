@@ -7,7 +7,7 @@
  **/
 #include <MusicLib/Utilities/monophonicNoteIterator.hpp>
 
-bool seqwires::MonophonicNoteIterator::isEventOfInterest(const TrackEvent& event) {
+bool bw_music::MonophonicNoteIterator::isEventOfInterest(const TrackEvent& event) {
     if (const NoteOnEvent* noteOn = event.as<NoteOnEvent>()) {
         if (!m_noteIsActive) {
             m_activePitch = noteOn->m_pitch;
@@ -27,12 +27,12 @@ bool seqwires::MonophonicNoteIterator::isEventOfInterest(const TrackEvent& event
     return false;
 }
 
-seqwires::MonophonicNoteIterator::MonophonicNoteIterator(const Track& track, InteriorEventFilter interiorEventFilter)
+bw_music::MonophonicNoteIterator::MonophonicNoteIterator(const Track& track, InteriorEventFilter interiorEventFilter)
     : FilteredTrackIterator<NoteEvent>(track)
     , m_interiorEventFilter(interiorEventFilter) {}
 
-babelwires::Span<seqwires::MonophonicNoteIterator>
-seqwires::iterateOverMonotonicNotes(const Track& track,
+babelwires::Span<bw_music::MonophonicNoteIterator>
+bw_music::iterateOverMonotonicNotes(const Track& track,
                                     MonophonicNoteIterator::InteriorEventFilter interiorEventFilter) {
     MonophonicNoteIterator begin(track, interiorEventFilter);
     begin.initBegin();

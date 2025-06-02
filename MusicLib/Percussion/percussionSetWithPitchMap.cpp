@@ -11,25 +11,25 @@
 
 #include <unordered_set>
 
-class seqwires::PercussionSetWithPitchMap::ComplexConstructorArguments {
+class bw_music::PercussionSetWithPitchMap::ComplexConstructorArguments {
   public:
     babelwires::EnumType::ValueSet m_enumValues;
-    std::unordered_map<seqwires::Pitch, babelwires::ShortId> m_pitchToInstrument;
-    std::unordered_map<babelwires::ShortId, seqwires::Pitch> m_instrumentToPitch;
+    std::unordered_map<bw_music::Pitch, babelwires::ShortId> m_pitchToInstrument;
+    std::unordered_map<babelwires::ShortId, bw_music::Pitch> m_instrumentToPitch;
     int m_indexOfDefaultValue = -1;
 
-    ComplexConstructorArguments(const InstrumentBlock& instrumentBlock, seqwires::Pitch pitchOfDefaultValue) {
+    ComplexConstructorArguments(const InstrumentBlock& instrumentBlock, bw_music::Pitch pitchOfDefaultValue) {
         addInstruments(instrumentBlock, pitchOfDefaultValue);
     }
 
     ComplexConstructorArguments(const std::vector<InstrumentBlock>& instrumentBlocks,
-                                seqwires::Pitch pitchOfDefaultValue) {
+                                bw_music::Pitch pitchOfDefaultValue) {
         std::for_each(instrumentBlocks.begin(), instrumentBlocks.end(),
                       [this, pitchOfDefaultValue](const auto& b) { addInstruments(b, pitchOfDefaultValue); });
     }
 
-    void addInstruments(const InstrumentBlock& instrumentBlock, seqwires::Pitch pitchOfDefaultValue) {
-        seqwires::Pitch pitch = instrumentBlock.m_pitchOfLowestInstrument;
+    void addInstruments(const InstrumentBlock& instrumentBlock, bw_music::Pitch pitchOfDefaultValue) {
+        bw_music::Pitch pitch = instrumentBlock.m_pitchOfLowestInstrument;
         for (auto v : instrumentBlock.m_instruments) {
             assert(((v.index() == 0) || (instrumentBlock.m_builtInPercussionInstruments)) &&
                    "You must provide the m_builtInPercussionInstruments if you use the value branch of the variant");
@@ -61,23 +61,23 @@ class seqwires::PercussionSetWithPitchMap::ComplexConstructorArguments {
     std::unordered_set<babelwires::ShortId> m_alreadySeen;
 };
 
-seqwires::PercussionSetWithPitchMap::PercussionSetWithPitchMap(ComplexConstructorArguments&& removeDuplicates)
+bw_music::PercussionSetWithPitchMap::PercussionSetWithPitchMap(ComplexConstructorArguments&& removeDuplicates)
     : EnumType(std::move(removeDuplicates.m_enumValues), removeDuplicates.m_indexOfDefaultValue)
     , m_pitchToInstrument(std::move(removeDuplicates.m_pitchToInstrument))
     , m_instrumentToPitch(std::move(removeDuplicates.m_instrumentToPitch)) {
     addTag(percussionTypeTag());
 }
 
-seqwires::PercussionSetWithPitchMap::PercussionSetWithPitchMap(InstrumentBlock instruments,
-                                                               seqwires::Pitch pitchOfDefaultInstrument)
+bw_music::PercussionSetWithPitchMap::PercussionSetWithPitchMap(InstrumentBlock instruments,
+                                                               bw_music::Pitch pitchOfDefaultInstrument)
     : PercussionSetWithPitchMap(ComplexConstructorArguments(instruments, pitchOfDefaultInstrument)) {}
 
-seqwires::PercussionSetWithPitchMap::PercussionSetWithPitchMap(std::vector<InstrumentBlock> instruments,
-                                                               seqwires::Pitch pitchOfDefaultInstrument)
+bw_music::PercussionSetWithPitchMap::PercussionSetWithPitchMap(std::vector<InstrumentBlock> instruments,
+                                                               bw_music::Pitch pitchOfDefaultInstrument)
     : PercussionSetWithPitchMap(ComplexConstructorArguments(instruments, pitchOfDefaultInstrument)) {}
 
-std::optional<seqwires::Pitch>
-seqwires::PercussionSetWithPitchMap::tryGetPitchFromInstrument(babelwires::ShortId identifier) const {
+std::optional<bw_music::Pitch>
+bw_music::PercussionSetWithPitchMap::tryGetPitchFromInstrument(babelwires::ShortId identifier) const {
     const auto it = m_instrumentToPitch.find(identifier);
     if (it != m_instrumentToPitch.end()) {
         return it->second;
@@ -86,7 +86,7 @@ seqwires::PercussionSetWithPitchMap::tryGetPitchFromInstrument(babelwires::Short
 }
 
 std::optional<babelwires::ShortId>
-seqwires::PercussionSetWithPitchMap::tryGetInstrumentFromPitch(seqwires::Pitch pitch) const {
+bw_music::PercussionSetWithPitchMap::tryGetInstrumentFromPitch(bw_music::Pitch pitch) const {
     const auto it = m_pitchToInstrument.find(pitch);
     if (it != m_pitchToInstrument.end()) {
         return it->second;

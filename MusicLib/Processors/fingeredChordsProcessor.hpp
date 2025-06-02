@@ -15,7 +15,7 @@
 #include <BabelWiresLib/TypeSystem/primitiveType.hpp>
 #include <BabelWiresLib/Types/Record/recordType.hpp>
 
-namespace seqwires {
+namespace bw_music {
     class FingeredChordsProcessorInput : public babelwires::RecordType {
       public:
         PRIMITIVE_TYPE("FingrChordsIn", "Fingered Chords Input", "c9f26551-f557-4b27-ba0c-385298a2e51e", 1);
@@ -24,7 +24,7 @@ namespace seqwires {
 
         DECLARE_INSTANCE_BEGIN(FingeredChordsProcessorInput)
         DECLARE_INSTANCE_FIELD(Policy, FingeredChordsSustainPolicyEnum)
-        DECLARE_INSTANCE_FIELD(Notes, seqwires::TrackType)
+        DECLARE_INSTANCE_FIELD(Notes, bw_music::TrackType)
         DECLARE_INSTANCE_END()
     };
 
@@ -35,7 +35,7 @@ namespace seqwires {
         FingeredChordsProcessorOutput();
 
         DECLARE_INSTANCE_BEGIN(FingeredChordsProcessorOutput)
-        DECLARE_INSTANCE_FIELD(Chords, seqwires::TrackType)
+        DECLARE_INSTANCE_FIELD(Chords, bw_music::TrackType)
         DECLARE_INSTANCE_END()
     };
 
@@ -49,4 +49,4 @@ namespace seqwires {
         void processValue(babelwires::UserLogger& userLogger, const babelwires::ValueTreeNode& input,
                           babelwires::ValueTreeNode& output) const override;
     };
-} // namespace seqwires
+} // namespace bw_music

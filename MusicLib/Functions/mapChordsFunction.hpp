@@ -12,7 +12,7 @@ namespace babelwires {
     class TypeSystem;
 }
 
-namespace seqwires {
+namespace bw_music {
     babelwires::TypeRef getMapChordFunctionSourceTypeRef();
     babelwires::TypeRef getMapChordFunctionTargetTypeRef();
 

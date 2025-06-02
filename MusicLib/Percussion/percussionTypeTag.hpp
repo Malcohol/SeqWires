@@ -10,9 +10,9 @@
 #include <BabelWiresLib/TypeSystem/primitiveType.hpp>
 #include <BabelWiresLib/Types/Enum/enumType.hpp>
 
-namespace seqwires {
+namespace bw_music {
 
     /// Percussion types should use this tag.
     babelwires::Type::Tag percussionTypeTag();
 
-} // namespace seqwires
+} // namespace bw_music

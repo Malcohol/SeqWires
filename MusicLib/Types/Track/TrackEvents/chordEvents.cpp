@@ -12,9 +12,9 @@
 #include <sstream>
 #include <typeinfo>
 
-seqwires::TrackEvent::GroupingInfo::Category seqwires::ChordEvent::s_chordEventCategory = "Chords";
+bw_music::TrackEvent::GroupingInfo::Category bw_music::ChordEvent::s_chordEventCategory = "Chords";
 
-bool seqwires::ChordOnEvent::operator==(const TrackEvent& other) const {
+bool bw_music::ChordOnEvent::operator==(const TrackEvent& other) const {
     if (typeid(other) != typeid(*this)) {
         return false;
     }
@@ -22,15 +22,15 @@ bool seqwires::ChordOnEvent::operator==(const TrackEvent& other) const {
     return (m_timeSinceLastEvent == otherOn.m_timeSinceLastEvent) && (m_chord == otherOn.m_chord);
 }
 
-std::size_t seqwires::ChordOnEvent::getHash() const {
+std::size_t bw_music::ChordOnEvent::getHash() const {
     return babelwires::hash::mixtureOf(static_cast<const char*>("ChordOn"), m_timeSinceLastEvent, m_chord.m_root, m_chord.m_chordType);
 }
 
-seqwires::TrackEvent::GroupingInfo seqwires::ChordOnEvent::getGroupingInfo() const {
+bw_music::TrackEvent::GroupingInfo bw_music::ChordOnEvent::getGroupingInfo() const {
     return {s_chordEventCategory, 0, GroupingInfo::Grouping::StartOfGroup};
 }
 
-void seqwires::ChordOnEvent::transpose(int pitchOffset) {
+void bw_music::ChordOnEvent::transpose(int pitchOffset) {
     assert(pitchOffset <= 127);
     assert(pitchOffset >= -127);
     static_assert(static_cast<unsigned int>(PitchClass::Value::NUM_VALUES) == 12);
@@ -38,7 +38,7 @@ void seqwires::ChordOnEvent::transpose(int pitchOffset) {
     m_chord.m_root = static_cast<PitchClass::Value>(rootPitch);
 }
 
-bool seqwires::ChordOffEvent::operator==(const TrackEvent& other) const {
+bool bw_music::ChordOffEvent::operator==(const TrackEvent& other) const {
     if (typeid(other) != typeid(*this)) {
         return false;
     }
@@ -46,10 +46,10 @@ bool seqwires::ChordOffEvent::operator==(const TrackEvent& other) const {
     return (m_timeSinceLastEvent == otherOn.m_timeSinceLastEvent);
 }
 
-std::size_t seqwires::ChordOffEvent::getHash() const {
+std::size_t bw_music::ChordOffEvent::getHash() const {
     return babelwires::hash::mixtureOf(static_cast<const char*>("ChordOff"), m_timeSinceLastEvent);
 }
 
-seqwires::TrackEvent::GroupingInfo seqwires::ChordOffEvent::getGroupingInfo() const {
+bw_music::TrackEvent::GroupingInfo bw_music::ChordOffEvent::getGroupingInfo() const {
     return {s_chordEventCategory, 0, GroupingInfo::Grouping::StartOfGroup};
 }

@@ -9,7 +9,7 @@
 
 #include <BabelWiresLib/Types/Int/intType.hpp>
 
-namespace seqwires {
+namespace bw_music {
 
     /// Tempo is an IntType for holding a tempo value in bpm.
     /// Tempos are limited to integral bpm.
@@ -20,4 +20,4 @@ namespace seqwires {
         Tempo() : babelwires::IntType({0, 255}, 120) {}
     };
 
-} // namespace seqwires
+} // namespace bw_music

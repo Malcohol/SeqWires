@@ -17,7 +17,7 @@
 #include <BabelWiresLib/Types/Record/recordType.hpp>
 
 
-namespace seqwires {
+namespace bw_music {
 
     class ConcatenateProcessorInput : public babelwires::RecordType {
       public:
@@ -51,4 +51,4 @@ namespace seqwires {
         void processValue(babelwires::UserLogger& userLogger, const babelwires::ValueTreeNode& input,
                           babelwires::ValueTreeNode& output) const override;
     };
-} // namespace seqwires
+} // namespace bw_music
