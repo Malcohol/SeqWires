@@ -14,8 +14,8 @@
 #include <BabelWiresLib/TypeSystem/primitiveType.hpp>
 #include <BabelWiresLib/Types/Record/recordType.hpp>
 
-#include <SeqWiresLib/Types/Track/trackInstance.hpp>
-#include <SeqWiresLib/Types/Track/trackType.hpp>
+#include <MusicLib/Types/Track/trackInstance.hpp>
+#include <MusicLib/Types/Track/trackType.hpp>
 
 #include <Plugins/Smf/Plugin/midiChannel.hpp>
 
@@ -50,7 +50,7 @@ namespace smf {
                 : InstanceWithChannelOptionals<VALUE_TREE_NODE, MidiTrackAndChannel>(valueFeature) {}
 
             DECLARE_INSTANCE_FIELD(Chan, MidiChannel)
-            DECLARE_INSTANCE_FIELD(Track, seqwires::TrackType);
+            DECLARE_INSTANCE_FIELD(Track, bw_music::TrackType);
         };
         using Instance = InstanceImpl<babelwires::ValueTreeNode>;
         using ConstInstance = InstanceImpl<const babelwires::ValueTreeNode>;

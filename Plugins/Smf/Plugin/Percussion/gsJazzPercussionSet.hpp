@@ -7,16 +7,16 @@
  **/
 #pragma once
 
-#include <SeqWiresLib/Percussion/percussionSetWithPitchMap.hpp>
+#include <MusicLib/Percussion/percussionSetWithPitchMap.hpp>
 
 #include <BabelWiresLib/TypeSystem/primitiveType.hpp>
 
 namespace smf {
     /// A PercussionSet corresponding to the instruments of GS Jazz Percussion set.
-    class GsJazzPercussionSet : public seqwires::PercussionSetWithPitchMap {
+    class GsJazzPercussionSet : public bw_music::PercussionSetWithPitchMap {
       public:
         PRIMITIVE_TYPE("GSJazzPerc", "Roland GS Jazz Percussion", "82bf0d75-260c-46f3-91d0-1d09b5494022", 1);
 
-        GsJazzPercussionSet(const seqwires::BuiltInPercussionInstruments& builtInInstruments);
+        GsJazzPercussionSet(const bw_music::BuiltInPercussionInstruments& builtInInstruments);
     };
 } // namespace smf

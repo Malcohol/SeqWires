@@ -1,6 +1,6 @@
 Also see [TODO.md in BabelWires](https://github.com/Malcohol/BabelWires/blob/main/TODO.md)
 
-SeqWires:
+BabelWires-Music:
 * Track's cache is not thread-safe.
 * Support other formats
 * Improved handling of event truncation: 

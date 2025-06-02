@@ -16,9 +16,9 @@
 
 #include <BabelWiresLib/ValueTree/valueTreeNode.hpp>
 
-namespace seqwires {
+namespace bw_music {
     class Track;
-} // namespace seqwires
+} // namespace bw_music
 
 namespace smf {
 

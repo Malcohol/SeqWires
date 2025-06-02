@@ -1,6 +1,6 @@
-ADD_SUBDIRECTORY( SeqWiresLib )
+ADD_SUBDIRECTORY( MusicLib )
 ADD_SUBDIRECTORY( Seq2tapeLib )
-ADD_SUBDIRECTORY( SeqWiresLibUi )
+ADD_SUBDIRECTORY( MusicLibUi )
 
 ADD_SUBDIRECTORY( Plugins/Smf/Plugin )
 ADD_SUBDIRECTORY( Plugins/Smf/Tests )
@@ -10,5 +10,5 @@ ADD_SUBDIRECTORY( BabelWiresAudio )
 ADD_SUBDIRECTORY( Seq2tapeExe )
 
 ADD_SUBDIRECTORY( Tests/TestUtils )
-ADD_SUBDIRECTORY( Tests/SeqWiresLib )
+ADD_SUBDIRECTORY( Tests/MusicLib )
 ADD_SUBDIRECTORY( Tests/Seq2tapeLib )

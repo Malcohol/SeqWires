@@ -7,7 +7,7 @@
  **/
 #include <Plugins/Smf/Plugin/libRegistration.hpp>
 
-#include <SeqWiresLib/Percussion/builtInPercussionInstruments.hpp>
+#include <MusicLib/Percussion/builtInPercussionInstruments.hpp>
 
 #include <BabelWiresLib/Project/projectContext.hpp>
 #include <BabelWiresLib/TypeSystem/typeSystem.hpp>
@@ -65,8 +65,8 @@ void smf::registerLib(babelwires::ProjectContext& context) {
     context.m_typeSystem.addEntry<SmfSequence>();
 
     // Percussion types
-    const seqwires::BuiltInPercussionInstruments& builtInPercussion =
-        context.m_typeSystem.getEntryByType<seqwires::BuiltInPercussionInstruments>();
+    const bw_music::BuiltInPercussionInstruments& builtInPercussion =
+        context.m_typeSystem.getEntryByType<bw_music::BuiltInPercussionInstruments>();
     context.m_typeSystem.addEntry<GMPercussionSet>(builtInPercussion);
     context.m_typeSystem.addEntry<GM2StandardPercussionSet>(builtInPercussion);
     context.m_typeSystem.addEntry<GM2RoomPercussionSet>(builtInPercussion);

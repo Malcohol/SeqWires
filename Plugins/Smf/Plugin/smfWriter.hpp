@@ -10,7 +10,7 @@
 #include <Plugins/Smf/Plugin/Percussion/standardPercussionSets.hpp>
 #include <Plugins/Smf/Plugin/smfSequence.hpp>
 
-#include <SeqWiresLib/musicTypes.hpp>
+#include <MusicLib/musicTypes.hpp>
 
 #include <cstdint>
 #include <ostream>
@@ -19,10 +19,10 @@ namespace babelwires {
     struct UserLogger;
 }
 
-namespace seqwires {
+namespace bw_music {
     class Track;
     class TrackEvent;
-} // namespace seqwires
+} // namespace bw_music
 
 namespace smf {
 
@@ -40,21 +40,21 @@ namespace smf {
         void writeUint24(std::uint32_t i);
         void writeUint32(std::uint32_t i);
         void writeVariableLengthQuantity(std::uint32_t i);
-        void writeModelDuration(const seqwires::ModelDuration& d);
+        void writeModelDuration(const bw_music::ModelDuration& d);
 
         /// Returns true if the event was written.
         enum class WriteTrackEventResult { Written, WrongCategory, NotInPercussionSet };
-        WriteTrackEventResult writeTrackEvent(int channelNumber, seqwires::ModelDuration timeSinceLastEvent,
-                                              const seqwires::TrackEvent& e);
+        WriteTrackEventResult writeTrackEvent(int channelNumber, bw_music::ModelDuration timeSinceLastEvent,
+                                              const bw_music::TrackEvent& e);
 
         void writeTempoEvent(int bpm);
 
         /// type is the integer 0..15 which defines which type of text meta-event should be issued.
         void writeTextMetaEvent(int type, std::string text);
 
-        using ChannelAndTrack = std::tuple<unsigned int, const seqwires::Track*>;
+        using ChannelAndTrack = std::tuple<unsigned int, const bw_music::Track*>;
 
-        void applyToAllTracks(std::function<void(unsigned int, const seqwires::Track&)> function);
+        void applyToAllTracks(std::function<void(unsigned int, const bw_music::Track&)> function);
 
         void writeNotes(const std::vector<ChannelAndTrack>& tracks);
 
@@ -89,7 +89,7 @@ namespace smf {
         struct ChannelSetup {
             // This is non-null when the pitches in the data should be interpreted as percussion events from the given
             // kit.
-            const seqwires::PercussionSetWithPitchMap* m_kitIfPercussion = nullptr;
+            const bw_music::PercussionSetWithPitchMap* m_kitIfPercussion = nullptr;
             // Has channel set-up information been written for this channel yet?
             // (Since more than one track can correspond to a channel, we only want to write this for the first track
             // for each channel.)

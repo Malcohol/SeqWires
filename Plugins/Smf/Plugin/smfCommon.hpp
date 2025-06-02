@@ -7,9 +7,9 @@
  **/
 #pragma once
 
-#include <SeqWiresLib/Types/Track/trackType.hpp>
+#include <MusicLib/Types/Track/trackType.hpp>
 
 
 namespace smf {
-    using TypeOfTracks = seqwires::DefaultTrackType;
+    using TypeOfTracks = bw_music::DefaultTrackType;
 }

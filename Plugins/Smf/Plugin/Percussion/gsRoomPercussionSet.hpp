@@ -7,15 +7,15 @@
  **/
 #pragma once
 
-#include <SeqWiresLib/Percussion/percussionSetWithPitchMap.hpp>
+#include <MusicLib/Percussion/percussionSetWithPitchMap.hpp>
 
 #include <BabelWiresLib/TypeSystem/primitiveType.hpp>
 
 namespace smf {
     /// A PercussionSet corresponding to the instruments of GS standard percussion set.
-    class GsRoomPercussionSet : public seqwires::PercussionSetWithPitchMap {
+    class GsRoomPercussionSet : public bw_music::PercussionSetWithPitchMap {
       public:
         PRIMITIVE_TYPE("GSRoomPerc", "Roland GS Room Percussion", "ea4fe75f-71ff-42c7-9480-99486b513d37", 1);
-        GsRoomPercussionSet(const seqwires::BuiltInPercussionInstruments& builtInInstruments);
+        GsRoomPercussionSet(const bw_music::BuiltInPercussionInstruments& builtInInstruments);
     };
 } // namespace smf

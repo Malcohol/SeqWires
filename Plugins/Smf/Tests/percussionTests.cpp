@@ -6,10 +6,10 @@
 #include <Plugins/Smf/Plugin/smfParser.hpp>
 #include <Plugins/Smf/Plugin/smfWriter.hpp>
 
-#include <SeqWiresLib/Types/Track/TrackEvents/noteEvents.hpp>
-#include <SeqWiresLib/Types/Track/TrackEvents/percussionEvents.hpp>
-#include <SeqWiresLib/Utilities/filteredTrackIterator.hpp>
-#include <SeqWiresLib/libRegistration.hpp>
+#include <MusicLib/Types/Track/TrackEvents/noteEvents.hpp>
+#include <MusicLib/Types/Track/TrackEvents/percussionEvents.hpp>
+#include <MusicLib/Utilities/filteredTrackIterator.hpp>
+#include <MusicLib/libRegistration.hpp>
 
 #include <BabelWiresLib/Types/File/fileTypeT.hpp>
 
@@ -35,7 +35,7 @@ class SmfStandardPercussionTest : public testing::TestWithParam<PercussionTestDa
 
 TEST_P(SmfStandardPercussionTest, saveLoad) {
     testUtils::TestEnvironment testEnvironment;
-    seqwires::registerLib(testEnvironment.m_projectContext);
+    bw_music::registerLib(testEnvironment.m_projectContext);
     smf::registerLib(testEnvironment.m_projectContext);
 
     const PercussionTestData& testData = GetParam();
@@ -52,14 +52,14 @@ TEST_P(SmfStandardPercussionTest, saveLoad) {
 
         auto track9 = smfType.getTrcks0().activateAndGetTrack(9);
 
-        seqwires::Track track;
+        bw_music::Track track;
 
-        track.addEvent(seqwires::PercussionOnEvent{0, testData.m_instrumentId0});
-        track.addEvent(seqwires::PercussionOffEvent{babelwires::Rational(1, 4), testData.m_instrumentId0});
-        track.addEvent(seqwires::PercussionOnEvent{0, testData.m_instrumentId1});
-        track.addEvent(seqwires::PercussionOffEvent{babelwires::Rational(1, 4), testData.m_instrumentId1});
-        track.addEvent(seqwires::PercussionOnEvent{0, testData.m_instrumentId2});
-        track.addEvent(seqwires::PercussionOffEvent{babelwires::Rational(1, 4), testData.m_instrumentId2});
+        track.addEvent(bw_music::PercussionOnEvent{0, testData.m_instrumentId0});
+        track.addEvent(bw_music::PercussionOffEvent{babelwires::Rational(1, 4), testData.m_instrumentId0});
+        track.addEvent(bw_music::PercussionOnEvent{0, testData.m_instrumentId1});
+        track.addEvent(bw_music::PercussionOffEvent{babelwires::Rational(1, 4), testData.m_instrumentId1});
+        track.addEvent(bw_music::PercussionOnEvent{0, testData.m_instrumentId2});
+        track.addEvent(bw_music::PercussionOffEvent{babelwires::Rational(1, 4), testData.m_instrumentId2});
 
         track9.set(std::move(track));
 
@@ -85,29 +85,29 @@ TEST_P(SmfStandardPercussionTest, saveLoad) {
         const auto& track = track9->get();
 
         auto categoryMap = track.getNumEventGroupsByCategory();
-        EXPECT_EQ(categoryMap.find(seqwires::NoteEvent::s_noteEventCategory), categoryMap.end());
-        EXPECT_NE(categoryMap.find(seqwires::PercussionEvent::s_percussionEventCategory), categoryMap.end());
+        EXPECT_EQ(categoryMap.find(bw_music::NoteEvent::s_noteEventCategory), categoryMap.end());
+        EXPECT_NE(categoryMap.find(bw_music::PercussionEvent::s_percussionEventCategory), categoryMap.end());
 
-        auto span = seqwires::iterateOver<seqwires::PercussionEvent>(track);
+        auto span = bw_music::iterateOver<bw_music::PercussionEvent>(track);
 
         auto it = span.begin();
         ASSERT_NE(it, span.end());
-        EXPECT_EQ(it->as<seqwires::PercussionOnEvent>()->getInstrument(), testData.m_instrumentId0);
+        EXPECT_EQ(it->as<bw_music::PercussionOnEvent>()->getInstrument(), testData.m_instrumentId0);
         ++it;
         ASSERT_NE(it, span.end());
-        EXPECT_EQ(it->as<seqwires::PercussionOffEvent>()->getInstrument(), testData.m_instrumentId0);
+        EXPECT_EQ(it->as<bw_music::PercussionOffEvent>()->getInstrument(), testData.m_instrumentId0);
         ++it;
         ASSERT_NE(it, span.end());
-        EXPECT_EQ(it->as<seqwires::PercussionOnEvent>()->getInstrument(), testData.m_instrumentId1);
+        EXPECT_EQ(it->as<bw_music::PercussionOnEvent>()->getInstrument(), testData.m_instrumentId1);
         ++it;
         ASSERT_NE(it, span.end());
-        EXPECT_EQ(it->as<seqwires::PercussionOffEvent>()->getInstrument(), testData.m_instrumentId1);
+        EXPECT_EQ(it->as<bw_music::PercussionOffEvent>()->getInstrument(), testData.m_instrumentId1);
         ++it;
         ASSERT_NE(it, span.end());
-        EXPECT_EQ(it->as<seqwires::PercussionOnEvent>()->getInstrument(), testData.m_instrumentId2);
+        EXPECT_EQ(it->as<bw_music::PercussionOnEvent>()->getInstrument(), testData.m_instrumentId2);
         ++it;
         ASSERT_NE(it, span.end());
-        EXPECT_EQ(it->as<seqwires::PercussionOffEvent>()->getInstrument(), testData.m_instrumentId2);
+        EXPECT_EQ(it->as<bw_music::PercussionOffEvent>()->getInstrument(), testData.m_instrumentId2);
         ++it;
         EXPECT_EQ(it, span.end());
     }
@@ -161,7 +161,7 @@ class SmfTrackAllocationPercussionTest : public testing::TestWithParam<TrackAllo
 
 TEST_P(SmfTrackAllocationPercussionTest, trackAllocation) {
     testUtils::TestEnvironment testEnvironment;
-    seqwires::registerLib(testEnvironment.m_projectContext);
+    bw_music::registerLib(testEnvironment.m_projectContext);
     smf::registerLib(testEnvironment.m_projectContext);
 
     const TrackAllocationTestData& testData = GetParam();
@@ -180,14 +180,14 @@ TEST_P(SmfTrackAllocationPercussionTest, trackAllocation) {
         for (int i = 0; i < 3; ++i) {
             auto trackI = tracks.activateAndGetTrack(8 + i);
 
-            seqwires::Track track;
+            bw_music::Track track;
 
-            track.addEvent(seqwires::NoteOnEvent{0, 65});
-            track.addEvent(seqwires::NoteOffEvent{babelwires::Rational(1, 4), 65});
+            track.addEvent(bw_music::NoteOnEvent{0, 65});
+            track.addEvent(bw_music::NoteOffEvent{babelwires::Rational(1, 4), 65});
 
             for (auto instrument : testData.m_instrumentsInChannel[i]) {
-                track.addEvent(seqwires::PercussionOnEvent{0, instrument});
-                track.addEvent(seqwires::PercussionOffEvent{babelwires::Rational(1, 4), instrument});
+                track.addEvent(bw_music::PercussionOnEvent{0, instrument});
+                track.addEvent(bw_music::PercussionOffEvent{babelwires::Rational(1, 4), instrument});
             }
 
             trackI.set(std::move(track));
@@ -220,15 +220,15 @@ TEST_P(SmfTrackAllocationPercussionTest, trackAllocation) {
             auto categoryMap = track.getNumEventGroupsByCategory();
 
             if (testData.m_hasNotes[i]) {
-                ASSERT_NE(categoryMap.find(seqwires::NoteEvent::s_noteEventCategory), categoryMap.end());
-                EXPECT_EQ(categoryMap.find(seqwires::NoteEvent::s_noteEventCategory)->second, 1);
-                EXPECT_EQ(categoryMap.find(seqwires::PercussionEvent::s_percussionEventCategory), categoryMap.end());
+                ASSERT_NE(categoryMap.find(bw_music::NoteEvent::s_noteEventCategory), categoryMap.end());
+                EXPECT_EQ(categoryMap.find(bw_music::NoteEvent::s_noteEventCategory)->second, 1);
+                EXPECT_EQ(categoryMap.find(bw_music::PercussionEvent::s_percussionEventCategory), categoryMap.end());
             } else {
-                EXPECT_EQ(categoryMap.find(seqwires::NoteEvent::s_noteEventCategory), categoryMap.end());
-                ASSERT_NE(categoryMap.find(seqwires::PercussionEvent::s_percussionEventCategory), categoryMap.end());
+                EXPECT_EQ(categoryMap.find(bw_music::NoteEvent::s_noteEventCategory), categoryMap.end());
+                ASSERT_NE(categoryMap.find(bw_music::PercussionEvent::s_percussionEventCategory), categoryMap.end());
 
                 std::vector<babelwires::ShortId> instrumentsInTrack;
-                for (auto event : seqwires::iterateOver<seqwires::PercussionOnEvent>(track)) {
+                for (auto event : bw_music::iterateOver<bw_music::PercussionOnEvent>(track)) {
                     instrumentsInTrack.emplace_back(event.getInstrument());
                 }
 
@@ -238,7 +238,7 @@ TEST_P(SmfTrackAllocationPercussionTest, trackAllocation) {
     }
 }
 
-// Test how tracks get assigned in the various standards (the GS implementation in SeqWires is not as flexible as the
+// Test how tracks get assigned in the various standards (the GS implementation in BabelWires-Music is not as flexible as the
 // full standard)
 INSTANTIATE_TEST_SUITE_P(
     PercussionTest, SmfTrackAllocationPercussionTest,

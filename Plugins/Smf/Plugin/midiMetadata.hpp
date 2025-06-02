@@ -9,7 +9,7 @@
 
 #include <Plugins/Smf/Plugin/gmSpec.hpp>
 
-#include <SeqWiresLib/Types/tempo.hpp>
+#include <MusicLib/Types/tempo.hpp>
 
 #include <BabelWiresLib/Types/Record/recordType.hpp>
 #include <BabelWiresLib/Instance/instance.hpp>
@@ -24,7 +24,7 @@ namespace smf {
 
         DECLARE_INSTANCE_BEGIN(MidiMetadata)
         DECLARE_INSTANCE_FIELD(Spec, GMSpecType)
-        DECLARE_INSTANCE_FIELD_OPTIONAL(Tempo, seqwires::Tempo)
+        DECLARE_INSTANCE_FIELD_OPTIONAL(Tempo, bw_music::Tempo)
         DECLARE_INSTANCE_FIELD_OPTIONAL(Name, babelwires::StringType)
         DECLARE_INSTANCE_FIELD_OPTIONAL(CopyR, babelwires::StringType)
         DECLARE_INSTANCE_END()
