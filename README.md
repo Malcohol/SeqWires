@@ -1,16 +1,16 @@
-# SeqWires
+# BabelWires-Music
 
-SeqWires is the Music plugin for [BabelWires](https://github.com/Malcohol/BabelWires), providing common types for music sequence data and plugins for music sequence data formats.
+BabelWires-Music is the Music plugin for [BabelWires](https://github.com/Malcohol/BabelWires). It provides common types for music sequence data. The BabelWires-Music repository also carries plugins for specific music sequence data formats.
 
 The following screenshot shows an example of music data processing in BabelWires.
 The source file has two tracks: a melody and a simple accompanyment.
 The project repeats the melody, and adds an offset and transposed copy of it.
 The result is like a simple [musical round](https://en.wikipedia.org/wiki/Round_(music)).
 
-![Screenshot showing several nodes wired together](https://raw.githubusercontent.com/Malcohol/BabelWires/main/Docs/screenshot.png "An example SeqWires project")
+![Screenshot showing several music nodes wired together](https://raw.githubusercontent.com/Malcohol/BabelWires/main/Docs/screenshot.png "An example BabelWires project using music nodes")
 
 Right now, the supported formats are:
-* SMF (standard MIDI file)
+* SMF (Standard MIDI file)
 * Many more formats to come :D 
 
 ## Seq2tape
@@ -28,5 +28,5 @@ My current priority is on getting the infrastructure right.
 
 # License
 
-SeqWires is licensed under the GPLv3.
+BabelWires-Music is licensed under the GPLv3.
 See the [LICENSE](LICENSE) file.
