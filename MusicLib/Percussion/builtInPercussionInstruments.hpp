@@ -224,7 +224,7 @@
     X(Frewrk, "FireWork", "0e2ca006-d30a-466d-abe6-71504102dfe3")
 
 namespace bw_music {
-    /// All percussion instruments built into SeqWires.
+    /// All percussion instruments built into BabelWires-Music.
     /// This is just a holder of instruments. It cannot be used as a PercussionSet because the values do not have a 1-1
     /// mapping to pitch values.
     class BuiltInPercussionInstruments : public babelwires::EnumType {

@@ -266,7 +266,7 @@ smf::StandardPercussionSets::getBestPercussionSet(GMSpecType::Value gmSpec, int 
             return getBestPercussionSetInRange(GM2_SETS_START, GM2_SETS_END, instrumentsInUse, excludedInstrumentsOut);
         }
     } else if (gmSpec == GMSpecType::Value::GS) {
-        // This is a simplification for SeqWires rather than a constraint of GS.
+        // This is a simplification for BabelWires-Music rather than a constraint of GS.
         // Limiting percussion to two channels means I can allocate one percussion part to each without
         // having to write an algorithm to pick the best assignment of two percussion sets across all channels.
         // TODO Write that algorithm.

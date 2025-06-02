@@ -1,5 +1,5 @@
 /**
- * Register factories etc. for the SeqWiresUi into BabelWiresUi.
+ * Register factories etc. for the MusicLibUi into BabelWiresUi.
  * 
  * (C) 2021 Malcolm Tyrrell
  * 

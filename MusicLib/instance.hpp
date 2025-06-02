@@ -1,5 +1,5 @@
 /**
- * Augment the standard instance include with SeqWires types.
+ * Augment the standard instance include with BabelWires-Music types.
  *
  * (C) 2021 Malcolm Tyrrell
  *

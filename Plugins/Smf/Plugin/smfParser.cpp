@@ -714,7 +714,7 @@ void smf::SmfParser::readTrack(int trackIndex, TrackSplitter& tracks, bool hasMa
                         }
                         default: // Unknown meta-event type
                         {
-                            // This isn't in the spec, so warn: Perhaps SeqWires is out-of-date.
+                            // This isn't in the spec, so warn: Perhaps BabelWires-Music is out-of-date.
                             logByteSequence(m_userLogger.logWarning() << "Skipping unknown meta-event of type "
                                                                       << std::hex << (int)type << ": ",
                                             length);

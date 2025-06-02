@@ -1,5 +1,5 @@
 /**
- * Representations of pitch in SeqWires.
+ * Representations of pitch in BabelWires-Music.
  *
  * (C) 2021 Malcolm Tyrrell
  *

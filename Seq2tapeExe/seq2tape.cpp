@@ -45,7 +45,7 @@ void convertMode(const Context& context, const ProgramOptions::ConvertOptions& c
             // No other cases make sense.
             if (outFormat != inFormat) {
                 throw babelwires::OptionError()
-                    << "You cannot convert between formats using seq2tape. Use seqwires instead";
+                    << "You cannot convert between formats using seq2tape. Use BabelWires instead";
             }
 
             if (!convertOptions.m_sequenceName.empty()) {

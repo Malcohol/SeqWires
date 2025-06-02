@@ -238,7 +238,7 @@ TEST_P(SmfTrackAllocationPercussionTest, trackAllocation) {
     }
 }
 
-// Test how tracks get assigned in the various standards (the GS implementation in SeqWires is not as flexible as the
+// Test how tracks get assigned in the various standards (the GS implementation in BabelWires-Music is not as flexible as the
 // full standard)
 INSTANTIATE_TEST_SUITE_P(
     PercussionTest, SmfTrackAllocationPercussionTest,

@@ -1,5 +1,5 @@
 /**
- * Register factories etc. for SeqWires into BabelWires.
+ * Register factories etc. for BabelWires-Music into BabelWires.
  *
  * (C) 2021 Malcolm Tyrrell
  *
