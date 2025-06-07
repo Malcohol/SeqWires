@@ -8,6 +8,9 @@
 #pragma once
 
 #include <MusicLib/Types/Track/track.hpp>
+#include <MusicLib/Types/Track/TrackEvents/trackEventHolder.hpp>
+
+#include <set>
 
 /// Ensures the following:
 /// * All groups must have strictly positive duration
@@ -29,12 +32,21 @@ namespace bw_music {
       private:
         std::unique_ptr<Track> m_track;
 
-        enum class GroupState {
-            InGroup,
-            NotInGroup,
-            NotPresent
-        };
+        std::set<TrackEvent::EventGroup> m_existingGroups;
+        std::set<TrackEvent::EventGroup> m_newGroups;
 
-        std::unordered_map<TrackEvent::EventGroup, GroupState> m_groupState;
+        /// When events are dropped, their time gets added to the next actual event.
+        ModelDuration m_extraTimeSinceLastEvent;
+
+        /// Start events which occurred when there was an already a matching group.
+        /// This is sometimes because events at the same time get added out of sequence.
+        /// Temporarily keep them until we've either seen corresponding end events or time has
+        /// passed.
+        std::vector<TrackEventHolder> m_possiblePendingStartEvents;
+
+        /// A start event that happened at the same time as an end event. Add it directly after the
+        /// end event.
+        TrackEventHolder m_actuallyPendingStartEvent;
     };
 } // namespace bw_music
+

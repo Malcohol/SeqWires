@@ -100,10 +100,3 @@ namespace bw_music {
     };
 
 } // namespace bw_music
-
-namespace std {
-    /// This hash is not stable over different runs of the program, so it should not influence serialized data.
-    template <> struct hash<bw_music::TrackEvent::EventGroup> {
-        inline std::size_t operator()(const bw_music::TrackEvent::EventGroup& group) const { return babelwires::hash::mixtureOf(group.m_category, group.m_groupValue); }
-    };
-} // namespace std
