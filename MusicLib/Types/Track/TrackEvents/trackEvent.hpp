@@ -47,7 +47,7 @@ namespace bw_music {
         /// A value which describes how this event can participate in a group of similar events:
         /// For example, a noteOn event, a sequence of after-touch events, and a noteOff event,
         /// all of the same pitch.
-        struct GroupingInfo {
+        struct EventGroup {
             /// A pointer to a static string can act as a category.
             using Category = const char*;
 
@@ -58,11 +58,15 @@ namespace bw_music {
             /// E.g. notes or chords.
             Category m_category = s_genericCategory;
 
+            auto operator<=>(const EventGroup&) const = default;
+
             /// A value which is expected to agree for all events in the same group.
             using GroupValue = std::uint64_t;
             constexpr static GroupValue c_notAValue = -1;
             GroupValue m_groupValue = c_notAValue;
+        };
 
+        struct GroupingInfo : EventGroup {
             /// A value which determines the way in which this event belongs to a group.
             enum class Grouping : std::uint8_t {
                 /// This is a stand-alone event.
@@ -96,3 +100,10 @@ namespace bw_music {
     };
 
 } // namespace bw_music
+
+namespace std {
+    /// This hash is not stable over different runs of the program, so it should not influence serialized data.
+    template <> struct hash<bw_music::TrackEvent::EventGroup> {
+        inline std::size_t operator()(const bw_music::TrackEvent::EventGroup& group) const { return babelwires::hash::mixtureOf(group.m_category, group.m_groupValue); }
+    };
+} // namespace std

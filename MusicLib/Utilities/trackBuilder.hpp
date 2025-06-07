@@ -1,5 +1,5 @@
 /**
- * The TrackBuilder constructs conformant tracks.
+ * The TrackBuilder ensures tracks are conformant as they are built.
  *
  * (C) 2025 Malcolm Tyrrell
  *
@@ -9,23 +9,32 @@
 
 #include <MusicLib/Types/Track/track.hpp>
 
+/// Ensures the following:
+/// * All groups must have strictly positive duration
+/// * No overlapping groups of the same category and value.
 namespace bw_music {
     class TrackBuilder {
       public:
         TrackBuilder();
 
         /// Add a TrackEvent by moving or copying it into the track.
-        template <typename EVENT, typename = std::enable_if_t<std::is_convertible_v<EVENT&, const TrackEvent&>>>
-        void addEvent(EVENT&& srcEvent) {
-            if (validateEvent(srcEvent)) {
-                onNewEvent(m_track.addEvent(std::forward<EVENT>(srcEvent)));
-            }
-        };
+        void addEvent(const TrackEvent& event);
+        void addEvent(TrackEvent&& event);
 
-        void validateEvent(const TrackEvent& event);
-        std::unique_ptr<Track> finish();
+        std::unique_ptr<Track> finishAndGetTrack();
+
+      private:
+        bool onNewEvent(const TrackEvent& event);
 
       private:
         std::unique_ptr<Track> m_track;
+
+        enum class GroupState {
+            InGroup,
+            NotInGroup,
+            NotPresent
+        };
+
+        std::unordered_map<TrackEvent::EventGroup, GroupState> m_groupState;
     };
 } // namespace bw_music

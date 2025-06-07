@@ -86,6 +86,7 @@ namespace bw_music {
         /// The total duration of the events in the track.
         ModelDuration m_totalEventDuration = 0;
 
+        /// A hash computed from the events.
         std::size_t m_eventHash = 0;
 
         /// A summary of information about the track.
