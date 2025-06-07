@@ -48,8 +48,7 @@ namespace bw_music {
         /// For example, a noteOn event, a sequence of after-touch events, and a noteOff event,
         /// all of the same pitch.
         struct GroupingInfo {
-            /// A static string can act as a category.
-            // TODO Use an identifier for this.
+            /// A pointer to a static string can act as a category.
             using Category = const char*;
 
             /// A category that can be used for events of no particular category.
