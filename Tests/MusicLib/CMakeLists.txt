@@ -13,7 +13,6 @@ SET( SEQUENCELIB_TESTS_SRCS
       percussionSetWithPitchMapTest.cpp
       quantizeProcessorTest.cpp
       repeatProcessorTest.cpp
-      sanitizingFunctionsTest.cpp
       splitAtPitchProcessorTest.cpp
       trackBuilderTest.cpp
       trackTest.cpp
