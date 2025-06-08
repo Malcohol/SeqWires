@@ -29,24 +29,21 @@ namespace bw_music {
       private:
         bool onNewEvent(const TrackEvent& event);
 
+        void processEventsAtCurrentTime();
+
+        void issueEvent(TrackEvent&& event);
+        void issueEvent(const TrackEvent& event);
+
       private:
         std::unique_ptr<Track> m_track;
 
-        std::set<TrackEvent::EventGroup> m_existingGroups;
-        std::set<TrackEvent::EventGroup> m_newGroups;
+        std::set<TrackEvent::EventGroup> m_activeGroups;
 
         /// When events are dropped, their time gets added to the next actual event.
-        ModelDuration m_extraTimeSinceLastEvent;
+        ModelDuration m_timeSinceLastEvent;
 
-        /// Start events which occurred when there was an already a matching group.
-        /// This is sometimes because events at the same time get added out of sequence.
-        /// Temporarily keep them until we've either seen corresponding end events or time has
-        /// passed.
-        std::vector<TrackEventHolder> m_possiblePendingStartEvents;
-
-        /// A start event that happened at the same time as an end event. Add it directly after the
-        /// end event.
-        TrackEventHolder m_actuallyPendingStartEvent;
+        /// Batch up events at the current time
+        std::vector<TrackEventHolder> m_eventsAtCurrentTime;
     };
 } // namespace bw_music
 

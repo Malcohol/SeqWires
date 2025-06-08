@@ -49,15 +49,15 @@ namespace bw_music {
         /// in which case, the operation is ignored.
         void setDuration(ModelDuration d);
 
+        /// Determine whether the data in this track and the other are exactly the same.
+        /// Note: This is unconcerned with how events are laid out in their streams.
+        bool operator==(const Value& other) const override;
+
         /// Return the total duration of the events in the track (which may be smaller than m_duration).
         ModelDuration getTotalEventDuration() const;
 
         /// Get a hash corresponding to the state of the track's contents
         std::size_t getHash() const override;
-
-        /// Determine whether the data in this track and the other are exactly the same.
-        /// Note: This is unconcerned with how events are laid out in their streams.
-        bool operator==(const Value& other) const override;
 
         /// Get a summary of the track contents, by category.
         const std::unordered_map<const char*, int>& getNumEventGroupsByCategory() const;
@@ -67,10 +67,6 @@ namespace bw_music {
         const_iterator begin() const;
         const_iterator end() const;
 
-        // IMPORTANT: Don't offer non-const begin and end. They would have to invalidate the cached info, and might
-        // be chosen instead of the const versions when iterating. Instead, offer an accessor that returns
-        // a span.
-        // using iterator = bw_music::BlockStream::Iterator<bw_music::BlockStream, TrackEvent>;
       protected:
         /// Update the cached info.
         void onNewEvent(const TrackEvent& event);
