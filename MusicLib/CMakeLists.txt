@@ -39,6 +39,7 @@ SET( MUSICLIB_SRCS
 	pitch.cpp
 	Utilities/monophonicNoteIterator.cpp
 	Utilities/trackBuilder.cpp
+	Utilities/trackValidator.cpp
 	libRegistration.cpp
    )
 

@@ -59,15 +59,6 @@ namespace bw_music {
         /// Get a summary of the track contents, by category.
         const std::unordered_map<const char*, int>& getNumEventGroupsByCategory() const;
 
-        /// Check that the following requirements are met:
-        /// * There are no group events outside a group.
-        /// * All groups must have strictly positive duration
-        bool validate(
-#ifndef NDEBUG
-            bool assertIfInvalid = true
-#endif
-        ) const;
-
       public:
         using const_iterator = babelwires::BlockStream::Iterator<const babelwires::BlockStream, const TrackEvent>;
         const_iterator begin() const;

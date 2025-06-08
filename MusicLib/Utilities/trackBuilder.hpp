@@ -24,7 +24,7 @@ namespace bw_music {
         void addEvent(const TrackEvent& event);
         void addEvent(TrackEvent&& event);
 
-        std::unique_ptr<Track> finishAndGetTrack();
+        Track finishAndGetTrack();
 
       private:
         bool onNewEvent(const TrackEvent& event);
@@ -35,7 +35,7 @@ namespace bw_music {
         void issueEvent(const TrackEvent& event);
 
       private:
-        std::unique_ptr<Track> m_track;
+        Track m_track;
 
         std::set<TrackEvent::EventGroup> m_activeGroups;
 
@@ -44,6 +44,8 @@ namespace bw_music {
 
         /// Batch up events at the current time
         std::vector<TrackEventHolder> m_eventsAtCurrentTime;
+
+        bool m_isFinished = false;
     };
 } // namespace bw_music
 

@@ -15,6 +15,7 @@ SET( SEQUENCELIB_TESTS_SRCS
       repeatProcessorTest.cpp
       sanitizingFunctionsTest.cpp
       splitAtPitchProcessorTest.cpp
+      trackBuilderTest.cpp
       trackTest.cpp
       trackTraverserTest.cpp
       trackTypeTest.cpp

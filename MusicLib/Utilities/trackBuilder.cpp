@@ -7,8 +7,7 @@
  **/
 #include <MusicLib/Utilities/trackBuilder.hpp>
 
-bw_music::TrackBuilder::TrackBuilder()
-    : m_track(std::make_unique<Track>()) {}
+bw_music::TrackBuilder::TrackBuilder() {}
 
 bool bw_music::TrackBuilder::onNewEvent(const TrackEvent& event) {
     const TrackEvent::GroupingInfo groupInfo = event.getGroupingInfo();
@@ -40,7 +39,7 @@ bool bw_music::TrackBuilder::onNewEvent(const TrackEvent& event) {
 }
 
 void bw_music::TrackBuilder::addEvent(const TrackEvent& event) {
-    assert(m_track && "The TrackBuilder is already finished");
+    assert(!m_isFinished && "The TrackBuilder is already finished");
     if (event.getTimeSinceLastEvent() > 0) {
         processEventsAtCurrentTime();
     }
@@ -52,7 +51,7 @@ void bw_music::TrackBuilder::addEvent(const TrackEvent& event) {
 }
 
 void bw_music::TrackBuilder::addEvent(TrackEvent&& event) {
-    assert(m_track && "The TrackBuilder is already finished");
+    assert(!m_isFinished && "The TrackBuilder is already finished");
     if (event.getTimeSinceLastEvent() > 0) {
         processEventsAtCurrentTime();
     }
@@ -67,10 +66,10 @@ void bw_music::TrackBuilder::issueEvent(const TrackEvent& event) {
     if (m_timeSinceLastEvent > 0) {
         TrackEventHolder tmp = event;
         tmp->setTimeSinceLastEvent(event.getTimeSinceLastEvent() + m_timeSinceLastEvent);
-        m_track->addEvent(tmp.release());
+        m_track.addEvent(tmp.release());
         m_timeSinceLastEvent = 0;
     } else {
-        m_track->addEvent(event);
+        m_track.addEvent(event);
     }
 }
 
@@ -79,7 +78,7 @@ void bw_music::TrackBuilder::issueEvent(TrackEvent&& event) {
         event.setTimeSinceLastEvent(event.getTimeSinceLastEvent() + m_timeSinceLastEvent);
         m_timeSinceLastEvent = 0;
     }
-    m_track->addEvent(std::move(event));
+    m_track.addEvent(std::move(event));
 }
 
 void bw_music::TrackBuilder::processEventsAtCurrentTime() {
@@ -90,13 +89,13 @@ void bw_music::TrackBuilder::processEventsAtCurrentTime() {
             const auto activeGroupIt = m_activeGroups.find(groupInfo);
             if (groupInfo.m_grouping == TrackEvent::GroupingInfo::Grouping::StartOfGroup) {
                 // Check whether the start is followed by a matching end at the same time.
-                unsigned int j = i;
+                unsigned int j = i + 1;
                 while (j < m_eventsAtCurrentTime.size()) {
                     if (auto& otherEvent = m_eventsAtCurrentTime[j]) {
                         const TrackEvent::GroupingInfo otherGroupInfo = otherEvent->getGroupingInfo();
                         if (groupInfo == otherGroupInfo) {
                             if (otherGroupInfo.m_grouping == TrackEvent::GroupingInfo::Grouping::EndOfGroup) {
-                                for (int k = i + 1; k <= j; ++j) {
+                                for (int k = i + 1; k <= j; ++k) {
                                     if (auto& eventInRange = m_eventsAtCurrentTime[j]) {
                                         const TrackEvent::GroupingInfo eventInRangeGroupInfo =
                                             eventInRange->getGroupingInfo();
@@ -124,9 +123,11 @@ void bw_music::TrackBuilder::processEventsAtCurrentTime() {
                     ++j;
                 }
                 if (j == m_eventsAtCurrentTime.size()) {
-                    // Unmatched start: Normal case
-                    m_activeGroups.emplace(groupInfo);
-                    issueEvent(event.release());
+                    // Unmatched start: This is the normal case, but we still need to check for start in active group.
+                    if (activeGroupIt == m_activeGroups.end()) {
+                        m_activeGroups.emplace(groupInfo);
+                        issueEvent(event.release());
+                    }
                 }
             } else if (groupInfo.m_grouping == TrackEvent::GroupingInfo::Grouping::EndOfGroup) {
                 if (activeGroupIt != m_activeGroups.end()) {
@@ -145,7 +146,8 @@ void bw_music::TrackBuilder::processEventsAtCurrentTime() {
     m_eventsAtCurrentTime.clear();
 }
 
-std::unique_ptr<bw_music::Track> bw_music::TrackBuilder::finishAndGetTrack() {
+bw_music::Track bw_music::TrackBuilder::finishAndGetTrack() {
     processEventsAtCurrentTime();
+    m_isFinished = true;
     return std::move(m_track);
 }
