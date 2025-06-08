@@ -22,6 +22,9 @@ bool bw_music::TrackBuilder::onNewEvent(const TrackEvent& event) {
     if (it == m_activeGroups.end()) {
         if (groupInfo.m_grouping == TrackEvent::GroupingInfo::Grouping::StartOfGroup) {
             m_eventsAtCurrentTime.emplace_back(event);
+            // This is the necessarily the first event that will end up in m_eventsAtCurrentTime,
+            // so the only one that could be carrying any time.
+            m_eventsAtCurrentTime.back()->setTimeSinceLastEvent(0);
             return false;
         }
     } else {
@@ -32,6 +35,9 @@ bool bw_music::TrackBuilder::onNewEvent(const TrackEvent& event) {
             return true;
         } else if (groupInfo.m_grouping == TrackEvent::GroupingInfo::Grouping::StartOfGroup) {
             m_eventsAtCurrentTime.emplace_back(event);
+            // This is the necessarily the first event that will end up in m_eventsAtCurrentTime,
+            // so the only one that could be carrying any time.
+            m_eventsAtCurrentTime.back()->setTimeSinceLastEvent(0);
             return false;
         }
     }
@@ -82,6 +88,7 @@ void bw_music::TrackBuilder::issueEvent(TrackEvent&& event) {
 }
 
 void bw_music::TrackBuilder::processEventsAtCurrentTime() {
+    // Note: In general, the number of events being processed by this algorithm will be very small.
     unsigned int i = 0;
     while (i < m_eventsAtCurrentTime.size()) {
         if (auto& event = m_eventsAtCurrentTime[i]) {
@@ -110,7 +117,7 @@ void bw_music::TrackBuilder::processEventsAtCurrentTime() {
                                         }
                                     }
                                     if (activeGroupIt == m_activeGroups.end()) {
-                                        // Zero-length group: Nothing to do here, since i will be skipped.
+                                        // Zero-length group: Nothing to do here, since event will be skipped below.
                                     } else {
                                         // Assume End/Start out-of-order: Reorder those events
                                         issueEvent(event.release());
@@ -144,6 +151,10 @@ void bw_music::TrackBuilder::processEventsAtCurrentTime() {
         ++i;
     }
     m_eventsAtCurrentTime.clear();
+}
+
+void bw_music::TrackBuilder::setDuration(ModelDuration d) {
+    m_track.setDuration(d);
 }
 
 bw_music::Track bw_music::TrackBuilder::finishAndGetTrack() {

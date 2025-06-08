@@ -24,6 +24,8 @@ namespace bw_music {
         void addEvent(const TrackEvent& event);
         void addEvent(TrackEvent&& event);
 
+        void setDuration(ModelDuration d);
+
         Track finishAndGetTrack();
 
       private:
