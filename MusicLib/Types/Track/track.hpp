@@ -22,9 +22,6 @@ namespace bw_music {
     /// A track carries a stream of TrackEvents.
     /// Tracks are not editable: they can be manipulated only using Processors and can be serialized/deserialized only
     /// using SourceFileFormats and TargetFileFormats formats.
-    /// The following invariants are intended:
-    /// * All groups must have strictly positive duration
-    /// * There cannot be overlapping event groups for the same category and value.
     class Track : public babelwires::Value {
       public:
         CLONEABLE(Track);
@@ -61,6 +58,15 @@ namespace bw_music {
 
         /// Get a summary of the track contents, by category.
         const std::unordered_map<const char*, int>& getNumEventGroupsByCategory() const;
+
+        /// Check that the following requirements are met:
+        /// * There are no group events outside a group.
+        /// * All groups must have strictly positive duration
+        bool validate(
+#ifndef NDEBUG
+            bool assertIfInvalid = true
+#endif
+        ) const;
 
       public:
         using const_iterator = babelwires::BlockStream::Iterator<const babelwires::BlockStream, const TrackEvent>;

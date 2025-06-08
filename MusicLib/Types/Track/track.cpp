@@ -9,6 +9,8 @@
 
 #include <Common/Hash/hash.hpp>
 
+#include <map>
+
 bw_music::Track::Track() = default;
 
 bw_music::Track::Track(ModelDuration duration) {
@@ -99,4 +101,57 @@ bw_music::Track::const_iterator bw_music::Track::begin() const {
 
 const std::unordered_map<const char*, int>& bw_music::Track::getNumEventGroupsByCategory() const {
     return m_numEventGroupsByCategory;
+}
+
+bool bw_music::Track::validate(
+#ifndef NDEBUG
+    bool assertIfInvalid
+#endif
+) const {
+    std::map<TrackEvent::EventGroup, ModelDuration> activeGroups;
+    for (const auto& e : *this) {
+        if (e.getTimeSinceLastEvent() > 0) {
+            for (auto& times : activeGroups) {
+                times.second += e.getTimeSinceLastEvent();
+            }
+        }
+        const auto groupInfo = e.getGroupingInfo();
+        auto activeGroupIt = activeGroups.find(groupInfo);
+        switch (groupInfo.m_grouping) {
+            case TrackEvent::GroupingInfo::Grouping::StartOfGroup: {
+                const bool noActiveGroup = (activeGroupIt == activeGroups.end());
+                assert((!assertIfInvalid || noActiveGroup) &&
+                       "Encountered a start event when there was already a matching group.");
+                if (!noActiveGroup) {
+                    return false;
+                }
+                activeGroups.emplace(groupInfo, 0);
+                break;
+            }
+            case TrackEvent::GroupingInfo::Grouping::EnclosedInGroup: {
+                const bool alreadyAGroup = (activeGroupIt != activeGroups.end());
+                assert((!assertIfInvalid || alreadyAGroup) &&
+                       "Encountered an enclosed event when there was no matching group.");
+                if (!alreadyAGroup) {
+                    return false;
+                }
+                break;
+            }
+            case TrackEvent::GroupingInfo::Grouping::EndOfGroup: {
+                const bool alreadyAGroup = (activeGroupIt != activeGroups.end());
+                const bool positiveDurationGroup = (activeGroupIt->second > 0);
+                assert((!assertIfInvalid || alreadyAGroup) &&
+                       "Encountered an end event when there was no matching group.");
+                assert(positiveDurationGroup && "Encountered a zero-duration group");
+                if (!alreadyAGroup || positiveDurationGroup) {
+                    return false;
+                }
+                break;
+            }
+            case TrackEvent::GroupingInfo::Grouping::NotInGroup:
+            default:
+                break;
+        }
+    }
+    return true;
 }
