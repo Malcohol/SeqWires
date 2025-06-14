@@ -288,7 +288,7 @@ TEST(TrackBuilderTest, builderInvalidMixture) {
         return *badEventIt++;
     };
 
-    for (auto goodEvent : goodEvents) {
+    for (const auto& goodEvent : goodEvents) {
         bw_music::TrackEventHolder g = goodEvent;
         bw_music::TrackEventHolder b = getBadEvent();
         b->setTimeSinceLastEvent(g->getTimeSinceLastEvent());
@@ -304,5 +304,13 @@ TEST(TrackBuilderTest, builderInvalidMixture) {
     EXPECT_TRUE(bw_music::isTrackValid(builtTrack));
     EXPECT_EQ(track.getDuration(), builtTrack.getDuration());
     EXPECT_EQ(track.getTotalEventDuration(), builtTrack.getTotalEventDuration());
-    
+    EXPECT_EQ(builtTrack.getTotalEventDuration(), goodEvents.getTotalEventDuration());
+
+    unsigned int goodEventCount = 0;
+    for (const auto& builtEvent : builtTrack) {
+        if (builtEvent.getGroupingInfo().m_groupValue < 72) {
+            ++goodEventCount;
+        }
+    }
+    EXPECT_EQ(goodEventCount, goodEvents.getNumEvents());
 }
