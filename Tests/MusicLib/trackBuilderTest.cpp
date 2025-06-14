@@ -2,6 +2,7 @@
 
 #include <MusicLib/Types/Track/TrackEvents/noteEvents.hpp>
 #include <MusicLib/Utilities/trackBuilder.hpp>
+#include <MusicLib/Utilities/simpleTrackBuilder.hpp>
 #include <MusicLib/Utilities/trackValidator.hpp>
 
 #include <Tests/BabelWiresLib/TestUtils/testEnvironment.hpp>
@@ -27,7 +28,7 @@ namespace {
     };
 } // namespace
 
-TEST(TrackBuilderTest, validSimple) {
+TEST(TrackBuilderTest, validator_validSimple) {
     bw_music::Track track;
 
     track.addEvent(bw_music::NoteOnEvent(0, 60));
@@ -42,7 +43,7 @@ TEST(TrackBuilderTest, validSimple) {
     EXPECT_TRUE(bw_music::isTrackValid(track));
 }
 
-TEST(TrackBuilderTest, invalidSimpleZeroLengthNote) {
+TEST(TrackBuilderTest, validator_invalidSimpleZeroLengthNote) {
     bw_music::Track track;
 
     track.addEvent(bw_music::NoteOnEvent(0, 60));
@@ -57,7 +58,7 @@ TEST(TrackBuilderTest, invalidSimpleZeroLengthNote) {
     EXPECT_FALSE(bw_music::isTrackValid(track));
 }
 
-TEST(TrackBuilderTest, invalidSimpleEndEventOutsideGroup) {
+TEST(TrackBuilderTest, validator_invalidSimpleEndEventOutsideGroup) {
     bw_music::Track track;
 
     track.addEvent(bw_music::NoteOnEvent(0, 60));
@@ -73,7 +74,7 @@ TEST(TrackBuilderTest, invalidSimpleEndEventOutsideGroup) {
     EXPECT_FALSE(bw_music::isTrackValid(track));
 }
 
-TEST(TrackBuilderTest, invalidStartEventInsideGroup) {
+TEST(TrackBuilderTest, validator_invalidStartEventInsideGroup) {
     bw_music::Track track;
 
     track.addEvent(bw_music::NoteOnEvent(0, 60));
@@ -89,7 +90,33 @@ TEST(TrackBuilderTest, invalidStartEventInsideGroup) {
     EXPECT_FALSE(bw_music::isTrackValid(track));
 }
 
-TEST(TrackBuilderTest, builderValidSimple) {
+TEST(TrackBuilderTest, simpleBuilder_validSimple) {
+    bw_music::Track track;
+    bw_music::SimpleTrackBuilder trackBuilder;
+
+    auto addEvent = [&track, &trackBuilder](auto&& event) {
+        track.addEvent(event);
+        trackBuilder.addEvent(std::forward<decltype(event)>(event));
+    };
+
+    addEvent(bw_music::NoteOnEvent(0, 60));
+    addEvent(bw_music::NoteOffEvent(babelwires::Rational(1, 4), 60));
+    addEvent(bw_music::NoteOnEvent(0, 62));
+    addEvent(bw_music::NoteOffEvent(babelwires::Rational(1, 4), 62));
+    addEvent(bw_music::NoteOnEvent(0, 64));
+    addEvent(bw_music::NoteOffEvent(babelwires::Rational(1, 4), 64));
+    addEvent(bw_music::NoteOnEvent(0, 67));
+    addEvent(bw_music::NoteOffEvent(babelwires::Rational(1, 4), 67));
+
+    auto builtTrack = trackBuilder.finishAndGetTrack();
+    EXPECT_TRUE(bw_music::isTrackValid(track));
+    EXPECT_TRUE(bw_music::isTrackValid(builtTrack));
+    EXPECT_EQ(track.getDuration(), builtTrack.getDuration());
+    EXPECT_EQ(track.getTotalEventDuration(), builtTrack.getTotalEventDuration());
+    EXPECT_EQ(track.getNumEvents(), builtTrack.getNumEvents());
+}
+
+TEST(TrackBuilderTest, validBuilder_validSimple) {
     bw_music::Track track;
     bw_music::TrackBuilder trackBuilder;
 
@@ -112,9 +139,10 @@ TEST(TrackBuilderTest, builderValidSimple) {
     EXPECT_TRUE(bw_music::isTrackValid(builtTrack));
     EXPECT_EQ(track.getDuration(), builtTrack.getDuration());
     EXPECT_EQ(track.getTotalEventDuration(), builtTrack.getTotalEventDuration());
+    EXPECT_EQ(track.getNumEvents(), builtTrack.getNumEvents());
 }
 
-TEST(TrackBuilderTest, builderInvalidSimpleZeroLengthNote) {
+TEST(TrackBuilderTest, validBuilder_InvalidSimpleZeroLengthNote) {
     bw_music::Track track;
     bw_music::TrackBuilder trackBuilder;
 
@@ -137,9 +165,10 @@ TEST(TrackBuilderTest, builderInvalidSimpleZeroLengthNote) {
     EXPECT_TRUE(bw_music::isTrackValid(builtTrack));
     EXPECT_EQ(track.getDuration(), builtTrack.getDuration());
     EXPECT_EQ(track.getTotalEventDuration(), builtTrack.getTotalEventDuration());
+    EXPECT_GT(track.getNumEvents(), builtTrack.getNumEvents());
 }
 
-TEST(TrackBuilderTest, builderInvalidSimpleEndEventOutsideGroup) {
+TEST(TrackBuilderTest, validBuilder_InvalidSimpleEndEventOutsideGroup) {
     bw_music::Track track;
     bw_music::TrackBuilder trackBuilder;
 
@@ -163,9 +192,10 @@ TEST(TrackBuilderTest, builderInvalidSimpleEndEventOutsideGroup) {
     EXPECT_TRUE(bw_music::isTrackValid(builtTrack));
     EXPECT_EQ(track.getDuration(), builtTrack.getDuration());
     EXPECT_EQ(track.getTotalEventDuration(), builtTrack.getTotalEventDuration());
+    EXPECT_GT(track.getNumEvents(), builtTrack.getNumEvents());
 }
 
-TEST(TrackBuilderTest, builderInvalidStartEventInsideGroup) {
+TEST(TrackBuilderTest, validBuilder_InvalidStartEventInsideGroup) {
     bw_music::Track track;
     bw_music::TrackBuilder trackBuilder;
 
@@ -189,9 +219,10 @@ TEST(TrackBuilderTest, builderInvalidStartEventInsideGroup) {
     EXPECT_TRUE(bw_music::isTrackValid(builtTrack));
     EXPECT_EQ(track.getDuration(), builtTrack.getDuration());
     EXPECT_EQ(track.getTotalEventDuration(), builtTrack.getTotalEventDuration());
+    EXPECT_GT(track.getNumEvents(), builtTrack.getNumEvents());
 }
 
-TEST(TrackBuilderTest, builderInvalidReordered) {
+TEST(TrackBuilderTest, validBuilder_InvalidReordered) {
     bw_music::Track track;
     bw_music::TrackBuilder trackBuilder;
 
@@ -217,7 +248,7 @@ TEST(TrackBuilderTest, builderInvalidReordered) {
     EXPECT_EQ(builtTrack.getNumEvents(), track.getNumEvents());
 }
 
-TEST(TrackBuilderTest, builderInvalidReorderedAndZeroLength) {
+TEST(TrackBuilderTest, validBuilder_InvalidReorderedAndZeroLength) {
     bw_music::Track track;
     bw_music::TrackBuilder trackBuilder;
 
@@ -247,7 +278,7 @@ TEST(TrackBuilderTest, builderInvalidReorderedAndZeroLength) {
     EXPECT_EQ(builtTrack.getNumEvents(), track.getNumEvents() - 2);
 }
 
-TEST(TrackBuilderTest, builderInvalidMixture) {
+TEST(TrackBuilderTest, validBuilder_InvalidMixture) {
     bw_music::Track goodEvents;
     goodEvents.addEvent(bw_music::NoteOnEvent(0, 60));
     goodEvents.addEvent(TestEnclosedEvent(bw_music::ModelDuration(1, 8), 60));
