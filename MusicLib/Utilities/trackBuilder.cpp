@@ -95,41 +95,39 @@ void bw_music::TrackBuilder::processEventsAtCurrentTime() {
             const TrackEvent::GroupingInfo groupInfo = event->getGroupingInfo();
             const auto activeGroupIt = m_activeGroups.find(groupInfo);
             if (groupInfo.m_grouping == TrackEvent::GroupingInfo::Grouping::StartOfGroup) {
-                // Check whether the start is followed by a matching end at the same time.
-                unsigned int j = i + 1;
-                while (j < m_eventsAtCurrentTime.size()) {
+                // See whether there's a matching end at the same time as the start.
+                unsigned int j = m_eventsAtCurrentTime.size() - 1;
+                while (j >= i + 1) {
                     if (auto& otherEvent = m_eventsAtCurrentTime[j]) {
                         const TrackEvent::GroupingInfo otherGroupInfo = otherEvent->getGroupingInfo();
                         if (groupInfo == otherGroupInfo) {
                             if (otherGroupInfo.m_grouping == TrackEvent::GroupingInfo::Grouping::EndOfGroup) {
-                                for (int k = i + 1; k <= j; ++k) {
-                                    if (auto& eventInRange = m_eventsAtCurrentTime[j]) {
+                                // Drop any matching events that were between the start and end.
+                                // They either belong to a zero length group or, in the reorder case, we don't know
+                                // which group they belong to.
+                                for (int k = i + 1; k < j; ++k) {
+                                    if (auto& eventInRange = m_eventsAtCurrentTime[k]) {
                                         const TrackEvent::GroupingInfo eventInRangeGroupInfo =
                                             eventInRange->getGroupingInfo();
                                         if (eventInRangeGroupInfo == groupInfo) {
-                                            if (activeGroupIt == m_activeGroups.end()) {
-                                                // Zero-length group: Remove the group
-                                                eventInRange.reset();
-                                            } else {
-                                                // Assume End/Start out-of-order: Reorder those events
-                                                issueEvent(eventInRange.release());
-                                            }
+                                            eventInRange.reset();
                                         }
                                     }
-                                    if (activeGroupIt == m_activeGroups.end()) {
-                                        // Zero-length group: Nothing to do here, since event will be skipped below.
-                                    } else {
-                                        // Assume End/Start out-of-order: Reorder those events
-                                        issueEvent(event.release());
-                                    }
+                                }
+                                if (activeGroupIt == m_activeGroups.end()) {
+                                    // Zero-length group: Nothing to do here, since event will be skipped below.
+                                } else {
+                                    // Assume End/Start out-of-order: Reorder those events
+                                    issueEvent(otherEvent.release());
+                                    issueEvent(event.release());
                                 }
                                 break;
                             }
                         }
                     }
-                    ++j;
+                    --j;
                 }
-                if (j == m_eventsAtCurrentTime.size()) {
+                if (j == i) {
                     // Unmatched start: This is the normal case, but we still need to check for start in active group.
                     if (activeGroupIt == m_activeGroups.end()) {
                         m_activeGroups.emplace(groupInfo);

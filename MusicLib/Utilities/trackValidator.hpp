@@ -12,13 +12,20 @@
 namespace bw_music {
     class Track;
 
+    namespace Detail {
+        bool isTrackValidInternal(const Track& track, bool assertIfInvalid);
+    }
+
     /// Check that the following requirements are met:
     /// * There are no group events outside a group.
     /// * All groups must have strictly positive duration
-    bool isTrackValid(const Track& track);
+    inline bool isTrackValid(const Track& track) {
+        return Detail::isTrackValidInternal(track, false);
+    }
 
+    inline void assertTrackIsValid(const Track& track) {
 #ifndef NDEBUG
-    void assertTrackIsValid(const Track& track);
+        Detail::isTrackValidInternal(track, true);
 #endif
-
+    }
 } // namespace bw_music
