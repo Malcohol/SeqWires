@@ -56,5 +56,6 @@ bool bw_music::Detail::isTrackValidInternal(const bw_music::Track& track, bool a
                 break;
         }
     }
-    return true;
+    assert(!assertIfInvalid || activeGroups.empty() && "There are still active groups at the end of the track");
+    return activeGroups.empty();
 }

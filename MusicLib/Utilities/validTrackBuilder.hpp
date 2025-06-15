@@ -1,5 +1,5 @@
 /**
- * The TrackBuilder ensures tracks are conformant as they are built.
+ * The ValidTrackBuilder ensures tracks are conformant as they are built.
  *
  * (C) 2025 Malcolm Tyrrell
  *
@@ -16,9 +16,9 @@
 /// * All groups must have strictly positive duration
 /// * No overlapping groups of the same category and value.
 namespace bw_music {
-    class TrackBuilder {
+    class ValidTrackBuilder {
       public:
-        TrackBuilder();
+        ValidTrackBuilder();
 
         /// Add a TrackEvent by moving or copying it into the track.
         void addEvent(const TrackEvent& event);

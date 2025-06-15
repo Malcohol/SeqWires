@@ -1,15 +1,15 @@
 /**
- * The TrackBuilder ensures tracks are conformant as they are built.
+ * The ValidTrackBuilder ensures tracks are conformant as they are built.
  *
  * (C) 2025 Malcolm Tyrrell
  *
  * Licensed under the GPLv3.0. See LICENSE file.
  **/
-#include <MusicLib/Utilities/trackBuilder.hpp>
+#include <MusicLib/Utilities/validTrackBuilder.hpp>
 
-bw_music::TrackBuilder::TrackBuilder() {}
+bw_music::ValidTrackBuilder::ValidTrackBuilder() {}
 
-bool bw_music::TrackBuilder::onNewEvent(const TrackEvent& event) {
+bool bw_music::ValidTrackBuilder::onNewEvent(const TrackEvent& event) {
     const TrackEvent::GroupingInfo groupInfo = event.getGroupingInfo();
     if (groupInfo.m_grouping == TrackEvent::GroupingInfo::Grouping::NotInGroup) {
         return true;
@@ -44,8 +44,8 @@ bool bw_music::TrackBuilder::onNewEvent(const TrackEvent& event) {
     return false;
 }
 
-void bw_music::TrackBuilder::addEvent(const TrackEvent& event) {
-    assert(!m_isFinished && "The TrackBuilder is already finished");
+void bw_music::ValidTrackBuilder::addEvent(const TrackEvent& event) {
+    assert(!m_isFinished && "The ValidTrackBuilder is already finished");
     if (event.getTimeSinceLastEvent() > 0) {
         processEventsAtCurrentTime();
     }
@@ -56,8 +56,8 @@ void bw_music::TrackBuilder::addEvent(const TrackEvent& event) {
     }
 }
 
-void bw_music::TrackBuilder::addEvent(TrackEvent&& event) {
-    assert(!m_isFinished && "The TrackBuilder is already finished");
+void bw_music::ValidTrackBuilder::addEvent(TrackEvent&& event) {
+    assert(!m_isFinished && "The ValidTrackBuilder is already finished");
     if (event.getTimeSinceLastEvent() > 0) {
         processEventsAtCurrentTime();
     }
@@ -68,7 +68,7 @@ void bw_music::TrackBuilder::addEvent(TrackEvent&& event) {
     }
 }
 
-void bw_music::TrackBuilder::issueEvent(const TrackEvent& event) {
+void bw_music::ValidTrackBuilder::issueEvent(const TrackEvent& event) {
     if (m_timeSinceLastEvent > 0) {
         TrackEventHolder tmp = event;
         tmp->setTimeSinceLastEvent(event.getTimeSinceLastEvent() + m_timeSinceLastEvent);
@@ -79,7 +79,7 @@ void bw_music::TrackBuilder::issueEvent(const TrackEvent& event) {
     }
 }
 
-void bw_music::TrackBuilder::issueEvent(TrackEvent&& event) {
+void bw_music::ValidTrackBuilder::issueEvent(TrackEvent&& event) {
     if (m_timeSinceLastEvent > 0) {
         event.setTimeSinceLastEvent(event.getTimeSinceLastEvent() + m_timeSinceLastEvent);
         m_timeSinceLastEvent = 0;
@@ -87,7 +87,7 @@ void bw_music::TrackBuilder::issueEvent(TrackEvent&& event) {
     m_track.addEvent(std::move(event));
 }
 
-void bw_music::TrackBuilder::processEventsAtCurrentTime() {
+void bw_music::ValidTrackBuilder::processEventsAtCurrentTime() {
     // Note: In general, the number of events being processed by this algorithm will be very small.
     unsigned int i = 0;
     while (i < m_eventsAtCurrentTime.size()) {
@@ -151,11 +151,11 @@ void bw_music::TrackBuilder::processEventsAtCurrentTime() {
     m_eventsAtCurrentTime.clear();
 }
 
-void bw_music::TrackBuilder::setDuration(ModelDuration d) {
+void bw_music::ValidTrackBuilder::setDuration(ModelDuration d) {
     m_track.setDuration(d);
 }
 
-bw_music::Track bw_music::TrackBuilder::finishAndGetTrack() {
+bw_music::Track bw_music::ValidTrackBuilder::finishAndGetTrack() {
     processEventsAtCurrentTime();
     m_isFinished = true;
     return std::move(m_track);
