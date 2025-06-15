@@ -35,6 +35,8 @@ namespace bw_music {
         void issueEvent(TrackEvent&& event);
         void issueEvent(const TrackEvent& event);
 
+        bool atEndOfTrack() const;
+        ModelDuration getTimeToEndOfTrack() const;
         void endActiveGroups();
 
       private:

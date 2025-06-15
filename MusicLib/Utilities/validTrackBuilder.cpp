@@ -130,8 +130,6 @@ void bw_music::ValidTrackBuilder::processEventsAtCurrentTime(bool atEndOfTrack) 
                 if (j == i) {
                     // Unmatched start: This is the normal case, but we still need to check for start in active group.
                     // Also, don't add start events if we're at the end of the track.
-                    // TODO If the track duration is longer than the event duration, should we allow
-                    // start events here?
                     if ((activeGroupIt == m_activeGroups.end()) && !atEndOfTrack) {
                         m_activeGroups.emplace(groupInfo);
                         issueEvent(event.release());
@@ -160,6 +158,7 @@ void bw_music::ValidTrackBuilder::setDuration(ModelDuration d) {
 
 void bw_music::ValidTrackBuilder::endActiveGroups() {
     if (!m_activeGroups.empty()) {
+        ModelDuration initialTime = getTimeToEndOfTrack();
         std::vector<TrackEventHolder> endEventsToAdd;
         endEventsToAdd.reserve(m_activeGroups.size());
         // Seach backwards for the matching start events
@@ -169,7 +168,8 @@ void bw_music::ValidTrackBuilder::endActiveGroups() {
             if (groupInfo.m_grouping == TrackEvent::GroupingInfo::Grouping::StartOfGroup) {
                 const auto activeGroupIt = m_activeGroups.find(groupInfo);
                 if (activeGroupIt != m_activeGroups.end()) {
-                    it->createEndEvent(endEventsToAdd.emplace_back(), 0);
+                    it->createEndEvent(endEventsToAdd.emplace_back(), initialTime);
+                    initialTime = 0;
                     m_activeGroups.erase(activeGroupIt);
                     if (m_activeGroups.empty()) {
                         break;
@@ -180,14 +180,18 @@ void bw_music::ValidTrackBuilder::endActiveGroups() {
         }
         assert(m_activeGroups.empty());
         // TODO Need to use event duration here.
-        for (const auto& eventPointer : endEventsToAdd) {
-            m_track.addEvent(std::move(*eventPointer));
+        for (auto& endEvent : endEventsToAdd) {
+            m_track.addEvent(endEvent.release());
         }
     }
 }
 
+bw_music::ModelDuration bw_music::ValidTrackBuilder::getTimeToEndOfTrack() const {
+    return std::max(m_track.getDuration() - (m_track.getTotalEventDuration() + m_timeSinceLastEvent), babelwires::Rational(0));
+}
+
 bw_music::Track bw_music::ValidTrackBuilder::finishAndGetTrack() {
-    processEventsAtCurrentTime(true);
+    processEventsAtCurrentTime(getTimeToEndOfTrack() == 0);
     endActiveGroups();
     m_isFinished = true;
     return std::move(m_track);

@@ -54,6 +54,8 @@ void testUtils::testNotes(const std::vector<NoteInfo>& expectedNotes, const bw_m
     auto noteIterator = track.begin();
     const auto endIterator = track.end();
 
+    bw_music::ModelDuration durationSoFar;
+
     for (unsigned int i = 0; i < expectedNotes.size(); ++i) {
         auto note = expectedNotes[i];
         EXPECT_NE(noteIterator, endIterator);
@@ -69,7 +71,12 @@ void testUtils::testNotes(const std::vector<NoteInfo>& expectedNotes, const bw_m
         ASSERT_NE(noteOff, nullptr);
         EXPECT_EQ(noteOff->getTimeSinceLastEvent(), note.m_noteOffTime);
         EXPECT_EQ(noteOff->m_pitch, note.m_pitch);
-        EXPECT_EQ(noteOff->m_velocity, 64);
+        durationSoFar += note.m_noteOnTime + note.m_noteOffTime;
+        if (durationSoFar != track.getDuration()) {
+            // The last events in the track may be artificial noteOff events to close off truncated groups.
+            // In this case, we cannot assume the velocity will be correct.
+            EXPECT_EQ(noteOff->m_velocity, 64);
+        }
         ++noteIterator;
     }
     EXPECT_EQ(noteIterator, endIterator);
