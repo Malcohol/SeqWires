@@ -153,6 +153,7 @@ void bw_music::ValidTrackBuilder::processEventsAtCurrentTime(bool atEndOfTrack) 
 }
 
 void bw_music::ValidTrackBuilder::setDuration(ModelDuration d) {
+    assert(!m_isFinished && "You cannot call this after the builder is finished.");
     m_track.setDuration(d);
 }
 
@@ -187,11 +188,11 @@ void bw_music::ValidTrackBuilder::endActiveGroups() {
 }
 
 bw_music::ModelDuration bw_music::ValidTrackBuilder::getTimeToEndOfTrack() const {
-    return std::max(m_track.getDuration() - (m_track.getTotalEventDuration() + m_timeSinceLastEvent), babelwires::Rational(0));
+    return m_track.getDuration() - m_track.getTotalEventDuration();
 }
 
 bw_music::Track bw_music::ValidTrackBuilder::finishAndGetTrack() {
-    processEventsAtCurrentTime(getTimeToEndOfTrack() == 0);
+    processEventsAtCurrentTime(getTimeToEndOfTrack() == m_timeSinceLastEvent);
     endActiveGroups();
     m_isFinished = true;
     return std::move(m_track);
