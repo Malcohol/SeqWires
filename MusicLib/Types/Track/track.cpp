@@ -97,6 +97,15 @@ bw_music::Track::const_iterator bw_music::Track::begin() const {
     return m_blockStream.begin_impl<TrackEvent>();
 }
 
+std::reverse_iterator<bw_music::Track::const_iterator> bw_music::Track::rbegin() const {
+    return m_blockStream.rbegin_impl<TrackEvent>();
+}
+
+std::reverse_iterator<bw_music::Track::const_iterator> bw_music::Track::rend() const {
+    return m_blockStream.rend_impl<TrackEvent>();
+}
+
+
 const std::unordered_map<const char*, int>& bw_music::Track::getNumEventGroupsByCategory() const {
     return m_numEventGroupsByCategory;
 }

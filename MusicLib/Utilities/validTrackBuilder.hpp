@@ -31,10 +31,12 @@ namespace bw_music {
       private:
         bool onNewEvent(const TrackEvent& event);
 
-        void processEventsAtCurrentTime();
+        void processEventsAtCurrentTime(bool atEndOfTrack);
 
         void issueEvent(TrackEvent&& event);
         void issueEvent(const TrackEvent& event);
+
+        void endActiveGroups();
 
       private:
         Track m_track;

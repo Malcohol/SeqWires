@@ -47,7 +47,7 @@ bool bw_music::ValidTrackBuilder::onNewEvent(const TrackEvent& event) {
 void bw_music::ValidTrackBuilder::addEvent(const TrackEvent& event) {
     assert(!m_isFinished && "The ValidTrackBuilder is already finished");
     if (event.getTimeSinceLastEvent() > 0) {
-        processEventsAtCurrentTime();
+        processEventsAtCurrentTime(false);
     }
     if (onNewEvent(event)) {
         issueEvent(event);
@@ -59,7 +59,7 @@ void bw_music::ValidTrackBuilder::addEvent(const TrackEvent& event) {
 void bw_music::ValidTrackBuilder::addEvent(TrackEvent&& event) {
     assert(!m_isFinished && "The ValidTrackBuilder is already finished");
     if (event.getTimeSinceLastEvent() > 0) {
-        processEventsAtCurrentTime();
+        processEventsAtCurrentTime(false);
     }
     if (onNewEvent(event)) {
         issueEvent(std::move(event));
@@ -87,7 +87,7 @@ void bw_music::ValidTrackBuilder::issueEvent(TrackEvent&& event) {
     m_track.addEvent(std::move(event));
 }
 
-void bw_music::ValidTrackBuilder::processEventsAtCurrentTime() {
+void bw_music::ValidTrackBuilder::processEventsAtCurrentTime(bool atEndOfTrack) {
     // Note: In general, the number of events being processed by this algorithm will be very small.
     unsigned int i = 0;
     while (i < m_eventsAtCurrentTime.size()) {
@@ -129,7 +129,10 @@ void bw_music::ValidTrackBuilder::processEventsAtCurrentTime() {
                 }
                 if (j == i) {
                     // Unmatched start: This is the normal case, but we still need to check for start in active group.
-                    if (activeGroupIt == m_activeGroups.end()) {
+                    // Also, don't add start events if we're at the end of the track.
+                    // TODO If the track duration is longer than the event duration, should we allow
+                    // start events here?
+                    if ((activeGroupIt == m_activeGroups.end()) && !atEndOfTrack) {
                         m_activeGroups.emplace(groupInfo);
                         issueEvent(event.release());
                     }
@@ -155,8 +158,37 @@ void bw_music::ValidTrackBuilder::setDuration(ModelDuration d) {
     m_track.setDuration(d);
 }
 
+void bw_music::ValidTrackBuilder::endActiveGroups() {
+    if (!m_activeGroups.empty()) {
+        std::vector<std::unique_ptr<TrackEvent>> endEventsToAdd;
+        endEventsToAdd.reserve(m_activeGroups.size());
+        // Seach backwards for the matching start events
+        auto it = m_track.rbegin();
+        while (it != m_track.rend()) {
+            const TrackEvent::GroupingInfo groupInfo = it->getGroupingInfo();
+            if (groupInfo.m_grouping == TrackEvent::GroupingInfo::Grouping::StartOfGroup) {
+                const auto activeGroupIt = m_activeGroups.find(groupInfo);
+                if (activeGroupIt != m_activeGroups.end()) {
+                    endEventsToAdd.emplace_back(it->createEndEvent());
+                    m_activeGroups.erase(activeGroupIt);
+                    if (m_activeGroups.empty()) {
+                        break;
+                    }
+                }
+            }
+            ++it;
+        }
+        assert(m_activeGroups.empty());
+        // TODO Need to use event duration here.
+        for (const auto& eventPointer : endEventsToAdd) {
+            m_track.addEvent(std::move(*eventPointer));
+        }
+    }
+}
+
 bw_music::Track bw_music::ValidTrackBuilder::finishAndGetTrack() {
-    processEventsAtCurrentTime();
+    processEventsAtCurrentTime(true);
+    endActiveGroups();
     m_isFinished = true;
     return std::move(m_track);
 }

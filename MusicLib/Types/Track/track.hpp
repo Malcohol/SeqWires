@@ -67,6 +67,9 @@ namespace bw_music {
         const_iterator begin() const;
         const_iterator end() const;
 
+        std::reverse_iterator<const_iterator> rbegin() const;
+        std::reverse_iterator<const_iterator> rend() const;
+
       protected:
         /// Update the cached info.
         void onNewEvent(const TrackEvent& event);
