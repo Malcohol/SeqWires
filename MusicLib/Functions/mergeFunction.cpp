@@ -8,11 +8,12 @@
 #include <MusicLib/Functions/mergeFunction.hpp>
 
 #include <MusicLib/Utilities/trackTraverser.hpp>
+#include <MusicLib/Utilities/validTrackBuilder.hpp>
 
 #include <BabelWiresLib/ValueTree/modelExceptions.hpp>
 
 bw_music::Track bw_music::mergeTracks(const std::vector<const Track*>& sourceTracks) {
-    Track trackOut;
+    ValidTrackBuilder trackOut;
 
     bw_music::ModelDuration trackDuration = 0;
     std::vector<TrackTraverser<Track::const_iterator>> traversers;
@@ -50,5 +51,5 @@ bw_music::Track bw_music::mergeTracks(const std::vector<const Track*>& sourceTra
 
     trackOut.setDuration(trackDuration);
 
-    return trackOut;
+    return trackOut.finishAndGetTrack();
 }

@@ -28,12 +28,14 @@ bw_music::Track bw_music::getTrackExcerpt(const Track& trackIn, ModelDuration st
 
     bool isFirstEvent = true;
     while ((it != trackIn.end()) && ((timeProcessed + it->getTimeSinceLastEvent()) <= end)) {
-        TrackEventHolder newEvent = *it;
         if (isFirstEvent) {
+            TrackEventHolder newEvent = *it;
             newEvent->setTimeSinceLastEvent(newEvent->getTimeSinceLastEvent() + timeProcessed - start);
             isFirstEvent = false;
+            trackOut.addEvent(newEvent.release());
+        } else {
+            trackOut.addEvent(*it);
         }
-        trackOut.addEvent(newEvent.release());
         timeProcessed += it->getTimeSinceLastEvent();
         ++it;
     }
