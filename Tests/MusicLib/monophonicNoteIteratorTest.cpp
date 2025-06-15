@@ -2,13 +2,9 @@
 
 #include <MusicLib/Utilities/monophonicNoteIterator.hpp>
 
-namespace {
-    /// A non-note event.
-    struct TestEvent : bw_music::TrackEvent {
-        STREAM_EVENT(TestEvent);
-        TestEvent(bw_music::ModelDuration d) { setTimeSinceLastEvent(d); }
-    };
+#include <Tests/TestUtils/testTrackEvents.hpp>
 
+namespace {
     bw_music::Track createTestTrack() {
         bw_music::Track track;
 
@@ -30,34 +26,34 @@ namespace {
         noteOn.m_pitch = 40;
         track.addEvent(noteOn);
 
-        track.addEvent(TestEvent(1));
+        track.addEvent(testUtils::TestTrackEvent(1));
 
         noteOff.setTimeSinceLastEvent(1);
         noteOff.m_pitch = 40;
         track.addEvent(noteOff);
         // End of note
 
-        track.addEvent(TestEvent(5));
+        track.addEvent(testUtils::TestTrackEvent(5));
 
         // Expect this note.
         noteOn.setTimeSinceLastEvent(0);
         noteOn.m_pitch = 50;
         track.addEvent(noteOn);
 
-        track.addEvent(TestEvent(1));
+        track.addEvent(testUtils::TestTrackEvent(1));
 
         noteOn.setTimeSinceLastEvent(1);
         noteOn.m_pitch = 40;
         track.addEvent(noteOn);
 
-        track.addEvent(TestEvent(1));
-        track.addEvent(TestEvent(1));
+        track.addEvent(testUtils::TestTrackEvent(1));
+        track.addEvent(testUtils::TestTrackEvent(1));
 
         noteOff.setTimeSinceLastEvent(0);
         noteOff.m_pitch = 40;
         track.addEvent(noteOff);
 
-        track.addEvent(TestEvent(1));
+        track.addEvent(testUtils::TestTrackEvent(1));
 
         noteOn.setTimeSinceLastEvent(1);
         noteOn.m_pitch = 40;
@@ -68,13 +64,13 @@ namespace {
         track.addEvent(noteOff);
         // End of note
 
-        track.addEvent(TestEvent(1));
+        track.addEvent(testUtils::TestTrackEvent(1));
 
         noteOff.setTimeSinceLastEvent(1);
         noteOff.m_pitch = 40;
         track.addEvent(noteOff);
 
-        track.addEvent(TestEvent(1));
+        track.addEvent(testUtils::TestTrackEvent(1));
 
         return track;
     }

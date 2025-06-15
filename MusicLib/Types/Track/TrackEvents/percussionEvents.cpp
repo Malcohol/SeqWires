@@ -15,6 +15,10 @@
 
 bw_music::TrackEvent::GroupingInfo::Category bw_music::PercussionEvent::s_percussionEventCategory = "Percussion";
 
+std::unique_ptr<bw_music::TrackEvent> bw_music::PercussionEvent::createEndEvent() const {
+    return std::make_unique<PercussionOffEvent>(0, m_instrument, m_velocity);
+}
+
 bool bw_music::PercussionOnEvent::operator==(const TrackEvent& other) const {
     if (typeid(other) != typeid(*this)) {
         return false;

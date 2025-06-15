@@ -15,6 +15,10 @@
 
 bw_music::TrackEvent::GroupingInfo::Category bw_music::NoteEvent::s_noteEventCategory = "Notes";
 
+std::unique_ptr<bw_music::TrackEvent> bw_music::NoteEvent::createEndEvent() const {
+    return std::make_unique<NoteOffEvent>(0, m_pitch, m_velocity);
+}
+
 void bw_music::NoteEvent::transpose(int pitchOffset) {
     m_pitch = std::clamp(m_pitch + pitchOffset, 0, 127);
 }

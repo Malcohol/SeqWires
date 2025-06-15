@@ -14,6 +14,10 @@
 
 bw_music::TrackEvent::GroupingInfo::Category bw_music::ChordEvent::s_chordEventCategory = "Chords";
 
+std::unique_ptr<bw_music::TrackEvent> bw_music::ChordEvent::createEndEvent() const {
+    return std::make_unique<ChordOffEvent>();
+}
+
 bool bw_music::ChordOnEvent::operator==(const TrackEvent& other) const {
     if (typeid(other) != typeid(*this)) {
         return false;

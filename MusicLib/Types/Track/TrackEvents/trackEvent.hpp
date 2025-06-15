@@ -22,7 +22,7 @@ namespace bw_music {
     /// and a noteOff event, all sharing the same pitch.
     class TrackEvent : public babelwires::StreamEvent {
       public:
-        STREAM_EVENT(TrackEvent);
+        STREAM_EVENT_ABSTRACT(TrackEvent);
         TrackEvent() = default;
         TrackEvent(ModelDuration timeSinceLastEvent) : m_timeSinceLastEvent(timeSinceLastEvent) {}
 
@@ -43,6 +43,13 @@ namespace bw_music {
         }
 
         bool operator!=(const TrackEvent& other) const;
+
+        /// To correctly terminate truncated groups, a start event can be asked to construct a matching end event
+        /// of the same category and value. The default implementation asserts;
+        // MAYBEDO Consider providing an iterator so the implementation can traverse the group.
+        // MAYBEDO If this returns nullptr for a start event, then it means the group cannot be truncated and the
+        // group should be removed.
+        virtual std::unique_ptr<TrackEvent> createEndEvent() const = 0;
 
         /// A value which describes how this event can participate in a group of similar events:
         /// For example, a noteOn event, a sequence of after-touch events, and a noteOff event,
