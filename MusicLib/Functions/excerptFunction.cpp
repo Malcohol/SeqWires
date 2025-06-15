@@ -7,8 +7,6 @@
  **/
 #include <MusicLib/Functions/excerptFunction.hpp>
 
-#include <MusicLib/Types/Track/TrackEvents/trackEventHolder.hpp>
-
 #include <set>
 
 bw_music::Track bw_music::getTrackExcerpt(const Track& trackIn, ModelDuration start,

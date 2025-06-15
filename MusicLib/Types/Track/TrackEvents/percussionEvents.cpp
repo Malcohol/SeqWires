@@ -7,6 +7,7 @@
  **/
 #include <MusicLib/Types/Track/TrackEvents/percussionEvents.hpp>
 
+
 #include <Common/Hash/hash.hpp>
 
 #include <sstream>
@@ -15,8 +16,8 @@
 
 bw_music::TrackEvent::GroupingInfo::Category bw_music::PercussionEvent::s_percussionEventCategory = "Percussion";
 
-std::unique_ptr<bw_music::TrackEvent> bw_music::PercussionEvent::createEndEvent() const {
-    return std::make_unique<PercussionOffEvent>(0, m_instrument, m_velocity);
+void bw_music::PercussionEvent::createEndEvent(TrackEventHolder& dest, ModelDuration timeSinceLastEvent) const {
+    dest = PercussionOffEvent(timeSinceLastEvent, m_instrument, m_velocity);
 }
 
 bool bw_music::PercussionOnEvent::operator==(const TrackEvent& other) const {

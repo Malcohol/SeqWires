@@ -7,7 +7,6 @@
  **/
 #include <MusicLib/Functions/quantizeFunction.hpp>
 
-#include <MusicLib/Types/Track/TrackEvents/trackEventHolder.hpp>
 #include <MusicLib/Utilities/validTrackBuilder.hpp>
 
 namespace {

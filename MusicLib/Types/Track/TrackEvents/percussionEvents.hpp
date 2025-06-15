@@ -24,7 +24,7 @@ namespace bw_music {
         void setVelocity(Velocity velocity) { m_velocity = velocity; }
         Velocity getVelocity() const { return m_velocity; }
 
-        std::unique_ptr<TrackEvent> createEndEvent() const override;
+        void createEndEvent(TrackEventHolder& dest, ModelDuration timeSinceLastEvent) const override;
 
       protected:
         PercussionEvent(ModelDuration timeSinceLastEvent, babelwires::ShortId instrument, Velocity velocity)

@@ -7,8 +7,6 @@
  **/
 #include <MusicLib/Functions/appendTrackFunction.hpp>
 
-#include <MusicLib/Types/Track/TrackEvents/trackEventHolder.hpp>
-
 #include <BabelWiresLib/ValueTree/modelExceptions.hpp>
 
 void bw_music::appendTrack(Track& targetTrack, const Track& sourceTrack) {

@@ -160,7 +160,7 @@ void bw_music::ValidTrackBuilder::setDuration(ModelDuration d) {
 
 void bw_music::ValidTrackBuilder::endActiveGroups() {
     if (!m_activeGroups.empty()) {
-        std::vector<std::unique_ptr<TrackEvent>> endEventsToAdd;
+        std::vector<TrackEventHolder> endEventsToAdd;
         endEventsToAdd.reserve(m_activeGroups.size());
         // Seach backwards for the matching start events
         auto it = m_track.rbegin();
@@ -169,7 +169,7 @@ void bw_music::ValidTrackBuilder::endActiveGroups() {
             if (groupInfo.m_grouping == TrackEvent::GroupingInfo::Grouping::StartOfGroup) {
                 const auto activeGroupIt = m_activeGroups.find(groupInfo);
                 if (activeGroupIt != m_activeGroups.end()) {
-                    endEventsToAdd.emplace_back(it->createEndEvent());
+                    it->createEndEvent(endEventsToAdd.emplace_back(), 0);
                     m_activeGroups.erase(activeGroupIt);
                     if (m_activeGroups.empty()) {
                         break;

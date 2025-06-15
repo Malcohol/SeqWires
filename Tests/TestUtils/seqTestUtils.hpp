@@ -1,8 +1,8 @@
 #pragma once
 
 #include <MusicLib/musicTypes.hpp>
-#include <MusicLib/Types/Track/TrackEvents/trackEventHolder.hpp>
 #include <MusicLib/chord.hpp>
+#include <MusicLib/Types/Track/TrackEvents/trackEvent.hpp>
 
 #include <vector>
 

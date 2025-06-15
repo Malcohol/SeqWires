@@ -7,7 +7,6 @@
  **/
 #include <MusicLib/Functions/transposeFunction.hpp>
 
-#include <MusicLib/Types/Track/TrackEvents/trackEventHolder.hpp>
 
 #include <BabelWiresLib/ValueTree/modelExceptions.hpp>
 

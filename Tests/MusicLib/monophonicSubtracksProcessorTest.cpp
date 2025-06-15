@@ -6,7 +6,6 @@
 #include <MusicLib/Processors/monophonicSubtracksProcessor.hpp>
 #include <MusicLib/Types/Track/TrackEvents/chordEvents.hpp>
 #include <MusicLib/Types/Track/TrackEvents/noteEvents.hpp>
-#include <MusicLib/Types/Track/TrackEvents/trackEventHolder.hpp>
 #include <MusicLib/libRegistration.hpp>
 
 #include <Tests/BabelWiresLib/TestUtils/testEnvironment.hpp>

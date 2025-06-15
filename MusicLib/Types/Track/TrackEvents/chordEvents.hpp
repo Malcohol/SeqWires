@@ -21,7 +21,7 @@ namespace bw_music {
 
         static GroupingInfo::Category s_chordEventCategory;
 
-        std::unique_ptr<TrackEvent> createEndEvent() const override;
+        void createEndEvent(TrackEventHolder& dest, ModelDuration timeSinceLastEvent) const override;
     };
 
     /// Describes the start of a chord.

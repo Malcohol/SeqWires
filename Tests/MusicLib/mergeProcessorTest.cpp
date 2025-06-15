@@ -5,7 +5,6 @@
 #include <MusicLib/Functions/mergeFunction.hpp>
 #include <MusicLib/Processors/mergeProcessor.hpp>
 #include <MusicLib/Types/Track/TrackEvents/noteEvents.hpp>
-#include <MusicLib/Types/Track/TrackEvents/trackEventHolder.hpp>
 #include <MusicLib/libRegistration.hpp>
 
 #include <Tests/BabelWiresLib/TestUtils/testEnvironment.hpp>

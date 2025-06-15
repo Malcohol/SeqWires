@@ -8,7 +8,6 @@
 #pragma once
 
 #include <MusicLib/Types/Track/track.hpp>
-#include <MusicLib/Types/Track/TrackEvents/trackEventHolder.hpp>
 
 #include <set>
 

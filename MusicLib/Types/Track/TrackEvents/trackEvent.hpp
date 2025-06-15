@@ -12,9 +12,13 @@
 #include <Common/Utilities/enumFlags.hpp>
 #include <MusicLib/musicTypes.hpp>
 
+#include <Common/BlockStream/streamEventHolder.hpp>
+
 namespace bw_music {
 
     class Track;
+    class TrackEvent;
+    using TrackEventHolder = babelwires::StreamEventHolder<TrackEvent>;
 
     /// TrackEvents are usually stored in a BlockStream, which is why they are StreamEvents.
     /// A track can carry arbitrary events. However, tracks often contain events which are
@@ -49,7 +53,7 @@ namespace bw_music {
         // MAYBEDO Consider providing an iterator so the implementation can traverse the group.
         // MAYBEDO If this returns nullptr for a start event, then it means the group cannot be truncated and the
         // group should be removed.
-        virtual std::unique_ptr<TrackEvent> createEndEvent() const = 0;
+        virtual void createEndEvent(TrackEventHolder& dest, ModelDuration timeSinceLastEvent) const = 0;
 
         /// A value which describes how this event can participate in a group of similar events:
         /// For example, a noteOn event, a sequence of after-touch events, and a noteOff event,

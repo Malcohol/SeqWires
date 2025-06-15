@@ -7,6 +7,7 @@
  **/
 #include <MusicLib/Types/Track/TrackEvents/chordEvents.hpp>
 
+
 #include <Common/Hash/hash.hpp>
 
 #include <sstream>
@@ -14,8 +15,8 @@
 
 bw_music::TrackEvent::GroupingInfo::Category bw_music::ChordEvent::s_chordEventCategory = "Chords";
 
-std::unique_ptr<bw_music::TrackEvent> bw_music::ChordEvent::createEndEvent() const {
-    return std::make_unique<ChordOffEvent>();
+void bw_music::ChordEvent::createEndEvent(TrackEventHolder& dest, ModelDuration timeSinceLastEvent) const {
+    dest = ChordOffEvent(timeSinceLastEvent);
 }
 
 bool bw_music::ChordOnEvent::operator==(const TrackEvent& other) const {

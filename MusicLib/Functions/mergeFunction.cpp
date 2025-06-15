@@ -7,7 +7,6 @@
  **/
 #include <MusicLib/Functions/mergeFunction.hpp>
 
-#include <MusicLib/Types/Track/TrackEvents/trackEventHolder.hpp>
 #include <MusicLib/Utilities/trackTraverser.hpp>
 
 #include <BabelWiresLib/ValueTree/modelExceptions.hpp>

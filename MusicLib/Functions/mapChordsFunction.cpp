@@ -8,7 +8,6 @@
 #include <MusicLib/Functions/mapChordsFunction.hpp>
 
 #include <MusicLib/Types/Track/TrackEvents/chordEvents.hpp>
-#include <MusicLib/Types/Track/TrackEvents/trackEventHolder.hpp>
 #include <MusicLib/chord.hpp>
 #include <MusicLib/pitch.hpp>
 

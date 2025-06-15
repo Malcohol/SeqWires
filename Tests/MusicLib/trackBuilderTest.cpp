@@ -2,8 +2,8 @@
 
 #include <MusicLib/Types/Track/TrackEvents/noteEvents.hpp>
 #include <MusicLib/Utilities/simpleTrackBuilder.hpp>
-#include <MusicLib/Utilities/validTrackBuilder.hpp>
 #include <MusicLib/Utilities/trackValidator.hpp>
+#include <MusicLib/Utilities/validTrackBuilder.hpp>
 
 #include <Tests/BabelWiresLib/TestUtils/testEnvironment.hpp>
 #include <Tests/TestUtils/seqTestUtils.hpp>
@@ -22,7 +22,8 @@ namespace {
             return {bw_music::NoteEvent::s_noteEventCategory, m_pitch,
                     bw_music::TrackEvent::GroupingInfo::Grouping::EnclosedInGroup};
         }
-        std::unique_ptr<TrackEvent> createEndEvent() const override { return nullptr; }
+        void createEndEvent(bw_music::TrackEventHolder& dest,
+                            bw_music::ModelDuration timeSinceLastEvent) const override {}
         bw_music::Pitch m_pitch;
     };
 } // namespace
